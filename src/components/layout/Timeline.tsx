@@ -44,7 +44,9 @@ export default function Timeline() {
                 <Arrow />
             </div>
             <div>
-                {events.map(TimelineItem)}
+                {events.map(event => (
+                    <TimelineItem {...event} key={event.title} />
+                ))}
             </div>
         </div>
     )

@@ -33,7 +33,9 @@ export default function MainInfoBlock() {
                 <a className="btn btn-primary btn-wide my-4">Participate</a>
             </Link>
             <div className="flex justify-around w-full">
-                {facts.map(Fact)}
+                {facts.map(fact => (
+                    <Fact key={fact.title} {...fact} />
+                ))}
             </div>
         </>
     )
