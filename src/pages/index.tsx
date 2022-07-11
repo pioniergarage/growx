@@ -6,6 +6,7 @@ import MainInfoBlock from "../components/layout/MainInfoBlock";
 import Timeline from "../components/layout/Timeline";
 import MotivationBlock from "../components/layout/MotivationBlock";
 import PartnerList from "../components/layout/PartnerList";
+import Footer from "../components/layout/Footer";
 
 const Home: NextPage = () => {
     return (
@@ -35,15 +36,16 @@ const Home: NextPage = () => {
                             <a className="btn btn-primary btn-wide mt-4">Participate</a>
                         </Link>
                     </div>
-                    <div className="divider"></div>
-
-                    <h2 className="text-2xl font-bold w-4/5">Gold Partner</h2>
+                </div>
+                <div className="bg-neutral p-4 mt-8 text-center">
+                    <h2 className="text-2xl font-bold text-white">Gold Partner</h2>
                     <PartnerList partners={[
                         { name: 'KIT Gründerschiede', logo: 'https://grow.pioniergarage.de/media/partner_logos/KIT_Gr%C3%BCnderschmiede_white.png', href: 'https://kit-gruenderschmiede.de/', id: 'gründerschiede' },
                         { name: 'GründerMotor', logo: 'https://grow.pioniergarage.de/media/partner_logos/gr%C3%BCndermotor.png', href: 'https://kit-gruenderschmiede.de/', id: 'GründerMotor' },
                         { name: 'Ionos', logo: 'https://grow.pioniergarage.de/media/partner_logos/Logo_IONOS_by_white.png', href: 'https://kit-gruenderschmiede.de/', id: 'ionos' },
                     ]} />
                 </div>
+                <Footer />
             </main>
         </div>
     );
