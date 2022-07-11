@@ -1,6 +1,7 @@
 import Link from "next/link";
+import AnimatedLogo from "../AnimatedLogo";
 
-function Fact({amount, title}: {amount: string, title: string}) {
+function Fact({ amount, title }: { amount: string, title: string }) {
     return (
         <p>
             <span className="block uppercase text-3xl font-bold leading-tight">{amount}</span>
@@ -11,14 +12,15 @@ function Fact({amount, title}: {amount: string, title: string}) {
 
 export default function MainInfoBlock() {
     const facts = [
-        {amount: '50+', title: 'startups'},
-        {amount: '50 000€', title: 'prizes'},
-        {amount: '11', title: 'workshops'},
+        { amount: '50+', title: 'startups' },
+        { amount: '50 000€', title: 'prizes' },
+        { amount: '11', title: 'workshops' },
     ]
 
     return (
         <>
             <div className="px-4">
+                <AnimatedLogo />
                 <h1 className="text-3xl font-black">
                     Germany's Largest Student Contest
                 </h1>
