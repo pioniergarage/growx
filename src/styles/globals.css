@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .arrow-down {
-    border: solid hsl(var(--nc));
+    border: solid hsl(var(--bc));
     border-width: 0 2px 2px 0;
     display: inline-block;
     padding: 5px;
@@ -11,5 +11,5 @@
 }
 
 .vertical-line {
-    border-left: 2px solid hsl(var(--nc));
+    border-left: 2px solid hsl(var(--bc));
 }

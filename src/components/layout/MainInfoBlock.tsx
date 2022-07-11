@@ -18,8 +18,8 @@ export default function MainInfoBlock() {
 
     return (
         <>
-            <div>
-                <h1 className="text-3xl font-bold">
+            <div className="px-4">
+                <h1 className="text-3xl font-black">
                     Germany's Largest Student Contest
                 </h1>
                 <h4>

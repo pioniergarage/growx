@@ -47,7 +47,7 @@ const Nav = () => {
                 </div>
                 <div className="navbar-end">
                     <Link href="/">
-                        <a className="btn">Participate</a>
+                        <a className="btn btn-sm btn-outline">Participate</a>
                     </Link>
                 </div>
             </div>
