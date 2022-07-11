@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import Head from "next/head";
-import Nav from "../components/layout/Nav";
+import Nav from "../components/Nav";
 
 const TimeTable: NextPage = () => {
     return (

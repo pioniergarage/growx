@@ -1,16 +1,16 @@
 import type { NextPage } from "next";
 import Link from "next/link";
 import Head from "next/head";
-import Nav from "../components/layout/Nav";
-import MainInfoBlock from "../components/layout/MainInfoBlock";
-import Timeline from "../components/layout/Timeline";
-import MotivationBlock from "../components/layout/MotivationBlock";
-import PartnerList from "../components/layout/PartnerList";
-import Footer from "../components/layout/Footer";
+import Nav from "components/Nav";
+import MainInfoBlock from "components/MainInfoBlock";
+import Timeline from "components/Timeline";
+import MotivationBlock from "components/MotivationBlock";
+import PartnerList from "components/PartnerList";
+import Footer from "components/Footer";
 
 const Home: NextPage = () => {
     return (
-        <div>
+        <>
             <Head>
                 <title>GrowX</title>
                 <meta name="description" content="GrowX - Founding Contest" />
@@ -47,7 +47,7 @@ const Home: NextPage = () => {
                 </div>
                 <Footer />
             </main>
-        </div>
+        </>
     );
 };
 

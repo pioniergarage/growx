@@ -1,5 +1,5 @@
 import Link from "next/link";
-import AnimatedLogo from "../AnimatedLogo";
+import AnimatedLogo from "components/AnimatedLogo";
 
 function Fact({ amount, title }: { amount: string, title: string }) {
     return (
@@ -22,7 +22,7 @@ export default function MainInfoBlock() {
             <div className="px-4">
                 <AnimatedLogo />
                 <h1 className="text-3xl font-black">
-                    Germany's Largest Student Contest
+                    Germany&amp;s Largest Student Contest
                 </h1>
                 <h4>
                     Become an entrepreneur and advance your idea over 11 weeks.

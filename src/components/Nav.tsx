@@ -1,5 +1,5 @@
 import Link from "next/link";
-import BurgerIcon from "../../icons/BurgerIcon";
+import BurgerIcon from "icons/BurgerIcon";
 
 const Nav = () => {
     return (
