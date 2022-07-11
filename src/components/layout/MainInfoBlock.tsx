@@ -3,7 +3,7 @@ import Link from "next/link";
 function Fact({amount, title}: {amount: string, title: string}) {
     return (
         <p>
-            <span className="block uppercase text-xl font-bold leading-tight">{amount}</span>
+            <span className="block uppercase text-3xl font-bold leading-tight">{amount}</span>
             {title}
         </p>
     )
