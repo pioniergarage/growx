@@ -4,9 +4,9 @@ import Nav from "../components/Nav";
 
 const TimeTable: NextPage = () => {
     return (
-        <div>
-            <h1 className="text-3xl font-bold underline">Timetable WIP</h1>
-        </div>
+        <>
+            <h1 className="text-3xl font-bold underline">FAQ</h1>
+        </>
     );
 };
 export default TimeTable;
