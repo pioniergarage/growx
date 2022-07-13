@@ -9,7 +9,7 @@ export default function MotivationBlock() {
         <div className="grid cols-1 gap-4 w-4/5">
             {motivations.map(motivation => (
                 <div key={motivation.title}>
-                    <h3 className="text-xl font-bold">{motivation.title}</h3>
+                    <h3 className="text-xl font-bold text-primary">{motivation.title}</h3>
                     <p>{motivation.description}</p>
                 </div>
             ))}

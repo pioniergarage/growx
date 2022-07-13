@@ -22,7 +22,7 @@ export default function MainInfoBlock() {
             <div className="px-4">
                 <AnimatedLogo />
                 <h1 className="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500">
-                    Germany&apos;s Largest Student Contest
+                    Germany&apos;s Largest Student Founding Contest
                 </h1>
                 <h4>
                     Become an entrepreneur and advance your idea over 11 weeks.

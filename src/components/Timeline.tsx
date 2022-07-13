@@ -13,7 +13,7 @@ function TimelineItem({ date, title, description }: { date: string, title: strin
         <div className="text-left p-4">
             <p className="leading-none text-sm">
                 {date}
-                <span className="block text-xl leading-tight font-bold">{title}</span>
+                <span className="block text-xl leading-tight font-bold text-secondary">{title}</span>
             </p>
             <p className="leading-tight">{description}</p>
         </div>

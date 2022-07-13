@@ -1,6 +1,12 @@
 const template = `
-<svg viewBox="0 -20 210 297" version="1.1" xmlns:svg="http://www.w3.org/2000/svg" width="10rem">
-    <g inkscape:label="Logo" inkscape:groupmode="layer" id="layer1" style="display:inline;">
+<svg viewBox="0 -20 210 297" version="1.1" xmlns:svg="http://www.w3.org/2000/svg" width="10rem" >
+    <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
+            <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    <g inkscape:label="Logo" inkscape:groupmode="layer" id="layer1" style="display:inline;" >
         <path style="stroke-width:0.264583"
             d="m 114.37759,145.33725 c -0.40968,2.70383 -0.57147,6.35089 -0.58405,8.27104 -0.13672,20.86987 0.9027,35.94741 3.67799,49.96959 2.16309,7.52027 5.74649,9.25031 11.25678,11.03804 4.81676,1.56272 12.13004,3.71171 14.15342,8.1729 1.34885,2.97397 9.06913,7.36714 13.48571,10.81359 28.2047,17.37041 -81.797081,24.68248 -85.480398,5.39176 -0.172336,-6.43235 12.907301,-14.90332 20.468625,-17.53118 13.881043,-4.82419 15.261933,-7.3946 16.712163,-10.88977 0.76754,-43.42102 -1.65503,-25.9003 0.0791,-62.46039 -2.05521,-12.71437 5.43791,-12.13767 6.23066,-2.77558 z"
             id="logo-base" sodipodi:nodetypes="cscssccsccc" />
@@ -61,5 +67,5 @@ const template = `
 `
 
 export default function AnimatedLogo() {
-    return <div className="flex flex-col items-center fill-neutral-content" dangerouslySetInnerHTML={{__html: template}}></div>
+    return <div className="flex flex-col items-center fill-neutral-content" dangerouslySetInnerHTML={{ __html: template }}></div>
 }
