@@ -19,23 +19,27 @@ export default function MainInfoBlock() {
 
     return (
         <>
-            <div className="px-4">
-                <AnimatedLogo />
-                <h1 className="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500">
-                    Germany&apos;s Largest Student Founding Contest
-                </h1>
-                <h4>
-                    Become an entrepreneur and advance your idea over 11 weeks.
-                    Get support, build your prototype and test your market.
-                </h4>
-            </div>
-            <Link href="/">
-                <a className="btn btn-primary btn-wide my-4">Participate</a>
-            </Link>
-            <div className="flex justify-around w-full">
-                {facts.map(fact => (
-                    <Fact key={fact.title} {...fact} />
-                ))}
+            <div className="px-4 grid grid-cols-1 md:grid-cols-2 md:mt-12 md:text-left md:gap-8">
+                <div className="md:order-2 row-span-2"><AnimatedLogo /></div>
+                <div className="md:order-1">
+                    <h1 className="text-3xl md:text-5xl md:pb-3 font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500">
+                        Germany&apos;s Largest Student Founding Contest
+                    </h1>
+                    <h4>
+                        Become an entrepreneur and advance your idea over 11 weeks.
+                        Get support, build your prototype and test your market.
+                    </h4>
+                </div>
+                <div className="md:order-4">
+                    <Link href="/">
+                        <a className="btn btn-primary btn-wide my-4">Participate</a>
+                    </Link>
+                </div>
+                <div className="flex justify-around md:justify-between w-full md:order-3">
+                    {facts.map(fact => (
+                        <Fact key={fact.title} {...fact} />
+                    ))}
+                </div>
             </div>
         </>
     )

@@ -8,8 +8,8 @@ module.exports = {
             {
                 growDark: {
                     ...require("daisyui/src/colors/themes")["[data-theme=night]"],
-                    primary: "rgb(211, 77, 188)",
-                    secondary: "rgb(168 85 247)"
+                    primary: "rgb(168 85 247)",
+                    secondary: "rgb(211, 77, 188)"
                 }
             }
         ]

@@ -31,7 +31,7 @@ const Nav = () => {
                         </a>
                     </Link>
                 </div>
-                <div className="navbar-center hidden lg:flex">
+                <div className="navbar-end hidden lg:flex">
                     <ul className="menu menu-horizontal p-0">
                         <li>
                             <Link href="/timetable">
@@ -39,8 +39,8 @@ const Nav = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link href="/timetable">
-                                <a>Item 2</a>
+                            <Link href="/faq">
+                                <a>FAQ</a>
                             </Link>
                         </li>
                     </ul>
