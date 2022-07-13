@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function WaitingForBlock() {
     return (
-        <div className="flex flex-col items-center text-center">
+        <div className="flex flex-col items-center text-center md:text-left md:items-start px-4">
             <h2>What Are You Waiting For?</h2>
             <div className="w-4/5 mt-4">
                 <p>If you are motivated to work with other students on new ideas and
