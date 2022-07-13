@@ -10,12 +10,12 @@ function Arrow() {
 
 function TimelineItem({ date, title, description }: { date: string, title: string, description: string }) {
     return (
-        <div className="text-left p-4">
-            <p className="leading-none text-sm">
+        <div className="text-left p-4 md:p-0 md:max-w-sm md:mr-2">
+            <p className="leading-none text-sm md:text-base">
                 {date}
-                <span className="block text-xl leading-tight font-bold text-secondary">{title}</span>
+                <h3 className="block leading-tight md:mb-2 text-secondary">{title}</h3>
             </p>
-            <p className="leading-tight">{description}</p>
+            <p className="leading-tight md:leading-normal">{description}</p>
         </div>
     )
 }
@@ -39,11 +39,11 @@ export default function Timeline() {
         }
     ]
     return (
-        <div className="flex">
-            <div className="w-32">
+        <div className="flex w-full md:px-4">
+            <div className="w-32 md:hidden">
                 <Arrow />
             </div>
-            <div>
+            <div className="flex-grow md:flex justify-between">
                 {events.map(event => (
                     <TimelineItem {...event} key={event.title} />
                 ))}

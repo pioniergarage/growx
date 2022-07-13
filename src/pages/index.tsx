@@ -12,15 +12,15 @@ const Home: NextPage = () => {
                 <MainInfoBlock />
                 <div className="divider"></div>
 
-                <h2 className="text-2xl font-bold w-4/5">From idea to prototype in 11 weeks</h2>
+                <h2 className="w-4/5">From idea to prototype in 11 weeks</h2>
                 <Timeline />
                 <div className="divider"></div>
 
-                <h2 className="text-2xl font-bold w-4/5">Why GROW?</h2>
+                <h2 className="w-4/5">Why GROW?</h2>
                 <MotivationBlock />
                 <div className="divider"></div>
 
-                <h2 className="text-2xl font-bold w-4/5">What Are You Waiting For?</h2>
+                <h2 className="w-4/5">What Are You Waiting For?</h2>
                 <div>
                     <p>If you are motivated to work with other students on new ideas and
                         concepts and want to learn all about startups, then GROW is the place for you!</p>
