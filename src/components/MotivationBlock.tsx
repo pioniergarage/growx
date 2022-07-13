@@ -6,13 +6,16 @@ export default function MotivationBlock() {
     ]
 
     return (
-        <div className="grid cols-1 gap-4 w-4/5">
-            {motivations.map(motivation => (
-                <div key={motivation.title}>
-                    <h3 className="text-primary">{motivation.title}</h3>
-                    <p>{motivation.description}</p>
-                </div>
-            ))}
+        <div className="px-4 flex flex-col items-center md:items-start">
+            <h2>Why GROW?</h2>
+            <div className="grid cols-1 gap-4 mt-4 text-center md:text-left w-4/5">
+                {motivations.map(motivation => (
+                    <div key={motivation.title}>
+                        <h3 className="text-primary">{motivation.title}</h3>
+                        <p>{motivation.description}</p>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }
