@@ -22,7 +22,8 @@ const Home: NextPage = () => {
 
                 <h2 className="text-2xl font-bold w-4/5">What Are You Waiting For?</h2>
                 <div>
-                    <p>Wenn du motiviert bist, mit anderen Studierenden zusammen an neuen Ideen und Konzepten zu arbeiten und dabei alles über Startups lernen möchtest, dann bist du bei GROW genau richtig!</p>
+                    <p>If you are motivated to work with other students on new ideas and
+                        concepts and want to learn all about startups, then GROW is the place for you!</p>
                     <Link href="/">
                         <a className="btn btn-primary btn-wide mt-4">Participate</a>
                     </Link>
