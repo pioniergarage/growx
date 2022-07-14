@@ -1,9 +1,6 @@
 import FAQ from "@/components/FAQ";
-import { NextPage } from "next";
-import Head from "next/head";
 import { useState } from "react";
 import supabase from "../../utils/supabaseClient";
-import Nav from "../components/Nav";
 
 interface FaqType {
     question: string,
@@ -11,14 +8,14 @@ interface FaqType {
 }
 
 export async function getStaticProps() {
-    const {data: faqs, error} = await supabase.from('faqs').select('*')
+    const { data: faqs, error } = await supabase.from('faqs').select('*')
     if (error) {
         throw Error(error.message)
     }
-    return { props: {faqs}}
+    return { props: { faqs } }
 }
 
-export default function faqs({faqs}: {faqs: FaqType[]}) {
+export default function faqs({ faqs }: { faqs: FaqType[] }) {
     const [open, setOpen] = useState(-1)
 
     function handleToggle(i: number) {
