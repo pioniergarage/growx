@@ -13,8 +13,8 @@ function TimelineItem({ date, title, description }: { date: string, title: strin
         <div className="text-left pb-4 md:p-0">
             <p className="leading-none text-sm md:text-base">
                 {date}
-                <h3 className="block leading-tight md:mb-2 text-secondary">{title}</h3>
             </p>
+            <h3 className="block leading-tight md:mb-2 text-secondary">{title}</h3>
             <p className="leading-tight md:leading-normal">{description}</p>
         </div>
     )
