@@ -40,7 +40,7 @@ export default function Timeline() {
     ]
     return (
         <div className="px-4 flex flex-col items-center md:items-start">
-            <h2>From idea to prototype in 11 weeks</h2>
+            <h2 className="text-center">From idea to prototype in 11 weeks</h2>
             <div className="flex w-full mt-4">
                 <div className="w-32 md:hidden">
                     <Arrow />
