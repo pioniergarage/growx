@@ -1,0 +1,61 @@
+import { supabaseClient } from "@supabase/auth-helpers-nextjs";
+import { ApiError } from "@supabase/supabase-js";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+type Inputs = {
+    email: string,
+    password: string,
+};
+
+enum State {
+    SIGN_IN, SIGN_UP
+}
+
+export default function Auth() {
+    const router = useRouter()
+
+    const [state, setState] = useState<State>(State.SIGN_IN)
+    function toggleState() {
+        if (state === State.SIGN_IN) setState(State.SIGN_UP)
+        else setState(State.SIGN_IN)
+    }
+
+    const { register, handleSubmit, formState: { errors: formErrors } } = useForm<Inputs>();
+    const [authError, setAuthError] = useState<ApiError | null>()
+    const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
+        if (state === State.SIGN_IN) {
+            const { error } = await supabaseClient.auth.signIn({ email, password })
+            setAuthError(error)
+            if (!error) router.replace('/growconnect/app')
+        } else {
+            const { error } = await supabaseClient.auth.signUp({ email, password })
+            setAuthError(error)
+            if (!error) router.replace('/growconnect/app')
+        }
+    }
+
+    return (
+        <div className="max-w-xl mx-auto p-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="grid grid-columns-1 gap-4">
+                <label htmlFor="email">Email address</label>
+                <input id="email" {...register("email", { required: true })} />
+                <label htmlFor="email">Password</label>
+                <input id="password" type='password' {...register("password", { required: true })} />
+                <button className="btn btn-primary mt-4">{state === State.SIGN_IN ? 'Sign in' : 'Sign up'}</button>
+                <div className="flex flex-col items-center">
+                    <div>
+                        <button
+                            onClick={toggleState}
+                            className="link link-secondary"
+                        >
+                            {state === State.SIGN_IN ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
+                        </button>
+                    </div>
+                    <div className="text-error">{authError?.message}</div>
+                </div>
+            </form>
+        </div>
+    );
+}

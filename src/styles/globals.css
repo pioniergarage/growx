@@ -26,3 +26,11 @@ h2 {
 h3 {
     @apply text-xl md:text-2xl font-bold
 }
+
+input {
+    @apply p-2 bg-neutral
+}
+
+input:hover {
+    @apply bg-neutral-focus
+}

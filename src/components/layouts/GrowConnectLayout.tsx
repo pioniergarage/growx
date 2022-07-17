@@ -13,11 +13,9 @@ export default function GrowConnectLayout({ children }: PropsWithChildren) {
                 <title>GrowX</title>
                 <meta name="description" content="GrowX - Founding Contest" />
             </Head>
-            <Nav />
             <main>
                 {children}
             </main>
-            <Footer />
         </UserProvider>
     )
 }
