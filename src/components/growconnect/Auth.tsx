@@ -25,14 +25,18 @@ export default function Auth() {
     const { register, handleSubmit, formState: { errors: formErrors } } = useForm<Inputs>();
     const [authError, setAuthError] = useState<ApiError | null>()
     const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
+        let error;
         if (state === State.SIGN_IN) {
-            const { error } = await supabaseClient.auth.signIn({ email, password })
-            setAuthError(error)
-            if (!error) router.replace('/growconnect/app')
+            const { error: e } = await supabaseClient.auth.signIn({ email, password })
+            error = e;
         } else {
-            const { error } = await supabaseClient.auth.signUp({ email, password })
-            setAuthError(error)
-            if (!error) router.replace('/growconnect/app')
+            const { error: e } = await supabaseClient.auth.signUp({ email, password })
+            error = e;
+        }
+        setAuthError(error)
+        if (!error) {
+            // wait for the cookie. There's probably a better solution
+            setTimeout(() => router.replace({ pathname: '/growconnect/app/' }), 500)
         }
     }
 

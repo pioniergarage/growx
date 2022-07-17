@@ -14,7 +14,8 @@ const pioniergarageGuard = {
 
 export function middleware(request: NextRequest, event: NextFetchEvent) {
     const path = request.nextUrl.pathname
-    if (path.startsWith('/growconnect') && path !== '/growconnect/login') {
+    const allowedRoutes = ['/growconnect/login', '/growconnect/app.json']
+    if (path.startsWith('/growconnect') && !allowedRoutes.find(r => path.startsWith(r))) {
 
         // withMiddlewareAuth expects cookies to be an object instead of a set 😵‍💫
         const cookies = Object.fromEntries(request.cookies)
