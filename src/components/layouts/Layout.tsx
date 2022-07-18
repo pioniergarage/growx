@@ -12,7 +12,7 @@ export default function Layout({ children }: PropsWithChildren) {
                 <meta name="description" content="GrowX - Founding Contest" />
             </Head>
             <Nav />
-            <main>
+            <main  data-theme='growDark'>
                 {children}
             </main>
             <Footer />

@@ -2,7 +2,7 @@ import { Head, Html, Main, NextScript } from 'next/document';
 
 const CustomDocument = () => {
     return (
-        <Html lang='en' data-theme='growDark'>
+        <Html lang='en'>
             <Head>{/* TODO Add icons here */}</Head>
             <body>
                 <Main />

@@ -1,6 +1,24 @@
 import Link from "next/link";
 import BurgerIcon from "icons/BurgerIcon";
 
+const links = <>
+    <li>
+        <Link href="/timetable">
+            <a>Timetable</a>
+        </Link>
+    </li>
+    <li>
+        <Link href="/faq">
+            <a>FAQ</a>
+        </Link>
+    </li>
+    <li>
+        <Link href="/growconnect/app">
+            <a>GROWconnect</a>
+        </Link>
+    </li>
+</>
+
 const Nav = () => {
     return (
         <>
@@ -12,17 +30,9 @@ const Nav = () => {
                         </label>
                         <ul
                             tabIndex={0}
-                            className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                            <li>
-                                <Link href="/timetable">
-                                    <a>Timetable</a>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/timetable">
-                                    <a>Item 2</a>
-                                </Link>
-                            </li>
+                            className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+                        >
+                            {links}
                         </ul>
                     </div>
                     <Link href="/">
@@ -33,16 +43,7 @@ const Nav = () => {
                 </div>
                 <div className="navbar-end hidden lg:flex">
                     <ul className="menu menu-horizontal p-0">
-                        <li>
-                            <Link href="/timetable">
-                                <a>Timetable</a>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/faq">
-                                <a>FAQ</a>
-                            </Link>
-                        </li>
+                        {links}
                     </ul>
                 </div>
             </div>

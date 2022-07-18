@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 
 
 function LoginPage() {
-    return <Auth />;
+    return <Auth redirectTo="/growconnect/app" />;
 }
 
 LoginPage.getLayout = (page: ReactNode) => (

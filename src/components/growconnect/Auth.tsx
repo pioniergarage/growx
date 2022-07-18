@@ -13,7 +13,7 @@ enum State {
     SIGN_IN, SIGN_UP
 }
 
-export default function Auth() {
+export default function Auth({redirectTo}: {redirectTo: string}) {
     const router = useRouter()
 
     const [state, setState] = useState<State>(State.SIGN_IN)
@@ -27,16 +27,16 @@ export default function Auth() {
     const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
         let error;
         if (state === State.SIGN_IN) {
-            const { error: e } = await supabaseClient.auth.signIn({ email, password })
+            const { error: e } = await supabaseClient.auth.signIn({ email, password }, {redirectTo})
             error = e;
         } else {
-            const { error: e } = await supabaseClient.auth.signUp({ email, password })
+            const { error: e } = await supabaseClient.auth.signUp({ email, password }, {redirectTo})
             error = e;
         }
         setAuthError(error)
         if (!error) {
             // wait for the cookie. There's probably a better solution
-            setTimeout(() => router.replace({ pathname: '/growconnect/app/' }), 500)
+            setTimeout(() => router.replace({ pathname: redirectTo }), 500)
         }
     }
 

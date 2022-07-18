@@ -4,14 +4,14 @@ import { UserProvider } from "@supabase/auth-helpers-react";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 
 
-export default function GrowConnectLayout({ children }: PropsWithChildren) {
+export default function AdminLayout({ children }: PropsWithChildren) {
     return (
         <UserProvider supabaseClient={supabaseClient}>
             <Head>
-                <title>GrowX</title>
+                <title>Grow Admin</title>
                 <meta name="description" content="GrowX - Founding Contest" />
             </Head>
-            <main  data-theme='growDark'>
+            <main data-theme="emerald">
                 {children}
             </main>
         </UserProvider>
