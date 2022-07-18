@@ -13,7 +13,7 @@ const links = <>
         </Link>
     </li>
     <li>
-        <Link href="/growconnect/app">
+        <Link href="/growconnect/">
             <a>GROWconnect</a>
         </Link>
     </li>
