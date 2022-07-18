@@ -1,15 +1,16 @@
 import GrowConnectLayout from "@/components/layouts/GrowConnectLayout"
 import { supabaseClient } from "@supabase/auth-helpers-nextjs"
 import { useUser } from "@supabase/auth-helpers-react"
+import Link from "next/link"
 import { ReactNode, useEffect, useState } from "react"
 
 function App() {
-    const {user, error} = useUser()
+    const { user, error } = useUser()
     const [data, setData] = useState()
 
-    useEffect( () => {
+    useEffect(() => {
         async function fetchData() {
-            const {data, error} = await supabaseClient.from('Restricted').select('*')
+            const { data, error } = await supabaseClient.from('restricted').select('*')
             if (!error) setData(data)
         }
         if (user) fetchData()
