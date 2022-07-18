@@ -1,8 +1,9 @@
-import MainInfoBlock from "components/MainInfoBlock";
-import Timeline from "components/Timeline";
-import MotivationBlock from "components/MotivationBlock";
-import WaitingForBlock from "@/components/WaitingForBlock";
-import PartnerBlock from "@/components/PartnerBlock";
+
+import MainInfoBlock from "@/components/grow/MainInfoBlock";
+import MotivationBlock from "@/components/grow/MotivationBlock";
+import PartnerBlock from "@/components/grow/PartnerBlock";
+import Timeline from "@/components/grow/Timeline";
+import WaitingForBlock from "@/components/grow/WaitingForBlock";
 import { supabaseClient as supabase } from "@supabase/auth-helpers-nextjs";
 import { Sponsor } from "types/partner";
 

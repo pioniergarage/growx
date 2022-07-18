@@ -1,6 +1,6 @@
 import Head from "next/head";
-import Nav from "components/Nav";
-import Footer from "components/Footer";
+import Nav from "../grow/Nav";
+import Footer from "../grow/Footer";
 import { PropsWithChildren } from "react";
 
 

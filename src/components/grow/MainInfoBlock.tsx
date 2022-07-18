@@ -1,5 +1,5 @@
 import Link from "next/link";
-import AnimatedLogo from "components/AnimatedLogo";
+import AnimatedLogo from "./AnimatedLogo";
 
 function Fact({ amount, title }: { amount: string, title: string }) {
     return (
