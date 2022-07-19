@@ -1,7 +1,7 @@
 import MainInfoBlock from "components/MainInfoBlock";
 import Timeline from "components/Timeline";
 import MotivationBlock from "components/MotivationBlock";
-import WaitingForBlock from "WaitingForBlock";
+import WaitingForBlock from "@/components/WaitingForBlock";
 import PartnerBlock from "@/components/PartnerBlock";
 import { supabaseClient as supabase } from '@supabase/auth-helpers-nextjs';
 import { Sponsor } from "types/partner";
