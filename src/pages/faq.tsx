@@ -1,33 +1,50 @@
 import FAQ from "@/components/FAQ";
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
+  Heading,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { supabaseClient as supabase } from "@supabase/auth-helpers-nextjs";
 import { useState } from "react";
 
 interface FaqType {
-    question: string,
-    answer: string
+  question: string;
+  answer: string;
 }
 
 export async function getStaticProps() {
-    const { data: faqs, error } = await supabase.from('faqs').select('*')
-    if (error) {
-        throw Error(error.message)
-    }
-    return { props: { faqs } }
+  const { data: faqs, error } = await supabase.from("faqs").select("*");
+  if (error) {
+    throw Error(error.message);
+  }
+  return { props: { faqs } };
 }
 
 export default function Faqs({ faqs }: { faqs: FaqType[] }) {
-    const [open, setOpen] = useState(-1)
-
-    function handleToggle(i: number) {
-        setOpen(open === i ? -1 : i)
-    }
-
-    return (
-        <div className="max-w-7xl mx-auto p-8">
-            <h1 className="text-3xl font-bold">FAQ</h1>
-            <div className="mt-4 grid gap-4">
-                {faqs.map((faq, i) => <FAQ key={i} question={faq.question} open={open === i} onToggle={() => handleToggle(i)}>{faq.answer}</FAQ>)}
-            </div>
-        </div>
-    );
-};
+  return (
+    <Box maxW="container.xl" mx="auto" mt={8} px={4}>
+      <Heading size={{base: 'lg', md: 'xl'}} mb={4}>Frequently Asked Questions</Heading>
+      <Accordion allowMultiple>
+        {faqs.map((faq, i) => (
+          <AccordionItem key={i}>
+            <AccordionButton>
+              <Box flex={1} textAlign="left">
+                <Text fontWeight="semibold">{faq.question}</Text>
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+            <AccordionPanel>
+              <Text>{faq.answer}</Text>
+            </AccordionPanel>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </Box>
+  );
+}
