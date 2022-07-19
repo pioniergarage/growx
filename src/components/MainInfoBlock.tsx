@@ -29,7 +29,7 @@ export default function MainInfoBlock() {
       gap={6}
     >
       <GridItem placeSelf="center" className="md:order-2">
-        <AnimatedLogo />
+        <AnimatedLogo fill="whiteAlpha.900" />
       </GridItem>
       <GridItem className="md:order-1">
         <VStack spacing={4} align="start">

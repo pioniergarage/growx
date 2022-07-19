@@ -1,3 +1,6 @@
+import { Flex, FlexProps } from "@chakra-ui/react";
+import { PropsWithChildren, PropsWithoutRef, PropsWithRef } from "react";
+
 const template = `
 <svg viewBox="0 -20 210 297" version="1.1" xmlns:svg="http://www.w3.org/2000/svg" width="10rem" >
     <defs>
@@ -64,8 +67,14 @@ const template = `
     }
 }
 </style>
-`
+`;
 
-export default function AnimatedLogo() {
-    return <div className="flex flex-col items-center fill-neutral-content" dangerouslySetInnerHTML={{ __html: template }}></div>
+export default function AnimatedLogo(props: FlexProps) {
+  return (
+    <Flex
+      alignItems="center"
+      {...props}
+      dangerouslySetInnerHTML={{ __html: template }}
+    />
+  );
 }
