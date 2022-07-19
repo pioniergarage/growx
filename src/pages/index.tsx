@@ -22,6 +22,7 @@ function Section({ children, divider = false, ...rest }: PropsWithChildren & { d
             as="section"
             mx="auto"
             maxW="container.xl"
+            px={{base: 4, xl: 0}}
             {...rest}
         >
             {children}
