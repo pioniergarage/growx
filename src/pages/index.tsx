@@ -23,10 +23,11 @@ function Section({ children, divider = false, ...rest }: PropsWithChildren & { d
             mx="auto"
             maxW="container.xl"
             px={{base: 4, xl: 0}}
+            my={8}
             {...rest}
         >
             {children}
-            {divider && <Divider my={4} />}
+            {divider && <Divider my={8} />}
         </Box>
     )
 }
