@@ -1,52 +1,96 @@
 import Link from "next/link";
 import BurgerIcon from "icons/BurgerIcon";
+import { Box, Text, Flex, Stack, Container, useColorMode } from "@chakra-ui/react"
+import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons"
+import { Button } from "@chakra-ui/button";
+import { MouseEventHandler, PropsWithChildren, useState } from "react";
+import AnimatedLogo from "./AnimatedLogo";
 
-const Nav = () => {
+function Logo() {
     return (
-        <>
-            <div className="navbar bg-base-100 bg-primary text-primary-content">
-                <div className="navbar-start">
-                    <div className="dropdown">
-                        <label tabIndex={0} className="btn btn-ghost lg:hidden">
-                            <BurgerIcon />
-                        </label>
-                        <ul
-                            tabIndex={0}
-                            className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                            <li>
-                                <Link href="/timetable">
-                                    <a>Timetable</a>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/timetable">
-                                    <a>Item 2</a>
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
-                    <Link href="/">
-                        <a className="btn btn-ghost normal-case text-xl">
-                            Grow X
-                        </a>
-                    </Link>
-                </div>
-                <div className="navbar-end hidden lg:flex">
-                    <ul className="menu menu-horizontal p-0">
-                        <li>
-                            <Link href="/timetable">
-                                <a>Timetable</a>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="/faq">
-                                <a>FAQ</a>
-                            </Link>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </>
-    );
-};
-export default Nav;
+        <Link href='/'>
+            <Button variant='ghost'>GROW X</Button>
+        </Link>
+    )
+}
+
+function MenuToggle({ onClick, isOpen }: PropsWithChildren & { onClick: MouseEventHandler<HTMLButtonElement>, isOpen: boolean }) {
+    return (
+        <Button display={{ base: "block", md: "none" }} onClick={onClick}>
+            {isOpen ? <CloseIcon /> : <HamburgerIcon />}
+        </Button>
+    )
+}
+
+function MenuItem({ children, to }: PropsWithChildren & { to: string }) {
+    return (
+        <Link href={to}>
+            <a>
+                <Button
+                    variant="ghost"
+                >
+                    {children}
+                </Button>
+            </a>
+        </Link>
+    )
+}
+
+function NavBarContainer({ children }: PropsWithChildren) {
+    return (
+        <Flex
+            as="nav"
+            justifyContent="center"
+            bg="primary"
+        >
+            <Flex
+                flexGrow={1}
+                align="center"
+                justify="space-between"
+                wrap="wrap"
+                py={3}
+                px={[4, 4, 4, 4, 0]}
+                maxW="container.xl"
+            >
+                {children}
+            </Flex>
+        </Flex>
+    )
+}
+
+function MenuLinksContainer({ children, isOpen }: PropsWithChildren & { isOpen: boolean }) {
+    return (
+        <Box
+            display={{ base: isOpen ? "block" : "none", md: "block" }}
+            flexBasis={{ base: "100%", md: "auto" }}
+        >
+            <Stack
+                spacing={4}
+                align="center"
+                justify={{ base: "center", md: "flex-end" }}
+                direction={{ base: "column", md: "row" }}
+                pt={{ base: 4, md: 0 }}
+            >
+                {children}
+            </Stack>
+        </Box>
+
+    )
+}
+
+export default function NavBar() {
+    const [isOpen, setIsOpen] = useState(false)
+
+    const toggle = () => setIsOpen(!isOpen)
+
+    return (
+        <NavBarContainer>
+            <Logo />
+            <MenuToggle onClick={toggle} isOpen={isOpen} />
+            <MenuLinksContainer isOpen={isOpen}>
+                <MenuItem to="/faq">FAQ</MenuItem>
+                <MenuItem to="/timeline">Timeline</MenuItem>
+            </MenuLinksContainer>
+        </NavBarContainer>
+    )
+}

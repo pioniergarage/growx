@@ -1,46 +1,71 @@
 import Link from "next/link";
 import AnimatedLogo from "components/AnimatedLogo";
+import {
+  Text,
+  Box,
+  Heading,
+  Grid,
+  GridItem,
+  Button,
+  VStack,
+} from "@chakra-ui/react";
+import ParticipateButton from "./ParticipateButton";
 
-function Fact({ amount, title }: { amount: string, title: string }) {
-    return (
-        <p>
-            <span className="block uppercase text-3xl font-bold leading-tight">{amount}</span>
-            {title}
-        </p>
-    )
+function Fact({ amount, title }: { amount: string; title: string }) {
+  return (
+    <Box>
+      <Heading size="xl">{amount}</Heading>
+      <Text>{title}</Text>
+    </Box>
+  );
 }
 
 export default function MainInfoBlock() {
-    const facts = [
-        { amount: '50+', title: 'startups' },
-        { amount: '50 000€', title: 'prizes' },
-        { amount: '11', title: 'workshops' },
-    ]
+  return (
+    <Grid
+      templateColumns={{ base: "1fr", md: "1fr 1fr" }}
+      placeItems={{ base: "center", md: "start" }}
+      textAlign={{ base: "center", md: "left" }}
+      mt={8}
+      gap={6}
+    >
+      <GridItem placeSelf="center" className="md:order-2">
+        <AnimatedLogo fill="whiteAlpha.900" boxSize={300} />
+      </GridItem>
+      <GridItem className="md:order-1">
+        <VStack spacing={4} align="start">
+          <Heading
+            bgClip="text"
+            bgGradient="linear(to-l, secondary, primary)"
+            size={{ base: "2xl", md: "3xl" }}
+          >
+            Germany&apos;s Largest Student Founding Contest
+          </Heading>
+          <Text>
+            Become an entrepreneur and advance your idea over 11 weeks. Get
+            support, build your prototype and test your market.
+          </Text>
 
-    return (
-        <>
-            <div className="px-4 grid grid-cols-1 place-items-center md:place-items-start md:grid-cols-2 md:mt-12 text-center md:text-left md:gap-8">
-                <div className="md:order-2 row-span-2 place-self-center"><AnimatedLogo /></div>
-                <div className="md:order-1">
-                    <h1 className="text-3xl md:text-5xl md:pb-3 font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500">
-                        Germany&apos;s Largest Student Founding Contest
-                    </h1>
-                    <h4>
-                        Become an entrepreneur and advance your idea over 11 weeks.
-                        Get support, build your prototype and test your market.
-                    </h4>
-                </div>
-                <div className="md:order-4">
-                    <Link href="/">
-                        <a className="btn btn-primary btn-wide my-4">Participate</a>
-                    </Link>
-                </div>
-                <div className="flex justify-around md:justify-between w-full md:order-3">
-                    {facts.map(fact => (
-                        <Fact key={fact.title} {...fact} />
-                    ))}
-                </div>
-            </div>
-        </>
-    )
+          <Box>
+            <Link href="/">
+              <ParticipateButton />
+            </Link>
+            <Text color="gray.400" variant="info" mt={2}>
+              It&apos;s free and without obligation!
+            </Text>
+          </Box>
+        </VStack>
+      </GridItem>
+      <GridItem
+        display="flex"
+        justifyContent={{ base: "space-around", md: "space-between" }}
+        className="md:order-3"
+        w="100%"
+      >
+        <Fact title="startups" amount="50+" />
+        <Fact title="prizes" amount="50 000€" />
+        <Fact title="workshops" amount="11" />
+      </GridItem>
+    </Grid>
+  );
 }

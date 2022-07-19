@@ -1,45 +1,58 @@
 import MainInfoBlock from "components/MainInfoBlock";
 import Timeline from "components/Timeline";
 import MotivationBlock from "components/MotivationBlock";
-import WaitingForBlock from "WaitingForBlock";
+import WaitingForBlock from "@/components/WaitingForBlock";
 import PartnerBlock from "@/components/PartnerBlock";
-import { supabaseClient as supabase } from '@supabase/auth-helpers-nextjs';
+import { supabaseClient as supabase } from "@supabase/auth-helpers-nextjs";
 import { Sponsor } from "types/partner";
+import { PropsWithChildren } from "react";
+import { Box, BoxProps, Divider } from "@chakra-ui/react";
 
 export async function getStaticProps() {
-    const { data: sponsors, error } = await supabase.from('sponsors').select('*')
-    if (error) {
-        throw Error(error.message)
-    }
-    return { props: { sponsors } }
+  const { data: sponsors, error } = await supabase.from("sponsors").select("*");
+  if (error) {
+    throw Error(error.message);
+  }
+  return { props: { sponsors } };
 }
 
+function Section({
+  children,
+  divider = false,
+  ...rest
+}: PropsWithChildren & { divider?: boolean } & BoxProps) {
+  return (
+    <Box as="section" px={{ base: 4, xl: 0 }} my={8} {...rest}>
+      <Box mx="auto" maxW="container.xl">
+        {children}
+        {divider && <Divider my={8} />}
+      </Box>
+    </Box>
+  );
+}
 
 export default function Home({ sponsors }: { sponsors: Sponsor[] }) {
-    return (
-        <>
-            <section className="max-w-7xl mx-auto p-4">
-                <MainInfoBlock />
-                <div className="divider"></div>
-            </section>
+  return (
+    <>
+      <Section divider>
+        <MainInfoBlock />
+      </Section>
 
-            <section className="max-w-7xl mx-auto px-4">
-                <Timeline />
-                <div className="divider"></div>
-            </section>
+      <Section divider>
+        <Timeline />
+      </Section>
 
-            <section className="max-w-7xl mx-auto px-4">
-                <MotivationBlock />
-                <div className="divider"></div>
-            </section>
+      <Section divider>
+        <MotivationBlock />
+      </Section>
 
-            <section className="max-w-7xl mx-auto px-4">
-                <WaitingForBlock />
-            </section>
+      <Section divider>
+        <WaitingForBlock />
+      </Section>
 
-            <section className="bg-neutral px-4 mt-8 text-center">
-                <PartnerBlock sponsors={sponsors} />
-            </section>
-        </>
-    );
-};
+      <Section mt={6}>
+        <PartnerBlock sponsors={sponsors} />
+      </Section>
+    </>
+  );
+}

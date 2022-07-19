@@ -1,13 +1,20 @@
-import Link from "next/link";
+import { Flex, Grid, HStack, Link } from "@chakra-ui/react";
+import NextLink from "next/link";
 
 export default function Footer() {
-    return (
-        <footer className="footer footer-center p-4 bg-neutral text-white decoration-white">
-            <div className="grid grid-flow-col gap-4">
-                <Link href="faq"><a className="link link-hover">FAQ</a></Link>
-                <Link href=""><a className="link link-hover">Contact</a></Link>
-                <Link href=""><a className="link link-hover">Terms &amp; Conditions</a></Link>
-            </div>
-        </footer>
-    )
+  return (
+    <Flex direction='column' as='footer' alignItems='center' p={6} >
+      <HStack>
+        <NextLink href="faq">
+          <Link>FAQ</Link>
+        </NextLink>
+        <NextLink href="">
+          <Link>Contact</Link>
+        </NextLink>
+        <NextLink href="">
+          <Link>Terms &amp; Conditions</Link>
+        </NextLink>
+      </HStack>
+    </Flex>
+  );
 }

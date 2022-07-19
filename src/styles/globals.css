@@ -12,17 +12,9 @@ main {
     display: inline-block;
     padding: 5px;
     transform: rotate(45deg);
-    --jsdaflkj: #8355f7;
 }
 
 .vertical-line {
     border-left: 2px solid hsl(var(--bc));
 }
 
-h2 {
-    @apply text-2xl md:text-3xl font-bold
-}
-
-h3 {
-    @apply text-xl md:text-2xl font-bold
-}

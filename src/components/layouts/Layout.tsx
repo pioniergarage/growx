@@ -1,9 +1,10 @@
 import Head from "next/head";
 import Nav from "components/Nav";
 import Footer from "components/Footer";
+import { PropsWithChildren } from "react";
 
 
-export default function Layout({ children }) {
+export default function Layout({ children }: PropsWithChildren) {
     return (
         <>
             <Head>
@@ -14,7 +15,7 @@ export default function Layout({ children }) {
             <main>
                 {children}
             </main>
-            <Footer />
+            <Footer /> 
         </>
     )
 }
