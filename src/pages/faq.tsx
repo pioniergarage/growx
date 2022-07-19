@@ -1,6 +1,6 @@
 import FAQ from "@/components/FAQ";
+import { supabaseClient as supabase } from "@supabase/auth-helpers-nextjs";
 import { useState } from "react";
-import supabase from "../../utils/supabaseClient";
 
 interface FaqType {
     question: string,
@@ -15,7 +15,7 @@ export async function getStaticProps() {
     return { props: { faqs } }
 }
 
-export default function faqs({ faqs }: { faqs: FaqType[] }) {
+export default function Faqs({ faqs }: { faqs: FaqType[] }) {
     const [open, setOpen] = useState(-1)
 
     function handleToggle(i: number) {
