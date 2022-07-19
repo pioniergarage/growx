@@ -1,6 +1,6 @@
-export type Partner = {
-    id: string;
-    name: string;
-    logo: string;
-    href: string;
-};
+export type Sponsor = {
+    name: string,
+    logo: string,
+    link: string,
+    type: number
+}
