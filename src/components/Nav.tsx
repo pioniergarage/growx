@@ -4,12 +4,13 @@ import { Box, Text, Flex, Stack, Container, useColorMode } from "@chakra-ui/reac
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons"
 import { Button } from "@chakra-ui/button";
 import { MouseEventHandler, PropsWithChildren, useState } from "react";
+import AnimatedLogo from "./AnimatedLogo";
 
-function Logo({ children }: PropsWithChildren) {
+function Logo() {
     return (
-        <Box>
-            <Text fontSize="lg" fontWeight="bold">{children}</Text>
-        </Box>
+        <Link href='/'>
+            <Button variant='ghost'>GROW X</Button>
+        </Link>
     )
 }
 
@@ -84,7 +85,7 @@ export default function NavBar() {
 
     return (
         <NavBarContainer>
-            <Logo>Grow</Logo>
+            <Logo />
             <MenuToggle onClick={toggle} isOpen={isOpen} />
             <MenuLinksContainer isOpen={isOpen}>
                 <MenuItem to="/faq">FAQ</MenuItem>

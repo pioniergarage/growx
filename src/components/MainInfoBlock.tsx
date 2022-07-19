@@ -9,6 +9,7 @@ import {
   Button,
   VStack,
 } from "@chakra-ui/react";
+import ParticipateButton from "./ParticipateButton";
 
 function Fact({ amount, title }: { amount: string; title: string }) {
   return (
@@ -29,7 +30,7 @@ export default function MainInfoBlock() {
       gap={6}
     >
       <GridItem placeSelf="center" className="md:order-2">
-        <AnimatedLogo fill="whiteAlpha.900" />
+        <AnimatedLogo fill="whiteAlpha.900" boxSize={300} />
       </GridItem>
       <GridItem className="md:order-1">
         <VStack spacing={4} align="start">
@@ -47,10 +48,10 @@ export default function MainInfoBlock() {
 
           <Box>
             <Link href="/">
-              <Button>Participate</Button>
+              <ParticipateButton />
             </Link>
             <Text color="gray.400" variant="info" mt={2}>
-              It&apos;s free and not-mandatory!
+              It&apos;s free and without obligation!
             </Text>
           </Box>
         </VStack>
