@@ -18,7 +18,7 @@ export async function getStaticProps() {
 export default function Home({ sponsors }: { sponsors: Sponsor[] }) {
     return (
         <>
-            {/* <section className="max-w-7xl mx-auto p-4">
+            <section className="max-w-7xl mx-auto p-4">
                 <MainInfoBlock />
                 <div className="divider"></div>
             </section>
@@ -39,7 +39,7 @@ export default function Home({ sponsors }: { sponsors: Sponsor[] }) {
 
             <section className="bg-neutral px-4 mt-8 text-center">
                 <PartnerBlock sponsors={sponsors} />
-            </section> */}
+            </section>
         </>
     );
 };

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import BurgerIcon from "icons/BurgerIcon";
-import { Box, Text, Flex, Stack, Container } from "@chakra-ui/react"
+import { Box, Text, Flex, Stack, Container, useColorMode } from "@chakra-ui/react"
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons"
 import { Button } from "@chakra-ui/button";
 import { MouseEventHandler, PropsWithChildren, useState } from "react";
@@ -40,14 +40,14 @@ function NavBarContainer({ children }: PropsWithChildren) {
         <Flex
             as="nav"
             justifyContent="center"
-            bg="gray.50"
+            bg="primary"
         >
             <Flex
                 flexGrow={1}
                 align="center"
                 justify="space-between"
                 wrap="wrap"
-                py={8}
+                py={3}
                 px={[4, 4, 4, 4, 0]}
                 maxW="container.xl"
             >
@@ -87,7 +87,6 @@ export default function NavBar() {
             <Logo>Grow</Logo>
             <MenuToggle onClick={toggle} isOpen={isOpen} />
             <MenuLinksContainer isOpen={isOpen}>
-                <MenuItem to="/">Grow</MenuItem>
                 <MenuItem to="/faq">FAQ</MenuItem>
                 <MenuItem to="/timeline">Timeline</MenuItem>
             </MenuLinksContainer>
