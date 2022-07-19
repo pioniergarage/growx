@@ -3,11 +3,7 @@
 module.exports = {
     content: ["./src/**/*.{js,jsx,ts,tsx}"],
     plugins: [require("daisyui")],
-    purge: {
-        options: {
-            safelist: ['grid-cols-2', 'grid-cols-3', 'grid-cols-4']
-        }
-    },
+    safelist: ['grid-cols-2', 'grid-cols-3', 'grid-cols-4'],
     daisyui: {
         themes: [
             {
