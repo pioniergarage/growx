@@ -1,4 +1,4 @@
-import { Box, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Heading, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 
 export default function MotivationBlock() {
   const motivations = [
@@ -22,21 +22,22 @@ export default function MotivationBlock() {
   return (
     <VStack alignItems={{ base: "center", md: "start" }}>
       <Heading size="lg">Why GROW?</Heading>
-      <VStack
-        spacing={4}
+      <SimpleGrid
+        columns={{base: 1, md: 3}}
+        gap={4}
         w="full"
         alignItems={{ base: "center", md: "start" }}
         textAlign={{ base: "center", md: "left" }}
       >
         {motivations.map((motivation) => (
           <Box key={motivation.title}>
-            <Heading size="md" color="primary">
+            <Heading mb={2} size="md" color="primary">
               {motivation.title}
             </Heading>
             <Text>{motivation.description}</Text>
           </Box>
         ))}
-      </VStack>
+      </SimpleGrid>
     </VStack>
   );
 }
