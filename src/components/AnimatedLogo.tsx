@@ -1,5 +1,5 @@
-import { Box, Flex, FlexProps, Icon, IconProps } from "@chakra-ui/react";
-import { PropsWithChildren, PropsWithoutRef, PropsWithRef } from "react";
+import { Box, Flex, FlexProps, Icon, IconProps } from '@chakra-ui/react';
+import { PropsWithChildren, PropsWithoutRef, PropsWithRef } from 'react';
 
 const template = `
 <style>
@@ -57,7 +57,12 @@ export default function AnimatedLogo(props: IconProps) {
   return (
     <>
       <Box dangerouslySetInnerHTML={{ __html: template }} />
-      <Icon viewBox="-15 10 245 245" boxSize={8} fill='whiteAlpha.800' {...props} >
+      <Icon
+        viewBox="-15 10 245 245"
+        boxSize={8}
+        fill="whiteAlpha.800"
+        {...props}
+      >
         <path
           d="m 114,145 c -0.5,2.7 -0.6,6.4 -0.6,8.3 -0.1,20.9 0.9,35.9 3.7,49.9 2.9,7.7 5.9,9.1 11.8,11.4 4.6,1.2 12.4,3.1 14.2,8.9 1.5,2.7 9.3,7.4 13.1,10.9 28.7,17.1 -81.1,24.8 -85.8,5.6 -0.6,-6.5 12.1,-14.2 20.5,-17.8 13.3,-4.9 15.3,-7.6 16.3,-10.7 0.4,-43.2 -1.3,-25.3 0.1,-62.9 -2.1,-12.7 5.1,-12.7 6.6,-2.8 z"
           id="logo-base"

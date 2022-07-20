@@ -1,5 +1,5 @@
-import Link from "next/link";
-import BurgerIcon from "icons/BurgerIcon";
+import Link from 'next/link';
+import BurgerIcon from 'icons/BurgerIcon';
 import {
   Box,
   Text,
@@ -8,11 +8,11 @@ import {
   Container,
   useColorMode,
   LinkBox as ChakraLink,
-} from "@chakra-ui/react";
-import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
-import { Button } from "@chakra-ui/button";
-import { MouseEventHandler, PropsWithChildren, useState } from "react";
-import AnimatedLogo from "./AnimatedLogo";
+} from '@chakra-ui/react';
+import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
+import { Button } from '@chakra-ui/button';
+import { MouseEventHandler, PropsWithChildren, useState } from 'react';
+import AnimatedLogo from './AnimatedLogo';
 
 function Logo() {
   return (
@@ -34,7 +34,7 @@ function MenuToggle({
   isOpen: boolean;
 }) {
   return (
-    <Button display={{ base: "block", md: "none" }} onClick={onClick}>
+    <Button display={{ base: 'block', md: 'none' }} onClick={onClick}>
       {isOpen ? <CloseIcon /> : <HamburgerIcon />}
     </Button>
   );
@@ -65,7 +65,7 @@ function NavBarContainer({ children }: PropsWithChildren) {
       top={0}
       right={0}
       width="100%"
-      bg={{ base: "whiteAlpha.200", md: "transparent" }}
+      bg={{ base: 'whiteAlpha.200', md: 'transparent' }}
       zIndex={3}
     >
       <Flex
@@ -89,14 +89,14 @@ function MenuLinksContainer({
 }: PropsWithChildren & { isOpen: boolean }) {
   return (
     <Box
-      display={{ base: isOpen ? "block" : "none", md: "block" }}
-      flexBasis={{ base: "100%", md: "auto" }}
+      display={{ base: isOpen ? 'block' : 'none', md: 'block' }}
+      flexBasis={{ base: '100%', md: 'auto' }}
     >
       <Stack
         spacing={4}
         align="center"
-        justify={{ base: "center", md: "flex-end" }}
-        direction={{ base: "column", md: "row" }}
+        justify={{ base: 'center', md: 'flex-end' }}
+        direction={{ base: 'column', md: 'row' }}
         pt={{ base: 4, md: 0 }}
       >
         {children}

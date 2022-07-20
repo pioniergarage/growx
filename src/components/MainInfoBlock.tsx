@@ -1,5 +1,5 @@
-import Link from "next/link";
-import AnimatedLogo from "components/AnimatedLogo";
+import Link from 'next/link';
+import AnimatedLogo from 'components/AnimatedLogo';
 import {
   Text,
   Box,
@@ -8,8 +8,9 @@ import {
   GridItem,
   Button,
   VStack,
-} from "@chakra-ui/react";
-import ParticipateButton from "./ParticipateButton";
+} from '@chakra-ui/react';
+import ParticipateButton from './ParticipateButton';
+import Countdown from './Countdown';
 
 function Fact({ amount, title }: { amount: string; title: string }) {
   return (
@@ -23,21 +24,27 @@ function Fact({ amount, title }: { amount: string; title: string }) {
 export default function MainInfoBlock() {
   return (
     <Grid
-      templateColumns={{ base: "1fr", md: "1fr 1fr" }}
-      placeItems={{ base: "center", md: "start" }}
-      textAlign={{ base: "center", md: "left" }}
+      templateColumns={{ base: '1fr', md: '1fr 1fr' }}
+      placeItems={{ base: 'center', md: 'start' }}
+      textAlign={{ base: 'center', md: 'left' }}
       mt={8}
       gap={6}
     >
-      <GridItem placeSelf="center" className="md:order-2">
+      <GridItem
+        placeSelf="center"
+        className="md:order-2"
+        textAlign="center"
+        rowSpan={2}
+      >
         <AnimatedLogo fill="whiteAlpha.900" boxSize={300} opacity={0.9} />
+        <Countdown to={new Date('11/21/2022')} />
       </GridItem>
       <GridItem className="md:order-1">
-        <VStack spacing={4} align={{ base: "center", md: "start" }}>
+        <VStack spacing={4} align={{ base: 'center', md: 'start' }}>
           <Heading
             bgClip="text"
             bgGradient="linear(to-l, pink.100, purple.300)"
-            size={{ base: "2xl", md: "3xl" }}
+            size={{ base: '2xl', md: '3xl' }}
           >
             <Text lineHeight={1.2}>
               Germany&apos;s Largest Student Founding Contest
@@ -60,7 +67,7 @@ export default function MainInfoBlock() {
       </GridItem>
       <GridItem
         display="flex"
-        justifyContent={{ base: "space-around", md: "space-between" }}
+        justifyContent={{ base: 'space-around', md: 'space-between' }}
         className="md:order-3"
         w="100%"
       >

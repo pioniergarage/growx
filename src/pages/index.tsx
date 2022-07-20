@@ -1,15 +1,15 @@
-import MainInfoBlock from "components/MainInfoBlock";
-import Timeline from "components/Timeline";
-import MotivationBlock from "components/MotivationBlock";
-import WaitingForBlock from "@/components/WaitingForBlock";
-import PartnerBlock from "@/components/PartnerBlock";
-import { supabaseClient as supabase } from "@supabase/auth-helpers-nextjs";
-import { Sponsor } from "types/partner";
-import { PropsWithChildren } from "react";
-import { Box, BoxProps, Divider } from "@chakra-ui/react";
+import MainInfoBlock from 'components/MainInfoBlock';
+import Timeline from 'components/Timeline';
+import MotivationBlock from 'components/MotivationBlock';
+import WaitingForBlock from '@/components/WaitingForBlock';
+import PartnerBlock from '@/components/PartnerBlock';
+import { supabaseClient as supabase } from '@supabase/auth-helpers-nextjs';
+import { Sponsor } from 'types/partner';
+import { PropsWithChildren } from 'react';
+import { Box, BoxProps, Divider } from '@chakra-ui/react';
 
 export async function getStaticProps() {
-  const { data: sponsors, error } = await supabase.from("sponsors").select("*");
+  const { data: sponsors, error } = await supabase.from('sponsors').select('*');
   if (error) {
     throw Error(error.message);
   }
@@ -34,13 +34,13 @@ function Section({
 export default function Home({ sponsors }: { sponsors: Sponsor[] }) {
   return (
     <>
-      <Section divider position='relative'>
+      <Section divider position="relative">
         <Box
           maxW="container.xl"
           transform="translate(-1rem, -50%)"
           top={0}
-          w='100%'
-          h={{base: '40rem', md: '100%'}}
+          w="100%"
+          h={{ base: '40rem', md: '100%' }}
           position="absolute"
           zIndex={-10}
         >
@@ -50,7 +50,7 @@ export default function Home({ sponsors }: { sponsors: Sponsor[] }) {
             height="100%"
             bgGradient="linear-gradient(128.16deg, #5557f777 8.06%, #d34dbc80 45% , #d6265170 83.26%)"
             borderRadius="50%"
-            filter={{base: 'blur(20px)', md: 'blur(150px)'}}
+            filter={{ base: 'blur(20px)', md: 'blur(150px)' }}
           />
         </Box>
         <MainInfoBlock />

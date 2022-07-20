@@ -8,9 +8,9 @@ import {
   Heading,
   Text,
   VStack,
-} from "@chakra-ui/react";
-import { supabaseClient as supabase } from "@supabase/auth-helpers-nextjs";
-import { useState } from "react";
+} from '@chakra-ui/react';
+import { supabaseClient as supabase } from '@supabase/auth-helpers-nextjs';
+import { useState } from 'react';
 
 interface FaqType {
   question: string;
@@ -18,7 +18,7 @@ interface FaqType {
 }
 
 export async function getStaticProps() {
-  const { data: faqs, error } = await supabase.from("faqs").select("*");
+  const { data: faqs, error } = await supabase.from('faqs').select('*');
   if (error) {
     throw Error(error.message);
   }
@@ -28,7 +28,9 @@ export async function getStaticProps() {
 export default function Faqs({ faqs }: { faqs: FaqType[] }) {
   return (
     <Box maxW="container.xl" mx="auto" mt={8} px={4}>
-      <Heading size={{base: 'lg', md: 'xl'}} mb={4}>Frequently Asked Questions</Heading>
+      <Heading size={{ base: 'lg', md: 'xl' }} mb={4}>
+        Frequently Asked Questions
+      </Heading>
       <Accordion allowMultiple>
         {faqs.map((faq, i) => (
           <AccordionItem key={i}>

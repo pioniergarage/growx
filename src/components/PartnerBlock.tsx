@@ -1,11 +1,5 @@
-import {
-  GridItem,
-  Heading,
-  Image,
-  Link,
-  SimpleGrid,
-} from "@chakra-ui/react";
-import { Sponsor } from "types/partner";
+import { GridItem, Heading, Image, Link, SimpleGrid } from '@chakra-ui/react';
+import { Sponsor } from 'types/partner';
 
 function PartnerItem({ link: href, logo, name }: Partial<Sponsor>) {
   return (
@@ -20,7 +14,9 @@ export default function PartnerBlock({ sponsors }: { sponsors: Sponsor[] }) {
   return (
     <SimpleGrid columns={2}>
       <GridItem>
-        <Heading size="lg" color='whiteAlpha.600' mb={2}>Gold Partner</Heading>
+        <Heading size="lg" color="whiteAlpha.600" mb={2}>
+          Gold Partner
+        </Heading>
         <SimpleGrid columns={2}>
           {sponsors
             .filter((s) => s.type === 1)
@@ -31,7 +27,9 @@ export default function PartnerBlock({ sponsors }: { sponsors: Sponsor[] }) {
       </GridItem>
 
       <GridItem>
-        <Heading size="lg"  color='whiteAlpha.600' mb={2}>Silver Partner</Heading>
+        <Heading size="lg" color="whiteAlpha.600" mb={2}>
+          Silver Partner
+        </Heading>
         <SimpleGrid columns={3}>
           {sponsors
             .filter((s) => s.type === 2)

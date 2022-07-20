@@ -1,4 +1,4 @@
-import { BoxProps, Box } from "@chakra-ui/react";
+import { BoxProps, Box } from '@chakra-ui/react';
 
 export default function ParticipateButton(props: BoxProps) {
   return (
@@ -11,9 +11,9 @@ export default function ParticipateButton(props: BoxProps) {
       minW={72}
       fontWeight="black"
       opacity={0.9}
-      _hover={{ opacity: "0.7" }}
-      _active={{ opacity: "1", boxShadow: "outline" }}
-      _focus={{ opacity: "1", boxShadow: "outline" }}
+      _hover={{ opacity: '0.7' }}
+      _active={{ opacity: '1', boxShadow: 'outline' }}
+      _focus={{ opacity: '1', boxShadow: 'outline' }}
       transition="all .15s"
       {...props}
     >
