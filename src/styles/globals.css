@@ -6,6 +6,7 @@ main {
     min-height: calc(100vh - 7.2rem);
 }
 
+
 .arrow-down {
     border: solid hsl(var(--bc));
     border-width: 0 2px 2px 0;

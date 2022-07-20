@@ -1,14 +1,34 @@
-import { Flex, Grid, GridItem, Heading, Text, VStack } from "@chakra-ui/react";
-
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  HStack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 function Arrow() {
   return (
-    <div className="flex flex-col items-center h-full">
-      <div
-        className="vertical-line h-full rounded"
-        style={{ margin: "0 0 -2px 0" }}
-      ></div>
-      <i className="arrow-down"></i>
-    </div>
+    <Flex
+      display={{base: 'none', md: 'flex'}}
+      alignItems="stretch"
+      height="10px"
+      my={3}
+      maxW="container.xl"
+      overflow="hidden"
+    >
+      <Box flexGrow={50}>
+        <svg width="100%" fill="white">
+          <line x1="0" y1="5" x2="100%" y2="5" stroke="#fff" />
+        </svg>
+      </Box>
+      <Box flexGrow={0} maxW={5} height="10px">
+        <svg height="10px" fill="white">
+          <polygon points={`0 0, 10 5, 0 10`} />
+        </svg>
+      </Box>
+    </Flex>
   );
 }
 
@@ -23,8 +43,10 @@ function TimelineItem({
 }) {
   return (
     <GridItem>
-      <Text fontSize='sm'>{date}</Text>
-      <Heading color='secondary' size='md'>{title}</Heading>
+      <Text variant="info">{date}</Text>
+      <Heading color="secondary" size="md">
+        {title}
+      </Heading>
       <Text mt={2}>{description}</Text>
     </GridItem>
   );
@@ -53,14 +75,15 @@ export default function Timeline() {
   ];
   return (
     <VStack alignItems={{ base: "center", md: "start" }} spacing={4}>
-      <Heading size="lg" className="text-center">
+      <Heading size="lg" textAlign="center">
         From idea to prototype in 11 weeks
       </Heading>
-      <Flex w="full">
+      <Flex w="full" direction="column">
+        <Arrow />
         <Grid
           flexGrow={1}
           templateColumns={{ base: "1fr", md: "1fr 1fr 1fr" }}
-          gap={2}
+          gap={4}
         >
           {events.map((event) => (
             <TimelineItem {...event} key={event.title} />

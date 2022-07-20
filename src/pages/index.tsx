@@ -34,7 +34,25 @@ function Section({
 export default function Home({ sponsors }: { sponsors: Sponsor[] }) {
   return (
     <>
-      <Section divider>
+      <Section divider position='relative'>
+        <Box
+          maxW="container.xl"
+          transform="translate(-1rem, -50%)"
+          top={0}
+          w='100%'
+          h={{base: '40rem', md: '100%'}}
+          position="absolute"
+          zIndex={-10}
+        >
+          <Box
+            position="absolute"
+            width="100%"
+            height="100%"
+            bgGradient="linear-gradient(128.16deg, #5557f777 8.06%, #d34dbc80 45% , #d6265170 83.26%)"
+            borderRadius="50%"
+            filter={{base: 'blur(20px)', md: 'blur(150px)'}}
+          />
+        </Box>
         <MainInfoBlock />
       </Section>
 

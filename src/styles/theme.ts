@@ -6,14 +6,14 @@ const config: ThemeConfig = {
 }
 
 const colors: Colors = {
-    primary: '#8355f7',
-    secondary: '#d34dbc'
+    primary: '#6B46C1',
+    secondary: '#ED64A6'
 }
 
 const textConfig: ComponentStyleConfig = {
     variants: {
         'info': {
-            color: 'gray.200',
+            color: '#A0AEC0',
             fontSize: 'sm'
         }
     }

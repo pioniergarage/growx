@@ -12,7 +12,7 @@ export default function Layout({ children }: PropsWithChildren) {
                 <meta name="description" content="GrowX - Founding Contest" />
             </Head>
             <Nav />
-            <main>
+            <main className="pt-14">
                 {children}
             </main>
             <Footer /> 

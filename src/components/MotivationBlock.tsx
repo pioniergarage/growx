@@ -22,7 +22,12 @@ export default function MotivationBlock() {
   return (
     <VStack alignItems={{ base: "center", md: "start" }}>
       <Heading size="lg">Why GROW?</Heading>
-      <VStack spacing={4} w="full" alignItems={{ base: "center", md: "start" }}>
+      <VStack
+        spacing={4}
+        w="full"
+        alignItems={{ base: "center", md: "start" }}
+        textAlign={{ base: "center", md: "left" }}
+      >
         {motivations.map((motivation) => (
           <Box key={motivation.title}>
             <Heading size="md" color="primary">

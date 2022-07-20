@@ -1,4 +1,3 @@
-import FAQ from "@/components/FAQ";
 import {
   Accordion,
   AccordionButton,

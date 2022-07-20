@@ -9,7 +9,7 @@ export default function ParticipateButton(props: BoxProps) {
       py={3}
       borderRadius={4}
       minW={72}
-      fontWeight="bold"
+      fontWeight="black"
       opacity={0.9}
       _hover={{ opacity: "0.7" }}
       _active={{ opacity: "1", boxShadow: "outline" }}

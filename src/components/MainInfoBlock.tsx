@@ -30,16 +30,18 @@ export default function MainInfoBlock() {
       gap={6}
     >
       <GridItem placeSelf="center" className="md:order-2">
-        <AnimatedLogo fill="whiteAlpha.900" boxSize={300} />
+        <AnimatedLogo fill="whiteAlpha.900" boxSize={300} opacity={0.9} />
       </GridItem>
       <GridItem className="md:order-1">
-        <VStack spacing={4} align="start">
+        <VStack spacing={4} align={{ base: "center", md: "start" }}>
           <Heading
             bgClip="text"
-            bgGradient="linear(to-l, secondary, primary)"
+            bgGradient="linear(to-l, pink.100, purple.300)"
             size={{ base: "2xl", md: "3xl" }}
           >
-            Germany&apos;s Largest Student Founding Contest
+            <Text lineHeight={1.2}>
+              Germany&apos;s Largest Student Founding Contest
+            </Text>
           </Heading>
           <Text>
             Become an entrepreneur and advance your idea over 11 weeks. Get
@@ -50,7 +52,7 @@ export default function MainInfoBlock() {
             <Link href="/">
               <ParticipateButton />
             </Link>
-            <Text color="gray.400" variant="info" mt={2}>
+            <Text variant="info" mt={2}>
               It&apos;s free and without obligation!
             </Text>
           </Box>
