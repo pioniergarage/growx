@@ -1,14 +1,5 @@
-import Link from 'next/link';
 import AnimatedLogo from 'components/AnimatedLogo';
-import {
-  Text,
-  Box,
-  Heading,
-  Grid,
-  GridItem,
-  Button,
-  VStack,
-} from '@chakra-ui/react';
+import { Text, Box, Heading, Grid, GridItem, VStack } from '@chakra-ui/react';
 import ParticipateButton from './ParticipateButton';
 import dynamic from 'next/dynamic';
 
@@ -39,7 +30,7 @@ export default function MainInfoBlock() {
         rowSpan={2}
       >
         <AnimatedLogo fill="whiteAlpha.900" boxSize={300} opacity={0.9} />
-        <Countdown to={new Date(Date.UTC(2022, 11, 1))} />
+        <Countdown to={new Date('11/21/2022')} />
       </GridItem>
       <GridItem className="md:order-1">
         <VStack spacing={4} align={{ base: 'center', md: 'start' }}>
