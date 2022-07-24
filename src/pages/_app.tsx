@@ -7,15 +7,15 @@ import { ChakraProvider } from '@chakra-ui/react';
 import theme from 'styles/theme';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <UserProvider supabaseClient={supabaseClient}>
-      <ChakraProvider theme={theme}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </ChakraProvider>
-    </UserProvider>
-  );
+    return (
+        <UserProvider supabaseClient={supabaseClient}>
+            <ChakraProvider theme={theme}>
+                <Layout>
+                    <Component {...pageProps} />
+                </Layout>
+            </ChakraProvider>
+        </UserProvider>
+    );
 }
 
 export default MyApp;
