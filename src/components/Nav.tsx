@@ -9,6 +9,7 @@ import {
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { Button } from '@chakra-ui/button';
 import { MouseEventHandler, PropsWithChildren, useState } from 'react';
+import AvatarWrapper from './nav/avatarWrapper';
 
 function Logo() {
     return (
@@ -67,7 +68,7 @@ function NavBarContainer({ children }: PropsWithChildren) {
             <Flex
                 flexGrow={1}
                 align="center"
-                justify="space-between"
+                justify="flex-start"
                 wrap="wrap"
                 py={5}
                 px={[4, 4, 4, 4, 0]}
@@ -118,6 +119,7 @@ export default function NavBar() {
                     Timeline
                 </MenuItem>
             </MenuLinksContainer>
+            <AvatarWrapper />
         </NavBarContainer>
     );
 }
