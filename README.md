@@ -1,4 +1,4 @@
-<!-- TODO: Add ci and status tags -->
+[![Node.js CI](https://github.com/pioniergarage/growx/actions/workflows/build.yml/badge.svg)](https://github.com/pioniergarage/growx/actions/workflows/build.yml)
 
 # Website for the Grow Competition
 
@@ -31,10 +31,9 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-
 # Deps
 
-- [Next.js](https://nextjs.org/)
-- [Tailwind](https://tailwindcss.com/)
-- [Daisy UI](https://daisyui.com/)
-- [Supabase](https://supabase.com/): [Supabase JS](https://github.com/supabase/supabase-js) + [Supabase Auth Helpers](https://github.com/supabase-community/auth-helpers)
+-   [Next.js](https://nextjs.org/)
+-   [Tailwind](https://tailwindcss.com/)
+-   [Daisy UI](https://daisyui.com/)
+-   [Supabase](https://supabase.com/): [Supabase JS](https://github.com/supabase/supabase-js) + [Supabase Auth Helpers](https://github.com/supabase-community/auth-helpers)

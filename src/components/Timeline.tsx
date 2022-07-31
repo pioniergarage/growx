@@ -1,75 +1,73 @@
-import {
-    Box,
-    Flex,
-    Grid,
-    GridItem,
-    Heading,
-    Text,
-    VStack,
-} from '@chakra-ui/react';
-function Arrow() {
-    return (
-        <Flex
-            display={{ base: 'none', md: 'flex' }}
-            alignItems="stretch"
-            height="10px"
-            my={3}
-            maxW="container.xl"
-            overflow="hidden"
-        >
-            <Box flexGrow={50}>
-                <svg width="100%" fill="white">
-                    <line x1="0" y1="5" x2="100%" y2="5" stroke="#fff" />
-                </svg>
-            </Box>
-            <Box flexGrow={0} maxW={5} height="10px">
-                <svg height="10px" fill="white">
-                    <polygon points={`0 0, 10 5, 0 10`} />
-                </svg>
-            </Box>
-        </Flex>
-    );
-}
+import { Box, Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import Image from 'next/image';
+
+type Item = {
+    date: string;
+    title: string;
+    description: string;
+    image: string;
+    objectPosition?: string;
+};
 
 function TimelineItem({
     date,
     title,
     description,
-}: {
-    date: string;
-    title: string;
-    description: string;
-}) {
+    image,
+    objectPosition,
+}: Item) {
     return (
-        <GridItem>
-            <Text variant="info">{date}</Text>
-            <Heading color="secondary" size="md">
-                {title}
-            </Heading>
-            <Text mt={2}>{description}</Text>
-        </GridItem>
+        <Box borderRadius={2} overflow="hidden">
+            <Box position="relative" height="320px">
+                <Image
+                    alt={title}
+                    src={`/images/${image}`}
+                    layout="fill"
+                    objectFit="cover"
+                    objectPosition={objectPosition}
+                />
+
+                <Box
+                    position="absolute"
+                    width="100%"
+                    bottom={0}
+                    left={0}
+                    p={6}
+                    bgGradient="linear(to-t, #000000bb 0%, #00000000 100%)"
+                >
+                    <Text variant="info">{date}</Text>
+                    <Heading size="md">{title}</Heading>
+                    <Text mt={2}>{description}</Text>
+                </Box>
+            </Box>
+        </Box>
     );
 }
 
 export default function Timeline() {
-    const events = [
+    const events: Item[] = [
         {
             date: '10. Nov 22',
             title: 'Kickoff Event',
             description: `Pitch your idea, find a team or simply learn more about the contest. 
             The kickoff is where the fun starts, no matter whether you have already applied or you're up for a spontaneous adventure. `,
+            image: 'notes.jpg',
         },
         {
             date: '14. Dec 22',
             title: 'Midterm Pitch',
             description: `Half time break! Teams pitch their first progress and fight about advancing to the final. 
-            Pitch what you've done in the last 5 weeks in front of a small audience and the jury. `,
+            Pitch what you've accomplished in the last 5 weeks in front of a small audience and the jury. `,
+            image: 'speech.jpg',
+            objectPosition: '0 0',
         },
         {
             date: '10. Jan 23',
             title: 'Finale',
-            description: `Pitch your results of the contest and win prizes. This is what you've been working for! 
-            Pitch one last time in front of a huge audience and show what you've learned and how far you have come.... `,
+            description: `Present your results to a huge crowd and show how far you have come. 
+            Each participant will have learned a lot and gained a lot of experience by this point. 
+            The groups with the greatest progress will receive prizes. This is what you've been working for!`,
+            image: 'audimax.jpg',
         },
     ];
     return (
@@ -77,18 +75,11 @@ export default function Timeline() {
             <Heading size="lg" textAlign="center">
                 From idea to prototype in 11 weeks
             </Heading>
-            <Flex w="full" direction="column">
-                <Arrow />
-                <Grid
-                    flexGrow={1}
-                    templateColumns={{ base: '1fr', md: '1fr 1fr 1fr' }}
-                    gap={4}
-                >
-                    {events.map((event) => (
-                        <TimelineItem {...event} key={event.title} />
-                    ))}
-                </Grid>
-            </Flex>
+            <SimpleGrid columns={[1, 1, 1, 3]} gap={4} width='100%'>
+                {events.map((event) => (
+                    <TimelineItem {...event} key={event.title} />
+                ))}
+            </SimpleGrid>
         </VStack>
     );
 }

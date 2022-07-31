@@ -24,7 +24,7 @@ function Section({
     ...rest
 }: PropsWithChildren & { divider?: boolean } & BoxProps) {
     return (
-        <Box as="section" px={{ base: 4, xl: 0 }} my={8} {...rest}>
+        <Box as="section" px={{ base: 4, md: 6, xl: 0 }} my={8} {...rest}>
             <Box mx="auto" maxW="container.xl">
                 {children}
                 {divider && <Divider my={8} />}
