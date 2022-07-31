@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { Flex, Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { PropsWithChildren } from 'react';
 import { IconType } from 'react-icons';
 import { FaRegComments, FaRocket, FaUserFriends } from 'react-icons/fa';
@@ -30,14 +30,14 @@ function MotivationItem({
 
 export default function MotivationBlock() {
     return (
-        <VStack alignItems={{ base: 'center', md: 'start' }}>
+        <VStack alignItems='start'>
             <Heading size="lg">Why GROW?</Heading>
             <SimpleGrid
                 columns={{ base: 1, md: 3 }}
-                gap={4}
+                gap={8}
                 w="full"
-                alignItems={{ base: 'center', md: 'start' }}
-                textAlign={{ base: 'center', md: 'left' }}
+                alignItems='start'
+                textAlign='left'
             >
                 <MotivationItem icon={FaUserFriends} heading="Find Your Team">
                     You don&apos;t have a team yet? GROW is the perfect
