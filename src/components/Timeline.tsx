@@ -1,4 +1,4 @@
-import { Box, Heading, HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { Box, Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 
 type Item = {

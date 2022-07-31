@@ -18,7 +18,7 @@ const colors: Colors = {
 const textConfig: ComponentStyleConfig = {
     variants: {
         info: {
-            color: '#A0AEC0',
+            color: '#bac5d4',
             fontSize: 'sm',
         },
     },
