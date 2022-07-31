@@ -57,8 +57,8 @@ export default function MotivationBlock() {
                     icon={FaRegComments}
                     heading="Learn Through Mentorship"
                 >
-                    Each team will receive support by our competent Mentors and
-                    Buddies. This will help your business to grow beyond its
+                    Each team will receive support from our experienced mentors and
+                    buddies. This will help your business to grow beyond its
                     limits.
                 </MotivationItem>
             </SimpleGrid>

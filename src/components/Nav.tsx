@@ -70,7 +70,7 @@ function NavBarContainer({ children }: PropsWithChildren) {
                 justify="space-between"
                 wrap="wrap"
                 py={5}
-                px={[4, 4, 4, 4, 0]}
+                px={{base: 4, md: 6, xl: 0}}
                 maxW="container.xl"
             >
                 {children}

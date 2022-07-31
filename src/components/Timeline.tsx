@@ -57,15 +57,16 @@ export default function Timeline() {
             date: '14. Dec 22',
             title: 'Midterm Pitch',
             description: `Half time break! Teams pitch their first progress and fight about advancing to the final. 
-            Pitch what you've done in the last 5 weeks in front of a small audience and the jury. `,
+            Pitch what you've accomplished in the last 5 weeks in front of a small audience and the jury. `,
             image: 'speech.jpg',
             objectPosition: '0 0',
         },
         {
             date: '10. Jan 23',
             title: 'Finale',
-            description: `Pitch your results of the contest and win prizes. This is what you've been working for! 
-            Pitch one last time in front of a huge audience and show what you've learned and how far you have come.... `,
+            description: `Present your results to a huge crowd and show how far you have come. 
+            Each participant will have learned a lot and gained a lot of experience by this point. 
+            The groups with the greatest progress will receive prizes. This is what you've been working for!`,
             image: 'audimax.jpg',
         },
     ];
