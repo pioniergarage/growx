@@ -1,7 +1,7 @@
 import Head from 'next/head';
-import Nav from 'components/Nav';
 import Footer from 'components/Footer';
 import { PropsWithChildren } from 'react';
+import GrowNav from '../nav/GrowNav';
 
 export default function Layout({ children }: PropsWithChildren) {
     return (
@@ -15,7 +15,7 @@ export default function Layout({ children }: PropsWithChildren) {
                     content="GrowX - Founding Contest. Become an entrepreneur and advance your idea over 11 weeks. Get support, build your prototype and test your market."
                 />
             </Head>
-            <Nav />
+            <GrowNav />
             <main className="pt-14">{children}</main>
             <Footer />
         </>

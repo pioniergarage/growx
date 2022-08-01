@@ -1,14 +1,20 @@
 import { Avatar } from '@chakra-ui/react';
 
 export type UserAvatarProps = {
-    name: string;
-    src: string;
+    firstName: string;
+    lastName: string;
 };
 
 const UserAvatar = (props: UserAvatarProps) => {
     return (
         <>
-            <Avatar name={props.name} src={props.src} />
+            <Avatar
+                size='md'
+                name={props.firstName + ' ' + props.lastName}
+                src={`https://ui-avatars.com/api/?name=${
+                    props.firstName + '+' + props.lastName
+                }`}
+            />
         </>
     );
 };

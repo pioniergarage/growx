@@ -1,30 +1,21 @@
-import { Box, Button, Stack } from '@chakra-ui/react';
-// import { useRouter } from 'next/router';
+import { Box, Button, SkeletonCircle, Stack } from '@chakra-ui/react';
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import useProfile from 'hooks/useProfile';
 import { useState } from 'react';
 import UserAvatar from '../avatar/userAvatar';
 import LogInWrapper from '../modals/loginModal';
 
-const user = {
-    name: 'John Doe',
-    avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
-};
+
 
 const AvatarWrapper = () => {
-    const [loggedIn, logIn] = useState(false);
-    // const router = useRouter();
+    const {profile} = useProfile()
 
     return (
         <>
-            {loggedIn ? (
-                <Box as="button" onClick={() => logIn(false)}>
-                    <UserAvatar name={user.name} src={user.avatar} />
-                </Box>
+            {profile ? (
+                <UserAvatar {...profile}/>
             ) : (
-                <Stack direction="row">
-                    <Button onClick={() => console.log('Register')}>
-                        GROWconnect
-                    </Button>
-                </Stack>
+                <SkeletonCircle size='12' />
             )}
         </>
     );

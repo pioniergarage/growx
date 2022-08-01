@@ -8,6 +8,23 @@ export type Sponsor = {
     type: number;
 };
 
+export type ProfileDto = {
+    user_id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    gender: string;
+    phone: string;
+    studies: string;
+    university: string;
+    homeland: string;
+}
+
+export type Profile = Omit<ProfileDto, 'first_name' | 'last_name'> & {
+    firstName: string;
+    lastName: string;
+}
+
 export type NextPageWithLayout = NextPage & {
     getLayout?: (page: ReactElement) => ReactNode;
 };

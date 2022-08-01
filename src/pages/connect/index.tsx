@@ -1,7 +1,9 @@
+import ConnectLayout from '@/components/layouts/ConnectLayout';
 import PageLink from '@/components/nav/link';
 import { NextPage } from 'next';
+import { NextPageWithLayout } from 'types';
 
-const ConnectIndex: NextPage = () => {
+const ConnectIndex: NextPageWithLayout = () => {
     return (
         <>
             GROWconnect
@@ -9,4 +11,7 @@ const ConnectIndex: NextPage = () => {
         </>
     );
 };
+
+ConnectIndex.getLayout = (page) => <ConnectLayout>{page}</ConnectLayout>;
+
 export default ConnectIndex;

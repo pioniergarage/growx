@@ -9,21 +9,21 @@ import {
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { Button } from '@chakra-ui/button';
 import { MouseEventHandler, PropsWithChildren, useState } from 'react';
-import AvatarWrapper from './nav/avatarWrapper';
+import AvatarWrapper from './avatarWrapper';
 
-function Logo() {
+export function Logo({children, href = '/'}: PropsWithChildren & {href?: string}) {
     return (
         <ChakraLink as="button">
-            <Link href="/">
+            <Link href={href}>
                 <Text color="white" fontWeight="black" fontSize={20}>
-                    GROW X
+                    {children}
                 </Text>
             </Link>
         </ChakraLink>
     );
 }
 
-function MenuToggle({
+export function MenuToggle({
     onClick,
     isOpen,
 }: PropsWithChildren & {
@@ -37,7 +37,7 @@ function MenuToggle({
     );
 }
 
-function MenuItem({
+export function MenuItem({
     children,
     to,
     onClick,
@@ -53,7 +53,7 @@ function MenuItem({
     );
 }
 
-function NavBarContainer({ children }: PropsWithChildren) {
+export function NavBarContainer({ children }: PropsWithChildren) {
     return (
         <Flex
             as="nav"
@@ -80,7 +80,7 @@ function NavBarContainer({ children }: PropsWithChildren) {
     );
 }
 
-function MenuLinksContainer({
+export function MenuLinksContainer({
     children,
     isOpen,
 }: PropsWithChildren & { isOpen: boolean }) {
@@ -102,24 +102,3 @@ function MenuLinksContainer({
     );
 }
 
-export default function NavBar() {
-    const [isOpen, setIsOpen] = useState(false);
-
-    const toggle = () => setIsOpen(!isOpen);
-
-    return (
-        <NavBarContainer>
-            <Logo />
-            <MenuToggle onClick={toggle} isOpen={isOpen} />
-            <MenuLinksContainer isOpen={isOpen}>
-                <MenuItem onClick={toggle} to="/faq">
-                    FAQ
-                </MenuItem>
-                <MenuItem onClick={toggle} to="/timeline">
-                    Timeline
-                </MenuItem>
-                <AvatarWrapper />
-            </MenuLinksContainer>
-        </NavBarContainer>
-    );
-}
