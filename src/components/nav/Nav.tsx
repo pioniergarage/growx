@@ -37,7 +37,7 @@ export function MenuToggle({
     );
 }
 
-export function MenuItem({
+export function NavItem({
     children,
     to,
     onClick,

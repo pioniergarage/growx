@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import AvatarWrapper from './avatarWrapper';
 import {
-    MenuItem,
+    NavItem as MenuItem,
     NavBarContainer,
     Logo,
     MenuToggle,
