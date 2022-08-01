@@ -1,6 +1,6 @@
 import { Box, Icon, IconProps } from '@chakra-ui/react';
 
-const template = `
+const style = `
 <style>
 #logo-left {
     animation: 3s infinite rotate1 cubic-bezier( 0.3, 0, 0.6, 1 );
@@ -55,7 +55,7 @@ const template = `
 export default function AnimatedLogo(props: IconProps) {
     return (
         <>
-            <Box dangerouslySetInnerHTML={{ __html: template }} />
+            <Box dangerouslySetInnerHTML={{ __html: style }} />
             <Icon
                 viewBox="-15 10 245 245"
                 boxSize={8}

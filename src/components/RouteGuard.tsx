@@ -8,7 +8,7 @@ export default function RouteGuard({ children }: PropsWithChildren) {
 
     useEffect(() => {
         if (!user) {
-            router.push('/connect/login');
+            router.replace('/connect/login');
         }
     }, [user]);
     if (!user) return <></>
