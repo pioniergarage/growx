@@ -1,7 +1,6 @@
 import { Button } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useState } from 'react';
-import AvatarWrapper from './avatarWrapper';
 import {
     NavItem as MenuItem,
     NavBarContainer,

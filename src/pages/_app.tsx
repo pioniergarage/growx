@@ -5,7 +5,6 @@ import { UserProvider } from '@supabase/auth-helpers-react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { ChakraProvider } from '@chakra-ui/react';
 import theme from 'styles/theme';
-import { NextPage } from 'next';
 import { NextPageWithLayout } from 'types';
 
 

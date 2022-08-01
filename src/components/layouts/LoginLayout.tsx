@@ -1,6 +1,4 @@
 import Head from 'next/head';
-import Nav from '@/components/nav/Nav';
-import Footer from 'components/Footer';
 import { PropsWithChildren } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 

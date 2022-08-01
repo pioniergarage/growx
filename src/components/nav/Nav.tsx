@@ -8,8 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { Button } from '@chakra-ui/button';
-import { MouseEventHandler, PropsWithChildren, useState } from 'react';
-import AvatarWrapper from './avatarWrapper';
+import { MouseEventHandler, PropsWithChildren } from 'react';
 
 export function Logo({children, href = '/'}: PropsWithChildren & {href?: string}) {
     return (

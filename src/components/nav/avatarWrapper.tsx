@@ -1,9 +1,6 @@
-import { Box, Button, SkeletonCircle, Stack } from '@chakra-ui/react';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { SkeletonCircle } from '@chakra-ui/react';
 import useProfile from 'hooks/useProfile';
-import { useState } from 'react';
 import UserAvatar from '../avatar/userAvatar';
-import LogInWrapper from '../modals/loginModal';
 
 
 

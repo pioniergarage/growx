@@ -3,7 +3,6 @@ import LoginLayout from '@/components/layouts/LoginLayout';
 import PageLink from '@/components/nav/link';
 import { Alert, AlertIcon, Box, Heading, VStack } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { NextPageWithLayout } from 'types';

@@ -1,16 +1,11 @@
 import {
-    Box,
     Button,
     FormControl,
     FormLabel,
     Input,
     VStack,
 } from '@chakra-ui/react';
-import { ErrorMessage, useFormik } from 'formik';
-import { useRouter } from 'next/router';
-import { FormEvent, useState } from 'react';
-import PageLink from '../nav/link';
-import rules from './rules';
+import { useFormik } from 'formik';
 
 type LoginFormProps = {
     onSubmit: ({

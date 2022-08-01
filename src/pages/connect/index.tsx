@@ -1,6 +1,5 @@
 import ConnectLayout from '@/components/layouts/ConnectLayout';
 import PageLink from '@/components/nav/link';
-import { NextPage } from 'next';
 import { NextPageWithLayout } from 'types';
 
 const ConnectIndex: NextPageWithLayout = () => {

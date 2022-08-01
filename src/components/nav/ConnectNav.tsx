@@ -1,19 +1,15 @@
 import {
-    Box,
     Button,
-    forwardRef,
     IconButton,
-    IconButtonProps,
     Menu,
     MenuButton,
     MenuItem,
     MenuList,
-    useRadio,
 } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { PropsWithChildren, ReactElement, useState } from 'react';
+import { useState } from 'react';
 import AvatarWrapper from './avatarWrapper';
 import { NavBarContainer, Logo, MenuToggle, MenuLinksContainer } from './Nav';
 
