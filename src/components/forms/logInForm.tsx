@@ -6,9 +6,11 @@ import {
     Input,
     VStack,
 } from '@chakra-ui/react';
+import { ErrorMessage, useFormik } from 'formik';
 import { useRouter } from 'next/router';
 import { FormEvent, useState } from 'react';
 import PageLink from '../nav/link';
+import rules from './rules';
 
 type LoginFormProps = {
     onSubmit: ({
@@ -21,37 +23,41 @@ type LoginFormProps = {
 };
 
 const LogInForm = (props: LoginFormProps) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    function handleSubmit(e: FormEvent) {
-        e.preventDefault();
-        props.onSubmit({ email, password });
-    }
+    const formik = useFormik({
+        initialValues: {
+            email: '', password: ''
+        },
+        onSubmit: (values) => props.onSubmit(values),
+        validate: (values) => {
+            const errors: Record<string, string> = {}
+            if (!values.email) errors.email = 'Required'
+            if (!values.password) errors.password = 'Required'
+            return errors
+        }
+    })
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={formik.handleSubmit}>
             <VStack alignItems="stretch" gap={2}>
-                <FormControl>
+                <FormControl isInvalid={!!formik.errors.email}>
                     <FormLabel htmlFor="email">Email adress</FormLabel>
                     <Input
                         id="email"
                         type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
                     />
                 </FormControl>
-                <FormControl>
+                <FormControl isInvalid={!!formik.errors.password}>
                     <FormLabel htmlFor="password">Password</FormLabel>
                     <Input
                         id="password"
                         type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
                     />
                 </FormControl>
                 <Button type="submit">Log in</Button>
-                <PageLink color='primary' textAlign='center' href='/connect/signup'>Click here to sign up</PageLink>
             </VStack>
         </form>
     );

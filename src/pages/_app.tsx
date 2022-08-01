@@ -5,17 +5,25 @@ import { UserProvider } from '@supabase/auth-helpers-react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { ChakraProvider } from '@chakra-ui/react';
 import theme from 'styles/theme';
+import { NextPage } from 'next';
+import { NextPageWithLayout } from 'types';
 
-function MyApp({ Component, pageProps }: AppProps) {
+
+
+type AppPropsWithLayout = AppProps & {
+    Component: NextPageWithLayout;
+};
+
+export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+    // Use the layout defined at the page level, if available
+    const getLayout =
+        Component.getLayout ?? ((page) => <Layout>{page}</Layout>);
+
     return (
         <UserProvider supabaseClient={supabaseClient}>
             <ChakraProvider theme={theme}>
-                <Layout>
-                    <Component {...pageProps} />
-                </Layout>
+                {getLayout(<Component {...pageProps} />)}
             </ChakraProvider>
         </UserProvider>
     );
 }
-
-export default MyApp;

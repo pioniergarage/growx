@@ -1,16 +1,22 @@
 import ParticipateForm, {
     ParticipateInfo,
 } from '@/components/forms/participateForm';
+import LoginLayout from '@/components/layouts/LoginLayout';
 import PageLink from '@/components/nav/link';
-import { VStack, Heading, Alert, AlertIcon } from '@chakra-ui/react';
+import { VStack, Heading, Alert, AlertIcon, Box } from '@chakra-ui/react';
 import { supabaseClient, User } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { NextPageWithLayout } from 'types';
 
-export default function SignUp() {
+const SignUp: NextPageWithLayout = () => {
     const [loading, setLoading] = useState(false);
     const [signUpError, setSignUpError] = useState<string>('');
     const router = useRouter();
+
+    if (supabaseClient.auth.user()) {
+        router.replace('/connect/')
+    }
 
     async function signUp(info: ParticipateInfo) {
         return supabaseClient.auth
@@ -56,9 +62,14 @@ export default function SignUp() {
     }
     return (
         <VStack maxW="container.sm" mx="auto" alignItems="stretch">
-            <Heading size={{ base: 'lg', md: 'xl' }} mb={4}>
-                Sign Up
-            </Heading>
+            <Box>
+                <Heading as="h1" size="xl" color="secondary">
+                    GROWconnect
+                </Heading>
+                <Heading as="h3" size="sm" fontWeight="light">
+                    the platform for participants
+                </Heading>
+            </Box>
             <ParticipateForm loading={loading} onSubmit={onSignUp} />
             {signUpError ? (
                 <Alert status="error">
@@ -71,4 +82,7 @@ export default function SignUp() {
             </PageLink>
         </VStack>
     );
-}
+};
+
+SignUp.getLayout = (page) => <LoginLayout>{page}</LoginLayout>;
+export default SignUp;
