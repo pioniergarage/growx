@@ -4,8 +4,8 @@ import { NextPage } from 'next';
 const ConnectIndex: NextPage = () => {
     return (
         <>
-            You are logged in!
-            <PageLink href="/">Back to Base</PageLink>
+            GROWconnect
+            <PageLink href="/">Back to Landing Page</PageLink>
         </>
     );
 };

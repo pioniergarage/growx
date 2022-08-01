@@ -1,53 +1,59 @@
-import { Button, FormControl, FormLabel, Input } from '@chakra-ui/react';
+import {
+    Box,
+    Button,
+    FormControl,
+    FormLabel,
+    Input,
+    VStack,
+} from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
+import PageLink from '../nav/link';
 
 type LoginFormProps = {
-    onSuccess: () => void;
+    onSubmit: ({
+        email,
+        password,
+    }: {
+        email: string;
+        password: string;
+    }) => void;
 };
 
 const LogInForm = (props: LoginFormProps) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const router = useRouter();
+    function handleSubmit(e: FormEvent) {
+        e.preventDefault();
+        props.onSubmit({ email, password });
+    }
 
-    const handleLogin = async () => {
-        console.log('loggin in with', email, password);
-
-        // const response = await fetch('/api/login', {});
-        const response = { ok: true };
-
-        if (response.ok) {
-            props.onSuccess();
-            router.push('/connect/');
-        } else {
-            console.log('login failed');
-            // TODO: add error message
-        }
-    };
-
-    // const handleEmailChange = (e: HTMLInputElement) => setEmail(e.target.value);
     return (
-        <>
-            <FormControl>
-                <FormLabel>Email adress</FormLabel>
-                <Input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-            </FormControl>
-            <FormControl>
-                <FormLabel>Password</FormLabel>
-                <Input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-            </FormControl>
-            <Button onClick={handleLogin}>Log in</Button>
-        </>
+        <form onSubmit={handleSubmit}>
+            <VStack alignItems="stretch" gap={2}>
+                <FormControl>
+                    <FormLabel htmlFor="email">Email adress</FormLabel>
+                    <Input
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </FormControl>
+                <FormControl>
+                    <FormLabel htmlFor="password">Password</FormLabel>
+                    <Input
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </FormControl>
+                <Button type="submit">Log in</Button>
+                <PageLink color='primary' textAlign='center' href='/connect/signup'>Click here to sign up</PageLink>
+            </VStack>
+        </form>
     );
 };
 export default LogInForm;

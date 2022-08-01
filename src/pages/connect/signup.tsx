@@ -1,15 +1,16 @@
 import ParticipateForm, {
     ParticipateInfo,
 } from '@/components/forms/participateForm';
+import PageLink from '@/components/nav/link';
 import { VStack, Heading, Alert, AlertIcon } from '@chakra-ui/react';
 import { supabaseClient, User } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-export default function ParticipatePage() {
+export default function SignUp() {
     const [loading, setLoading] = useState(false);
     const [signUpError, setSignUpError] = useState<string>('');
-    const router = useRouter()
+    const router = useRouter();
 
     async function signUp(info: ParticipateInfo) {
         return supabaseClient.auth
@@ -54,7 +55,7 @@ export default function ParticipatePage() {
         setLoading(false);
     }
     return (
-        <VStack maxW="container.sm" mx="auto" alignItems='stretch'>
+        <VStack maxW="container.sm" mx="auto" alignItems="stretch">
             <Heading size={{ base: 'lg', md: 'xl' }} mb={4}>
                 Sign Up
             </Heading>
@@ -65,6 +66,9 @@ export default function ParticipatePage() {
                     {signUpError}
                 </Alert>
             ) : undefined}
+            <PageLink href="/connect/login" color="primary" textAlign="center">
+                Already signed up? Click here to login.
+            </PageLink>
         </VStack>
     );
 }

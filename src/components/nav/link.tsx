@@ -1,16 +1,16 @@
-import { Link } from '@chakra-ui/react';
+import { Link, LinkProps } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { ReactNode } from 'react';
 
-type PageLinkProps = {
+type PageLinkProps = LinkProps & {
     href: string;
     children: ReactNode;
 };
 
-const PageLink = (props: PageLinkProps) => {
+const PageLink = ({href, children, ...rest}: PageLinkProps) => {
     return (
-        <NextLink href={props.href} passHref>
-            <Link>{props.children}</Link>
+        <NextLink href={href} passHref>
+            <Link {...rest}>{children}</Link>
         </NextLink>
     );
 };
