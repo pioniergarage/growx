@@ -21,9 +21,8 @@ const AvatarWrapper = () => {
                 </Box>
             ) : (
                 <Stack direction="row">
-                    <LogInWrapper />
                     <Button onClick={() => console.log('Register')}>
-                        Register
+                        GROWconnect
                     </Button>
                 </Stack>
             )}

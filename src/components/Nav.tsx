@@ -68,10 +68,10 @@ function NavBarContainer({ children }: PropsWithChildren) {
             <Flex
                 flexGrow={1}
                 align="center"
-                justify="flex-start"
+                justify="space-between"
                 wrap="wrap"
                 py={5}
-                px={{base: 4, md: 6, xl: 0}}
+                px={{ base: 4, xl: 0 }}
                 maxW="container.xl"
             >
                 {children}
@@ -118,8 +118,8 @@ export default function NavBar() {
                 <MenuItem onClick={toggle} to="/timeline">
                     Timeline
                 </MenuItem>
+                <AvatarWrapper />
             </MenuLinksContainer>
-            <AvatarWrapper />
         </NavBarContainer>
     );
 }

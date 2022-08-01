@@ -4,7 +4,7 @@ import MotivationBlock from 'components/MotivationBlock';
 import WaitingForBlock from '@/components/WaitingForBlock';
 import PartnerBlock from '@/components/PartnerBlock';
 import { supabaseClient as supabase } from '@supabase/auth-helpers-nextjs';
-import { Sponsor } from 'types/partner';
+import { Sponsor } from 'types';
 import { PropsWithChildren } from 'react';
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
 
@@ -24,7 +24,7 @@ function Section({
     ...rest
 }: PropsWithChildren & { divider?: boolean } & BoxProps) {
     return (
-        <Box as="section" px={{ base: 4, md: 6, xl: 0 }} my={8} {...rest}>
+        <Box as="section" px={{ base: 4, xl: 0 }} my={8} {...rest}>
             <Box mx="auto" maxW="container.xl">
                 {children}
                 {divider && <Divider my={8} />}

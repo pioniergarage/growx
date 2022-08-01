@@ -4,3 +4,6 @@ export type Sponsor = {
     link: string;
     type: number;
 };
+
+
+export type Consumer<T> = (value: T) => void
