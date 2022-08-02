@@ -30,3 +30,12 @@ export type NextPageWithLayout = NextPage & {
 };
 
 export type Consumer<T> = (value: T) => void
+
+export type GrowEvent = {
+    id: string;
+    title: string;
+    date: string;
+    description: string;
+    online?: boolean;
+    mandatory?: boolean;
+}

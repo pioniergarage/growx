@@ -4,10 +4,11 @@ import MotivationBlock from '@/components/landing/MotivationBlock';
 import WaitingForBlock from '@/components/landing/WaitingForBlock';
 import PartnerBlock from '@/components/landing/PartnerBlock';
 import { supabaseClient as supabase } from '@supabase/auth-helpers-nextjs';
-import { Sponsor } from 'types';
+import { GrowEvent, Sponsor } from 'types';
 import { PropsWithChildren } from 'react';
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
 import Faqs, { FaqType } from '@/components/landing/faq';
+import LongTimeline from '@/components/landing/LongTimeline';
 
 export async function getStaticProps() {
     const { data: sponsors, error: sponsorError } = await supabase
@@ -16,13 +17,19 @@ export async function getStaticProps() {
     const { data: faqs, error: faqError } = await supabase
         .from('faqs')
         .select('*');
+    const { data: events, error: eventsError } = await supabase
+        .from<GrowEvent>('events')
+        .select('*');
     if (sponsorError) {
         throw Error(sponsorError.message);
     }
     if (faqError) {
         throw Error(faqError.message);
     }
-    return { props: { sponsors, faqs } };
+    if (eventsError) {
+        throw Error(eventsError.message);
+    }
+    return { props: { sponsors, faqs, events } };
 }
 
 function Section({
@@ -43,9 +50,11 @@ function Section({
 export default function Home({
     sponsors,
     faqs,
+    events
 }: {
     sponsors: Sponsor[];
     faqs: FaqType[];
+    events: GrowEvent[];
 }) {
     return (
         <>
@@ -75,8 +84,12 @@ export default function Home({
                 <Timeline />
             </Section>
 
-            <Section>
+            <Section divider>
                 <MotivationBlock />
+            </Section>
+
+            <Section id="timeline">
+                <LongTimeline events={events} />
             </Section>
 
             <Section position="relative" my={24} px={0}>
@@ -94,7 +107,7 @@ export default function Home({
                         height="100%"
                         bgGradient="linear-gradient(128.16deg, #5557f777 8.06% , #5557f777 83.26%)"
                         borderRadius="50%"
-                        filter='blur(150px)'
+                        filter="blur(150px)"
                     />
                 </Box>
                 <WaitingForBlock />
@@ -104,7 +117,7 @@ export default function Home({
                 <Faqs faqs={faqs} />
             </Section>
 
-            <Section mt={6}>
+            <Section mt={6} >
                 <PartnerBlock sponsors={sponsors} />
             </Section>
         </>

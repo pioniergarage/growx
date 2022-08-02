@@ -22,7 +22,7 @@ export default function GrowNav() {
                 <MenuItem onClick={toggle} to="#faqs">
                     FAQ
                 </MenuItem>
-                <MenuItem onClick={toggle} to="/timeline">
+                <MenuItem onClick={toggle} to="#timeline">
                     Timeline
                 </MenuItem>
                 <Link href='/connect/'>
