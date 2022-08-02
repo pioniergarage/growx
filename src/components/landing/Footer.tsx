@@ -5,13 +5,11 @@ export default function Footer() {
     return (
         <Flex direction="column" as="footer" alignItems="center" p={6}>
             <HStack>
-                <NextLink href="faq">
+                <NextLink href="/#faq">
                     <Link>FAQ</Link>
                 </NextLink>
                 <Link href="mailto:grow@pioniergarage.de">Contact</Link>
-                <NextLink href="">
-                    <Link>Terms &amp; Conditions</Link>
-                </NextLink>
+                <Link href="https://pioniergarage.de/impressum/">Impressum</Link>
             </HStack>
         </Flex>
     );
