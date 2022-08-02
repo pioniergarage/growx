@@ -8,9 +8,7 @@ export default function Footer() {
                 <NextLink href="faq">
                     <Link>FAQ</Link>
                 </NextLink>
-                <NextLink href="">
-                    <Link>Contact</Link>
-                </NextLink>
+                <Link href="mailto:grow@pioniergarage.de">Contact</Link>
                 <NextLink href="">
                     <Link>Terms &amp; Conditions</Link>
                 </NextLink>
