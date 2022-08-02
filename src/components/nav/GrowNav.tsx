@@ -19,7 +19,7 @@ export default function GrowNav() {
             <Logo>GROW X</Logo>
             <MenuToggle onClick={toggle} isOpen={isOpen} />
             <MenuLinksContainer isOpen={isOpen}>
-                <MenuItem onClick={toggle} to="/faq">
+                <MenuItem onClick={toggle} to="#faqs">
                     FAQ
                 </MenuItem>
                 <MenuItem onClick={toggle} to="/timeline">

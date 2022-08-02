@@ -7,15 +7,20 @@ import { supabaseClient as supabase } from '@supabase/auth-helpers-nextjs';
 import { Sponsor } from 'types';
 import { PropsWithChildren } from 'react';
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
+import Faqs, { FaqType } from '@/components/faq';
 
 export async function getStaticProps() {
-    const { data: sponsors, error } = await supabase
+    const { data: sponsors, error: sponsorError } = await supabase
         .from('sponsors')
         .select('*');
-    if (error) {
-        throw Error(error.message);
+    const { data: faqs, error: faqError } = await supabase.from('faqs').select('*');
+    if (sponsorError) {
+        throw Error(sponsorError.message);
+    } 
+    if (faqError) {
+        throw Error(faqError.message)
     }
-    return { props: { sponsors } };
+    return { props: { sponsors, faqs } };
 }
 
 function Section({
@@ -33,7 +38,7 @@ function Section({
     );
 }
 
-export default function Home({ sponsors }: { sponsors: Sponsor[] }) {
+export default function Home({ sponsors, faqs }: { sponsors: Sponsor[], faqs: FaqType[] }) {
     return (
         <>
             <Section divider position="relative">
@@ -68,6 +73,10 @@ export default function Home({ sponsors }: { sponsors: Sponsor[] }) {
 
             <Section divider>
                 <WaitingForBlock />
+            </Section>
+
+            <Section divider id='faqs'>
+                <Faqs faqs={faqs} />
             </Section>
 
             <Section mt={6}>
