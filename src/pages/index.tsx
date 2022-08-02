@@ -1,24 +1,26 @@
-import MainInfoBlock from 'components/MainInfoBlock';
-import Timeline from 'components/Timeline';
-import MotivationBlock from 'components/MotivationBlock';
-import WaitingForBlock from '@/components/WaitingForBlock';
-import PartnerBlock from '@/components/PartnerBlock';
+import MainInfoBlock from '@/components/landing/MainInfoBlock';
+import Timeline from '@/components/landing/Timeline';
+import MotivationBlock from '@/components/landing/MotivationBlock';
+import WaitingForBlock from '@/components/landing/WaitingForBlock';
+import PartnerBlock from '@/components/landing/PartnerBlock';
 import { supabaseClient as supabase } from '@supabase/auth-helpers-nextjs';
 import { Sponsor } from 'types';
 import { PropsWithChildren } from 'react';
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
-import Faqs, { FaqType } from '@/components/faq';
+import Faqs, { FaqType } from '@/components/landing/faq';
 
 export async function getStaticProps() {
     const { data: sponsors, error: sponsorError } = await supabase
         .from('sponsors')
         .select('*');
-    const { data: faqs, error: faqError } = await supabase.from('faqs').select('*');
+    const { data: faqs, error: faqError } = await supabase
+        .from('faqs')
+        .select('*');
     if (sponsorError) {
         throw Error(sponsorError.message);
-    } 
+    }
     if (faqError) {
-        throw Error(faqError.message)
+        throw Error(faqError.message);
     }
     return { props: { sponsors, faqs } };
 }
@@ -38,7 +40,13 @@ function Section({
     );
 }
 
-export default function Home({ sponsors, faqs }: { sponsors: Sponsor[], faqs: FaqType[] }) {
+export default function Home({
+    sponsors,
+    faqs,
+}: {
+    sponsors: Sponsor[];
+    faqs: FaqType[];
+}) {
     return (
         <>
             <Section divider position="relative">
@@ -67,15 +75,32 @@ export default function Home({ sponsors, faqs }: { sponsors: Sponsor[], faqs: Fa
                 <Timeline />
             </Section>
 
-            <Section divider>
+            <Section>
                 <MotivationBlock />
             </Section>
 
-            <Section divider>
+            <Section position="relative" my={24} px={0}>
+                <Box
+                    maxW="container.xl"
+                    top={0}
+                    w="100%"
+                    h="100%"
+                    position="absolute"
+                    zIndex={-10}
+                >
+                    <Box
+                        position="absolute"
+                        width="100%"
+                        height="100%"
+                        bgGradient="linear-gradient(128.16deg, #5557f777 8.06% , #5557f777 83.26%)"
+                        borderRadius="50%"
+                        filter='blur(150px)'
+                    />
+                </Box>
                 <WaitingForBlock />
             </Section>
 
-            <Section divider id='faqs'>
+            <Section divider id="faqs">
                 <Faqs faqs={faqs} />
             </Section>
 

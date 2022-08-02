@@ -1,4 +1,4 @@
-import AnimatedLogo from 'components/AnimatedLogo';
+import AnimatedLogo from '@/components/landing/AnimatedLogo';
 import { Text, Box, Heading, Grid, GridItem, VStack } from '@chakra-ui/react';
 import ParticipateButton from './ParticipateButton';
 import dynamic from 'next/dynamic';
@@ -8,7 +8,7 @@ const Countdown = dynamic(import('./Countdown'), { ssr: false });
 function Fact({ amount, title }: { amount: string; title: string }) {
     return (
         <Box>
-            <Heading size="xl">{amount}</Heading>
+            <Heading lineHeight='8' size="xl">{amount}</Heading>
             <Text>{title}</Text>
         </Box>
     );

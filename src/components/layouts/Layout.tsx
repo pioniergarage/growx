@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Footer from 'components/Footer';
+import Footer from '@/components/landing/Footer';
 import { PropsWithChildren } from 'react';
 import GrowNav from '../nav/GrowNav';
 

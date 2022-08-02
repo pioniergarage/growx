@@ -20,7 +20,7 @@ function MotivationItem({
             >
                 <Icon />
             </Flex>
-            <Heading size="md" color="primary">
+            <Heading size="md" color="secondary">
                 {heading}
             </Heading>
             <Text>{children}</Text>
