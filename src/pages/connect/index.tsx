@@ -1,5 +1,5 @@
 import ConnectLayout from '@/components/layouts/ConnectLayout';
-import PageLink from '@/components/nav/link';
+import PageLink from '@/components/nav/PageLink';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { NextPageWithLayout } from 'types';
 

@@ -15,6 +15,7 @@ type LoginFormProps = {
         email: string;
         password: string;
     }) => void;
+    loading: boolean;
 };
 
 const LogInForm = (props: LoginFormProps) => {
@@ -34,7 +35,7 @@ const LogInForm = (props: LoginFormProps) => {
     return (
         <form onSubmit={formik.handleSubmit}>
             <VStack alignItems="stretch" gap={2}>
-                <FormControl isInvalid={!!formik.errors.email}>
+                <FormControl isInvalid={!!formik.errors.email} isDisabled={props.loading}>
                     <FormLabel htmlFor="email">Email adress</FormLabel>
                     <Input
                         id="email"
@@ -43,7 +44,7 @@ const LogInForm = (props: LoginFormProps) => {
                         onChange={formik.handleChange}
                     />
                 </FormControl>
-                <FormControl isInvalid={!!formik.errors.password}>
+                <FormControl isInvalid={!!formik.errors.password}  isDisabled={props.loading}>
                     <FormLabel htmlFor="password">Password</FormLabel>
                     <Input
                         id="password"
@@ -52,7 +53,7 @@ const LogInForm = (props: LoginFormProps) => {
                         onChange={formik.handleChange}
                     />
                 </FormControl>
-                <Button type="submit">Log in</Button>
+                <Button type="submit" isLoading={props.loading}>Log in</Button>
             </VStack>
         </form>
     );

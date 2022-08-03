@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { UserProvider } from '@supabase/auth-helpers-react';
 import Head from 'next/head';
@@ -13,7 +14,11 @@ export default function ConnectLayout({ children }: PropsWithChildren) {
             </Head>
             <UserProvider supabaseClient={supabaseClient}>
                 <ConnectNav />
-                <main className="pt-14">{children}</main>
+                <main className="pt-14">
+                    <Box maxW='container.xl' mx='auto' py={10} px={{base: 4, md: 0}}>
+                    {children}
+                    </Box>
+                </main>
             </UserProvider>
         </>
     );

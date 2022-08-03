@@ -1,6 +1,6 @@
 import LogInForm from '@/components/forms/logInForm';
 import LoginLayout from '@/components/layouts/LoginLayout';
-import PageLink from '@/components/nav/link';
+import PageLink from '@/components/nav/PageLink';
 import { Alert, AlertIcon, Box, Heading, VStack } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
@@ -10,15 +10,16 @@ import { NextPageWithLayout } from 'types';
 
 const LoginPage: NextPageWithLayout = () => {
     const [loginError, setLoginError] = useState('');
-    const {user} = useUser()
+    const [loading, setLoading] = useState(false);
+    const { user } = useUser();
     const router = useRouter();
 
     useEffect(() => {
         if (user) {
-            router.replace('/connect/')
+            router.replace('/connect/');
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     async function handleLogin({
         email,
@@ -27,11 +28,14 @@ const LoginPage: NextPageWithLayout = () => {
         email: string;
         password: string;
     }) {
+        setLoading(true);
+        setLoginError('');
         const { error } = await supabaseClient.auth.signIn({ email, password });
         if (error) {
             setLoginError(error.message);
-            return;
         }
+        router.replace('/connect/');
+        setLoading(false);
     }
     return (
         <VStack gap={2}>
@@ -43,9 +47,9 @@ const LoginPage: NextPageWithLayout = () => {
                     the platform for participants
                 </Heading>
             </Box>
-            <LogInForm onSubmit={handleLogin} />
+            <LogInForm onSubmit={handleLogin} loading={loading} />
             {loginError ? (
-                <Alert status="error" width='16rem'>
+                <Alert status="error" width="16rem">
                     <AlertIcon />
                     {loginError}
                 </Alert>

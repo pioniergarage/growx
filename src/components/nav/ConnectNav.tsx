@@ -8,6 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
+
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import AvatarWrapper from './avatarWrapper';
@@ -30,7 +31,7 @@ export default function ConnectNav() {
             <MenuToggle onClick={toggle} isOpen={isOpen} />
             <MenuLinksContainer isOpen={isOpen}>
                 <Link href="/">
-                    <Button>GROW X</Button>
+                    <Button size='sm'>GROW X</Button>
                 </Link>
                 <Menu>
                     {({ isOpen }) => (
