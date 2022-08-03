@@ -3,7 +3,7 @@ import PageLink from '../nav/link';
 
 export default function ParticipateButton(props: BoxProps) {
     return (
-        <PageLink href='/connect/login'>
+        <PageLink href='/connect'>
             <Box
                 as="button"
                 bgGradient="linear(to-r, secondary, primary)"

@@ -3,17 +3,22 @@ import LoginLayout from '@/components/layouts/LoginLayout';
 import PageLink from '@/components/nav/link';
 import { Alert, AlertIcon, Box, Heading, VStack } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { useUser } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NextPageWithLayout } from 'types';
 
 const LoginPage: NextPageWithLayout = () => {
     const [loginError, setLoginError] = useState('');
+    const {user} = useUser()
     const router = useRouter();
 
-    if (supabaseClient.auth.user()) {
-        router.replace('/connect/')
-    }
+    useEffect(() => {
+        if (user) {
+            router.replace('/connect/')
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user])
 
     async function handleLogin({
         email,
@@ -27,7 +32,6 @@ const LoginPage: NextPageWithLayout = () => {
             setLoginError(error.message);
             return;
         }
-        router.replace('/connect/');
     }
     return (
         <VStack gap={2}>

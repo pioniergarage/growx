@@ -3,11 +3,8 @@ import '@fontsource/open-sans/400.css';
 import '@fontsource/open-sans/500.css';
 import '@fontsource/open-sans/800.css';
 
-
 import type { AppProps } from 'next/app';
 import Layout from 'components/layouts/Layout';
-import { UserProvider } from '@supabase/auth-helpers-react';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { ChakraProvider } from '@chakra-ui/react';
 import theme from 'styles/theme';
 import { NextPageWithLayout } from 'types';
@@ -22,10 +19,8 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         Component.getLayout ?? ((page) => <Layout>{page}</Layout>);
 
     return (
-        <UserProvider supabaseClient={supabaseClient}>
             <ChakraProvider theme={theme}>
                 {getLayout(<Component {...pageProps} />)}
             </ChakraProvider>
-        </UserProvider>
     );
 }
