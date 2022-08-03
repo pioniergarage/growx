@@ -42,7 +42,7 @@ function TimelineEvent(event: GrowEvent) {
 
 export default function LongTimeline({ events }: { events: GrowEvent[] }) {
     return (
-        <VStack gap={4}>
+        <VStack gap={4} mx={6}>
             <Heading>Timeline</Heading>
             <VStack gap={4} alignItems="start" maxW="xl">
                 {events.map((event) => (
