@@ -5,6 +5,7 @@ import {
     MenuButton,
     MenuItem,
     MenuList,
+    Text
 } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
@@ -27,7 +28,7 @@ export default function ConnectNav() {
 
     return (
         <NavBarContainer>
-            <Logo href="/connect/">GROWconnect</Logo>
+            <Logo href="/connect/">GROW<Text as='span' color='primary'>connect</Text></Logo>
             <MenuToggle onClick={toggle} isOpen={isOpen} />
             <MenuLinksContainer isOpen={isOpen}>
                 <Link href="/">

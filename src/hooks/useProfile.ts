@@ -8,9 +8,11 @@ const useProfile = () => {
     const { user } = useUser();
     const [profile, setProfile] = useState<Profile | null>(null)
     const [error, setError] = useState<PostgrestError>()
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         async function fetchProfile() {
+            setLoading(true)
             if (!user) return
             const { data, error } = await supabaseClient.from<ProfileDto>('profiles')
                 .select('*')
@@ -22,9 +24,24 @@ const useProfile = () => {
                 const { first_name, last_name } = data
                 setProfile({ ...data, firstName: first_name, lastName: last_name })
             }
+            setLoading(false)
         }
         fetchProfile()
     }, [user])
-    return { profile, error }
+
+    async function update(profile: Profile) {
+        setLoading(true)
+        const { firstName, lastName, ...rest } = profile
+        const { error } = await supabaseClient.from<ProfileDto>('profiles')
+            .update({ ...rest, first_name: firstName, last_name: lastName }, { returning: 'minimal' })
+            .eq('user_id', user?.id || '')
+        if (!error) {
+            setProfile(profile)
+        }
+        setLoading(false)
+        return { error }
+    }
+
+    return { profile, error, loading, update }
 }
 export default useProfile
