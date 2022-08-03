@@ -92,9 +92,6 @@ function ProfileEditing({
             const errors: Record<string, string> = {};
             if (!values.firstName) errors.firstName = 'Required';
             if (!values.lastName) errors.lastName = 'Required';
-            if (!values.email) errors.email = 'Required';
-            const emailError = rules.email(values.email);
-            if (emailError !== true) errors.email = emailError;
             return errors;
         },
     });
@@ -105,8 +102,7 @@ function ProfileEditing({
                 <SimpleGrid columns={2} gap={4}>
                     <GridItem colSpan={2}>
                         <FormControl
-                            isDisabled={loading}
-                            isInvalid={!!formik.errors.email}
+                            isDisabled
                         >
                             <FormLabel htmlFor="email">
                                 Email address*
@@ -117,9 +113,6 @@ function ProfileEditing({
                                 onChange={formik.handleChange}
                                 value={formik.values.email}
                             />
-                            <FormErrorMessage>
-                                {formik.errors.email}
-                            </FormErrorMessage>
                         </FormControl>
                     </GridItem>
                     <FormControl
@@ -155,7 +148,7 @@ function ProfileEditing({
                     <GridItem colSpan={2}>
                         <FormControl isDisabled={loading} as="fieldset">
                             <FormLabel as="legend">Gender</FormLabel>
-                            <RadioGroup defaultValue={profile.gender}>
+                            <RadioGroup defaultValue={profile.gender || 'other'}>
                                 <HStack spacing="24px">
                                     <Radio
                                         value="male"
