@@ -18,11 +18,11 @@ export default function ConnectNav() {
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
 
-    const router = useRouter()
+    const router = useRouter();
 
     async function handleLogout() {
-        await supabaseClient.auth.signOut()
-        router.push('/')
+        await supabaseClient.auth.signOut();
+        router.push('/');
     }
 
     return (
@@ -31,14 +31,24 @@ export default function ConnectNav() {
             <MenuToggle onClick={toggle} isOpen={isOpen} />
             <MenuLinksContainer isOpen={isOpen}>
                 <Link href="/">
-                    <Button size='sm'>GROW X</Button>
+                    <Button size="sm">GROW X</Button>
                 </Link>
                 <Menu>
                     {({ isOpen }) => (
                         <>
-                            <MenuButton isActive={isOpen} as={IconButton} isRound={true} icon={<AvatarWrapper />} />
+                            <MenuButton
+                                isActive={isOpen}
+                                as={IconButton}
+                                isRound={true}
+                                icon={<AvatarWrapper />}
+                            />
                             <MenuList>
-                                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                                <MenuItem>
+                                    <Link href="/connect/profile">Profile</Link>
+                                </MenuItem>
+                                <MenuItem onClick={handleLogout}>
+                                    Logout
+                                </MenuItem>
                             </MenuList>
                         </>
                     )}

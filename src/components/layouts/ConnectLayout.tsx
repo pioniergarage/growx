@@ -15,7 +15,7 @@ export default function ConnectLayout({ children }: PropsWithChildren) {
             <UserProvider supabaseClient={supabaseClient}>
                 <ConnectNav />
                 <main className="pt-14">
-                    <Box maxW='container.xl' mx='auto' py={10} px={{base: 4, md: 0}}>
+                    <Box maxW='container.xl' mx='auto' py={12} px={{base: 4, md: 0}}>
                     {children}
                     </Box>
                 </main>
