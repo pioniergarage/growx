@@ -12,7 +12,7 @@ const AvatarWrapper = () => {
             {profile ? (
                 <UserAvatar {...profile}/>
             ) : (
-                <SkeletonCircle size='10' />
+                <SkeletonCircle size='12' />
             )}
         </>
     );

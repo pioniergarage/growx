@@ -5,16 +5,18 @@ import {
     Flex,
     Stack,
     LinkBox as ChakraLink,
+    ButtonProps,
+    TextProps,
 } from '@chakra-ui/react';
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { Button } from '@chakra-ui/button';
 import { MouseEventHandler, PropsWithChildren } from 'react';
 
-export function Logo({children, href = '/'}: PropsWithChildren & {href?: string}) {
+export function Logo({children, href = '/', ...rest}: TextProps & {href?: string}) {
     return (
         <ChakraLink as="button">
             <Link href={href}>
-                <Text color="white" fontWeight="black" fontSize={20}>
+                <Text color="white" fontWeight="black" fontSize={20} {...rest}>
                     {children}
                 </Text>
             </Link>
@@ -25,12 +27,13 @@ export function Logo({children, href = '/'}: PropsWithChildren & {href?: string}
 export function MenuToggle({
     onClick,
     isOpen,
-}: PropsWithChildren & {
+    ...rest
+}: ButtonProps & {
     onClick: MouseEventHandler<HTMLButtonElement>;
     isOpen: boolean;
 }) {
     return (
-        <Button display={{ base: 'block', md: 'none' }} onClick={onClick}>
+        <Button display={{ base: 'block', md: 'none' }} onClick={onClick} {...rest}>
             {isOpen ? <CloseIcon /> : <HamburgerIcon />}
         </Button>
     );

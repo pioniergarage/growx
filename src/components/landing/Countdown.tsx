@@ -1,7 +1,10 @@
 import { Box, Text, TextProps } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
-export default function Countdown({ to, ...props }: { to: Date } & TextProps) {
+export default function Countdown({
+    to = new Date('11/05/2022'),
+    ...props
+}: { to?: Date } & TextProps) {
     const calculateTimeLeft = (to: Date) => {
         const difference = +to - +new Date();
 

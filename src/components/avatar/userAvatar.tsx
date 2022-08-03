@@ -9,7 +9,7 @@ const UserAvatar = (props: UserAvatarProps) => {
     return (
         <>
             <Avatar
-                size='sm'
+                size='md'
                 name={props.firstName + ' ' + props.lastName}
                 src={`https://ui-avatars.com/api/?name=${
                     props.firstName + '+' + props.lastName

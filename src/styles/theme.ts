@@ -11,7 +11,8 @@ const config: ThemeConfig = {
 };
 
 const colors: Colors = {
-    primary: '#6B46C1',
+    primary: '#997ed6',
+    'primary-bg': '#4f388488',
     secondary: '#ED64A6',
 };
 

@@ -32,9 +32,8 @@ export default function MainInfoBlock() {
                 <AnimatedLogo
                     fill="whiteAlpha.900"
                     boxSize={300}
-                    opacity={0.9}
                 />
-                <Countdown to={new Date('11/05/2022')} />
+                <Countdown />
             </GridItem>
             <GridItem className="md:order-1">
                 <VStack spacing={4} align={{ base: 'center', md: 'start' }}>

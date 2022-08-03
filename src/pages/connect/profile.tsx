@@ -245,20 +245,18 @@ function ProfileEditing({
 function SkeletonLoader() {
     const rows = 6;
     const widths = useMemo(() => {
-        const w = []
+        const k = [0, 0.5, 0.2, 0.7, 0.4]
+        const w = [];
         for (let i = 0; i < rows; i++) {
-            w.push(Math.random() * 5 + 4)
-            w.push(Math.random() * 30 + 5)
+            w.push(k[i] * 5 + 4);
+            w.push(k[(i+3)%5] * 30 + 5);
         }
-        return w
-    }, [])
+        return w;
+    }, []);
     return (
         <Grid templateColumns="10rem 1fr" gap={3} w="100%" maxW="50rem">
-            {Array.from(Array(rows).keys()).map((i) => (
-                <>
-                    <Skeleton key={i} h={6} maxW={widths[2*i] + 'rem'} />
-                    <Skeleton key={i} h={6} maxW={widths[2*i + 1] + 'rem'} />
-                </>
+            {Array.from(Array(rows*2).keys()).map((_, i) => (
+                <Skeleton key={i} h={6} maxW={widths[i] + 'rem'} />
             ))}
         </Grid>
     );

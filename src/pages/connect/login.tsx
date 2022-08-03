@@ -33,6 +33,13 @@ const LoginPage: NextPageWithLayout = () => {
         const { error } = await supabaseClient.auth.signIn({ email, password });
         if (error) {
             setLoginError(error.message);
+        } else {
+            // wait 500ms
+            await (new Promise<void>((resolve) => {
+                setTimeout(() => {
+                    resolve()
+                }, 500);
+            }))
         }
         router.replace('/connect/');
         setLoading(false);
