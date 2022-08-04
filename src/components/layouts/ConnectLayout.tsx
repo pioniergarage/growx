@@ -12,10 +12,12 @@ import {
 } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { UserProvider } from '@supabase/auth-helpers-react';
+import useRole from 'hooks/useRole';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import user from 'pages/api/admin/user';
 import { PropsWithChildren } from 'react';
 import { FaUser, FaSignOutAlt } from 'react-icons/fa';
 import AnimatedLogo from '../landing/AnimatedLogo';
@@ -26,6 +28,7 @@ const Countdown = dynamic(import('../landing/Countdown'), { ssr: false });
 
 function ConnectHeader() {
     const router = useRouter();
+    const { role } = useRole();
 
     async function handleLogout() {
         await supabaseClient.auth.signOut();
@@ -105,6 +108,15 @@ function ConnectHeader() {
                             >
                                 Logout
                             </MenuItem>
+                            {role === 'admin' ? (
+                                <MenuItem
+                                    onClick={() =>
+                                        router.push('/connect/admin')
+                                    }
+                                >
+                                    Admin
+                                </MenuItem>
+                            ) : undefined}
                         </MenuList>
                     </>
                 )}
@@ -119,13 +131,13 @@ function SideNavItem({ href, children }: PropsWithChildren & { href: string }) {
         <li>
             <Link href={href} passHref>
                 <Box
-                    display='block'
-                    as='a'
+                    display="block"
+                    as="a"
                     borderRadius={5}
                     px={2}
                     py={1}
                     w="100%"
-                    fontWeight='semibold'
+                    fontWeight="semibold"
                     bg={router.pathname === href ? 'primary-bg' : 'inherit'}
                     color={router.pathname === href ? 'primary' : 'inherit'}
                 >
@@ -137,6 +149,7 @@ function SideNavItem({ href, children }: PropsWithChildren & { href: string }) {
 }
 
 function SideNav() {
+    const { role } = useRole();
     return (
         <Box
             display={{ base: 'none', lg: 'block' }}
@@ -152,6 +165,9 @@ function SideNav() {
             <VStack as="ul" alignItems="stretch" gap={1}>
                 <SideNavItem href="/connect">Home</SideNavItem>
                 <SideNavItem href="/connect/profile">Profile</SideNavItem>
+                {role === 'admin' ? (
+                    <SideNavItem href="/connect/admin">Admin</SideNavItem>
+                ) : undefined}
             </VStack>
             <VStack mt={10}>
                 <AnimatedLogo fill="whiteAlpha.900" boxSize={100} />
