@@ -17,7 +17,6 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import user from 'pages/api/admin/user';
 import { PropsWithChildren } from 'react';
 import { FaUser, FaSignOutAlt } from 'react-icons/fa';
 import AnimatedLogo from '../landing/AnimatedLogo';

@@ -44,8 +44,8 @@ export default function FullTable<T>({
                             <Tbody>
                                 {values.map((value: T) => (
                                     <Tr key={String(value[idProp])}>
-                                        {Object.keys(values[0]).map((p) => (
-                                            <Td key={value[idProp] + p}>
+                                        {(Object.keys(values[0]) as Array<keyof T>).map((p: keyof T) => (
+                                            <Td key={String(p)}>
                                                 {String(value[p])}
                                             </Td>
                                         ))}

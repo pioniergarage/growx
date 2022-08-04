@@ -1,4 +1,3 @@
-import rules from '@/components/forms/rules';
 import ConnectLayout from '@/components/layouts/ConnectLayout';
 import {
     Box,
