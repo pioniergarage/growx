@@ -12,22 +12,22 @@ import {
 } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { UserProvider } from '@supabase/auth-helpers-react';
-import useRole from 'hooks/useRole';
+import { ProfileProvider, useProfile } from 'hooks/profile';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { PropsWithChildren } from 'react';
 import { FaUser, FaSignOutAlt } from 'react-icons/fa';
+import { UserRole } from 'types';
 import AnimatedLogo from '../landing/AnimatedLogo';
 import AvatarWrapper from '../nav/avatarWrapper';
 import { Logo } from '../nav/Nav';
 
 const Countdown = dynamic(import('../landing/Countdown'), { ssr: false });
 
-function ConnectHeader() {
+function ConnectHeader({ role }: { role: UserRole }) {
     const router = useRouter();
-    const { role } = useRole();
 
     async function handleLogout() {
         await supabaseClient.auth.signOut();
@@ -147,8 +147,7 @@ function SideNavItem({ href, children }: PropsWithChildren & { href: string }) {
     );
 }
 
-function SideNav() {
-    const { role } = useRole();
+function SideNav({ role }: { role: UserRole }) {
     return (
         <Box
             display={{ base: 'none', lg: 'block' }}
@@ -176,6 +175,21 @@ function SideNav() {
     );
 }
 
+function ContentContainer({ children }: PropsWithChildren) {
+    const { profile } = useProfile();
+    return (
+        <>
+            <ConnectHeader role={profile?.role} />
+            <Box as="main" maxW="8xl" mx="auto" px={4}>
+                <Flex>
+                    <SideNav role={profile?.role} />
+                    <Box flexGrow={1}>{children}</Box>
+                </Flex>
+            </Box>
+        </>
+    );
+}
+
 export default function ConnectLayout({ children }: PropsWithChildren) {
     return (
         <>
@@ -184,13 +198,9 @@ export default function ConnectLayout({ children }: PropsWithChildren) {
                 <meta name="description" content="GROWconnect" />
             </Head>
             <UserProvider supabaseClient={supabaseClient}>
-                <ConnectHeader />
-                <Box as="main" maxW="8xl" mx="auto" px={4}>
-                    <Flex>
-                        <SideNav />
-                        <Box flexGrow={1}>{children}</Box>
-                    </Flex>
-                </Box>
+                <ProfileProvider>
+                    <ContentContainer>{children}</ContentContainer>
+                </ProfileProvider>
             </UserProvider>
         </>
     );

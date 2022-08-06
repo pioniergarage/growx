@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useFormik } from 'formik';
-import useProfile from 'hooks/useProfile';
+import { useProfile } from 'hooks/profile';
 import { createContext, useContext, useMemo, useState } from 'react';
 import { Consumer, NextPageWithLayout, Profile } from 'types';
 
@@ -100,9 +100,7 @@ function ProfileEditing({
             <VStack gap={4} alignItems="stretch">
                 <SimpleGrid columns={2} gap={4}>
                     <GridItem colSpan={2}>
-                        <FormControl
-                            isDisabled
-                        >
+                        <FormControl isDisabled>
                             <FormLabel htmlFor="email">
                                 Email address*
                             </FormLabel>
@@ -147,7 +145,9 @@ function ProfileEditing({
                     <GridItem colSpan={2}>
                         <FormControl isDisabled={loading} as="fieldset">
                             <FormLabel as="legend">Gender</FormLabel>
-                            <RadioGroup defaultValue={profile.gender || 'other'}>
+                            <RadioGroup
+                                defaultValue={profile.gender || 'other'}
+                            >
                                 <HStack spacing="24px">
                                     <Radio
                                         value="male"
@@ -237,17 +237,17 @@ function ProfileEditing({
 function SkeletonLoader() {
     const rows = 6;
     const widths = useMemo(() => {
-        const k = [0, 0.5, 0.2, 0.7, 0.4]
+        const k = [0, 0.5, 0.2, 0.7, 0.4];
         const w = [];
         for (let i = 0; i < rows; i++) {
             w.push(k[i] * 5 + 4);
-            w.push(k[(i+3)%5] * 30 + 5);
+            w.push(k[(i + 3) % 5] * 30 + 5);
         }
         return w;
     }, []);
     return (
         <Grid templateColumns="10rem 1fr" gap={3} w="100%" maxW="50rem">
-            {Array.from(Array(rows*2).keys()).map((_, i) => (
+            {Array.from(Array(rows * 2).keys()).map((_, i) => (
                 <Skeleton key={i} h={6} maxW={widths[i] + 'rem'} />
             ))}
         </Grid>
@@ -260,15 +260,9 @@ const ProfilePage: NextPageWithLayout = () => {
     const toast = useToast();
 
     async function handleSave(profile: Profile) {
-        const { error } = await update(profile);
-        if (error) {
-            toast({
-                title: 'Something went wrong. Could not update profile.',
-                status: 'error',
-                duration: 4000,
-                isClosable: true,
-            });
-        } else {
+        try {
+            await update(profile);
+
             toast({
                 title: 'Profile updated.',
                 status: 'success',
@@ -276,6 +270,13 @@ const ProfilePage: NextPageWithLayout = () => {
                 isClosable: true,
             });
             setEditing(false);
+        } catch (error) {
+            toast({
+                title: 'Something went wrong. Could not update profile.',
+                status: 'error',
+                duration: 4000,
+                isClosable: true,
+            });
         }
     }
 

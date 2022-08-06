@@ -20,9 +20,12 @@ export type ProfileDto = {
     homeland: string;
 }
 
+export type UserRole = "admin" | undefined
+
 export type Profile = Omit<ProfileDto, 'first_name' | 'last_name'> & {
     firstName: string;
     lastName: string;
+    role: UserRole;
 }
 
 export type NextPageWithLayout = NextPage & {
