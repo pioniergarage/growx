@@ -1,7 +1,8 @@
 import FullTable from '@/components/FullTable';
 import ConnectLayout from '@/components/layouts/ConnectLayout';
-import { Heading, HStack, Box, Text, useToast, VStack, StackDivider, Flex, Wrap, LinkBox, LinkOverlay } from '@chakra-ui/react';
+import { Heading, HStack, Box, Text, useToast, VStack, StackDivider, Flex, Wrap, LinkBox, LinkOverlay, Button } from '@chakra-ui/react';
 import { supabaseClient, withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { GrowEvent, NextPageWithLayout, ProfileDto } from 'types';
 
@@ -31,6 +32,7 @@ function Profiles() {
 }
 
 function Events() {
+    const router = useRouter()
     const toast = useToast();
     const [events, setEvents] = useState<GrowEvent[]>([]);
 
@@ -52,8 +54,23 @@ function Events() {
             }
         })();
     }, []);
+
+    async function createNewEvent() {
+        const {error, data} = await supabaseClient.from<GrowEvent>('events')
+            .insert({title: 'New Event'})
+            .single()
+        if (error) {
+            toast({
+                title: error.message,
+                status: 'error'
+            })
+        } else if (data) {
+            router.push('/connect/admin/events/' + data.id)
+        }
+    }
+
     return (
-        <VStack alignItems="stretch">
+        <VStack alignItems="start">
             <Heading size="md" as="h3">
                 Events
             </Heading>
@@ -66,6 +83,7 @@ function Events() {
                     </LinkBox>
                 ))}
             </VStack>
+            <Button onClick={createNewEvent}>New Event</Button>
         </VStack>
     );
 }

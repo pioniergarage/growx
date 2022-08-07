@@ -2,6 +2,12 @@ import FullTable from '@/components/FullTable';
 import TimelineEvent from '@/components/landing/TimelineEvent';
 import ConnectLayout from '@/components/layouts/ConnectLayout';
 import {
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogOverlay,
     Box,
     Button,
     Divider,
@@ -14,18 +20,15 @@ import {
     Spinner,
     Switch,
     Textarea,
+    useDisclosure,
     useToast,
     VStack,
 } from '@chakra-ui/react';
 import { supabaseClient, withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import {
-    GrowEvent,
-    NextPageWithLayout,
-    ProfileDto,
-} from 'types';
+import { useEffect, useRef, useState } from 'react';
+import { GrowEvent, NextPageWithLayout, ProfileDto } from 'types';
 
 function EventForm({
     onSubmit,
@@ -38,11 +41,13 @@ function EventForm({
         mandatory: false,
     },
     loading,
+    onDelete,
 }: {
     onSubmit: (value: Omit<GrowEvent, 'id'>) => void;
     onChange: (value: Omit<GrowEvent, 'id'>) => void;
     initialValue?: Omit<GrowEvent, 'id'>;
     loading: boolean;
+    onDelete: () => void;
 }) {
     const formik = useFormik<Omit<GrowEvent, 'id'>>({
         initialValues: initialValue,
@@ -56,6 +61,9 @@ function EventForm({
             return errors;
         },
     });
+
+    const { isOpen, onOpen: openDialog, onClose } = useDisclosure();
+    const cancelRef = useRef();
 
     return (
         <form onSubmit={formik.handleSubmit}>
@@ -125,6 +133,44 @@ function EventForm({
                     >
                         Reset
                     </Button>
+                    <Box flexGrow={1} />
+                    <Button isLoading={loading} onClick={openDialog}>
+                        Delete
+                    </Button>
+                    <AlertDialog
+                        isOpen={isOpen}
+                        leastDestructiveRef={cancelRef}
+                        onClose={onClose}
+                    >
+                        <AlertDialogOverlay>
+                            <AlertDialogContent>
+                                <AlertDialogHeader
+                                    fontSize="lg"
+                                    fontWeight="bold"
+                                >
+                                    Delete Event
+                                </AlertDialogHeader>
+
+                                <AlertDialogBody>
+                                    Are you sure? You can&apos;t undo this action
+                                    afterwards.
+                                </AlertDialogBody>
+
+                                <AlertDialogFooter>
+                                    <Button ref={cancelRef} onClick={onClose}>
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        colorScheme="red"
+                                        onClick={() => {onClose(); onDelete();}}
+                                        ml={3}
+                                    >
+                                        Delete
+                                    </Button>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialogOverlay>
+                    </AlertDialog>
                 </HStack>
             </VStack>
         </form>
@@ -136,7 +182,7 @@ type ShortProfile = Pick<
     'first_name' | 'last_name' | 'email' | 'user_id'
 >;
 
-function Registrations({ eventId = '' }) {
+function Registrations({ eventId = 1 }) {
     const [registrations, setRegistrations] = useState<ShortProfile[]>([]);
 
     useEffect(() => {
@@ -155,7 +201,9 @@ function Registrations({ eventId = '' }) {
                 )
                 .match({ event_id: eventId });
             if (data) {
-                const registrations = data.map((d) => d.profiles) as ShortProfile[];
+                const registrations = data.map(
+                    (d) => d.profiles
+                ) as ShortProfile[];
                 setRegistrations(registrations);
             }
         })();
@@ -174,7 +222,7 @@ function Registrations({ eventId = '' }) {
 const EventDetails: NextPageWithLayout = () => {
     const toast = useToast();
     const router = useRouter();
-    const { eventId } = router.query;
+    const eventId = Number.parseInt(router.query.eventId as string);
 
     const [event, setEvent] = useState<GrowEvent>();
     const [loading, setLoading] = useState(false);
@@ -226,12 +274,29 @@ const EventDetails: NextPageWithLayout = () => {
         setLoading(false);
     }
 
+    async function deleteEvent() {
+        setLoading(true)
+        const {error} = await supabaseClient
+            .from<GrowEvent>("events")
+            .delete({returning: 'minimal'})
+            .match({id: eventId})
+        if (error) {
+            toast({
+                title: error.message,
+                status: 'error'
+            })
+        } else {
+            router.push('/connect/admin')
+        }
+        setLoading(false)
+    }
+
     return (
         <VStack maxW="container.lg" alignItems="stretch" gap={4}>
             <Heading>Event</Heading>
             {event ? (
                 <>
-                    <VStack alignItems='start'>
+                    <VStack alignItems="start">
                         <Heading size="sm">Preview</Heading>
                         <Box maxW="xl">
                             <TimelineEvent {...event} />
@@ -245,6 +310,7 @@ const EventDetails: NextPageWithLayout = () => {
                         }
                         initialValue={event}
                         loading={loading}
+                        onDelete={deleteEvent}
                     />
                     <Divider />
                     <Registrations eventId={event.id} />
