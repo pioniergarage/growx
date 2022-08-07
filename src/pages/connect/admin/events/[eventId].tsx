@@ -1,3 +1,4 @@
+import FullTable from '@/components/FullTable';
 import TimelineEvent from '@/components/landing/TimelineEvent';
 import ConnectLayout from '@/components/layouts/ConnectLayout';
 import {
@@ -7,11 +8,9 @@ import {
     FormControl,
     FormErrorMessage,
     FormLabel,
-    GridItem,
     Heading,
     HStack,
     Input,
-    SimpleGrid,
     Spinner,
     Switch,
     Textarea,
@@ -22,8 +21,11 @@ import { supabaseClient, withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { GrowEvent, NextPageWithLayout } from 'types';
-
+import {
+    GrowEvent,
+    NextPageWithLayout,
+    ProfileDto,
+} from 'types';
 
 function EventForm({
     onSubmit,
@@ -35,12 +37,12 @@ function EventForm({
         online: false,
         mandatory: false,
     },
-    loading
+    loading,
 }: {
     onSubmit: (value: Omit<GrowEvent, 'id'>) => void;
     onChange: (value: Omit<GrowEvent, 'id'>) => void;
     initialValue?: Omit<GrowEvent, 'id'>;
-    loading: boolean
+    loading: boolean;
 }) {
     const formik = useFormik<Omit<GrowEvent, 'id'>>({
         initialValues: initialValue,
@@ -114,11 +116,58 @@ function EventForm({
                     </FormErrorMessage>
                 </FormControl>
                 <HStack>
-                    <Button isLoading={loading} type='submit'>Save</Button>
-                    <Button isDisabled={loading} onClick={() => formik.setValues(initialValue)}>Reset</Button>
+                    <Button color="secondary" isLoading={loading} type="submit">
+                        Save
+                    </Button>
+                    <Button
+                        isDisabled={loading}
+                        onClick={() => formik.setValues(initialValue)}
+                    >
+                        Reset
+                    </Button>
                 </HStack>
             </VStack>
         </form>
+    );
+}
+
+type ShortProfile = Pick<
+    ProfileDto,
+    'first_name' | 'last_name' | 'email' | 'user_id'
+>;
+
+function Registrations({ eventId = '' }) {
+    const [registrations, setRegistrations] = useState<ShortProfile[]>([]);
+
+    useEffect(() => {
+        (async () => {
+            const { data } = await supabaseClient
+                .from('registrations')
+                .select(
+                    `
+                    profiles (
+                        first_name,
+                        last_name,
+                        email,
+                        user_id
+                    )
+                `
+                )
+                .match({ event_id: eventId });
+            if (data) {
+                const registrations = data.map((d) => d.profiles) as ShortProfile[];
+                setRegistrations(registrations);
+            }
+        })();
+    }, []);
+    return (
+        <>
+            <FullTable
+                values={registrations}
+                idProp="user_id"
+                heading="Registrations"
+            />
+        </>
     );
 }
 
@@ -148,16 +197,17 @@ const EventDetails: NextPageWithLayout = () => {
                     isClosable: true,
                 });
             }
-            setLoading(false)
+            setLoading(false);
         })();
     }, []);
 
     async function saveEvent(patch: Partial<GrowEvent>) {
-        if (!event) return
-        setLoading(true)
-        const {error} = await supabaseClient.from<GrowEvent>('events')
+        if (!event) return;
+        setLoading(true);
+        const { error } = await supabaseClient
+            .from<GrowEvent>('events')
             .update(patch)
-            .match({id: event.id})
+            .match({ id: event.id });
         if (error) {
             toast({
                 title: error.message,
@@ -167,7 +217,7 @@ const EventDetails: NextPageWithLayout = () => {
             });
         } else {
             toast({
-                title: "Event saved",
+                title: 'Event saved',
                 status: 'success',
                 duration: 4000,
                 isClosable: true,
@@ -181,7 +231,7 @@ const EventDetails: NextPageWithLayout = () => {
             <Heading>Event</Heading>
             {event ? (
                 <>
-                    <VStack>
+                    <VStack alignItems='start'>
                         <Heading size="sm">Preview</Heading>
                         <Box maxW="xl">
                             <TimelineEvent {...event} />
@@ -196,6 +246,8 @@ const EventDetails: NextPageWithLayout = () => {
                         initialValue={event}
                         loading={loading}
                     />
+                    <Divider />
+                    <Registrations eventId={event.id} />
                 </>
             ) : (
                 <Spinner />

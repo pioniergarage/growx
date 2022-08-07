@@ -28,7 +28,7 @@ export default function FullTable<T>({
             <Heading as="h3" size="md">
                 {heading}
             </Heading>
-            {!values || values.length === 0 ? (
+            {!values || values.length === 0 || values[0] === undefined ? (
                 <Spinner my={4} />
             ) : (
                 <Box overflow="scroll" {...rest}>
