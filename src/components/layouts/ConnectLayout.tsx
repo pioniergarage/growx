@@ -96,6 +96,9 @@ function ConnectHeader({ role }: { role: UserRole }) {
                             <MenuItem onClick={() => router.push('/connect')}>
                                 Home
                             </MenuItem>
+                            <MenuItem onClick={() => router.push('/connect/events')}>
+                                Events
+                            </MenuItem>
                             <MenuItem
                                 onClick={() => router.push('/connect/profile')}
                             >
@@ -162,6 +165,7 @@ function SideNav({ role }: { role: UserRole }) {
         >
             <VStack as="ul" alignItems="stretch" gap={1}>
                 <SideNavItem href="/connect">Home</SideNavItem>
+                <SideNavItem href="/connect/events">Events</SideNavItem>
                 <SideNavItem href="/connect/profile">Profile</SideNavItem>
                 {role === 'admin' ? (
                     <SideNavItem href="/connect/admin">Admin</SideNavItem>
