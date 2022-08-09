@@ -1,10 +1,8 @@
 import ConnectLayout from '@/components/layouts/ConnectLayout';
-import PageLink from '@/components/nav/PageLink';
 import {
     Box,
     Button,
     Flex,
-    Grid,
     Heading,
     HStack,
     Tag,
@@ -17,7 +15,7 @@ import { supabaseClient, withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
 import { useProfile } from 'hooks/profile';
 import { useEffect, useMemo, useState } from 'react';
-import { GrowEvent, NextPageWithLayout } from 'types';
+import { GrowEvent, GrowEventDto, NextPageWithLayout } from 'types';
 
 function GrowEventCard({
     event,
@@ -30,9 +28,8 @@ function GrowEventCard({
     const { user } = useUser();
     const toast = useToast();
     const { day, month } = useMemo(() => {
-        const date = new Date(event.date);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = date.toLocaleString('en-US', { month: 'short' });
+        const day = String(event.date.getDate()).padStart(2, '0');
+        const month = event.date.toLocaleString('en-US', { month: 'short' });
         return { day, month };
     }, [event.date]);
     const over = new Date() > new Date(event.date);
@@ -143,8 +140,9 @@ const EventsPage: NextPageWithLayout = () => {
         (async () => {
             if (!profile) return;
             const { data } = await supabaseClient
-                .from<GrowEvent>('events')
-                .select('*');
+                .from<GrowEventDto>('events')
+                .select('*')
+                .order('date');
             const { data: registered } = await supabaseClient
                 .from<{ user_id: string; event_id: number }>('registrations')
                 .select('event_id')
@@ -153,7 +151,7 @@ const EventsPage: NextPageWithLayout = () => {
                 setRegisteredTo(registered.map((r) => r.event_id));
             }
             if (data) {
-                setEvents(data);
+                setEvents(data.map((e) => ({ ...e, date: new Date(e.date) })));
             }
         })();
     }, [profile]);

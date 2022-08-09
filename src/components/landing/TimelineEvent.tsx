@@ -24,11 +24,12 @@ export default function TimelineEvent(event: GrowEvent) {
                 fontSize="2xl"
                 fontWeight="semibold"
                 width="3.5rem"
+                flexShrink={0}
             >
                 <Text>{day}</Text>
                 <Text>{month}</Text>
             </VStack>
-            <Flex gap={0} alignItems="start" flexDir='column'>
+            <Flex flexDir='column' alignItems="start">
                 <Heading size="md">{event.title}</Heading>
                 <Text mt={0}>{event.description}</Text>
                 <HStack mt={1}>

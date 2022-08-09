@@ -1,10 +1,18 @@
 import FullTable from '@/components/FullTable';
 import ConnectLayout from '@/components/layouts/ConnectLayout';
-import { Heading, HStack, Box, Text, useToast, VStack, StackDivider, Flex, Wrap, LinkBox, LinkOverlay, Button } from '@chakra-ui/react';
+import {
+    Heading,
+    Text,
+    useToast,
+    VStack,
+    LinkBox,
+    LinkOverlay,
+    Button,
+} from '@chakra-ui/react';
 import { supabaseClient, withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { GrowEvent, NextPageWithLayout, ProfileDto } from 'types';
+import { GrowEvent, GrowEventDto, NextPageWithLayout, ProfileDto } from 'types';
 
 function Profiles() {
     const toast = useToast();
@@ -27,20 +35,21 @@ function Profiles() {
                 setProfiles(data);
             }
         })();
-    }, []);
+    }, [toast]);
     return <FullTable values={profiles} idProp="user_id" heading="Profiles" />;
 }
 
 function Events() {
-    const router = useRouter()
+    const router = useRouter();
     const toast = useToast();
     const [events, setEvents] = useState<GrowEvent[]>([]);
 
     useEffect(() => {
         (async () => {
             const { data, error } = await supabaseClient
-                .from<GrowEvent>('events')
-                .select('*');
+                .from<GrowEventDto>('events')
+                .select('*')
+                .order('date');
             if (error) {
                 toast({
                     title: error.message,
@@ -50,22 +59,23 @@ function Events() {
                 });
             }
             if (data) {
-                setEvents(data);
+                setEvents(data.map((e) => ({ ...e, date: new Date(e.date) })));
             }
         })();
-    }, []);
+    }, [toast]);
 
     async function createNewEvent() {
-        const {error, data} = await supabaseClient.from<GrowEvent>('events')
-            .insert({title: 'New Event'})
-            .single()
+        const { error, data } = await supabaseClient
+            .from<GrowEvent>('events')
+            .insert({ title: 'New Event' })
+            .single();
         if (error) {
             toast({
                 title: error.message,
-                status: 'error'
-            })
+                status: 'error',
+            });
         } else if (data) {
-            router.push('/connect/admin/events/' + data.id)
+            router.push('/connect/admin/events/' + data.id);
         }
     }
 
@@ -74,11 +84,17 @@ function Events() {
             <Heading size="md" as="h3">
                 Events
             </Heading>
-            <VStack alignItems='start'>
+            <VStack alignItems="start">
                 {events.map((event) => (
-                    <LinkBox key={event.id} p={2} borderWidth={1} fontSize='sm'>
-                        <Text>{event.date}</Text>
-                        <Heading size='sm'><LinkOverlay href={`/connect/admin/events/${event.id}`}>{event.title}</LinkOverlay></Heading>
+                    <LinkBox key={event.id} p={2} borderWidth={1} fontSize="sm">
+                        <Text>{event.date.toDateString()}</Text>
+                        <Heading size="sm">
+                            <LinkOverlay
+                                href={`/connect/admin/events/${event.id}`}
+                            >
+                                {event.title}
+                            </LinkOverlay>
+                        </Heading>
                         <Text>{event.description}</Text>
                     </LinkBox>
                 ))}

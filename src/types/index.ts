@@ -34,7 +34,7 @@ export type NextPageWithLayout = NextPage & {
 
 export type Consumer<T> = (value: T) => void
 
-export type GrowEvent = {
+export type GrowEventDto = {
     id: number;
     title: string;
     date: string;
@@ -43,3 +43,4 @@ export type GrowEvent = {
     mandatory?: boolean;
 }
 
+export type GrowEvent = Omit<GrowEventDto, "date"> & { date: Date }

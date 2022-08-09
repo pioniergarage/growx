@@ -28,35 +28,92 @@ import { supabaseClient, withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
-import { GrowEvent, NextPageWithLayout, ProfileDto } from 'types';
+import { GrowEvent, GrowEventDto, NextPageWithLayout, ProfileDto } from 'types';
+
+type EventFormType = Pick<
+    GrowEvent,
+    'title' | 'description' | 'online' | 'mandatory'
+> & {
+    date: string;
+    time: string;
+};
+
+type EventFormProps = {
+    onSubmit: (value: Omit<GrowEvent, 'id'>) => void;
+    onChange: (value: Omit<GrowEvent, 'id'>) => void;
+    initialValue: GrowEvent;
+    loading: boolean;
+    onDelete: () => void;
+};
+
+function extractProperties<Input extends Output, Output>(
+    input: Input,
+    keys: Array<keyof Output>
+) {
+    const result: Partial<Input> = {};
+    for (const key of keys) {
+        result[key] = input[key];
+    }
+    return result as Output;
+}
+
+function formValueToGrowEvent(value: EventFormType): Omit<GrowEvent, 'id'> {
+    const date = new Date(`${value.date}T${value.time}`);
+    return {
+        ...extractProperties<EventFormType, Omit<GrowEvent, 'id' | 'date'>>(
+            value,
+            ['title', 'description', 'mandatory', 'online']
+        ),
+        date,
+    };
+}
+
+/**
+ * @param date date to be formatted
+ * @returns date in format 'yyy-MM-dd'
+ */
+function formatDate(date: Date) {
+    const month = String(date.getMonth() + 1),
+        day = String(date.getDate()),
+        year = String(date.getFullYear());
+
+    return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
+}
+
+/**
+ * @param date date to be formatted
+ * @returns date in format 'HH:mm'
+ */
+function formatTime(date: Date) {
+    const hours = String(date.getHours()),
+        minutes = String(date.getMinutes());
+
+    return [hours.padStart(2, '0'), minutes.padStart(2, '0')].join(':');
+}
 
 function EventForm({
     onSubmit,
     onChange,
-    initialValue = {
-        title: '',
-        date: '',
-        description: '',
-        online: false,
-        mandatory: false,
-    },
+    initialValue,
     loading,
     onDelete,
-}: {
-    onSubmit: (value: Omit<GrowEvent, 'id'>) => void;
-    onChange: (value: Omit<GrowEvent, 'id'>) => void;
-    initialValue?: Omit<GrowEvent, 'id'>;
-    loading: boolean;
-    onDelete: () => void;
-}) {
-    const formik = useFormik<Omit<GrowEvent, 'id'>>({
-        initialValues: initialValue,
-        onSubmit,
+}: EventFormProps) {
+    const initialFormValue: EventFormType = {
+        ...initialValue,
+        date: formatDate(initialValue.date),
+        time: formatTime(initialValue.date),
+    };
+    const formik = useFormik<EventFormType>({
+        initialValues: initialFormValue,
+        onSubmit: (formValue) => onSubmit(formValueToGrowEvent(formValue)),
         validate: (values) => {
             const errors: Record<string, string> = {};
-            if (!values.title) errors.title = 'Required';
+            if (!values.date.match(/^\d{4}-\d\d-\d\d$/))
+                errors.date = 'Wrong format: Use yyyy-MM-dd';
+            if (!values.time.match(/^\d\d:\d\d$/))
+                errors.time = 'Wrong format: Use HH:mm';
             if (Object.entries(errors).length === 0) {
-                onChange(values);
+                onChange(formValueToGrowEvent(values));
             }
             return errors;
         },
@@ -68,7 +125,7 @@ function EventForm({
     return (
         <form onSubmit={formik.handleSubmit}>
             <VStack alignItems="stretch">
-                <HStack>
+                <HStack alignItems="start">
                     <FormControl isDisabled={loading}>
                         <FormLabel htmlFor="title">Title</FormLabel>
                         <Input
@@ -77,11 +134,11 @@ function EventForm({
                             onChange={formik.handleChange}
                             value={formik.values.title}
                         />
-                        <FormErrorMessage>
-                            {formik.errors.title}
-                        </FormErrorMessage>
                     </FormControl>
-                    <FormControl isDisabled={loading}>
+                    <FormControl
+                        isDisabled={loading}
+                        isInvalid={!!formik.errors.date}
+                    >
                         <FormLabel htmlFor="date">Date</FormLabel>
                         <Input
                             name="date"
@@ -92,6 +149,22 @@ function EventForm({
                         />
                         <FormErrorMessage>
                             {formik.errors.date}
+                        </FormErrorMessage>
+                    </FormControl>
+                    <FormControl
+                        isDisabled={loading}
+                        isInvalid={!!formik.errors.time}
+                    >
+                        <FormLabel htmlFor="time">Time</FormLabel>
+                        <Input
+                            name="time"
+                            id="time"
+                            onChange={formik.handleChange}
+                            value={formik.values.time}
+                            placeholder="00:00"
+                        />
+                        <FormErrorMessage>
+                            {formik.errors.time}
                         </FormErrorMessage>
                     </FormControl>
                     <FormControl isDisabled={loading}>
@@ -129,7 +202,7 @@ function EventForm({
                     </Button>
                     <Button
                         isDisabled={loading}
-                        onClick={() => formik.setValues(initialValue)}
+                        onClick={() => formik.setValues(initialFormValue)}
                     >
                         Reset
                     </Button>
@@ -152,8 +225,8 @@ function EventForm({
                                 </AlertDialogHeader>
 
                                 <AlertDialogBody>
-                                    Are you sure? You can&apos;t undo this action
-                                    afterwards.
+                                    Are you sure? You can&apos;t undo this
+                                    action afterwards.
                                 </AlertDialogBody>
 
                                 <AlertDialogFooter>
@@ -162,7 +235,10 @@ function EventForm({
                                     </Button>
                                     <Button
                                         colorScheme="red"
-                                        onClick={() => {onClose(); onDelete();}}
+                                        onClick={() => {
+                                            onClose();
+                                            onDelete();
+                                        }}
                                         ml={3}
                                     >
                                         Delete
@@ -225,17 +301,19 @@ const EventDetails: NextPageWithLayout = () => {
     const eventId = Number.parseInt(router.query.eventId as string);
 
     const [event, setEvent] = useState<GrowEvent>();
+    const [originalEvent, setOriginalEvent] = useState<GrowEvent>();
     const [loading, setLoading] = useState(false);
     useEffect(() => {
         (async () => {
             setLoading(true);
             const { data, error } = await supabaseClient
-                .from<GrowEvent>('events')
+                .from<GrowEventDto>('events')
                 .select('*')
                 .match({ id: eventId })
                 .single();
             if (data) {
-                setEvent(data);
+                setEvent({ ...data, date: new Date(data.date) });
+                setOriginalEvent({ ...data, date: new Date(data.date) });
             }
             if (error) {
                 toast({
@@ -275,26 +353,26 @@ const EventDetails: NextPageWithLayout = () => {
     }
 
     async function deleteEvent() {
-        setLoading(true)
-        const {error} = await supabaseClient
-            .from<GrowEvent>("events")
-            .delete({returning: 'minimal'})
-            .match({id: eventId})
+        setLoading(true);
+        const { error } = await supabaseClient
+            .from<GrowEvent>('events')
+            .delete({ returning: 'minimal' })
+            .match({ id: eventId });
         if (error) {
             toast({
                 title: error.message,
-                status: 'error'
-            })
+                status: 'error',
+            });
         } else {
-            router.push('/connect/admin')
+            router.push('/connect/admin');
         }
-        setLoading(false)
+        setLoading(false);
     }
 
     return (
         <VStack maxW="container.lg" alignItems="stretch" gap={4}>
             <Heading>Event</Heading>
-            {event ? (
+            {event && originalEvent ? (
                 <>
                     <VStack alignItems="start">
                         <Heading size="sm">Preview</Heading>
@@ -308,7 +386,7 @@ const EventDetails: NextPageWithLayout = () => {
                         onChange={(updated) =>
                             setEvent({ id: event.id, ...updated })
                         }
-                        initialValue={event}
+                        initialValue={originalEvent}
                         loading={loading}
                         onDelete={deleteEvent}
                     />
