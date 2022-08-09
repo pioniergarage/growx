@@ -9,12 +9,13 @@ import {
     useToast,
     Skeleton,
 } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { supabaseClient, withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useProfile } from 'hooks/profile';
-import { useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { NextPageWithLayout, Profile } from 'types';
 import LazySpinner from '@/components/profile/LazySpinner';
 import ProfileForm from '@/components/profile/ProfileForm';
+import resizeImage from 'utils/resize';
 
 function ProfileView() {
     return (
@@ -37,7 +38,6 @@ function ProfileView() {
     );
 }
 
-
 function SkeletonLoader() {
     const rows = 6;
     const widths = useMemo(() => {
@@ -55,6 +55,61 @@ function SkeletonLoader() {
                 <Skeleton key={i} h={6} maxW={widths[i] + 'rem'} />
             ))}
         </Grid>
+    );
+}
+
+function AvatarControl() {
+    const [avatarUrl, setAvatarUrl] = useState('');
+    const { profile } = useProfile();
+
+    useEffect(() => {
+        async function downloadAvatar() {
+            const { data, error } = await supabaseClient.storage
+                .from('avatars')
+                .download(`${profile?.user_id}.jpg`);
+            if (error) {
+                console.error(error.message);
+            }
+            if (data) {
+                const url = URL.createObjectURL(data);
+                setAvatarUrl(url);
+            }
+        }
+        downloadAvatar();
+    }, [profile?.user_id]);
+    async function uploadAvatar(event: ChangeEvent<HTMLInputElement>) {
+        if (!event.target.files || event.target.files.length === 0) {
+            throw new Error('You must select an image to upload.');
+        }
+
+        const file = event.target.files[0];
+        const fileName = `${profile?.user_id}.jpg`;
+        const filePath = `${fileName}`;
+        const resizedImage = await resizeImage(file, 200, 200);
+        const { error: uploadError } = await supabaseClient.storage
+            .from('avatars')
+            .upload(filePath, resizedImage);
+
+        if (uploadError) {
+            alert(uploadError.message);
+        } else {
+            alert('uploaded');
+        }
+    }
+    return (
+        <>
+            {avatarUrl ? (
+                <img src={avatarUrl} alt="Avatar" height={100} />
+            ) : (
+                <>No profile avatar found</>
+            )}
+            <input
+                type="file"
+                id="single"
+                accept="image/*"
+                onChange={uploadAvatar}
+            />
+        </>
     );
 }
 
@@ -92,6 +147,7 @@ const ProfilePage: NextPageWithLayout = () => {
                     Your personal information
                 </Text>
             </Box>
+            {profile ? <AvatarControl /> : undefined}
             {!isEditing || !profile ? (
                 profile ? (
                     <>
