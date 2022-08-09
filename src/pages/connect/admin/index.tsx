@@ -1,5 +1,5 @@
 import FullTable from '@/components/FullTable';
-import ConnectLayout from '@/components/layouts/ConnectLayout';
+import ConnectLayout from 'layouts/ConnectLayout';
 import {
     Heading,
     Text,

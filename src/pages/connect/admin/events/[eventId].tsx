@@ -1,6 +1,6 @@
 import FullTable from '@/components/FullTable';
-import TimelineEvent from '@/components/landing/TimelineEvent';
-import ConnectLayout from '@/components/layouts/ConnectLayout';
+import TimelineEvent from '@/components/events/TimelineEvent';
+import ConnectLayout from 'layouts/ConnectLayout';
 import { FocusableElement } from "@chakra-ui/utils";
 import {
     AlertDialog,

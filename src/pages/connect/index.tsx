@@ -1,5 +1,5 @@
-import ConnectLayout from '@/components/layouts/ConnectLayout';
-import PageLink from '@/components/nav/PageLink';
+import ConnectLayout from 'layouts/ConnectLayout';
+import PageLink from '@/components/navigation/PageLink';
 import {
     Box,
     Heading

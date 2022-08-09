@@ -1,6 +1,6 @@
-import LogInForm from '@/components/forms/logInForm';
-import LoginLayout from '@/components/layouts/LoginLayout';
-import PageLink from '@/components/nav/PageLink';
+import LogInForm from '@/components/forms/LoginForm';
+import LoginLayout from 'layouts/LoginLayout';
+import PageLink from '@/components/navigation/PageLink';
 import { Alert, AlertIcon, Box, Heading, VStack } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';

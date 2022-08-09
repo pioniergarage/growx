@@ -15,7 +15,7 @@ export interface FaqType {
     answer: string;
 }
 
-export default function Faqs({ faqs }: { faqs: FaqType[] }) {
+export default function FaqList({ faqs }: { faqs: FaqType[] }) {
     return (
         <VStack alignItems={{ base: 'center', md: 'stretch' }}>
             <Heading size="lg">FAQs</Heading>

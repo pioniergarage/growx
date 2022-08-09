@@ -1,5 +1,5 @@
 import MainInfoBlock from '@/components/landing/MainInfoBlock';
-import Timeline from '@/components/landing/Timeline';
+import Timeline from '@/components/landing/ShortTimeline';
 import MotivationBlock from '@/components/landing/MotivationBlock';
 import WaitingForBlock from '@/components/landing/WaitingForBlock';
 import PartnerBlock from '@/components/landing/PartnerBlock';
@@ -7,8 +7,8 @@ import { supabaseClient as supabase } from '@supabase/auth-helpers-nextjs';
 import { GrowEvent, GrowEventDto, Sponsor } from 'types';
 import { PropsWithChildren } from 'react';
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
-import Faqs, { FaqType } from '@/components/landing/faq';
-import LongTimeline from '@/components/landing/LongTimeline';
+import Faqs, { FaqType } from '@/components/landing/FaqList';
+import LongTimeline from '@/components/landing/Timeline';
 
 export async function getStaticProps() {
     const { data: sponsors, error: sponsorError } = await supabase

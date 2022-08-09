@@ -1,3 +1,4 @@
+import UserAvatar from '@/components/avatar/UserAvatar';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import {
     Box,
@@ -20,14 +21,16 @@ import { useRouter } from 'next/router';
 import { PropsWithChildren } from 'react';
 import { FaUser, FaSignOutAlt } from 'react-icons/fa';
 import { UserRole } from 'types';
-import AnimatedLogo from '../landing/AnimatedLogo';
-import AvatarWrapper from '../nav/avatarWrapper';
-import { Logo } from '../nav/Nav';
+import AnimatedLogo from '../components/landing/AnimatedLogo';
+import { Logo } from '../components/navigation/Nav';
 
-const Countdown = dynamic(import('../landing/Countdown'), { ssr: false });
+const Countdown = dynamic(import('../components/landing/Countdown'), {
+    ssr: false,
+});
 
 function ConnectHeader({ role }: { role: UserRole }) {
     const router = useRouter();
+    const { profile } = useProfile();
 
     async function handleLogout() {
         await supabaseClient.auth.signOut();
@@ -63,7 +66,7 @@ function ConnectHeader({ role }: { role: UserRole }) {
                             isRound={true}
                             as={IconButton}
                             size="lg"
-                            icon={<AvatarWrapper />}
+                            icon={<UserAvatar profile={profile} />}
                         />
                         <MenuList>
                             <MenuItem
@@ -96,7 +99,9 @@ function ConnectHeader({ role }: { role: UserRole }) {
                             <MenuItem onClick={() => router.push('/connect')}>
                                 Home
                             </MenuItem>
-                            <MenuItem onClick={() => router.push('/connect/events')}>
+                            <MenuItem
+                                onClick={() => router.push('/connect/events')}
+                            >
                                 Events
                             </MenuItem>
                             <MenuItem

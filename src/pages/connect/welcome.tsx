@@ -1,4 +1,4 @@
-import ConnectLayout from '@/components/layouts/ConnectLayout';
+import ConnectLayout from 'layouts/ConnectLayout';
 import { Box, Heading, Text } from '@chakra-ui/react';
 import { NextPageWithLayout } from 'types';
 

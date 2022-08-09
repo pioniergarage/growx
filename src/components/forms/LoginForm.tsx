@@ -18,7 +18,7 @@ type LoginFormProps = {
     loading: boolean;
 };
 
-const LogInForm = (props: LoginFormProps) => {
+const LoginForm = (props: LoginFormProps) => {
     const formik = useFormik({
         initialValues: {
             email: '', password: ''
@@ -58,4 +58,4 @@ const LogInForm = (props: LoginFormProps) => {
         </form>
     );
 };
-export default LogInForm;
+export default LoginForm;

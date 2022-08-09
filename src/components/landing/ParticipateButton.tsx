@@ -1,5 +1,5 @@
 import { BoxProps, Box } from '@chakra-ui/react';
-import PageLink from '../nav/PageLink';
+import PageLink from '../navigation/PageLink';
 
 export default function ParticipateButton(props: BoxProps) {
     return (

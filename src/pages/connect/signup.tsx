@@ -1,8 +1,8 @@
 import ParticipateForm, {
     ParticipateInfo,
-} from '@/components/forms/participateForm';
-import LoginLayout from '@/components/layouts/LoginLayout';
-import PageLink from '@/components/nav/PageLink';
+} from '@/components/forms/ParticipateForm';
+import LoginLayout from 'layouts/LoginLayout';
+import PageLink from '@/components/navigation/PageLink';
 import { VStack, Heading, Alert, AlertIcon, Box } from '@chakra-ui/react';
 import { supabaseClient, User } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';

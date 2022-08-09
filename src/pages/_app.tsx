@@ -4,7 +4,7 @@ import '@fontsource/open-sans/500.css';
 import '@fontsource/open-sans/800.css';
 
 import type { AppProps } from 'next/app';
-import Layout from 'components/layouts/Layout';
+import Layout from 'layouts/Layout';
 import { ChakraProvider } from '@chakra-ui/react';
 import theme from 'styles/theme';
 import { NextPageWithLayout } from 'types';
