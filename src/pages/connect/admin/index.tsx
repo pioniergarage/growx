@@ -2,14 +2,9 @@ import FullTable from '@/components/FullTable';
 import ConnectLayout from '@/components/layouts/ConnectLayout';
 import {
     Heading,
-    HStack,
-    Box,
     Text,
     useToast,
     VStack,
-    StackDivider,
-    Flex,
-    Wrap,
     LinkBox,
     LinkOverlay,
     Button,
@@ -40,7 +35,7 @@ function Profiles() {
                 setProfiles(data);
             }
         })();
-    }, []);
+    }, [toast]);
     return <FullTable values={profiles} idProp="user_id" heading="Profiles" />;
 }
 
@@ -67,7 +62,7 @@ function Events() {
                 setEvents(data.map((e) => ({ ...e, date: new Date(e.date) })));
             }
         })();
-    }, []);
+    }, [toast]);
 
     async function createNewEvent() {
         const { error, data } = await supabaseClient

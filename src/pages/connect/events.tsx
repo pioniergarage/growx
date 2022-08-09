@@ -1,10 +1,8 @@
 import ConnectLayout from '@/components/layouts/ConnectLayout';
-import PageLink from '@/components/nav/PageLink';
 import {
     Box,
     Button,
     Flex,
-    Grid,
     Heading,
     HStack,
     Tag,
