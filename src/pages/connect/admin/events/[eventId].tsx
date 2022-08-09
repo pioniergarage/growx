@@ -1,6 +1,7 @@
 import FullTable from '@/components/FullTable';
 import TimelineEvent from '@/components/landing/TimelineEvent';
 import ConnectLayout from '@/components/layouts/ConnectLayout';
+import { FocusableElement } from "@chakra-ui/utils";
 import {
     AlertDialog,
     AlertDialogBody,
@@ -120,7 +121,7 @@ function EventForm({
     });
 
     const { isOpen, onOpen: openDialog, onClose } = useDisclosure();
-    const cancelRef = useRef();
+    const cancelRef = useRef<FocusableElement&HTMLButtonElement>(null);
 
     return (
         <form onSubmit={formik.handleSubmit}>
@@ -283,7 +284,7 @@ function Registrations({ eventId = 1 }) {
                 setRegistrations(registrations);
             }
         })();
-    }, []);
+    }, [eventId]);
     return (
         <>
             <FullTable
@@ -325,7 +326,7 @@ const EventDetails: NextPageWithLayout = () => {
             }
             setLoading(false);
         })();
-    }, []);
+    }, [eventId, toast]);
 
     async function saveEvent(patch: Partial<GrowEvent>) {
         if (!event) return;
