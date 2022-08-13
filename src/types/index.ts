@@ -6,7 +6,13 @@ export type Sponsor = {
     logo: string;
     link: string;
     type: number;
+    id: number;
 };
+
+export function getSponsorType(sponsor: Sponsor) {
+    if (sponsor.type === 0) return 'GOLD'
+    else return 'SILVER'
+}
 
 export type ProfileDto = {
     user_id: string;

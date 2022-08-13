@@ -2,17 +2,24 @@ import FullTable from '@/components/FullTable';
 import ConnectLayout from 'layouts/ConnectLayout';
 import {
     Heading,
-    Text,
     useToast,
     VStack,
-    LinkBox,
-    LinkOverlay,
     Button,
+    TableContainer,
+    Link,
+    Table,
+    Tbody,
+    Td,
+    Th,
+    Thead,
+    Tr,
+    Divider,
 } from '@chakra-ui/react';
 import { supabaseClient, withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { GrowEvent, GrowEventDto, NextPageWithLayout, ProfileDto } from 'types';
+import PartnerAdmin from '@/components/partners/PartnerAdmin';
 
 function Profiles() {
     const toast = useToast();
@@ -84,21 +91,25 @@ function Events() {
             <Heading size="md" as="h3">
                 Events
             </Heading>
-            <VStack alignItems="start">
-                {events.map((event) => (
-                    <LinkBox key={event.id} p={2} borderWidth={1} fontSize="sm">
-                        <Text>{event.date.toDateString()}</Text>
-                        <Heading size="sm">
-                            <LinkOverlay
-                                href={`/connect/admin/events/${event.id}`}
-                            >
-                                {event.title}
-                            </LinkOverlay>
-                        </Heading>
-                        <Text>{event.description}</Text>
-                    </LinkBox>
-                ))}
-            </VStack>
+            
+            <TableContainer>
+                <Table size="sm">
+                    <Thead>
+                        <Tr>
+                            <Th>Date</Th>
+                            <Th>Title</Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        {events.map((event) => (
+                            <Tr key={event.id}>
+                                <Td>{event.date.toISOString()}</Td>
+                                <Td><Link href={'/connect/admin/events/'+event.id}>{event.title}</Link></Td>
+                            </Tr>
+                        ))}
+                    </Tbody>
+                </Table>
+            </TableContainer>
             <Button onClick={createNewEvent}>New Event</Button>
         </VStack>
     );
@@ -106,10 +117,13 @@ function Events() {
 
 const AdminPage: NextPageWithLayout = () => {
     return (
-        <VStack maxW="container.lg" alignItems="stretch" gap={4}>
+        <VStack maxW="container.lg" alignItems="stretch" gap={4} mb={4}>
             <Heading>Admin</Heading>
             <Profiles />
+            <Divider />
             <Events />
+            <Divider />
+            <PartnerAdmin />
         </VStack>
     );
 };
