@@ -137,7 +137,7 @@ export default function PartnerAdmin() {
                 isOpen={modalOpen}
                 initialValue={sponsorOnEdit}
                 onClose={() => setModalOpen(false)}
-                onSave={saveSponsor}
+                onSave={(s) => saveSponsor(s as Sponsor)}
                 onDelete={deleteSponsor}
             />
             <Button onClick={createNewSponsor}>New Sponsor</Button>
