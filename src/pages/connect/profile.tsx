@@ -9,14 +9,14 @@ import {
     useToast,
     Skeleton
 } from '@chakra-ui/react';
-import { supabaseClient, withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useProfile } from 'hooks/profile';
 import { ChangeEvent, useMemo, useRef, useState } from 'react';
 import { NextPageWithLayout, Profile } from 'types';
 import LazySpinner from '@/components/profile/LazySpinner';
 import ProfileForm from '@/components/profile/ProfileForm';
-import resizeImage from 'utils/resize';
 import UserAvatar from '@/components/avatar/UserAvatar';
+import { uploadUserAvatar } from 'api';
 
 function ProfileView() {
     return (
@@ -65,17 +65,13 @@ function AvatarControl() {
     const toast = useToast();
     const uploadRef = useRef<HTMLInputElement>(null);
     async function uploadAvatar(event: ChangeEvent<HTMLInputElement>) {
+        if (!profile) return
         if (!event.target.files || event.target.files.length === 0) {
             throw new Error('You must select an image to upload.');
         }
         setLoading(true);
         const file = event.target.files[0];
-        const fileName = `${profile?.user_id}.jpg`;
-        const filePath = `${fileName}`;
-        const resizedImage = await resizeImage(file, 200, 200);
-        const { error: uploadError } = await supabaseClient.storage
-            .from('avatars')
-            .upload(filePath, resizedImage, { upsert: true });
+        const {error: uploadError} = await uploadUserAvatar(profile, file)
         setLoading(false);
         if (uploadError) {
             console.error(uploadError.message);
