@@ -51,7 +51,7 @@ function Section({
 export default function Home({
     sponsors,
     faqs,
-    events
+    events,
 }: {
     sponsors: Sponsor[];
     faqs: FaqType[];
@@ -118,7 +118,7 @@ export default function Home({
                 <Faqs faqs={faqs} />
             </Section>
 
-            <Section mt={6} >
+            <Section mt={6}>
                 <PartnerBlock sponsors={sponsors} />
             </Section>
         </>

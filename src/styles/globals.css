@@ -20,3 +20,8 @@ main {
 .vertical-line {
     border-left: 2px solid hsl(var(--bc));
 }
+
+.chakra-divider {
+    margin-top: 4em !important;
+    margin-bottom: 4em !important;
+}

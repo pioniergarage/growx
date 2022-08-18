@@ -47,14 +47,14 @@ function TimelineItem({
 export default function ShortTimeline() {
     const events: Item[] = [
         {
-            date: '10. Nov 22',
+            date: '05. Nov 22', // date is fix
             title: 'Kickoff Event',
             description: `Pitch your idea, find a team or simply learn more about the contest. 
             The kickoff is where the fun starts, no matter whether you have already applied or you're up for a spontaneous adventure. `,
             image: 'notes.jpg',
         },
         {
-            date: '14. Dec 22',
+            date: '14. Dec 22', // Date not fix. KW 50 2022 -> 12.12.22 until 18.12.2022
             title: 'Midterm Pitch',
             description: `Half time break! Teams pitch their first progress and fight about advancing to the final. 
             Pitch what you've accomplished in the last 5 weeks in front of a small audience and the jury. `,
@@ -62,7 +62,7 @@ export default function ShortTimeline() {
             objectPosition: '0 0',
         },
         {
-            date: '10. Jan 23',
+            date: '21. Jan 23', // date is fix
             title: 'Finale',
             description: `Present your results to a huge crowd and show how far you have come. 
             Each participant will have learned a lot and gained a lot of experience by this point. 
@@ -75,7 +75,7 @@ export default function ShortTimeline() {
             <Heading size="lg" textAlign="center">
                 From idea to prototype in 11 weeks
             </Heading>
-            <SimpleGrid columns={[1, 1, 1, 3]} gap={4} width='100%'>
+            <SimpleGrid columns={[1, 1, 1, 3]} gap={4} width="100%">
                 {events.map((event) => (
                     <TimelineItem {...event} key={event.title} />
                 ))}

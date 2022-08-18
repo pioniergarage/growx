@@ -8,7 +8,9 @@ const Countdown = dynamic(import('./Countdown'), { ssr: false });
 function Fact({ amount, title }: { amount: string; title: string }) {
     return (
         <Box>
-            <Heading lineHeight='8' size="xl">{amount}</Heading>
+            <Heading lineHeight="8" size="xl">
+                {amount}
+            </Heading>
             <Text>{title}</Text>
         </Box>
     );
@@ -29,10 +31,7 @@ export default function MainInfoBlock() {
                 textAlign="center"
                 rowSpan={2}
             >
-                <AnimatedLogo
-                    fill="whiteAlpha.900"
-                    boxSize={300}
-                />
+                <AnimatedLogo fill="whiteAlpha.900" boxSize={300} />
                 <Countdown />
             </GridItem>
             <GridItem className="md:order-1">
@@ -67,7 +66,7 @@ export default function MainInfoBlock() {
                 w="100%"
             >
                 <Fact title="startups" amount="50+" />
-                <Fact title="prizes" amount="50 000€" />
+                <Fact title="prizes" amount="20 000€" />
                 <Fact title="workshops" amount="11" />
             </GridItem>
         </Grid>
