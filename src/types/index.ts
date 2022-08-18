@@ -1,5 +1,5 @@
-import { NextPage } from "next";
-import { ReactElement, ReactNode } from "react";
+import { NextPage } from 'next';
+import { ReactElement, ReactNode } from 'react';
 
 export type Sponsor = {
     name: string;
@@ -10,8 +10,8 @@ export type Sponsor = {
 };
 
 export function getSponsorType(sponsor: Sponsor) {
-    if (sponsor.type === 0) return 'GOLD'
-    else return 'SILVER'
+    if (sponsor.type === 0) return 'GOLD';
+    else return 'SILVER';
 }
 
 export type ProfileDto = {
@@ -24,21 +24,21 @@ export type ProfileDto = {
     studies: string;
     university: string;
     homeland: string;
-}
+};
 
-export type UserRole = "admin" | undefined
+export type UserRole = 'admin' | undefined;
 
 export type Profile = Omit<ProfileDto, 'first_name' | 'last_name'> & {
     firstName: string;
     lastName: string;
     role: UserRole;
-}
+};
 
 export type NextPageWithLayout = NextPage & {
     getLayout?: (page: ReactElement) => ReactNode;
 };
 
-export type Consumer<T> = (value: T) => void
+export type Consumer<T> = (value: T) => void;
 
 export type GrowEventDto = {
     id: number;
@@ -47,6 +47,14 @@ export type GrowEventDto = {
     description: string;
     online?: boolean;
     mandatory?: boolean;
-}
+    location?: string;
+    type_id?: number;
+    sq_mandatory?: boolean;
+};
 
-export type GrowEvent = Omit<GrowEventDto, "date"> & { date: Date }
+export type EventTypeDto = {
+    id: number;
+    type: string;
+};
+
+export type GrowEvent = Omit<GrowEventDto, 'date'> & { date: Date };
