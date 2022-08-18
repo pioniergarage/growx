@@ -36,6 +36,7 @@ export default function TimelineEvent(event: GrowEvent) {
                     {event.online ? <Tag>Online</Tag> : <></>}
                     {event.mandatory ? <Tag>Mandatory</Tag> : <></>}^
                     {event.location ? <Tag>{event.location}</Tag> : undefined}
+                    {event.type_id? <Tag>{}</>}
                 </HStack>
             </Flex>
         </HStack>
