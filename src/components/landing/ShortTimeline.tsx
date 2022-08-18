@@ -1,4 +1,4 @@
-import { Box, Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { Box, Heading, SimpleGrid, Tag, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 
 type Item = {
@@ -33,9 +33,10 @@ function TimelineItem({
                     bottom={0}
                     left={0}
                     p={6}
-                    bgGradient="linear(to-t, #000000bb 0%, #00000000 100%)"
+                    pt={14}
+                    bgGradient="linear(to-t, #000000cc 30%, #00000000 100%)"
                 >
-                    <Text variant="info">{date}</Text>
+                    <Tag bgColor='blackAlpha.600' mb={2}>{date}</Tag>
                     <Heading size="md">{title}</Heading>
                     <Text mt={2}>{description}</Text>
                 </Box>
