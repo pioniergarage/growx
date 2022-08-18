@@ -1,14 +1,16 @@
 import { Avatar, AvatarProps, SkeletonCircle } from '@chakra-ui/react';
-import { fetchUserAvatar } from 'api';
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useEffect, useState } from 'react';
 import { Profile } from 'types';
 
 const UserAvatar = ({ profile, ...rest }: { profile?: Profile } & AvatarProps) => {
     const [avatarUrl, setAvatarUrl] = useState("");
     useEffect(() => {
+        if (!profile) return
         async function downloadAvatar() {
-            if (!profile) return
-            const { data, error } = await fetchUserAvatar(profile.user_id)
+            const { data, error } = await supabaseClient.storage
+                .from('avatars')
+                .download(`${profile?.user_id}.jpg`);
             if (error) {
                 console.error(error.message);
             }

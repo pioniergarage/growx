@@ -9,8 +9,8 @@ import {
     Tag,
     Text,
 } from '@chakra-ui/react';
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
-import { registerUser, unregisterUser } from 'api';
 import { useState, useMemo } from 'react';
 import { GrowEvent } from 'types';
 
@@ -34,8 +34,9 @@ export default function GrowEventCard({
     const over = new Date() > new Date(event.date);
 
     async function register() {
-        if (!user) return
-        const { error } = await registerUser(user?.id, event.id)
+        const { error } = await supabaseClient
+            .from('registrations')
+            .insert({ user_id: user?.id, event_id: event.id });
         if (error) {
             toast({
                 title: 'Something went wrong...',
@@ -55,8 +56,10 @@ export default function GrowEventCard({
     }
 
     async function withdrawRegistration() {
-        if (!user) return 
-        const { error } = await unregisterUser(user.id, event.id)
+        const { error } = await supabaseClient
+            .from('registrations')
+            .delete()
+            .match({ event_id: event.id, user_id: user?.id });
         if (error) {
             toast({
                 title: 'Something went wrong...',

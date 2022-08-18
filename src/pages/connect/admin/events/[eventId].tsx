@@ -25,12 +25,11 @@ import {
     useToast,
     VStack,
 } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { supabaseClient, withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
-import { GrowEvent, NextPageWithLayout, ProfileDto } from 'types';
-import { deleteEvent, getEvent, getRegistrationsTo, updateEvent } from 'api';
+import { GrowEvent, GrowEventDto, NextPageWithLayout, ProfileDto } from 'types';
 
 type EventFormType = Pick<
     GrowEvent,
@@ -265,9 +264,24 @@ function Registrations({ eventId = 1 }) {
 
     useEffect(() => {
         (async () => {
-            const {data} = await getRegistrationsTo(eventId)
+            const { data } = await supabaseClient
+                .from('registrations')
+                .select(
+                    `
+                    profiles (
+                        first_name,
+                        last_name,
+                        email,
+                        user_id
+                    )
+                `
+                )
+                .match({ event_id: eventId });
             if (data) {
-                setRegistrations(data);
+                const registrations = data.map(
+                    (d) => d.profiles
+                ) as ShortProfile[];
+                setRegistrations(registrations);
             }
         })();
     }, [eventId]);
@@ -293,7 +307,11 @@ const EventDetails: NextPageWithLayout = () => {
     useEffect(() => {
         (async () => {
             setLoading(true);
-            const { data, error } = await getEvent(eventId)
+            const { data, error } = await supabaseClient
+                .from<GrowEventDto>('events')
+                .select('*')
+                .match({ id: eventId })
+                .single();
             if (data) {
                 setEvent({ ...data, date: new Date(data.date) });
                 setOriginalEvent({ ...data, date: new Date(data.date) });
@@ -313,7 +331,10 @@ const EventDetails: NextPageWithLayout = () => {
     async function saveEvent(patch: Partial<GrowEvent>) {
         if (!event) return;
         setLoading(true);
-        const { error } = await updateEvent(event.id, patch)
+        const { error } = await supabaseClient
+            .from<GrowEvent>('events')
+            .update(patch)
+            .match({ id: event.id });
         if (error) {
             toast({
                 title: error.message,
@@ -332,9 +353,12 @@ const EventDetails: NextPageWithLayout = () => {
         setLoading(false);
     }
 
-    async function handleDeleteEvent() {
+    async function deleteEvent() {
         setLoading(true);
-        const { error } = await deleteEvent(eventId)
+        const { error } = await supabaseClient
+            .from<GrowEvent>('events')
+            .delete({ returning: 'minimal' })
+            .match({ id: eventId });
         if (error) {
             toast({
                 title: error.message,
@@ -365,7 +389,7 @@ const EventDetails: NextPageWithLayout = () => {
                         }
                         initialValue={originalEvent}
                         loading={loading}
-                        onDelete={handleDeleteEvent}
+                        onDelete={deleteEvent}
                     />
                     <Divider />
                     <Registrations eventId={event.id} />

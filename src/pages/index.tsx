@@ -4,7 +4,7 @@ import MotivationBlock from '@/components/landing/MotivationBlock';
 import WaitingForBlock from '@/components/landing/WaitingForBlock';
 import PartnerBlock from '@/components/landing/PartnerBlock';
 import { supabaseClient as supabase } from '@supabase/auth-helpers-nextjs';
-import { EventTypeDto, GrowEvent, GrowEventDto, Sponsor } from 'types';
+import { EventType, GrowEvent, GrowEventDto, Sponsor } from 'types';
 import { PropsWithChildren } from 'react';
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
 import Faqs, { FaqType } from '@/components/landing/FaqList';
@@ -19,12 +19,11 @@ export async function getStaticProps() {
         .select('*');
     const { data: events, error: eventsError } = await supabase
         .from<GrowEventDto>('events')
-        .jo.select('*')
+        .select('*')
         .order('date');
-    /* const { data: event_types, error: event_typeError } = await supabase
-        .from<EventTypeDto>('event_types')
+    const { data: event_types, error: event_typeError } = await supabase
+        .from<EventType>('event_types')
         .select('*');
-        */
     if (sponsorError) {
         throw Error(sponsorError.message);
     }

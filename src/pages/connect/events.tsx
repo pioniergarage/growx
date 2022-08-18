@@ -4,12 +4,11 @@ import {
     Heading,
     VStack,
 } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { supabaseClient, withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useProfile } from 'hooks/profile';
 import { useEffect, useState } from 'react';
-import { GrowEvent, NextPageWithLayout } from 'types';
+import { GrowEvent, GrowEventDto, NextPageWithLayout } from 'types';
 import GrowEventCard from '@/components/events/GrowEventCard';
-import { getEvents, getRegistrationsOfUser } from 'api';
 
 
 const EventsPage: NextPageWithLayout = () => {
@@ -21,8 +20,14 @@ const EventsPage: NextPageWithLayout = () => {
     useEffect(() => {
         (async () => {
             if (!profile) return;
-            const { data } = await getEvents()
-            const { data: registered } = await getRegistrationsOfUser(profile.user_id)
+            const { data } = await supabaseClient
+                .from<GrowEventDto>('events')
+                .select('*')
+                .order('date');
+            const { data: registered } = await supabaseClient
+                .from<{ user_id: string; event_id: number }>('registrations')
+                .select('event_id')
+                .match({ user_id: profile?.user_id });
             if (registered) {
                 setRegisteredTo(registered.map((r) => r.event_id));
             }

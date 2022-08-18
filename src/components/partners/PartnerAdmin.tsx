@@ -12,7 +12,7 @@ import {
     Link,
     IconButton,
 } from '@chakra-ui/react';
-import { getSponsors, upsertSponsor, deleteSponsor } from 'api';
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useEffect, useState } from 'react';
 import { FaPen } from 'react-icons/fa';
 import { getSponsorType, Sponsor } from 'types';
@@ -32,7 +32,9 @@ export default function PartnerAdmin() {
 
     useEffect(() => {
         (async () => {
-            const { data, error } = await getSponsors()
+            const { data, error } = await supabaseClient
+                .from<Sponsor>('sponsors')
+                .select('*');
             if (error) {
                 console.error(error.message);
             } else if (data) {
@@ -51,9 +53,12 @@ export default function PartnerAdmin() {
         setModalOpen(true);
     }
 
-    async function onDeleteSponsor() {
+    async function deleteSponsor() {
         if (sponsorOnEdit.id) {
-            await deleteSponsor(sponsorOnEdit.id)
+            await supabaseClient
+                .from('sponsors')
+                .delete()
+                .match({ id: sponsorOnEdit.id });
             setSponsors(sponsors.filter((s) => s.id !== sponsorOnEdit.id));
         }
         setModalOpen(false);
@@ -61,8 +66,11 @@ export default function PartnerAdmin() {
 
     async function saveSponsor(sponsor: Sponsor) {
         const sponsorToUpdate = sponsors.find((s) => s.name === sponsor.name);
-        if (!sponsorToUpdate) return;
-        const { data, error } = await upsertSponsor({...sponsor, id: sponsorToUpdate?.id})
+        const { data, error } = await supabaseClient
+            .from<Sponsor>('sponsors')
+            .upsert(sponsor)
+            .match({ id: sponsorToUpdate?.id })
+            .single();
         if (error) {
             console.error(error);
         } else if (data) {
@@ -130,7 +138,7 @@ export default function PartnerAdmin() {
                 initialValue={sponsorOnEdit}
                 onClose={() => setModalOpen(false)}
                 onSave={(s) => saveSponsor(s as Sponsor)}
-                onDelete={onDeleteSponsor}
+                onDelete={deleteSponsor}
             />
             <Button onClick={createNewSponsor}>New Sponsor</Button>
         </VStack>

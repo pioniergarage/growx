@@ -1,8 +1,8 @@
 import {
   withApiAuth,
+  supabaseClient,
   getUser,
 } from '@supabase/auth-helpers-nextjs';
-import { getProfile } from 'api';
 import { NextApiRequest } from 'next';
 import { ProfileDto } from 'types';
 import { getServiceSupabase } from 'utils/serviceSupabase';
@@ -12,12 +12,16 @@ const supabaseService = getServiceSupabase()
 
 async function isAdmin(userId: string | undefined) {
   if (!userId) return false;
-  const { data, error } = await getProfile(userId)
+  const { data, error } = await supabaseClient
+    .from('user_roles')
+    .select('role')
+    .eq('id', userId)
+    .single()
   if (error) {
     console.error(error.message);
     return false;
   }
-  return data.user_roles.includes({role: 'admin'});
+  return data['role'] === 'admin';
 }
 
 function parseBody<T>(req: NextApiRequest) {
