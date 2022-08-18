@@ -15,11 +15,12 @@ import {
     Tr,
     Divider,
 } from '@chakra-ui/react';
-import { supabaseClient, withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { GrowEvent, GrowEventDto, NextPageWithLayout, ProfileDto } from 'types';
+import { GrowEvent, NextPageWithLayout, ProfileDto } from 'types';
 import PartnerAdmin from '@/components/partners/PartnerAdmin';
+import { createEvent, getEvents, getProfiles } from 'api';
 
 function Profiles() {
     const toast = useToast();
@@ -27,9 +28,7 @@ function Profiles() {
 
     useEffect(() => {
         (async () => {
-            const { data, error } = await supabaseClient
-                .from<ProfileDto>('profiles')
-                .select('*');
+            const { data, error } = await getProfiles()
             if (error) {
                 toast({
                     title: error.message,
@@ -53,10 +52,7 @@ function Events() {
 
     useEffect(() => {
         (async () => {
-            const { data, error } = await supabaseClient
-                .from<GrowEventDto>('events')
-                .select('*')
-                .order('date');
+            const { data, error } = await getEvents()
             if (error) {
                 toast({
                     title: error.message,
@@ -72,10 +68,7 @@ function Events() {
     }, [toast]);
 
     async function createNewEvent() {
-        const { error, data } = await supabaseClient
-            .from<GrowEvent>('events')
-            .insert({ title: 'New Event' })
-            .single();
+        const { error, data } = await createEvent({ title: 'New Event' })
         if (error) {
             toast({
                 title: error.message,
