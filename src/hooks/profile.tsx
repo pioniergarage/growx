@@ -1,5 +1,5 @@
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
+import { getProfile, updateProfile } from 'api';
 import {
     createContext,
     PropsWithChildren,
@@ -7,7 +7,7 @@ import {
     useEffect,
     useState,
 } from 'react';
-import { Profile, ProfileDto, UserRole } from 'types';
+import { Profile, ProfileDto } from 'types';
 
 const ProfileContext = createContext<{
     profile?: Profile;
@@ -26,20 +26,7 @@ export function ProfileProvider({ children }: PropsWithChildren) {
         async function fetchProfile() {
             setLoading(true);
             if (!user) return;
-            const { data, error } = await supabaseClient
-                .from<ProfileDto & { user_roles: { role: UserRole }[] }>(
-                    'profiles'
-                )
-                .select(
-                    `
-                    *,
-                    user_roles (
-                        role
-                    )
-                `
-                )
-                .eq('user_id', user.id)
-                .single();
+            const { data, error } = await getProfile(user.id)
             if (error) {
                 setError(error.message);
             } else {
@@ -70,10 +57,7 @@ export function ProfileProvider({ children }: PropsWithChildren) {
             homeland: profile.homeland,
             university: profile.university
         }
-        const { error } = await supabaseClient
-            .from<ProfileDto>('profiles')
-            .update(dto, { returning: 'minimal' })
-            .eq('user_id', user?.id || '');
+        const { error } = await updateProfile(user?.id || '', dto)
         if (!error) {
             setProfile(profile);
         }

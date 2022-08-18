@@ -3,24 +3,17 @@ import Timeline from '@/components/landing/ShortTimeline';
 import MotivationBlock from '@/components/landing/MotivationBlock';
 import WaitingForBlock from '@/components/landing/WaitingForBlock';
 import PartnerBlock from '@/components/landing/PartnerBlock';
-import { supabaseClient as supabase } from '@supabase/auth-helpers-nextjs';
-import { GrowEvent, GrowEventDto, Sponsor } from 'types';
 import { PropsWithChildren } from 'react';
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
 import Faqs, { FaqType } from '@/components/landing/FaqList';
 import LongTimeline from '@/components/landing/Timeline';
+import { getEvents, getFAQs, getSponsors } from 'api';
+import { Sponsor, GrowEvent } from 'types';
 
 export async function getStaticProps() {
-    const { data: sponsors, error: sponsorError } = await supabase
-        .from('sponsors')
-        .select('*');
-    const { data: faqs, error: faqError } = await supabase
-        .from('faqs')
-        .select('*');
-    const { data: events, error: eventsError } = await supabase
-        .from<GrowEventDto>('events')
-        .select('*')
-        .order('date');
+    const { data: sponsors, error: sponsorError } = await getSponsors()
+    const { data: faqs, error: faqError } = await getFAQs()
+    const { data: events, error: eventsError } = await getEvents()
     if (sponsorError) {
         throw Error(sponsorError.message);
     }
