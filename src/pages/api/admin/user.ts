@@ -3,8 +3,8 @@ import {
   getUser,
 } from '@supabase/auth-helpers-nextjs';
 import { getProfile } from 'api';
+import { definitions } from 'api/supabase';
 import { NextApiRequest } from 'next';
-import { ProfileDto } from 'types';
 import { getServiceSupabase } from 'utils/serviceSupabase';
 
 const supabaseService = getServiceSupabase()
@@ -17,7 +17,7 @@ async function isAdmin(userId: string | undefined) {
     console.error(error.message);
     return false;
   }
-  return data.user_roles.includes({role: 'admin'});
+  return data?.role === "admin"
 }
 
 function parseBody<T>(req: NextApiRequest) {
@@ -32,7 +32,7 @@ function parseBody<T>(req: NextApiRequest) {
 }
 
 async function deleteProfile(user_id: string) {
-  const result = await supabaseService.from<ProfileDto>('profiles').delete({returning: "representation"}).match({user_id})
+  const result = await supabaseService.from<definitions["profiles"]>('profiles').delete({returning: "representation"}).match({user_id})
   if (result.error) throw { code: result.error.code, message: result.error.message }
   return result
 }

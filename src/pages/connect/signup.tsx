@@ -7,8 +7,8 @@ import { VStack, Heading, Alert, AlertIcon, Box } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { NextPageWithLayout } from 'types';
 import { updateProfile } from 'api';
+import { NextPageWithLayout } from 'utils/types';
 
 const SignUp: NextPageWithLayout = () => {
     const [loading, setLoading] = useState(false);
@@ -36,17 +36,7 @@ const SignUp: NextPageWithLayout = () => {
     async function onSignUp(info: ParticipateInfo) {
         setLoading(true);
         await signUp(info)
-            .then(({user, info}) => updateProfile(user.id, {
-                first_name: info.firstName,
-                last_name: info.lastName,
-                gender: info.gender,
-                phone: info.phone,
-                studies: info.studies,
-                university: info.university,
-                homeland: info.homeland,
-                user_id: user.id,
-                email: info.email
-            }))
+            .then(({user, info}) => updateProfile(user.id, info))
             .then(() => router.replace('/connect/welcome'))
             .catch((error) => setSignUpError(String(error)));
         setLoading(false);

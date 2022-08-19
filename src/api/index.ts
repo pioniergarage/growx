@@ -1,10 +1,10 @@
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError, PostgrestResponse, PostgrestSingleResponse } from "@supabase/supabase-js";
-import { GrowEvent, Profile, Sponsor } from "model";
+import { GrowEvent, Profile, Sponsor, UserRole } from "model";
 import resizeImage from "utils/resize";
 import { definitions } from "./supabase";
 
-type SupabaseResponse<T> = { data: T } | { error: PostgrestError | null }
+type SupabaseResponse<T> = { data?: T, error?: PostgrestError | null }
 function mapResponse<DataIn, DataOut>(response: PostgrestResponse<DataIn>, mapper: (data: DataIn) => DataOut): SupabaseResponse<DataOut[]> {
     const { data, error } = response
     if (!data) {
@@ -52,10 +52,10 @@ export const getRegistrationsOfUser = async (user_id: string) => {
 
 export const getRegistrationsTo = async (event_id: number) => {
     const response = await supabaseClient
-        .from<{ profiles: definitions["profiles"] }>('registrations')
-        .select('profiles (*)')
+        .from<{ profiles: definitions["profiles"] & {user_roles: Pick<definitions["user_roles"], "role">} }>('registrations')
+        .select('profiles (*, user_roles (role))')
         .match({ event_id });
-    return mapResponse(response, d => d.profiles)
+    return mapResponse(response, d => mapProfileDto(d.profiles))
 }
 
 export async function getSponsors(): Promise<SupabaseResponse<Sponsor[]>> {
@@ -77,25 +77,30 @@ export const deleteSponsor = async (id: number) => await supabaseClient
     .delete()
     .match({ id });
 
+
+const mapProfileDto = (dto: definitions["profiles"] & {user_roles: Pick<definitions["user_roles"], "role">}): Profile => ({
+    userId: dto.user_id,
+    firstName: dto.first_name,
+    lastName: dto.last_name,
+    email: dto.email,
+    phone: dto.phone,
+    studies: dto.studies,
+    university: dto.university,
+    homeland: dto.homeland,
+    gender: dto.gender,
+    role: dto.user_roles.role as UserRole
+})
+
 export async function getProfile(user_id: string): Promise<SupabaseResponse<Profile>> {
     const response = await supabaseClient
-        .from<definitions["profiles"]>('profiles')
-        .select('*')
+        .from<definitions["profiles"] & {user_roles: Pick<definitions["user_roles"], "role">}>('profiles')
+        .select('*, user_roles (role)')
         .eq('user_id', user_id)
         .single();
-    return mapSingleResponse(response, dto => ({
-        userId: dto.user_id,
-        firstName: dto.first_name,
-        lastName: dto.last_name,
-        email: dto.email,
-        phone: dto.phone,
-        studies: dto.studies,
-        university: dto.university,
-        homeland: dto.homeland
-    }))
+    return mapSingleResponse(response, mapProfileDto)
 }
 
-export const updateProfile = async (userId: string, profile: Profile) => await supabaseClient
+export const updateProfile = async (userId: string, profile: Partial<Profile>) => await supabaseClient
     .from<definitions["profiles"]>('profiles')
     .update({
         first_name: profile.firstName,
@@ -104,13 +109,19 @@ export const updateProfile = async (userId: string, profile: Profile) => await s
         phone: profile.phone,
         studies: profile.studies,
         university: profile.university,
-        homeland: profile.homeland
+        homeland: profile.homeland,
+        gender: profile.gender
     }, { returning: 'minimal' })
     .eq('user_id', userId);
 
-export const getProfiles = async () => await supabaseClient
-    .from<definitions["profiles"]>('profiles')
-    .select('*');
+export const getProfiles = async (): Promise<SupabaseResponse<Profile[]>> => {
+    const response = await supabaseClient
+        .from<definitions["profiles"] & {user_roles: Pick<definitions["user_roles"], "role">}>('profiles')
+        .select('*, user_roles (role)');
+    return mapResponse(response, mapProfileDto)
+}
+
+
 
 export const getFAQs = async () => await supabaseClient
     .from<definitions["faqs"]>('faqs')
@@ -127,15 +138,11 @@ export const getEvent = async (eventId: number) => await supabaseClient
     .match({ id: eventId })
     .single();
 
-export const createEvent = async (growEvent: GrowEvent) => await supabaseClient
+export const createEvent = async () => await supabaseClient
     .from<definitions["events"]>('events')
     .insert({
-        title: growEvent.title,
-        date: growEvent.date.toISOString(),
-        description: growEvent.description,
-        mandatory: growEvent.mandatory,
-        location: growEvent.location,
-        sq_mandatory: growEvent.sq_mandatory
+        title: "New Event",
+        date: new Date().toISOString(),
     }, { returning: "minimal" })
     .single();
 
@@ -144,11 +151,11 @@ export const deleteEvent = async (eventId: number) => await supabaseClient
     .delete({ returning: 'minimal' })
     .match({ id: eventId });
 
-export const updateEvent = async (eventId: number, growEvent: GrowEvent) => await supabaseClient
+export const updateEvent = async (eventId: number, growEvent: Partial<GrowEvent>) => await supabaseClient
     .from<definitions["events"]>('events')
     .update({
         title: growEvent.title,
-        date: growEvent.date.toISOString(),
+        date: growEvent.date ? growEvent.date.toISOString() : undefined,
         description: growEvent.description,
         mandatory: growEvent.mandatory,
         location: growEvent.location,

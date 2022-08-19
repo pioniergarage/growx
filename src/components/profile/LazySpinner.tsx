@@ -1,6 +1,6 @@
 import { Box, Text } from '@chakra-ui/react';
 import { useProfile } from 'hooks/profile';
-import { Profile } from 'types';
+import { Profile } from 'model';
 
 export default function LazySpinner({
     property,

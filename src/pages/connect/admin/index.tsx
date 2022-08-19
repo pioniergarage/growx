@@ -18,13 +18,14 @@ import {
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { GrowEvent, NextPageWithLayout, ProfileDto } from 'types';
 import PartnerAdmin from '@/components/partners/PartnerAdmin';
 import { createEvent, getEvents, getProfiles } from 'api';
+import { GrowEvent, Profile } from 'model';
+import { NextPageWithLayout } from 'utils/types';
 
 function Profiles() {
     const toast = useToast();
-    const [profiles, setProfiles] = useState<ProfileDto[]>([]);
+    const [profiles, setProfiles] = useState<Profile[]>([]);
 
     useEffect(() => {
         (async () => {
@@ -42,7 +43,7 @@ function Profiles() {
             }
         })();
     }, [toast]);
-    return <FullTable values={profiles} idProp="user_id" heading="Profiles" />;
+    return <FullTable values={profiles} idProp="userId" heading="Profiles" />;
 }
 
 function Events() {
@@ -68,7 +69,7 @@ function Events() {
     }, [toast]);
 
     async function createNewEvent() {
-        const { error, data } = await createEvent({ title: 'New Event' })
+        const { error, data } = await createEvent()
         if (error) {
             toast({
                 title: error.message,

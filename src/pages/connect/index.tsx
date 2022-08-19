@@ -5,7 +5,7 @@ import {
     Heading
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { NextPageWithLayout } from 'types';
+import { NextPageWithLayout } from 'utils/types';
 
 
 

@@ -12,11 +12,12 @@ import {
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useProfile } from 'hooks/profile';
 import { ChangeEvent, useMemo, useRef, useState } from 'react';
-import { NextPageWithLayout, Profile } from 'types';
 import LazySpinner from '@/components/profile/LazySpinner';
 import ProfileForm from '@/components/profile/ProfileForm';
 import UserAvatar from '@/components/avatar/UserAvatar';
 import { uploadUserAvatar } from 'api';
+import { Profile } from 'model';
+import { NextPageWithLayout } from 'utils/types';
 
 function ProfileView() {
     return (

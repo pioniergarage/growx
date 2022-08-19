@@ -7,6 +7,8 @@ export type Profile = {
     studies: string;
     university: string;
     homeland: string;
+    gender: string;
+    role: UserRole
 }
 
 export type Sponsor = {
@@ -28,6 +30,6 @@ export type GrowEvent = {
     title: string;
     description: string;
     mandatory: boolean;
-    location: string;
-    sq_mandatory: boolean;
+    location?: string;
+    sq_mandatory?: boolean;
 }

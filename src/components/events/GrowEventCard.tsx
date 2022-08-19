@@ -12,7 +12,7 @@ import {
 import { useUser } from '@supabase/auth-helpers-react';
 import { registerUser, unregisterUser } from 'api';
 import { useState, useMemo } from 'react';
-import { GrowEvent } from 'types';
+import { GrowEvent } from 'model';
 
 type GrowEventCardProps = {
     event: GrowEvent;
@@ -117,7 +117,6 @@ export default function GrowEventCard({
                 <HStack>
                     <Heading size="md">{event.title}</Heading>
                     {event.mandatory ? <Tag>mandatory</Tag> : undefined}
-                    {event.online ? <Tag>online</Tag> : undefined}
                 </HStack>
                 <Text>{event.description}</Text>
                 {!over ? actionButton : undefined}

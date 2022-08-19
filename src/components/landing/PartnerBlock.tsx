@@ -1,5 +1,5 @@
 import { GridItem, Heading, Image, Link, SimpleGrid } from '@chakra-ui/react';
-import { Sponsor } from 'types';
+import { Sponsor } from 'model';
 
 function PartnerItem({ link: href, logo, name }: Partial<Sponsor>) {
     return (

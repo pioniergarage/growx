@@ -15,7 +15,7 @@ import {
 import { getSponsors, upsertSponsor, deleteSponsor } from 'api';
 import { useEffect, useState } from 'react';
 import { FaPen } from 'react-icons/fa';
-import { getSponsorType, Sponsor } from 'types';
+import { Sponsor } from 'model';
 import PartnerModal from './PartnerModal';
 
 export default function PartnerAdmin() {
@@ -116,7 +116,7 @@ export default function PartnerAdmin() {
                                 </Td>
                                 <Td>{sponsor.name}</Td>
                                 <Td>{image(sponsor)}</Td>
-                                <Td>{getSponsorType(sponsor)}</Td>
+                                <Td>{sponsor.type}</Td>
                                 <Td>
                                     <Link>{sponsor.link}</Link>
                                 </Td>

@@ -20,7 +20,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { PropsWithChildren } from 'react';
 import { FaUser, FaSignOutAlt } from 'react-icons/fa';
-import { UserRole } from 'types';
+import { UserRole } from 'model';
 import AnimatedLogo from '../components/landing/AnimatedLogo';
 import { Logo } from '../components/navigation/Nav';
 
