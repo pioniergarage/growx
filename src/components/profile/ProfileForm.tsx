@@ -1,6 +1,6 @@
 import { VStack, SimpleGrid, GridItem, FormControl, FormLabel, Input, FormErrorMessage, RadioGroup, HStack, Radio, Button } from "@chakra-ui/react";
 import { useFormik } from "formik";
-import { Consumer, Profile } from "types";
+import { Profile } from "model";
 
 export default function ProfileForm({
     onSave,
@@ -8,7 +8,7 @@ export default function ProfileForm({
     profile,
     onCancel,
 }: {
-    onSave: Consumer<Profile>;
+    onSave: (profile: Profile) => void;
     loading: boolean;
     profile: Profile;
     onCancel?: () => void;

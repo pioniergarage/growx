@@ -1,6 +1,6 @@
 import { HStack, VStack, Flex, Heading, Tag, Text } from '@chakra-ui/react';
 import { useMemo } from 'react';
-import { GrowEvent } from 'types';
+import { GrowEvent } from 'model';
 
 export default function TimelineEvent(event: GrowEvent) {
     const { day, month } = useMemo(() => {

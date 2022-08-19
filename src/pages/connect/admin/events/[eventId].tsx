@@ -1,7 +1,7 @@
 import FullTable from '@/components/FullTable';
 import TimelineEvent from '@/components/events/TimelineEvent';
 import ConnectLayout from 'layouts/ConnectLayout';
-import { FocusableElement } from "@chakra-ui/utils";
+import { FocusableElement } from '@chakra-ui/utils';
 import {
     AlertDialog,
     AlertDialogBody,
@@ -29,44 +29,30 @@ import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
-import { GrowEvent, NextPageWithLayout, ProfileDto } from 'types';
 import { deleteEvent, getEvent, getRegistrationsTo, updateEvent } from 'api';
+import { GrowEvent, Profile } from 'model';
+import { NextPageWithLayout } from 'utils/types';
 
-type EventFormType = Pick<
-    GrowEvent,
-    'title' | 'description' | 'online' | 'mandatory'
-> & {
+type EventFormType = Pick<GrowEvent, 'title' | 'description' | 'mandatory'> & {
     date: string;
     time: string;
 };
 
 type EventFormProps = {
-    onSubmit: (value: Omit<GrowEvent, 'id'>) => void;
+    onSubmit: (value: Omit<GrowEvent, 'id'>) => void | Promise<unknown>;
     onChange: (value: Omit<GrowEvent, 'id'>) => void;
     initialValue: GrowEvent;
     loading: boolean;
     onDelete: () => void;
 };
 
-function extractProperties<Input extends Output, Output>(
-    input: Input,
-    keys: Array<keyof Output>
-) {
-    const result: Partial<Input> = {};
-    for (const key of keys) {
-        result[key] = input[key];
-    }
-    return result as Output;
-}
-
 function formValueToGrowEvent(value: EventFormType): Omit<GrowEvent, 'id'> {
     const date = new Date(`${value.date}T${value.time}`);
     return {
-        ...extractProperties<EventFormType, Omit<GrowEvent, 'id' | 'date'>>(
-            value,
-            ['title', 'description', 'mandatory', 'online']
-        ),
         date,
+        title: value.title,
+        description: value.description,
+        mandatory: value.mandatory
     };
 }
 
@@ -122,7 +108,7 @@ function EventForm({
     });
 
     const { isOpen, onOpen: openDialog, onClose } = useDisclosure();
-    const cancelRef = useRef<FocusableElement&HTMLButtonElement>(null);
+    const cancelRef = useRef<FocusableElement & HTMLButtonElement>(null);
 
     return (
         <form onSubmit={formik.handleSubmit}>
@@ -174,14 +160,6 @@ function EventForm({
                         <Switch
                             id="mandatory"
                             isChecked={formik.values.mandatory}
-                            onChange={formik.handleChange}
-                        />
-                    </FormControl>
-                    <FormControl isDisabled={loading}>
-                        <FormLabel htmlFor="online">Online</FormLabel>
-                        <Switch
-                            id="online"
-                            isChecked={formik.values.online}
                             onChange={formik.handleChange}
                         />
                     </FormControl>
@@ -255,17 +233,12 @@ function EventForm({
     );
 }
 
-type ShortProfile = Pick<
-    ProfileDto,
-    'first_name' | 'last_name' | 'email' | 'user_id'
->;
-
 function Registrations({ eventId = 1 }) {
-    const [registrations, setRegistrations] = useState<ShortProfile[]>([]);
+    const [registrations, setRegistrations] = useState<Profile[]>([]);
 
     useEffect(() => {
         (async () => {
-            const {data} = await getRegistrationsTo(eventId)
+            const { data } = await getRegistrationsTo(eventId);
             if (data) {
                 setRegistrations(data);
             }
@@ -275,7 +248,7 @@ function Registrations({ eventId = 1 }) {
         <>
             <FullTable
                 values={registrations}
-                idProp="user_id"
+                idProp="userId"
                 heading="Registrations"
             />
         </>
@@ -293,7 +266,7 @@ const EventDetails: NextPageWithLayout = () => {
     useEffect(() => {
         (async () => {
             setLoading(true);
-            const { data, error } = await getEvent(eventId)
+            const { data, error } = await getEvent(eventId);
             if (data) {
                 setEvent({ ...data, date: new Date(data.date) });
                 setOriginalEvent({ ...data, date: new Date(data.date) });
@@ -313,7 +286,7 @@ const EventDetails: NextPageWithLayout = () => {
     async function saveEvent(patch: Partial<GrowEvent>) {
         if (!event) return;
         setLoading(true);
-        const { error } = await updateEvent(event.id, patch)
+        const { error } = await updateEvent(event.id, patch);
         if (error) {
             toast({
                 title: error.message,
@@ -334,7 +307,7 @@ const EventDetails: NextPageWithLayout = () => {
 
     async function handleDeleteEvent() {
         setLoading(true);
-        const { error } = await deleteEvent(eventId)
+        const { error } = await deleteEvent(eventId);
         if (error) {
             toast({
                 title: error.message,

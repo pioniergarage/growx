@@ -6,7 +6,7 @@ import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { NextPageWithLayout } from 'types';
+import { NextPageWithLayout } from 'utils/types';
 
 const LoginPage: NextPageWithLayout = () => {
     const [loginError, setLoginError] = useState('');

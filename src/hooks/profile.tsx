@@ -7,7 +7,7 @@ import {
     useEffect,
     useState,
 } from 'react';
-import { Profile, ProfileDto } from 'types';
+import { Profile } from 'model';
 
 const ProfileContext = createContext<{
     profile?: Profile;
@@ -30,14 +30,7 @@ export function ProfileProvider({ children }: PropsWithChildren) {
             if (error) {
                 setError(error.message);
             } else {
-                const { first_name, last_name, user_roles } = data;
-                setProfile({
-                    ...data,
-                    firstName: first_name,
-                    lastName: last_name,
-                    role:
-                        user_roles.length > 0 ? user_roles[0].role : undefined,
-                });
+                setProfile(data);
             }
             setLoading(false);
         }
@@ -46,18 +39,7 @@ export function ProfileProvider({ children }: PropsWithChildren) {
 
     async function update(profile: Profile) {
         setLoading(true);
-        const dto: ProfileDto = {
-            first_name: profile.firstName,
-            last_name: profile.lastName,
-            email: profile.email,
-            phone: profile.phone,
-            gender: profile.gender,
-            user_id: profile.user_id,
-            studies: profile.studies,
-            homeland: profile.homeland,
-            university: profile.university
-        }
-        const { error } = await updateProfile(user?.id || '', dto)
+        const { error } = await updateProfile(user?.id || '', profile)
         if (!error) {
             setProfile(profile);
         }

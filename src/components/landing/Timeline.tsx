@@ -1,5 +1,5 @@
 import { Heading, VStack } from '@chakra-ui/react';
-import { GrowEvent } from 'types';
+import { GrowEvent } from 'model';
 import TimelineEvent from '../events/TimelineEvent';
 
 

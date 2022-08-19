@@ -1,14 +1,14 @@
 import { Avatar, AvatarProps, SkeletonCircle } from '@chakra-ui/react';
 import { fetchUserAvatar } from 'api';
 import { useEffect, useState } from 'react';
-import { Profile } from 'types';
+import { Profile } from 'model';
 
 const UserAvatar = ({ profile, ...rest }: { profile?: Profile } & AvatarProps) => {
     const [avatarUrl, setAvatarUrl] = useState("");
     useEffect(() => {
         async function downloadAvatar() {
             if (!profile) return
-            const { data, error } = await fetchUserAvatar(profile.user_id)
+            const { data, error } = await fetchUserAvatar(profile.userId)
             if (error) {
                 console.error(error.message);
             }

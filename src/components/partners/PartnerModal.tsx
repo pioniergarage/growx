@@ -13,7 +13,7 @@ import {
     ModalOverlay,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { Sponsor } from 'types';
+import { Sponsor } from 'model';
 
 export default function PartnerModal({
     isOpen,

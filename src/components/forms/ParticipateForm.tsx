@@ -14,7 +14,6 @@ import {
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { useState } from 'react';
-import { Consumer } from 'types';
 
 export type ParticipateInfo = {
     firstName: string;
@@ -32,7 +31,7 @@ export default function ParticipateForm({
     onSubmit,
     loading,
 }: {
-    onSubmit: Consumer<ParticipateInfo>;
+    onSubmit: (value: ParticipateInfo) => void;
     loading: boolean;
 }) {
     const [validateOnChange, setValidateOnChange] = useState(false);
