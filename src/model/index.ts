@@ -33,3 +33,8 @@ export type GrowEvent = {
     location?: string;
     sq_mandatory?: boolean;
 };
+
+export type Team = {
+    name: string;
+    description: string;
+}
