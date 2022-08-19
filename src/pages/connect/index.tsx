@@ -9,12 +9,6 @@ const ConnectIndex: NextPageWithLayout = () => {
         <Box>
             <Heading>GROWconnect</Heading>
             <PageLink href="/">Back to Landing Page</PageLink>
-
-            <Box mt={8}>
-                <Heading size="md" as="h3">
-                    Participants
-                </Heading>
-            </Box>
         </Box>
     );
 };

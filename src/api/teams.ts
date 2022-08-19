@@ -1,3 +1,8 @@
+import { supabaseClient } from "@supabase/auth-helpers-nextjs";
+import { Team, Profile } from "model";
+import { mapProfileDto } from "./profile";
+import { definitions } from "./supabase";
+import { mapResponse, SupabaseResponse, mapSingleResponse } from "./utils";
 
 export async function createTeam(team: Team) {
     const response = await supabaseClient
@@ -38,14 +43,14 @@ export async function getTeamRequestedToJoin(user_id: string) {
         .select('*')
         .match({ user_id })
         .maybeSingle()
-    return mapSingleResponse<definitions["teams"], Team>(response, t => t)
+    return mapSingleResponse<definitions["teams"], Team>(response, teamDto => ({ ...teamDto, tags: teamDto.tags as string[] }))
 }
 
 export async function getTeams(): Promise<SupabaseResponse<Team[]>> {
     const response = await supabaseClient
         .from<definitions["teams"]>('teams')
         .select('*')
-    return mapResponse(response, teamDto => teamDto)
+    return mapResponse(response, teamDto => ({ ...teamDto, tags: teamDto.tags as string[] }))
 }
 
 export async function getTeam(user_id: string): Promise<SupabaseResponse<Team>> {
@@ -54,5 +59,5 @@ export async function getTeam(user_id: string): Promise<SupabaseResponse<Team>> 
         .select('*, team_members (user_id)')
         .match({ user_id })
         .single()
-    return mapSingleResponse(response, team => team)
+    return mapSingleResponse(response, teamDto => ({ ...teamDto, tags: teamDto.tags as string[] }))
 }

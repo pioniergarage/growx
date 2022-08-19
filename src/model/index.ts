@@ -35,6 +35,8 @@ export type GrowEvent = {
 };
 
 export type Team = {
+    id: number;
     name: string;
     description: string;
+    tags: string[];
 }
