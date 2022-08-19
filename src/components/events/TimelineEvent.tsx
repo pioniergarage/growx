@@ -33,7 +33,7 @@ export default function TimelineEvent(event: GrowEvent) {
                 <Heading size="md">{event.title}</Heading>
                 <Text mt={0}>{event.description}</Text>
                 <HStack mt={1}>
-                    {event.online ? <Tag>Online</Tag> : <></>}
+                    {event.type ? <Tag>{event.type}</Tag> : <></>}
                     {event.mandatory ? <Tag>Mandatory</Tag> : <></>}^
                     {event.location ? <Tag>{event.location}</Tag> : undefined}
                 </HStack>

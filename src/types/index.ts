@@ -57,4 +57,7 @@ export type EventTypeDto = {
     type: string;
 };
 
-export type GrowEvent = Omit<GrowEventDto, 'date'> & { date: Date };
+export type GrowEvent = Omit<GrowEventDto, 'date'> & {
+    date: Date;
+    type: string;
+};
