@@ -24,7 +24,12 @@ export default function Countdown({
             };
         }
 
-        return timeLeft;
+        return Object.fromEntries(
+            Object.entries(timeLeft).map(([key, value]) => [
+                key,
+                String(value).padStart(2, '0'),
+            ])
+        );
     };
 
     const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(to));
