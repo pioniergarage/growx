@@ -35,7 +35,7 @@ export default function TeamCard(team: Team) {
                     flexGrow={1}
                     gap={0}
                 >
-                    <LinkOverlay my="auto" href={`/connect/team/${team.id}`}>
+                    <LinkOverlay my="auto" href={`/connect/teams/${team.id}`}>
                         <Heading size="md">{team.name}</Heading>
                     </LinkOverlay>
                     <Box mt={0} fontSize="md" color="whiteAlpha.500">

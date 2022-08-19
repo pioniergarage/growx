@@ -53,11 +53,26 @@ export async function getTeams(): Promise<SupabaseResponse<Team[]>> {
     return mapResponse(response, teamDto => ({ ...teamDto, tags: teamDto.tags as string[] }))
 }
 
-export async function getTeam(user_id: string): Promise<SupabaseResponse<Team>> {
+export async function getTeamOfUser(user_id: string): Promise<SupabaseResponse<Team>> {
     const response = await supabaseClient
         .from<definitions["teams"]>('teams')
         .select('*, team_members (user_id)')
         .match({ user_id })
         .single()
     return mapSingleResponse(response, teamDto => ({ ...teamDto, tags: teamDto.tags as string[] }))
+}
+
+export async function getTeamWithMembers(teamId: number): Promise<SupabaseResponse<Team & { members: Profile[] }>> {
+    const response = await supabaseClient
+        .from<definitions["teams"] & { team_members: { profiles: definitions["profiles"] }[] }>('teams')
+        .select('*, team_members (profiles (*))')
+        .match({ id: teamId })
+        .single()
+    return mapSingleResponse(response, dto => ({
+        name: dto.name,
+        description: dto.description,
+        tags: dto.tags as string[],
+        id: dto.id,
+        members: dto.team_members.map(m => mapProfileDto(m.profiles))
+    }))
 }

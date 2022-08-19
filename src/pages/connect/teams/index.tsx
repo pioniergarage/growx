@@ -1,11 +1,14 @@
+import ErrorAlert from '@/components/ErrorAlert';
 import TeamCard from '@/components/teams/TeamCard';
+import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
-    Alert,
-    AlertIcon,
-    Box,
-    Heading,
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbSeparator,
     SimpleGrid,
     Skeleton,
+    VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
@@ -15,16 +18,6 @@ import _ from 'lodash';
 import { Team } from 'model';
 import { useEffect, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
-
-const ErrorAlert = ({ message = '' }) => {
-    if (!message) return <></>;
-    return (
-        <Alert status="error">
-            <AlertIcon />
-            {message}
-        </Alert>
-    );
-};
 
 const Skeletons = ({ number = 5, loading = true }) => {
     if (!loading) return <></>;
@@ -61,8 +54,16 @@ const TeamsPage: NextPageWithLayout = () => {
     }, [userId]);
 
     return (
-        <Box>
-            <Heading mb={4}>Teams</Heading>
+        <VStack alignItems="stretch" gap={4}>
+            <Breadcrumb
+                color="gray.500"
+                separator={<ChevronRightIcon color="gray.500" />}
+            >
+                <BreadcrumbItem isCurrentPage>
+                    <BreadcrumbLink href="/connect/teams">Teams</BreadcrumbLink>
+                    <BreadcrumbSeparator />
+                </BreadcrumbItem>
+            </Breadcrumb>
             <ErrorAlert message={alert} />
             <SimpleGrid gap={4} columns={{ base: 1, md: 2 }}>
                 {teams.map((team) => (
@@ -70,7 +71,7 @@ const TeamsPage: NextPageWithLayout = () => {
                 ))}
             </SimpleGrid>
             <Skeletons loading={loading} />
-        </Box>
+        </VStack>
     );
 };
 

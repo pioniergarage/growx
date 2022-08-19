@@ -1,5 +1,6 @@
 import {
     PostgrestError,
+    PostgrestMaybeSingleResponse,
     PostgrestResponse,
     PostgrestSingleResponse,
 } from '@supabase/supabase-js';
@@ -17,7 +18,7 @@ export function mapResponse<DataIn, DataOut>(
 }
 
 export function mapSingleResponse<DataIn, DataOut>(
-    response: PostgrestSingleResponse<DataIn>,
+    response: PostgrestSingleResponse<DataIn> | PostgrestMaybeSingleResponse<DataIn>,
     mapper: (data: DataIn) => DataOut
 ): SupabaseResponse<DataOut> {
     const { data, error } = response;

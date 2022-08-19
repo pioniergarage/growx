@@ -34,6 +34,7 @@ const UserAvatar = ({
     }
     return (
         <Avatar
+            userSelect="none"
             size="md"
             name={profile.firstName + ' ' + profile.lastName}
             src={avatarUrl}

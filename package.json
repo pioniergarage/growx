@@ -25,7 +25,8 @@
     "openapi-typescript": "^5.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-icons": "^4.4.0"
+    "react-icons": "^4.4.0",
+    "react-markdown": "^8.0.3"
   },
   "devDependencies": {
     "@types/node": "18.0.3",
