@@ -40,7 +40,7 @@ export const registerUser = async (userId: string, eventId: number) => await sup
 export const unregisterUser = async (userId: string, eventId: number) => await supabaseClient
     .from<definitions["registrations"]>('registrations')
     .delete({ returning: "minimal" })
-    .match({ event_id: userId, user_id: eventId });
+    .match({ event_id: eventId, user_id: userId });
 
 export const getRegistrationsOfUser = async (user_id: string) => {
     const response = await supabaseClient

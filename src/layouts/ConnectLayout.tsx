@@ -39,6 +39,7 @@ function ConnectHeader({ role }: { role: UserRole }) {
 
     return (
         <Flex
+            zIndex={100}
             as="header"
             py={6}
             px={4}

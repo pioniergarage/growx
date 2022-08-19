@@ -35,7 +35,8 @@ function ProfileView() {
             <LazySpinner name="Email address" property="email" />
             <LazySpinner name="Phone number" property="phone" />
             <LazySpinner name="Studies" property="studies" />
-            <LazySpinner name="Homeland" property="university" />
+            <LazySpinner name="Homeland" property="homeland" />
+            <LazySpinner name="University" property="university" />
         </Grid>
     );
 }
