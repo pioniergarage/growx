@@ -773,28 +773,28 @@ export interface definitions {
      * Format: text
      * @default
      */
-    title?: string;
+    title: string;
     /**
      * Format: timestamp without time zone
      * @default now()
      */
-    date?: string;
+    date: string;
     /**
      * Format: text
      * @default
      */
-    description?: string;
+    description: string;
     /**
      * Format: boolean
      * @description old, löschen!
      * @default false
      */
-    online?: boolean;
+    online: boolean;
     /**
      * Format: boolean
      * @default false
      */
-    mandatory?: boolean;
+    mandatory: boolean;
     /**
      * Format: bigint
      * @description the type of the event. The number must match to the eventtypes type. 1 = Online; 2 = Offline, 3 = Hybrid
@@ -802,18 +802,18 @@ export interface definitions {
      * Note:
      * This is a Foreign Key to `event_types.id`.<fk table='event_types' column='id'/>
      */
-    type_id?: number;
+    type_id: number;
     /**
      * Format: text
      * @description The location of the Event
      */
-    location?: string;
+    location: string;
     /**
      * Format: boolean
      * @description Obligatory for participants who want to have the Schlüsselqualifikation points
      * @default false
      */
-    sq_mandatory?: boolean;
+    sq_mandatory: boolean;
   };
   faqs: {
     /**
@@ -868,22 +868,46 @@ export interface definitions {
     user_id: string;
     /** Format: timestamp with time zone */
     updated_at?: string;
-    /** Format: text */
-    first_name?: string;
-    /** Format: text */
-    last_name?: string;
-    /** Format: text */
-    email?: string;
-    /** Format: text */
-    gender?: string;
-    /** Format: text */
-    phone?: string;
-    /** Format: text */
-    studies?: string;
-    /** Format: text */
-    university?: string;
-    /** Format: text */
-    homeland?: string;
+    /**
+     * Format: text
+     * @default
+     */
+    first_name: string;
+    /**
+     * Format: text
+     * @default
+     */
+    last_name: string;
+    /**
+     * Format: text
+     * @default
+     */
+    email: string;
+    /**
+     * Format: text
+     * @default
+     */
+    gender: string;
+    /**
+     * Format: text
+     * @default
+     */
+    phone: string;
+    /**
+     * Format: text
+     * @default
+     */
+    studies: string;
+    /**
+     * Format: text
+     * @default
+     */
+    university: string;
+    /**
+     * Format: text
+     * @default
+     */
+    homeland: string;
   };
   sponsors: {
     /**
@@ -897,14 +921,23 @@ export interface definitions {
      * @default now()
      */
     created_at?: string;
-    /** Format: text */
-    name?: string;
-    /** Format: text */
-    logo?: string;
-    /** Format: text */
-    link?: string;
+    /**
+     * Format: text
+     * @default
+     */
+    name: string;
+    /**
+     * Format: text
+     * @default
+     */
+    logo: string;
+    /**
+     * Format: text
+     * @default
+     */
+    link: string;
     /** Format: smallint */
-    type?: number;
+    type: number;
   };
   user_roles: {
     /**
