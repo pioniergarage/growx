@@ -3,11 +3,11 @@ import {
     Flex,
     Heading,
     HStack,
-    Image,
     LinkBox,
     LinkOverlay,
 } from '@chakra-ui/react';
 import { Team } from 'model';
+import TeamLogo from './TeamLogo';
 
 export default function TeamCard(team: Team) {
     return (
@@ -21,13 +21,7 @@ export default function TeamCard(team: Team) {
                 h={20}
                 alignItems="stretch"
             >
-                <Image
-                    src="https://grow-legacy.pioniergarage.de/media/startup_logos/Logo.jpeg"
-                    alt={team.name}
-                    w={20}
-                    h={20}
-                    objectFit="cover"
-                />
+                <TeamLogo {...team} size={20} />
                 <Flex
                     flexDir="column"
                     p={4}

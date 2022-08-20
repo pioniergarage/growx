@@ -4,11 +4,12 @@ import { mapProfileDto } from "./profile";
 import { definitions } from "./supabase";
 import { mapResponse, SupabaseResponse, mapSingleResponse } from "./utils";
 
-export async function createTeam(team: Team) {
+export async function createTeam(team: Partial<Team>) {
     const response = await supabaseClient
         .from<definitions["teams"]>('teams')
         .insert(team, { returning: "representation" })
-    return mapResponse(response, t => t)
+        .single()
+    return mapSingleResponse(response, t => t)
 }
 
 export async function leaveTeam(user_id: string) {
@@ -73,6 +74,7 @@ export async function getTeamWithMembers(teamId: number): Promise<SupabaseRespon
         description: dto.description,
         tags: dto.tags as string[],
         id: dto.id,
-        members: dto.team_members.map(m => mapProfileDto(m.profiles))
+        members: dto.team_members.map(m => mapProfileDto(m.profiles)),
+        logo: dto.logo
     }))
 }

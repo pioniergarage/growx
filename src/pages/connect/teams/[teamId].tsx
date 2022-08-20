@@ -9,7 +9,6 @@ import {
     Flex,
     Heading,
     HStack,
-    Image,
     Skeleton,
     SkeletonCircle,
     SkeletonText,
@@ -22,6 +21,7 @@ import ConnectLayout from 'layouts/ConnectLayout';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { NextPageWithLayout } from 'utils/types';
+import TeamLogo from '@/components/teams/TeamLogo';
 const TeamDescription = dynamic(
     import('../../../components/teams/TeamDescriptions')
 );
@@ -49,13 +49,7 @@ const TeamDetails: NextPageWithLayout = () => {
             </Breadcrumb>
             <HStack alignItems="start" gap={4}>
                 <Skeleton isLoaded={!loading}>
-                    <Image
-                        src="https://grow-legacy.pioniergarage.de/media/startup_logos/Logo.jpeg"
-                        alt={team?.name}
-                        w={24}
-                        h={24}
-                        objectFit="cover"
-                    />
+                    <TeamLogo {...team} />
                 </Skeleton>
                 <Flex alignItems="start" flexDir="column">
                     <Skeleton minW="20rem" isLoaded={!loading}>

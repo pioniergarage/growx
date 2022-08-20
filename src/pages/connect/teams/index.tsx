@@ -6,16 +6,19 @@ import {
     BreadcrumbItem,
     BreadcrumbLink,
     BreadcrumbSeparator,
+    Button,
+    Flex,
     SimpleGrid,
     Skeleton,
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { useUser } from '@supabase/auth-helpers-react';
-import { getTeams } from 'api';
+import { createTeam, getTeams } from 'api';
+import { useProfile } from 'hooks/profile';
 import ConnectLayout from 'layouts/ConnectLayout';
 import _ from 'lodash';
 import { Team } from 'model';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 
@@ -31,9 +34,10 @@ const Skeletons = ({ number = 5, loading = true }) => {
 };
 
 const TeamsPage: NextPageWithLayout = () => {
-    const { user } = useUser();
-    const userId = user?.id;
-    const [loading, setLoading] = useState(false);
+    const router = useRouter();
+    const { profile } = useProfile();
+    const userId = profile?.userId;
+    const [loading, setLoading] = useState(true);
     const [teams, setTeams] = useState<Team[]>([]);
     const [alert, setAlert] = useState('');
 
@@ -55,15 +59,31 @@ const TeamsPage: NextPageWithLayout = () => {
 
     return (
         <VStack alignItems="stretch" gap={4}>
-            <Breadcrumb
-                color="gray.500"
-                separator={<ChevronRightIcon color="gray.500" />}
-            >
-                <BreadcrumbItem isCurrentPage>
-                    <BreadcrumbLink href="/connect/teams">Teams</BreadcrumbLink>
-                    <BreadcrumbSeparator />
-                </BreadcrumbItem>
-            </Breadcrumb>
+            <Flex justify="space-between" alignItems="center">
+                <Breadcrumb
+                    color="gray.500"
+                    separator={<ChevronRightIcon color="gray.500" />}
+                >
+                    <BreadcrumbItem isCurrentPage>
+                        <BreadcrumbLink href="/connect/teams">
+                            Teams
+                        </BreadcrumbLink>
+                        <BreadcrumbSeparator />
+                    </BreadcrumbItem>
+                </Breadcrumb>
+                <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={async () => {
+                        const { data } = await createTeam({
+                            name: profile?.firstName + "'s Team",
+                        });
+                        if (data) router.push('/connect/teams/' + data.id);
+                    }}
+                >
+                    Create Team
+                </Button>
+            </Flex>
             <ErrorAlert message={alert} />
             <SimpleGrid gap={4} columns={{ base: 1, md: 2 }}>
                 {teams.map((team) => (

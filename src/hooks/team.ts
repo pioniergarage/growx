@@ -4,7 +4,7 @@ import { ProfileWithoutRole, Team } from "model";
 import { useEffect, useState } from "react";
 
 export default function useTeam(teamId: number) {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [team, setTeam] = useState<Team & {
         members: ProfileWithoutRole[];
     }>();
