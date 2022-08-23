@@ -14,8 +14,6 @@ export type Profile = {
     avatar?: string;
 };
 
-export type ProfileWithoutRole = Omit<Profile, "role">
-
 export type Sponsor = {
     name: string;
     logo: string;

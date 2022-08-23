@@ -16,16 +16,22 @@ import {
     AlertDialogHeader,
     AlertDialogOverlay,
     useDisclosure,
+    Flex,
+    Heading,
+    HStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { createTeam, leaveTeam } from 'api';
 import { useProfile } from 'hooks/profile';
 import { useTeamOfUser } from 'hooks/team';
 import ConnectLayout from 'layouts/ConnectLayout';
 import _ from 'lodash';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
+import TeamLogo from '@/components/teams/TeamLogo';
+import TeamForm from '@/components/teams/TeamForm';
+import { Team } from 'model';
+import { createTeam, leaveTeam, updateTeam } from 'api/teams';
 
 function LeaveTeam({ onLeave }: { onLeave: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -65,13 +71,10 @@ function LeaveTeam({ onLeave }: { onLeave: () => void }) {
     );
 }
 
-const TeamPage: NextPageWithLayout = () => {
+function NoTeam() {
     const router = useRouter();
-    const toast = useToast();
     const { profile } = useProfile();
-    const userId = profile?.userId;
-    const { team, loading, error } = useTeamOfUser(userId);
-
+    const toast = useToast();
     async function onCreateTeam() {
         const { data, error } = await createTeam({
             name: `${profile?.firstName}'s team`,
@@ -84,6 +87,29 @@ const TeamPage: NextPageWithLayout = () => {
         }
         router.reload();
     }
+    return (
+        <VStack>
+            <Text>
+                You are not part of a team yet.{' '}
+                <PageLink href="/connect/teams" color="primary">
+                    Browse
+                </PageLink>{' '}
+                the existing teams or create a new one.
+            </Text>
+            <Button onClick={onCreateTeam} variant="outline">
+                Create Team
+            </Button>
+        </VStack>
+    );
+}
+
+const TeamPage: NextPageWithLayout = () => {
+    const router = useRouter();
+    const toast = useToast();
+    const { profile } = useProfile();
+    const userId = profile?.userId;
+    const { team, loading, error, setTeam } = useTeamOfUser(userId);
+    const [editing, setEditing] = useState(false);
 
     async function onLeaveTeam() {
         if (!userId) return;
@@ -97,6 +123,19 @@ const TeamPage: NextPageWithLayout = () => {
         router.push('/connect');
     }
 
+    async function onSaveTeam(team: Team) {
+        if (!userId) return;
+        const { error } = await updateTeam(team);
+        if (error) {
+            return toast({
+                status: 'error',
+                title: 'Something went wrong.',
+            });
+        }
+        setTeam(team);
+        setEditing(false);
+    }
+
     if (loading)
         return (
             <Center>
@@ -104,26 +143,32 @@ const TeamPage: NextPageWithLayout = () => {
             </Center>
         );
     if (error.length > 0) return <ErrorAlert message={error} />;
-    if (!team)
+    if (!team) return <NoTeam />;
+    if (editing)
         return (
-            <VStack>
-                <Text>
-                    You are not part of a team yet.{' '}
-                    <PageLink href="/connect/teams" color="primary">
-                        Browse
-                    </PageLink>{' '}
-                    the existing teams or create a new one.
-                </Text>
-                <Button onClick={onCreateTeam} variant="outline">
-                    Create Team
-                </Button>
-            </VStack>
+            <TeamForm
+                onSave={onSaveTeam}
+                team={team}
+                onCancel={() => setEditing(false)}
+            />
         );
-
     return (
-        <VStack>
-            <Box>{JSON.stringify(team)}</Box>
-            <LeaveTeam onLeave={onLeaveTeam} />
+        <VStack alignItems="stretch">
+            <HStack alignItems="start" gap={4}>
+                <TeamLogo {...team} />
+                <Flex alignItems="start" flexDir="column">
+                    <Heading>{team?.name || 'Team'}</Heading>
+                    <Box mt={0} color="whiteAlpha.500">
+                        {team?.tags.join(' • ')}
+                    </Box>
+                </Flex>
+            </HStack>
+            <Flex gap={2}>
+                <Button onClick={() => setEditing(true)} variant="outline">
+                    Edit
+                </Button>
+                <LeaveTeam onLeave={onLeaveTeam} />
+            </Flex>
         </VStack>
     );
 };

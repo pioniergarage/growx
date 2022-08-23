@@ -1,6 +1,6 @@
 
-import { getTeamOfUser, getTeams, getTeamWithMembers } from "api";
-import { ProfileWithoutRole, Team } from "model";
+import { getTeamOfUser, getTeams, getTeamWithMembers } from "api/teams";
+import { Profile, Team } from "model";
 import { useEffect, useState } from "react";
 
 export function useTeamOfUser(userId?: string) {
@@ -22,7 +22,7 @@ export function useTeamOfUser(userId?: string) {
             setTeam(data)
         })()
     }, [userId])
-    return { loading, team, error }
+    return { loading, team, error, setTeam }
 }
 
 export function useAllTeams() {
@@ -47,7 +47,7 @@ export function useAllTeams() {
 export function useTeam(teamId: number) {
     const [loading, setLoading] = useState(true);
     const [team, setTeam] = useState<Team & {
-        members: ProfileWithoutRole[];
+        members: Profile[];
     }>();
     const [error, setError] = useState('')
 

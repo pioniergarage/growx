@@ -32,8 +32,8 @@ export async function acceptRequestToJoinTeam(joiningUserId: string) {
 
 export async function getRequestsToJoinTeam(team_id: number): Promise<SupabaseResponse<Profile[]>> {
     const response = await supabaseClient
-        .from<{ profiles: definitions["profiles"] & { user_roles: Pick<definitions['user_roles'], 'role'> } }>("team_requests")
-        .select('profiles (*, user_roles(role))')
+        .from<{ profiles: definitions["profiles"] }>("team_requests")
+        .select('profiles (*)')
         .match({ team_id })
     return mapResponse(response, r => mapProfileDto(r.profiles))
 }
@@ -52,6 +52,14 @@ export async function getTeams(): Promise<SupabaseResponse<Team[]>> {
         .from<definitions["teams"]>('teams')
         .select('*')
     return mapResponse(response, teamDto => ({ ...teamDto, tags: teamDto.tags as string[] }))
+}
+
+export async function updateTeam(team: Partial<Team>) {
+    const response = await supabaseClient
+        .from<definitions["teams"]>('teams')
+        .update(team, { returning: "minimal" })
+        .eq('id', team.id)
+    return mapResponse(response, t => t)
 }
 
 export async function getTeamOfUser(user_id: string): Promise<SupabaseResponse<Team>> {
