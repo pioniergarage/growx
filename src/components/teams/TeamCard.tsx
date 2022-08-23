@@ -14,8 +14,8 @@ export default function TeamCard(team: Team) {
         <LinkBox>
             <HStack
                 bg="whiteAlpha.50"
-                _hover={{ filter: 'brightness(120%)', bg: 'whiteAlpha.100' }}
-                _active={{ filter: 'brightness(130%)', bg: 'whiteAlpha.300' }}
+                _hover={{ filter: 'brightness(110%)', bg: 'whiteAlpha.100' }}
+                _active={{ filter: 'brightness(110%)', bg: 'whiteAlpha.200' }}
                 overflow="hidden"
                 borderRadius={8}
                 h={20}

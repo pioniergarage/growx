@@ -55,14 +55,21 @@ export async function getTeams(): Promise<SupabaseResponse<Team[]>> {
 }
 
 export async function getTeamOfUser(user_id: string): Promise<SupabaseResponse<Team>> {
+    const teamResponse = await supabaseClient
+        .from<definitions["team_members"]>("team_members")
+        .select("*")
+        .match({ user_id })
+        .maybeSingle()
+    if (teamResponse.error) return { error: teamResponse.error }
+    if (!teamResponse.data) return {}
+    const teamId = teamResponse.data.team_id
     const response = await supabaseClient
         .from<definitions["teams"]>('teams')
-        .select('*, team_members (user_id)')
-        .match({ user_id })
+        .select('*, team_members(user_id)')
+        .match({ id: teamId })
         .single()
     return mapSingleResponse(response, teamDto => ({ ...teamDto, tags: teamDto.tags as string[] }))
 }
-
 export async function getTeamWithMembers(teamId: number): Promise<SupabaseResponse<Team & { members: Profile[] }>> {
     const response = await supabaseClient
         .from<definitions["teams"] & { team_members: { profiles: definitions["profiles"] }[] }>('teams')

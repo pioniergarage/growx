@@ -16,12 +16,12 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import useTeam from 'hooks/team';
 import ConnectLayout from 'layouts/ConnectLayout';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { NextPageWithLayout } from 'utils/types';
 import TeamLogo from '@/components/teams/TeamLogo';
+import { useTeam } from 'hooks/team';
 const TeamDescription = dynamic(
     import('../../../components/teams/TeamDescriptions')
 );
