@@ -38,9 +38,9 @@ export const updateProfile = async (userId: string, profile: Partial<Profile>) =
         university: profile.university,
         homeland: profile.homeland,
         gender: profile.gender,
-        avatar: profile.avatar
-    }, { returning: 'minimal' })
-    .eq('user_id', userId);
+        avatar: profile.avatar,
+    }, { returning: 'representation' })
+    .match({ user_id: userId })
 
 export const getProfiles = async (): Promise<SupabaseResponse<Profile[]>> => {
     const response = await supabaseClient

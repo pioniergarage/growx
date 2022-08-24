@@ -60,7 +60,7 @@ export const getRegistrationsOfUser = async (user_id: string) => {
 
 export const getRegistrationsTo = async (event_id: number) => {
     const response = await supabaseClient
-        .from<{ profiles: definitions["profiles"] }>('registrations')
+        .from<{ profiles: definitions["profiles"] }>('event_registrations')
         .select('profiles (*)')
         .match({ event_id });
     return mapResponse(response, d => mapProfileDto(d.profiles))

@@ -1,12 +1,12 @@
 import ConnectLayout from 'layouts/ConnectLayout';
 import { Box, Heading, VStack } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useProfile } from 'hooks/profile';
 import { useEffect, useState } from 'react';
 import GrowEventCard from '@/components/events/GrowEventCard';
 import { GrowEvent } from 'model';
 import { NextPageWithLayout } from 'utils/types';
 import { getEvents, getRegistrationsOfUser } from 'api/events';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 
 const EventsPage: NextPageWithLayout = () => {
     const { profile } = useProfile();

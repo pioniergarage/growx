@@ -1,13 +1,8 @@
 import ConnectLayout from 'layouts/ConnectLayout';
 import PageLink from '@/components/navigation/PageLink';
-import {
-    Box,
-    Heading
-} from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { Box, Heading } from '@chakra-ui/react';
 import { NextPageWithLayout } from 'utils/types';
-
-
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 
 const ConnectIndex: NextPageWithLayout = () => {
     return (

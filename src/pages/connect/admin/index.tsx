@@ -15,7 +15,6 @@ import {
     Tr,
     Divider,
 } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import PartnerAdmin from '@/components/partners/PartnerAdmin';
@@ -23,6 +22,7 @@ import { GrowEvent, Profile } from 'model';
 import { NextPageWithLayout } from 'utils/types';
 import { getEvents, createEvent } from 'api/events';
 import { getProfiles } from 'api/profile';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 
 function Profiles() {
     const toast = useToast();

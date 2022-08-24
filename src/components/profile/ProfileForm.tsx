@@ -1,6 +1,18 @@
-import { VStack, SimpleGrid, GridItem, FormControl, FormLabel, Input, FormErrorMessage, RadioGroup, HStack, Radio, Button } from "@chakra-ui/react";
-import { useFormik } from "formik";
-import { Profile } from "model";
+import {
+    VStack,
+    SimpleGrid,
+    GridItem,
+    FormControl,
+    FormLabel,
+    Input,
+    FormErrorMessage,
+    RadioGroup,
+    HStack,
+    Radio,
+    Button,
+} from '@chakra-ui/react';
+import { useFormik } from 'formik';
+import { Profile } from 'model';
 
 export default function ProfileForm({
     onSave,
@@ -75,11 +87,11 @@ export default function ProfileForm({
                         <FormControl isDisabled={loading} as="fieldset">
                             <FormLabel as="legend">Gender</FormLabel>
                             <RadioGroup
-                                defaultValue={profile.gender || 'other'}
+                                defaultValue={profile.gender || 'OTHER'}
                             >
                                 <HStack spacing="24px">
                                     <Radio
-                                        value="male"
+                                        value="MALE"
                                         name="gender"
                                         isChecked={
                                             formik.values.gender === 'MALE'
@@ -89,7 +101,7 @@ export default function ProfileForm({
                                         Male
                                     </Radio>
                                     <Radio
-                                        value="female"
+                                        value="FEMALE"
                                         name="gender"
                                         isChecked={
                                             formik.values.gender === 'FEMALE'
@@ -99,7 +111,7 @@ export default function ProfileForm({
                                         Female
                                     </Radio>
                                     <Radio
-                                        value="other"
+                                        value="OTHER"
                                         name="gender"
                                         isChecked={
                                             formik.values.gender === 'OTHER'
@@ -118,7 +130,7 @@ export default function ProfileForm({
                             name="phone"
                             id="phone"
                             onChange={formik.handleChange}
-                            value={formik.values.phone}
+                            value={formik.values.phone || ''}
                         />
                     </FormControl>
                     <FormControl isDisabled={loading}>
@@ -127,7 +139,7 @@ export default function ProfileForm({
                             name="studies"
                             id="studies"
                             onChange={formik.handleChange}
-                            value={formik.values.studies}
+                            value={formik.values.studies || ''}
                         />
                     </FormControl>
                     <FormControl isDisabled={loading}>
@@ -136,7 +148,7 @@ export default function ProfileForm({
                             id="university"
                             name="university"
                             onChange={formik.handleChange}
-                            value={formik.values.university}
+                            value={formik.values.university || ''}
                         />
                     </FormControl>
                     <FormControl isDisabled={loading}>
@@ -145,7 +157,7 @@ export default function ProfileForm({
                             name="homeland"
                             id="homeland"
                             onChange={formik.handleChange}
-                            value={formik.values.homeland}
+                            value={formik.values.homeland || ''}
                         />
                     </FormControl>
                 </SimpleGrid>

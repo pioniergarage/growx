@@ -14,6 +14,7 @@ export const uploadUserAvatar = async (profile: Profile, avatar: File) => {
     const { error } = await supabaseClient.storage
         .from('avatars')
         .upload(filePath, resizedImage, { upsert: true });
-    if (error) return { error }
-    return await updateProfile(profile.userId, { ...profile, avatar: fileName })
+    if (error) return { error, fileName }
+    const result = await updateProfile(profile.userId, { ...profile, avatar: fileName })
+    return { ...result, fileName }
 }

@@ -25,13 +25,18 @@ import {
     useToast,
     VStack,
 } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { GrowEvent, Profile } from 'model';
 import { NextPageWithLayout } from 'utils/types';
-import { getRegistrationsTo, getEvent, updateEvent, deleteEvent } from 'api/events';
+import {
+    getRegistrationsTo,
+    getEvent,
+    updateEvent,
+    deleteEvent,
+} from 'api/events';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 
 type EventFormType = Pick<GrowEvent, 'title' | 'description' | 'mandatory'> & {
     date: string;
@@ -52,7 +57,7 @@ function formValueToGrowEvent(value: EventFormType): Omit<GrowEvent, 'id'> {
         date,
         title: value.title,
         description: value.description,
-        mandatory: value.mandatory
+        mandatory: value.mandatory,
     };
 }
 
@@ -235,23 +240,25 @@ function EventForm({
 
 function Registrations({ eventId = 1 }) {
     const [registrations, setRegistrations] = useState<Profile[]>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         (async () => {
+            setLoading(true);
             const { data } = await getRegistrationsTo(eventId);
             if (data) {
                 setRegistrations(data);
             }
+            setLoading(false);
         })();
     }, [eventId]);
     return (
-        <>
-            <FullTable
-                values={registrations}
-                idProp="userId"
-                heading="Registrations"
-            />
-        </>
+        <FullTable
+            loading={loading}
+            values={registrations}
+            idProp="userId"
+            heading="Registrations"
+        />
     );
 }
 

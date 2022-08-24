@@ -7,9 +7,8 @@ import {
     Grid,
     Button,
     useToast,
-    Skeleton
+    Skeleton,
 } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useProfile } from 'hooks/profile';
 import { ChangeEvent, useMemo, useRef, useState } from 'react';
 import LazySpinner from '@/components/profile/LazySpinner';
@@ -18,6 +17,7 @@ import UserAvatar from '@/components/avatar/UserAvatar';
 import { Profile } from 'model';
 import { NextPageWithLayout } from 'utils/types';
 import { uploadUserAvatar } from 'api/avatar';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 
 function ProfileView() {
     return (
@@ -62,18 +62,21 @@ function SkeletonLoader() {
 }
 
 function AvatarControl() {
-    const { profile } = useProfile();
+    const { profile, setProfile } = useProfile();
     const [loading, setLoading] = useState(false);
     const toast = useToast();
     const uploadRef = useRef<HTMLInputElement>(null);
     async function uploadAvatar(event: ChangeEvent<HTMLInputElement>) {
-        if (!profile) return
+        if (!profile) return;
         if (!event.target.files || event.target.files.length === 0) {
             throw new Error('You must select an image to upload.');
         }
         setLoading(true);
         const file = event.target.files[0];
-        const {error: uploadError} = await uploadUserAvatar(profile, file)
+        const { error: uploadError, fileName } = await uploadUserAvatar(
+            profile,
+            file
+        );
         setLoading(false);
         if (uploadError) {
             console.error(uploadError.message);
@@ -86,6 +89,7 @@ function AvatarControl() {
                 title: 'Profile picture upadted!',
                 status: 'success',
             });
+            setProfile({ ...profile, avatar: fileName });
         }
     }
     return (
@@ -152,7 +156,7 @@ function ProfileDetailsControl() {
                         <Button
                             onClick={() => setEditing(true)}
                             width={20}
-                            variant='outline'
+                            variant="outline"
                         >
                             Edit
                         </Button>

@@ -6,19 +6,23 @@ import PageLink from '@/components/navigation/PageLink';
 import { VStack, Heading, Alert, AlertIcon, Box } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 import { updateProfile } from 'api/profile';
+import { useUser } from '@supabase/auth-helpers-react';
 
 const SignUp: NextPageWithLayout = () => {
     const [loading, setLoading] = useState(false);
     const [signUpError, setSignUpError] = useState<string>('');
     const router = useRouter();
+    const { user } = useUser();
 
-    if (supabaseClient.auth.user()) {
-        router.replace('/connect/');
-    }
-
+    useEffect(() => {
+        if (user) {
+            router.replace('/connect/');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     async function signUp(info: ParticipateInfo) {
         return supabaseClient.auth
             .signUp({

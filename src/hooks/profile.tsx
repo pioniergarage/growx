@@ -14,28 +14,30 @@ const ProfileContext = createContext<{
     loading: boolean;
     error?: string;
     update: (profile: Profile) => Promise<void>;
-}>({ loading: false, update: () => Promise.reject() });
+    setProfile: (profile: Profile) => void;
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+}>({ loading: false, update: () => Promise.reject(), setProfile: () => {} });
 
 export function ProfileProvider({ children }: PropsWithChildren) {
     const { user } = useUser();
+    const userId = user?.id;
     const [profile, setProfile] = useState<Profile | undefined>();
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        async function fetchProfile() {
+        (async () => {
             setLoading(true);
-            if (!user) return;
-            const { data, error } = await getProfile(user.id);
+            if (!userId) return;
+            const { data, error } = await getProfile(userId);
             if (error) {
                 setError(error.message);
             } else {
                 setProfile(data);
             }
             setLoading(false);
-        }
-        fetchProfile();
-    }, [user]);
+        })();
+    }, [userId]);
 
     async function update(profile: Profile) {
         setLoading(true);
@@ -50,7 +52,9 @@ export function ProfileProvider({ children }: PropsWithChildren) {
     }
 
     return (
-        <ProfileContext.Provider value={{ profile, loading, error, update }}>
+        <ProfileContext.Provider
+            value={{ profile, loading, error, update, setProfile }}
+        >
             {children}
         </ProfileContext.Provider>
     );

@@ -6,9 +6,6 @@ import {
     FormErrorMessage,
     Button,
     Input,
-    HStack,
-    RadioGroup,
-    Radio,
     GridItem,
     VStack,
 } from '@chakra-ui/react';
@@ -21,10 +18,6 @@ export type ParticipateInfo = {
     lastName: string;
     email: string;
     gender: Gender;
-    phone: string;
-    studies: string;
-    university: string;
-    homeland: string;
     password: string;
 };
 
@@ -42,10 +35,6 @@ export default function ParticipateForm({
             lastName: '',
             email: '',
             gender: 'OTHER',
-            phone: '',
-            studies: '',
-            university: '',
-            homeland: '',
             password: '',
             passwordRepeat: '',
         },
@@ -152,81 +141,6 @@ export default function ParticipateForm({
                         <FormErrorMessage>
                             {formik.errors.lastName}
                         </FormErrorMessage>
-                    </FormControl>
-                    <GridItem colSpan={2}>
-                        <FormControl isDisabled={loading} as="fieldset">
-                            <FormLabel as="legend">Gender</FormLabel>
-                            <RadioGroup defaultValue="other">
-                                <HStack spacing="24px">
-                                    <Radio
-                                        value="male"
-                                        name="gender"
-                                        isChecked={
-                                            formik.values.gender === 'MALE'
-                                        }
-                                        onChange={formik.handleChange}
-                                    >
-                                        Male
-                                    </Radio>
-                                    <Radio
-                                        value="female"
-                                        name="gender"
-                                        isChecked={
-                                            formik.values.gender === 'FEMALE'
-                                        }
-                                        onChange={formik.handleChange}
-                                    >
-                                        Female
-                                    </Radio>
-                                    <Radio
-                                        value="other"
-                                        name="gender"
-                                        isChecked={
-                                            formik.values.gender === 'OTHER'
-                                        }
-                                        onChange={formik.handleChange}
-                                    >
-                                        Other
-                                    </Radio>
-                                </HStack>
-                            </RadioGroup>
-                        </FormControl>
-                    </GridItem>
-                    <FormControl isDisabled={loading}>
-                        <FormLabel>Phone number</FormLabel>
-                        <Input
-                            name="phone"
-                            id="phone"
-                            onChange={formik.handleChange}
-                            value={formik.values.phone}
-                        />
-                    </FormControl>
-                    <FormControl isDisabled={loading}>
-                        <FormLabel>Course of studies</FormLabel>
-                        <Input
-                            name="studies"
-                            id="studies"
-                            onChange={formik.handleChange}
-                            value={formik.values.studies}
-                        />
-                    </FormControl>
-                    <FormControl isDisabled={loading}>
-                        <FormLabel>University</FormLabel>
-                        <Input
-                            id="university"
-                            name="university"
-                            onChange={formik.handleChange}
-                            value={formik.values.university}
-                        />
-                    </FormControl>
-                    <FormControl isDisabled={loading}>
-                        <FormLabel>Homeland</FormLabel>
-                        <Input
-                            name="homeland"
-                            id="homeland"
-                            onChange={formik.handleChange}
-                            value={formik.values.homeland}
-                        />
                     </FormControl>
                 </SimpleGrid>
 
