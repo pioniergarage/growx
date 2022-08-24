@@ -145,12 +145,13 @@ function TeamDetails({
         if (!userId) return;
         const { error } = await leaveTeam(userId);
         if (error) {
-            return toast({
+            toast({
                 status: 'error',
                 title: 'Something went wrong.',
             });
+        } else {
+            router.reload();
         }
-        router.push('/connect/team');
     }
 
     async function onSaveTeam(team: Team) {

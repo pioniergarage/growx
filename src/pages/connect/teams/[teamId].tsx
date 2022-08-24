@@ -110,19 +110,24 @@ const TeamDetails: NextPageWithLayout = () => {
                     </BreadcrumbLink>
                 </BreadcrumbItem>
             </Breadcrumb>
-            <HStack alignItems="start" gap={4}>
+            <Flex alignItems="start" gap={4} wrap="wrap">
                 <Skeleton isLoaded={!loading}>
-                    <TeamLogo {...team} />
+                    <TeamLogo {...team} size={{ base: 16, sm: 24 }} />
                 </Skeleton>
                 <Flex alignItems="start" flexDir="column" flexGrow={1}>
-                    <Skeleton minW="20rem" isLoaded={!loading}>
+                    <Skeleton minW="10rem" isLoaded={!loading}>
                         <Heading>{team?.name || 'Team'}</Heading>
                     </Skeleton>
                     <Box mt={0} color="whiteAlpha.500">
                         {team?.tags.join(' • ')}
                     </Box>
                 </Flex>
-                <Skeleton isLoaded={!loading} h={6} minW={32}>
+                <Skeleton
+                    isLoaded={!loading}
+                    h={6}
+                    minW={32}
+                    flexGrow={{ base: 1, md: 0 }}
+                >
                     {team ? (
                         <RequestButton
                             team={team}
@@ -131,10 +136,12 @@ const TeamDetails: NextPageWithLayout = () => {
                             onRequest={handleRequest}
                             onWithdraw={handleWithdraw}
                             isLoading={requestButtonLoading}
+                            size="sm"
+                            w="100%"
                         />
                     ) : undefined}
                 </Skeleton>
-            </HStack>
+            </Flex>
             <ErrorAlert message={error} />
 
             <SkeletonText

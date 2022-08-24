@@ -5,7 +5,7 @@ import { FaUsers } from 'react-icons/fa';
 export default function TeamLogo({
     logo = '',
     name = '',
-    size = 24,
+    size = '24',
     loading = false,
 }) {
     const hash = useMemo(() => Date.now().toString() + loading, [loading]);
