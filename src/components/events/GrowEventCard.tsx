@@ -10,9 +10,9 @@ import {
     Text,
 } from '@chakra-ui/react';
 import { useUser } from '@supabase/auth-helpers-react';
-import { registerUser, unregisterUser } from 'api';
 import { useState, useMemo } from 'react';
 import { GrowEvent } from 'model';
+import { registerUser, unregisterUser } from 'api/events';
 
 type GrowEventCardProps = {
     event: GrowEvent;
@@ -34,8 +34,8 @@ export default function GrowEventCard({
     const over = new Date() > new Date(event.date);
 
     async function register() {
-        if (!user) return
-        const { error } = await registerUser(user?.id, event.id)
+        if (!user) return;
+        const { error } = await registerUser(user?.id, event.id);
         if (error) {
             toast({
                 title: 'Something went wrong...',
@@ -55,8 +55,8 @@ export default function GrowEventCard({
     }
 
     async function withdrawRegistration() {
-        if (!user) return 
-        const { error } = await unregisterUser(user.id, event.id)
+        if (!user) return;
+        const { error } = await unregisterUser(user.id, event.id);
         if (error) {
             toast({
                 title: 'Something went wrong...',

@@ -1,17 +1,12 @@
 import ConnectLayout from 'layouts/ConnectLayout';
-import {
-    Box,
-    Heading,
-    VStack,
-} from '@chakra-ui/react';
+import { Box, Heading, VStack } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useProfile } from 'hooks/profile';
 import { useEffect, useState } from 'react';
 import GrowEventCard from '@/components/events/GrowEventCard';
-import { getEvents, getRegistrationsOfUser } from 'api';
 import { GrowEvent } from 'model';
 import { NextPageWithLayout } from 'utils/types';
-
+import { getEvents, getRegistrationsOfUser } from 'api/events';
 
 const EventsPage: NextPageWithLayout = () => {
     const { profile } = useProfile();
@@ -22,8 +17,10 @@ const EventsPage: NextPageWithLayout = () => {
     useEffect(() => {
         (async () => {
             if (!profile) return;
-            const { data } = await getEvents()
-            const { data: registered } = await getRegistrationsOfUser(profile.userId)
+            const { data } = await getEvents();
+            const { data: registered } = await getRegistrationsOfUser(
+                profile.userId
+            );
             if (registered) {
                 setRegisteredTo(registered.map((r) => r.eventId));
             }

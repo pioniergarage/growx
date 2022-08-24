@@ -7,13 +7,15 @@ import { PropsWithChildren } from 'react';
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
 import Faqs, { FaqType } from '@/components/landing/FaqList';
 import LongTimeline from '@/components/landing/Timeline';
-import { getEvents, getFAQs, getSponsors } from 'api';
 import { Sponsor, GrowEvent } from 'model';
+import { getFAQs } from 'api';
+import { getEvents } from 'api/events';
+import { getSponsors } from 'api/sponsors';
 
 export async function getStaticProps() {
-    const { data: sponsors, error: sponsorError } = await getSponsors()
-    const { data: faqs, error: faqError } = await getFAQs()
-    const { data: events, error: eventsError } = await getEvents()
+    const { data: sponsors, error: sponsorError } = await getSponsors();
+    const { data: faqs, error: faqError } = await getFAQs();
+    const { data: events, error: eventsError } = await getEvents();
     if (sponsorError) {
         throw Error(sponsorError.message);
     }

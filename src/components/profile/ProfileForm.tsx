@@ -82,7 +82,7 @@ export default function ProfileForm({
                                         value="male"
                                         name="gender"
                                         isChecked={
-                                            formik.values.gender === 'male'
+                                            formik.values.gender === 'MALE'
                                         }
                                         onChange={formik.handleChange}
                                     >
@@ -92,7 +92,7 @@ export default function ProfileForm({
                                         value="female"
                                         name="gender"
                                         isChecked={
-                                            formik.values.gender === 'female'
+                                            formik.values.gender === 'FEMALE'
                                         }
                                         onChange={formik.handleChange}
                                     >
@@ -102,7 +102,7 @@ export default function ProfileForm({
                                         value="other"
                                         name="gender"
                                         isChecked={
-                                            formik.values.gender === 'other'
+                                            formik.values.gender === 'OTHER'
                                         }
                                         onChange={formik.handleChange}
                                     >

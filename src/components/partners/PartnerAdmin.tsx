@@ -12,11 +12,11 @@ import {
     Link,
     IconButton,
 } from '@chakra-ui/react';
-import { getSponsors, upsertSponsor, deleteSponsor } from 'api';
 import { useEffect, useState } from 'react';
 import { FaPen } from 'react-icons/fa';
 import { Sponsor } from 'model';
 import PartnerModal from './PartnerModal';
+import { getSponsors, deleteSponsor, upsertSponsor } from 'api/sponsors';
 
 export default function PartnerAdmin() {
     const [sponsors, setSponsors] = useState<Sponsor[]>([]);

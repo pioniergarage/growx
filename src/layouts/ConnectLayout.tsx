@@ -28,7 +28,7 @@ const Countdown = dynamic(import('../components/landing/Countdown'), {
     ssr: false,
 });
 
-function ConnectHeader({ role }: { role: UserRole }) {
+function ConnectHeader({ role }: { role?: UserRole }) {
     const router = useRouter();
     const { profile } = useProfile();
 
@@ -116,7 +116,7 @@ function ConnectHeader({ role }: { role: UserRole }) {
                             >
                                 Logout
                             </MenuItem>
-                            {role === 'admin' ? (
+                            {role === 'ORGA' ? (
                                 <MenuItem
                                     onClick={() =>
                                         router.push('/connect/admin')
@@ -156,7 +156,7 @@ function SideNavItem({ href, children }: PropsWithChildren & { href: string }) {
     );
 }
 
-function SideNav({ role }: { role: UserRole }) {
+function SideNav({ role }: { role?: UserRole }) {
     return (
         <Box
             display={{ base: 'none', lg: 'block' }}
@@ -173,7 +173,7 @@ function SideNav({ role }: { role: UserRole }) {
                 <SideNavItem href="/connect">Home</SideNavItem>
                 <SideNavItem href="/connect/events">Events</SideNavItem>
                 <SideNavItem href="/connect/profile">Profile</SideNavItem>
-                {role === 'admin' ? (
+                {role === 'ORGA' ? (
                     <SideNavItem href="/connect/admin">Admin</SideNavItem>
                 ) : undefined}
             </VStack>

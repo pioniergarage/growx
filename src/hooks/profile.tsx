@@ -1,5 +1,4 @@
 import { useUser } from '@supabase/auth-helpers-react';
-import { getProfile, updateProfile } from 'api';
 import {
     createContext,
     PropsWithChildren,
@@ -8,6 +7,7 @@ import {
     useState,
 } from 'react';
 import { Profile } from 'model';
+import { getProfile, updateProfile } from 'api/profile';
 
 const ProfileContext = createContext<{
     profile?: Profile;
@@ -26,7 +26,7 @@ export function ProfileProvider({ children }: PropsWithChildren) {
         async function fetchProfile() {
             setLoading(true);
             if (!user) return;
-            const { data, error } = await getProfile(user.id)
+            const { data, error } = await getProfile(user.id);
             if (error) {
                 setError(error.message);
             } else {
@@ -39,7 +39,7 @@ export function ProfileProvider({ children }: PropsWithChildren) {
 
     async function update(profile: Profile) {
         setLoading(true);
-        const { error } = await updateProfile(user?.id || '', profile)
+        const { error } = await updateProfile(user?.id || '', profile);
         if (!error) {
             setProfile(profile);
         }

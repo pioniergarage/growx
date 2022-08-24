@@ -13,13 +13,14 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
+import { Gender } from 'model';
 import { useState } from 'react';
 
 export type ParticipateInfo = {
     firstName: string;
     lastName: string;
     email: string;
-    gender: string;
+    gender: Gender;
     phone: string;
     studies: string;
     university: string;
@@ -35,12 +36,12 @@ export default function ParticipateForm({
     loading: boolean;
 }) {
     const [validateOnChange, setValidateOnChange] = useState(false);
-    const formik = useFormik({
+    const formik = useFormik<ParticipateInfo & { passwordRepeat: string }>({
         initialValues: {
             firstName: '',
             lastName: '',
             email: '',
-            gender: '',
+            gender: 'OTHER',
             phone: '',
             studies: '',
             university: '',
@@ -67,10 +68,7 @@ export default function ParticipateForm({
 
     return (
         <form onSubmit={formik.handleSubmit}>
-            <VStack
-                gap={4}
-                alignItems="stretch"
-            >
+            <VStack gap={4} alignItems="stretch">
                 <SimpleGrid columns={2} gap={4}>
                     <GridItem colSpan={2}>
                         <FormControl
@@ -164,7 +162,7 @@ export default function ParticipateForm({
                                         value="male"
                                         name="gender"
                                         isChecked={
-                                            formik.values.gender === 'male'
+                                            formik.values.gender === 'MALE'
                                         }
                                         onChange={formik.handleChange}
                                     >
@@ -174,7 +172,7 @@ export default function ParticipateForm({
                                         value="female"
                                         name="gender"
                                         isChecked={
-                                            formik.values.gender === 'female'
+                                            formik.values.gender === 'FEMALE'
                                         }
                                         onChange={formik.handleChange}
                                     >
@@ -184,7 +182,7 @@ export default function ParticipateForm({
                                         value="other"
                                         name="gender"
                                         isChecked={
-                                            formik.values.gender === 'other'
+                                            formik.values.gender === 'OTHER'
                                         }
                                         onChange={formik.handleChange}
                                     >

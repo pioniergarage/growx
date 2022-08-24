@@ -19,9 +19,10 @@ import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import PartnerAdmin from '@/components/partners/PartnerAdmin';
-import { createEvent, getEvents, getProfiles } from 'api';
 import { GrowEvent, Profile } from 'model';
 import { NextPageWithLayout } from 'utils/types';
+import { getEvents, createEvent } from 'api/events';
+import { getProfiles } from 'api/profile';
 
 function Profiles() {
     const toast = useToast();
@@ -29,7 +30,7 @@ function Profiles() {
 
     useEffect(() => {
         (async () => {
-            const { data, error } = await getProfiles()
+            const { data, error } = await getProfiles();
             if (error) {
                 toast({
                     title: error.message,
@@ -53,7 +54,7 @@ function Events() {
 
     useEffect(() => {
         (async () => {
-            const { data, error } = await getEvents()
+            const { data, error } = await getEvents();
             if (error) {
                 toast({
                     title: error.message,
@@ -69,7 +70,7 @@ function Events() {
     }, [toast]);
 
     async function createNewEvent() {
-        const { error, data } = await createEvent()
+        const { error, data } = await createEvent();
         if (error) {
             toast({
                 title: error.message,
@@ -85,7 +86,7 @@ function Events() {
             <Heading size="md" as="h3">
                 Events
             </Heading>
-            
+
             <TableContainer>
                 <Table size="sm">
                     <Thead>
@@ -98,7 +99,15 @@ function Events() {
                         {events.map((event) => (
                             <Tr key={event.id}>
                                 <Td>{event.date.toISOString()}</Td>
-                                <Td><Link href={'/connect/admin/events/'+event.id}>{event.title}</Link></Td>
+                                <Td>
+                                    <Link
+                                        href={
+                                            '/connect/admin/events/' + event.id
+                                        }
+                                    >
+                                        {event.title}
+                                    </Link>
+                                </Td>
                             </Tr>
                         ))}
                     </Tbody>

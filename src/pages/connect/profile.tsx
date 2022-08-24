@@ -15,9 +15,9 @@ import { ChangeEvent, useMemo, useRef, useState } from 'react';
 import LazySpinner from '@/components/profile/LazySpinner';
 import ProfileForm from '@/components/profile/ProfileForm';
 import UserAvatar from '@/components/avatar/UserAvatar';
-import { uploadUserAvatar } from 'api';
 import { Profile } from 'model';
 import { NextPageWithLayout } from 'utils/types';
+import { uploadUserAvatar } from 'api/avatar';
 
 function ProfileView() {
     return (

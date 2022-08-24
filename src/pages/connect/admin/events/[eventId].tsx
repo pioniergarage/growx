@@ -29,9 +29,9 @@ import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
-import { deleteEvent, getEvent, getRegistrationsTo, updateEvent } from 'api';
 import { GrowEvent, Profile } from 'model';
 import { NextPageWithLayout } from 'utils/types';
+import { getRegistrationsTo, getEvent, updateEvent, deleteEvent } from 'api/events';
 
 type EventFormType = Pick<GrowEvent, 'title' | 'description' | 'mandatory'> & {
     date: string;
