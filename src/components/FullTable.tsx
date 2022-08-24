@@ -23,7 +23,7 @@ export default function FullTable<T>({
     values: T[];
     idProp: keyof T;
     heading: string;
-    loading: boolean;
+    loading?: boolean;
 }) {
     return (
         <Box>

@@ -1,4 +1,4 @@
-export type Gender = 'MALE' | 'FEMALE' | 'OTHER'
+export type Gender = 'MALE' | 'FEMALE' | 'OTHER';
 
 export type Profile = {
     userId: string;
@@ -10,9 +10,9 @@ export type Profile = {
     university?: string;
     homeland?: string;
     gender?: Gender;
-    role: UserRole
+    role: UserRole;
     avatar?: string;
-}
+};
 
 export type Sponsor = {
     name: string;
@@ -22,10 +22,7 @@ export type Sponsor = {
     id: number;
 };
 
-
-
-export type UserRole = "PARTICIPANT" | "BUDDY" | "MENTOR" | "EXPERT" | "ORGA"
-
+export type UserRole = 'PARTICIPANT' | 'BUDDY' | 'MENTOR' | 'EXPERT' | 'ORGA';
 
 export type GrowEvent = {
     date: Date;
@@ -35,4 +32,4 @@ export type GrowEvent = {
     mandatory: boolean;
     location?: string;
     sq_mandatory?: boolean;
-}
+};

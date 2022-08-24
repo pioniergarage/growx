@@ -1,7 +1,13 @@
 import Head from 'next/head';
 import Footer from '@/components/landing/Footer';
 import { PropsWithChildren, useState } from 'react';
-import { NavBarContainer, Logo, MenuToggle, MenuLinksContainer, NavItem } from '@/components/navigation/Nav';
+import {
+    NavBarContainer,
+    Logo,
+    MenuToggle,
+    MenuLinksContainer,
+    NavItem,
+} from '@/components/navigation/Nav';
 import { Button } from '@chakra-ui/react';
 import Link from 'next/link';
 
@@ -21,7 +27,7 @@ function GrowNav() {
                 <NavItem onClick={toggle} to="#timeline">
                     Timeline
                 </NavItem>
-                <Link href='/connect/'>
+                <Link href="/connect/">
                     <Button>GROWconnect</Button>
                 </Link>
             </MenuLinksContainer>
