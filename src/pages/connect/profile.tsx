@@ -10,7 +10,7 @@ import {
     Skeleton,
 } from '@chakra-ui/react';
 import { useProfile } from 'hooks/profile';
-import { ChangeEvent, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import LazySpinner from '@/components/profile/LazySpinner';
 import ProfileForm from '@/components/profile/ProfileForm';
 import UserAvatar from '@/components/avatar/UserAvatar';
@@ -18,6 +18,7 @@ import { Profile } from 'model';
 import { NextPageWithLayout } from 'utils/types';
 import { uploadUserAvatar } from 'api/avatar';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import FileSelect from '@/components/FileSelect';
 
 function ProfileView() {
     return (
@@ -65,14 +66,13 @@ function AvatarControl() {
     const { profile, setProfile } = useProfile();
     const [loading, setLoading] = useState(false);
     const toast = useToast();
-    const uploadRef = useRef<HTMLInputElement>(null);
-    async function uploadAvatar(event: ChangeEvent<HTMLInputElement>) {
+    async function uploadAvatar(files: FileList | null) {
         if (!profile) return;
-        if (!event.target.files || event.target.files.length === 0) {
+        if (!files || files.length === 0) {
             throw new Error('You must select an image to upload.');
         }
         setLoading(true);
-        const file = event.target.files[0];
+        const file = files[0];
         const { error: uploadError, fileName } = await uploadUserAvatar(
             profile,
             file
@@ -100,23 +100,12 @@ function AvatarControl() {
                     profile={profile}
                     filter={loading ? 'brightness(70%)' : undefined}
                 />
-                <Button
-                    isLoading={loading}
-                    size="sm"
-                    variant="outline"
-                    onClick={() => uploadRef.current?.click()}
-                >
-                    Update profile picture
-                </Button>
+                <FileSelect onSelect={uploadAvatar}>
+                    <Button isLoading={loading} size="sm" variant="outline">
+                        Update profile picture
+                    </Button>
+                </FileSelect>
             </VStack>
-            <input
-                ref={uploadRef}
-                type="file"
-                id="single"
-                accept="image/*"
-                onChange={uploadAvatar}
-                style={{ position: 'absolute', visibility: 'hidden' }}
-            />
         </Box>
     );
 }

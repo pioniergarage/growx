@@ -1,5 +1,6 @@
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { Team, Profile } from "model";
+import resizeImage from "utils/resize";
 import { mapProfileDto } from "./profile";
 import { definitions } from "./supabase";
 import { mapResponse, SupabaseResponse, mapSingleResponse } from "./utils";
@@ -57,9 +58,10 @@ export async function getTeams(): Promise<SupabaseResponse<Team[]>> {
 export async function updateTeam(team: Partial<Team>) {
     const response = await supabaseClient
         .from<definitions["teams"]>('teams')
-        .update(team, { returning: "minimal" })
+        .update(team, { returning: "representation" })
         .eq('id', team.id)
-    return mapResponse(response, t => t)
+        .single()
+    return mapSingleResponse(response, teamDto => ({ ...teamDto, tags: teamDto.tags as string[] }))
 }
 
 export async function getTeamOfUser(user_id: string): Promise<SupabaseResponse<Team>> {
@@ -73,7 +75,7 @@ export async function getTeamOfUser(user_id: string): Promise<SupabaseResponse<T
     const teamId = teamResponse.data.team_id
     const response = await supabaseClient
         .from<definitions["teams"]>('teams')
-        .select('*, team_members(user_id)')
+        .select('*')
         .match({ id: teamId })
         .single()
     return mapSingleResponse(response, teamDto => ({ ...teamDto, tags: teamDto.tags as string[] }))
@@ -92,4 +94,27 @@ export async function getTeamWithMembers(teamId: number): Promise<SupabaseRespon
         members: dto.team_members.map(m => mapProfileDto(m.profiles)),
         logo: dto.logo
     }))
+}
+
+
+export const uploadTeamLogo = async (team: Team, logo: File) => {
+    const fileName = `${team.id}.jpg`;
+    const filePath = `${fileName}`;
+    const resizedImage = await resizeImage(logo, 200, 200);
+    const response = await supabaseClient.storage
+        .from('logos')
+        .upload(filePath, resizedImage, { upsert: true });
+    if (response.error) return { error: response.error, logo: '' }
+    const { publicURL, error } = supabaseClient.storage
+        .from('logos')
+        .getPublicUrl(filePath)
+    if (response.error || !publicURL) return { error: error || 'Could not find team logo', logo: '' }
+    const updateResponse = await updateTeam({ ...team, logo: publicURL })
+    if (updateResponse.error) return { error: updateResponse.error, logo: '' }
+    return {
+        logo: updateResponse.data?.logo
+    };
+}
+export const removeTeamLogo = async (team: Team) => {
+    return await updateTeam({ ...team, logo: '' })
 }

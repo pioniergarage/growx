@@ -24,14 +24,14 @@ import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useProfile } from 'hooks/profile';
 import { useTeamOfUser } from 'hooks/team';
 import ConnectLayout from 'layouts/ConnectLayout';
-import _ from 'lodash';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
-import TeamLogo from '@/components/teams/TeamLogo';
 import TeamForm from '@/components/teams/TeamForm';
 import { Team } from 'model';
 import { createTeam, leaveTeam, updateTeam } from 'api/teams';
+import TeamDescription from '@/components/teams/TeamDescriptions';
+import TeamLogoControl from '@/components/teams/TeamLogoControl';
 
 function LeaveTeam({ onLeave }: { onLeave: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -153,9 +153,9 @@ const TeamPage: NextPageWithLayout = () => {
             />
         );
     return (
-        <VStack alignItems="stretch">
+        <VStack alignItems="stretch" gap={4}>
             <HStack alignItems="start" gap={4}>
-                <TeamLogo {...team} />
+                <TeamLogoControl team={team} />
                 <Flex alignItems="start" flexDir="column">
                     <Heading>{team?.name || 'Team'}</Heading>
                     <Box mt={0} color="whiteAlpha.500">
@@ -163,6 +163,7 @@ const TeamPage: NextPageWithLayout = () => {
                     </Box>
                 </Flex>
             </HStack>
+            <TeamDescription description={team?.description} />
             <Flex gap={2}>
                 <Button onClick={() => setEditing(true)} variant="outline">
                     Edit
