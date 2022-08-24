@@ -1,12 +1,22 @@
-import { Center, Image as NuxtImage, Skeleton } from '@chakra-ui/react';
+import {
+    Center,
+    Image as NuxtImage,
+    ResponsiveValue,
+    Skeleton,
+} from '@chakra-ui/react';
 import { useEffect, useMemo, useState } from 'react';
 import { FaUsers } from 'react-icons/fa';
 
 export default function TeamLogo({
     logo = '',
     name = '',
-    size = '24',
+    size = 24,
     loading = false,
+}: {
+    logo?: string;
+    name?: string;
+    loading?: boolean;
+    size?: ResponsiveValue<number | string>;
 }) {
     const hash = useMemo(() => Date.now().toString() + loading, [loading]);
     const [imageLoaded, setImageLoaded] = useState(false);
