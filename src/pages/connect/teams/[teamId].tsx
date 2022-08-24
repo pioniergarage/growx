@@ -1,4 +1,3 @@
-import UserAvatar from '@/components/avatar/UserAvatar';
 import ErrorAlert from '@/components/ErrorAlert';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
@@ -10,9 +9,7 @@ import {
     Heading,
     HStack,
     Skeleton,
-    SkeletonCircle,
     SkeletonText,
-    Text,
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
@@ -21,7 +18,8 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { NextPageWithLayout } from 'utils/types';
 import TeamLogo from '@/components/teams/TeamLogo';
-import { useTeam } from 'hooks/team';
+import { useTeam, useTeamMembers } from 'hooks/team';
+import MemberList from '@/components/teams/MemberList';
 const TeamDescription = dynamic(
     import('../../../components/teams/TeamDescriptions')
 );
@@ -30,6 +28,7 @@ const TeamDetails: NextPageWithLayout = () => {
     const router = useRouter();
     const teamId = Number.parseInt(router.query.teamId as string);
     const { error, team, loading } = useTeam(teamId);
+    const { members, loading: membersLoading } = useTeamMembers(teamId);
 
     return (
         <VStack alignItems="start" gap={4}>
@@ -70,23 +69,7 @@ const TeamDetails: NextPageWithLayout = () => {
                 skeletonHeight="4"
             />
             <TeamDescription description={team?.description} />
-            <VStack alignItems="start">
-                <Text fontSize="sm" color="gray.500">
-                    Members
-                </Text>
-                <Flex gap={2}>
-                    {team?.members.map((member) => (
-                        <UserAvatar key={member.userId} profile={member} />
-                    ))}
-                    {loading ? (
-                        <>
-                            <SkeletonCircle size="10" />
-                            <SkeletonCircle size="10" />
-                            <SkeletonCircle size="10" />
-                        </>
-                    ) : undefined}
-                </Flex>
-            </VStack>
+            <MemberList members={members} loading={membersLoading} />
         </VStack>
     );
 };

@@ -1,7 +1,8 @@
 
-import { getTeamOfUser, getTeams, getTeamWithMembers } from "api/teams";
+import { getTeam, getTeamMembers, getTeamOfUser, getTeams } from "api/teams";
 import { Profile, Team } from "model";
 import { useEffect, useState } from "react";
+import useLoadingValue from "./useLoadingValue";
 
 export function useTeamOfUser(userId?: string) {
     const [loading, setLoading] = useState(true);
@@ -26,43 +27,16 @@ export function useTeamOfUser(userId?: string) {
 }
 
 export function useAllTeams() {
-    const [loading, setLoading] = useState(true);
-    const [teams, setTeams] = useState<Team[]>([]);
-    const [error, setError] = useState('')
-    useEffect(() => {
-        (async () => {
-            setLoading(true);
-            const { data, error } = await getTeams();
-            setLoading(false);
-            if (error || !data) {
-                setError(error?.message || 'Something went wrong')
-                return
-            }
-            setTeams(data);
-        })();
-    }, []);
-    return { loading, teams, error }
+    const { loading, error, value: teams } = useLoadingValue<Team[]>({ supplier: getTeams, defaultValue: [] })
+    return { loading, error, teams }
 }
 
 export function useTeam(teamId: number) {
-    const [loading, setLoading] = useState(true);
-    const [team, setTeam] = useState<Team & {
-        members: Profile[];
-    }>();
-    const [error, setError] = useState('')
+    const { loading, error, value: team } = useLoadingValue<Team | undefined>({ supplier: () => getTeam(teamId), defaultValue: undefined })
+    return { loading, error, team }
+}
 
-    useEffect(() => {
-        (async () => {
-            setLoading(true)
-            const { data, error } = await getTeamWithMembers(teamId)
-            setLoading(false)
-            if (error || !data) {
-                setError(error?.message || 'Something went wrong')
-                return
-            }
-            setError('')
-            setTeam(data)
-        })()
-    }, [teamId])
-    return { loading, team, error }
+export function useTeamMembers(teamId: number) {
+    const { loading, error, value: members } = useLoadingValue<Profile[]>({ supplier: () => getTeamMembers(teamId), defaultValue: [] })
+    return { loading, error, members }
 }

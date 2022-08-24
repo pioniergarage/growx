@@ -6,7 +6,6 @@ import {
     Input,
     HStack,
     Button,
-    Box,
     Tag,
     TagCloseButton,
     TagLabel,
