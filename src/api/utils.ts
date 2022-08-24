@@ -18,7 +18,9 @@ export function mapResponse<DataIn, DataOut>(
 }
 
 export function mapSingleResponse<DataIn, DataOut>(
-    response: PostgrestSingleResponse<DataIn> | PostgrestMaybeSingleResponse<DataIn>,
+    response:
+        | PostgrestSingleResponse<DataIn>
+        | PostgrestMaybeSingleResponse<DataIn>,
     mapper: (data: DataIn) => DataOut
 ): SupabaseResponse<DataOut> {
     const { data, error } = response;

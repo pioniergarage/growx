@@ -46,11 +46,15 @@ const TeamsPage: NextPageWithLayout = () => {
                 </BreadcrumbItem>
             </Breadcrumb>
             <ErrorAlert message={allTeamsError} />
-            <SimpleGrid gap={4} columns={{ base: 1, md: 2 }}>
-                {allTeamsLoading
-                    ? undefined
-                    : teams.map((team) => <TeamCard key={team.id} {...team} />)}
-            </SimpleGrid>
+            {!allTeamsLoading ? (
+                <SimpleGrid gap={4} columns={{ base: 1, md: 2 }}>
+                    {allTeamsLoading
+                        ? undefined
+                        : teams.map((team) => (
+                              <TeamCard key={team.id} {...team} />
+                          ))}
+                </SimpleGrid>
+            ) : undefined}
             <Skeletons loading={allTeamsLoading} />
         </VStack>
     );

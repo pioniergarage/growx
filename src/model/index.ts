@@ -40,4 +40,4 @@ export type Team = {
     description: string;
     tags: string[];
     logo?: string;
-}
+};

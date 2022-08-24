@@ -111,6 +111,16 @@ function ConnectHeader({ role }: { role?: UserRole }) {
                                 Profile
                             </MenuItem>
                             <MenuItem
+                                onClick={() => router.push('/connect/teams')}
+                            >
+                                Teams
+                            </MenuItem>
+                            <MenuItem
+                                onClick={() => router.push('/connect/team')}
+                            >
+                                Your Team
+                            </MenuItem>
+                            <MenuItem
                                 onClick={handleLogout}
                                 icon={<FaSignOutAlt />}
                             >
@@ -173,6 +183,8 @@ function SideNav({ role }: { role?: UserRole }) {
                 <SideNavItem href="/connect">Home</SideNavItem>
                 <SideNavItem href="/connect/events">Events</SideNavItem>
                 <SideNavItem href="/connect/profile">Profile</SideNavItem>
+                <SideNavItem href="/connect/team">Your Team</SideNavItem>
+                <SideNavItem href="/connect/teams">All Teams</SideNavItem>
                 {role === 'ORGA' ? (
                     <SideNavItem href="/connect/admin">Admin</SideNavItem>
                 ) : undefined}

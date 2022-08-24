@@ -1,10 +1,7 @@
-import ErrorAlert from '@/components/ErrorAlert';
 import PageLink from '@/components/navigation/PageLink';
 import { FocusableElement } from '@chakra-ui/utils';
 import {
     Box,
-    Center,
-    Spinner,
     VStack,
     Text,
     Button,
@@ -22,16 +19,26 @@ import {
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useProfile } from 'hooks/profile';
-import { useTeamOfUser } from 'hooks/team';
+import { useTeamMembers, useTeamOfUser, useTeamRequests } from 'hooks/team';
 import ConnectLayout from 'layouts/ConnectLayout';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 import TeamForm from '@/components/teams/TeamForm';
-import { Team } from 'model';
-import { createTeam, leaveTeam, updateTeam } from 'api/teams';
+import { Profile, Team } from 'model';
+import {
+    acceptRequestToJoinTeam,
+    createTeam,
+    declineRequestToJoinTeam,
+    leaveTeam,
+    updateTeam,
+} from 'api/teams';
 import TeamDescription from '@/components/teams/TeamDescriptions';
 import TeamLogoControl from '@/components/teams/TeamLogoControl';
+import MemberList from '@/components/teams/MemberList';
+import SpinnerWrapper from '@/components/SpinnerWrapper';
+import ErrorAlertWrapper from '@/components/ErrorAlertWrapper';
+import RequestList from '@/components/teams/RequestList';
 
 function LeaveTeam({ onLeave }: { onLeave: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -60,7 +67,14 @@ function LeaveTeam({ onLeave }: { onLeave: () => void }) {
                             <Button ref={cancelRef} onClick={onClose}>
                                 Cancel
                             </Button>
-                            <Button colorScheme="red" onClick={onLeave} ml={3}>
+                            <Button
+                                colorScheme="red"
+                                onClick={() => {
+                                    onClose();
+                                    onLeave();
+                                }}
+                                ml={3}
+                            >
                                 Leave
                             </Button>
                         </AlertDialogFooter>
@@ -103,13 +117,29 @@ function NoTeam() {
     );
 }
 
-const TeamPage: NextPageWithLayout = () => {
-    const router = useRouter();
+function TeamDetails({
+    team,
+    setTeam,
+    userId,
+}: {
+    team: Team;
+    setTeam: (t: Team) => void;
+    userId?: string;
+}) {
     const toast = useToast();
-    const { profile } = useProfile();
-    const userId = profile?.userId;
-    const { team, loading, error, setTeam } = useTeamOfUser(userId);
+    const router = useRouter();
+    const {
+        members,
+        loading: membersLoading,
+        setMembers,
+    } = useTeamMembers(team.id);
+    const {
+        requests,
+        loading: requestsLoading,
+        setRequests,
+    } = useTeamRequests(team.id);
     const [editing, setEditing] = useState(false);
+    const [loadingIds, setLoadingIds] = useState<string[]>([]);
 
     async function onLeaveTeam() {
         if (!userId) return;
@@ -120,7 +150,7 @@ const TeamPage: NextPageWithLayout = () => {
                 title: 'Something went wrong.',
             });
         }
-        router.push('/connect');
+        router.push('/connect/team');
     }
 
     async function onSaveTeam(team: Team) {
@@ -136,23 +166,50 @@ const TeamPage: NextPageWithLayout = () => {
         setEditing(false);
     }
 
-    if (loading)
-        return (
-            <Center>
-                <Spinner />
-            </Center>
-        );
-    if (error.length > 0) return <ErrorAlert message={error} />;
-    if (!team) return <NoTeam />;
-    if (editing)
-        return (
-            <TeamForm
-                onSave={onSaveTeam}
-                team={team}
-                onCancel={() => setEditing(false)}
-            />
-        );
-    return (
+    async function onAcceptRequest(profile: Profile) {
+        setLoadingIds([...loadingIds, profile.userId]);
+        const { error } = await acceptRequestToJoinTeam(profile.userId);
+        if (error) {
+            toast({
+                status: 'error',
+                title: error.message,
+            });
+        } else {
+            toast({
+                status: 'success',
+                title:
+                    profile.firstName +
+                    ' ' +
+                    profile.lastName +
+                    ' joined your team',
+            });
+            setRequests(requests.filter((p) => p.userId != profile.userId));
+            setMembers([...members, profile]);
+        }
+        setLoadingIds(loadingIds.filter((i) => i != profile.userId));
+    }
+
+    async function onDeclineRequest(profile: Profile) {
+        setLoadingIds([...loadingIds, profile.userId]);
+        const { error } = await declineRequestToJoinTeam(profile.userId);
+        if (error) {
+            toast({
+                status: 'error',
+                title: error.message,
+            });
+        } else {
+            setRequests(requests.filter((p) => p.userId != profile.userId));
+        }
+        setLoadingIds(loadingIds.filter((i) => i != profile.userId));
+    }
+
+    return editing ? (
+        <TeamForm
+            onSave={onSaveTeam}
+            team={team}
+            onCancel={() => setEditing(false)}
+        />
+    ) : (
         <VStack alignItems="stretch" gap={4}>
             <HStack alignItems="start" gap={4}>
                 <TeamLogoControl team={team} />
@@ -170,7 +227,37 @@ const TeamPage: NextPageWithLayout = () => {
                 </Button>
                 <LeaveTeam onLeave={onLeaveTeam} />
             </Flex>
+            <MemberList members={members} loading={membersLoading} />
+            <RequestList
+                requests={requests}
+                loading={requestsLoading || membersLoading}
+                loadingRequests={loadingIds}
+                onAccept={onAcceptRequest}
+                onDecline={onDeclineRequest}
+            />
         </VStack>
+    );
+}
+
+const TeamPage: NextPageWithLayout = () => {
+    const { profile } = useProfile();
+    const userId = profile?.userId;
+    const { team, loading, error, setTeam } = useTeamOfUser(userId);
+
+    return (
+        <SpinnerWrapper isLoading={loading}>
+            <ErrorAlertWrapper error={error}>
+                {team ? (
+                    <TeamDetails
+                        team={team}
+                        setTeam={setTeam}
+                        userId={userId}
+                    />
+                ) : (
+                    <NoTeam />
+                )}
+            </ErrorAlertWrapper>
+        </SpinnerWrapper>
     );
 };
 

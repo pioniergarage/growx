@@ -1,14 +1,16 @@
 import { SupabaseResponse } from 'api/utils';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, DependencyList } from 'react';
 
 export default function useLoadingValue<T>({
     defaultValue,
     defaultErrorMessage = 'Something went wrong',
     supplier,
+    dependencies = [],
 }: {
     supplier: () => Promise<SupabaseResponse<T>>;
     defaultValue: T;
     defaultErrorMessage?: string;
+    dependencies?: DependencyList;
 }) {
     const [loading, setLoading] = useState(true);
     const [value, setValue] = useState<T>(defaultValue);
@@ -25,6 +27,6 @@ export default function useLoadingValue<T>({
             setValue(data);
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    return { loading, value, error };
+    }, dependencies);
+    return { loading, value, error, setValue };
 }
