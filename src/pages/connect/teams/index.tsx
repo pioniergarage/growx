@@ -30,7 +30,7 @@ const Skeletons = ({ number = 5, loading = true }) => {
 const TeamsPage: NextPageWithLayout = () => {
     const {
         teams,
-        loading: allTeamsLoading,
+        isLoading: allTeamsLoading,
         error: allTeamsError,
     } = useAllTeams();
 
@@ -45,10 +45,10 @@ const TeamsPage: NextPageWithLayout = () => {
                     <BreadcrumbSeparator />
                 </BreadcrumbItem>
             </Breadcrumb>
-            <ErrorAlert message={allTeamsError} />
+            <ErrorAlert message={allTeamsError || undefined} />
             {!allTeamsLoading ? (
                 <SimpleGrid gap={4} columns={{ base: 1, md: 2 }}>
-                    {allTeamsLoading
+                    {!teams
                         ? undefined
                         : teams.map((team) => (
                               <TeamCard key={team.id} {...team} />

@@ -1,7 +1,5 @@
-import FullTable from '@/components/FullTable';
 import TimelineEvent from '@/components/events/TimelineEvent';
-import ConnectLayout from 'layouts/ConnectLayout';
-import { FocusableElement } from '@chakra-ui/utils';
+import FullTable from '@/components/FullTable';
 import {
     AlertDialog,
     AlertDialogBody,
@@ -25,18 +23,20 @@ import {
     useToast,
     VStack,
 } from '@chakra-ui/react';
-import { useFormik } from 'formik';
-import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
-import { GrowEvent, Profile } from 'model';
-import { NextPageWithLayout } from 'utils/types';
-import {
-    getRegistrationsTo,
-    getEvent,
-    updateEvent,
-    deleteEvent,
-} from 'api/events';
+import { FocusableElement } from '@chakra-ui/utils';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { useFormik } from 'formik';
+import {
+    useDeleteEvent,
+    useGrowEvent,
+    useRegistrationsToEvent,
+    useUpdateEvent,
+} from 'hooks/event';
+import ConnectLayout from 'layouts/ConnectLayout';
+import { GrowEvent } from 'model';
+import { useRouter } from 'next/router';
+import { useRef, useState } from 'react';
+import { NextPageWithLayout } from 'utils/types';
 
 type EventFormType = Pick<GrowEvent, 'title' | 'description' | 'mandatory'> & {
     date: string;
@@ -238,24 +238,13 @@ function EventForm({
     );
 }
 
-function Registrations({ eventId = 1 }) {
-    const [registrations, setRegistrations] = useState<Profile[]>([]);
-    const [loading, setLoading] = useState(true);
+function Registrations(event: GrowEvent) {
+    const { registeredUsers, isLoading } = useRegistrationsToEvent(event);
 
-    useEffect(() => {
-        (async () => {
-            setLoading(true);
-            const { data } = await getRegistrationsTo(eventId);
-            if (data) {
-                setRegistrations(data);
-            }
-            setLoading(false);
-        })();
-    }, [eventId]);
     return (
         <FullTable
-            loading={loading}
-            values={registrations}
+            loading={isLoading}
+            values={registeredUsers || []}
             idProp="userId"
             heading="Registrations"
         />
@@ -267,88 +256,66 @@ const EventDetails: NextPageWithLayout = () => {
     const router = useRouter();
     const eventId = Number.parseInt(router.query.eventId as string);
 
-    const [event, setEvent] = useState<GrowEvent>();
-    const [originalEvent, setOriginalEvent] = useState<GrowEvent>();
-    const [loading, setLoading] = useState(false);
-    useEffect(() => {
-        (async () => {
-            setLoading(true);
-            const { data, error } = await getEvent(eventId);
-            if (data) {
-                setEvent({ ...data, date: new Date(data.date) });
-                setOriginalEvent({ ...data, date: new Date(data.date) });
-            }
-            if (error) {
-                toast({
-                    title: error.message,
-                    status: 'error',
-                    duration: 4000,
-                    isClosable: true,
-                });
-            }
-            setLoading(false);
-        })();
-    }, [eventId, toast]);
+    const { event } = useGrowEvent(eventId);
+    const [editingEvent, setEditingEvent] = useState(event);
+    const { updateEvent, isLoading: updating } = useUpdateEvent();
+    const { deleteEvent } = useDeleteEvent();
 
     async function saveEvent(patch: Partial<GrowEvent>) {
         if (!event) return;
-        setLoading(true);
-        const { error } = await updateEvent(event.id, patch);
-        if (error) {
-            toast({
-                title: error.message,
-                status: 'error',
-                duration: 4000,
-                isClosable: true,
-            });
-        } else {
+        try {
+            updateEvent({ ...patch, id: event.id });
             toast({
                 title: 'Event saved',
                 status: 'success',
                 duration: 4000,
                 isClosable: true,
             });
+        } catch (error) {
+            toast({
+                title: 'Could not save event',
+                status: 'error',
+                duration: 4000,
+                isClosable: true,
+            });
         }
-        setLoading(false);
     }
 
     async function handleDeleteEvent() {
-        setLoading(true);
-        const { error } = await deleteEvent(eventId);
-        if (error) {
+        try {
+            await deleteEvent(eventId);
+            router.push('/connect/admin');
+        } catch (error) {
             toast({
-                title: error.message,
+                title: 'Could not delete event',
                 status: 'error',
             });
-        } else {
-            router.push('/connect/admin');
         }
-        setLoading(false);
     }
 
     return (
         <VStack maxW="container.lg" alignItems="stretch" gap={4}>
             <Heading>Event</Heading>
-            {event && originalEvent ? (
+            {event && editingEvent ? (
                 <>
                     <VStack alignItems="start">
                         <Heading size="sm">Preview</Heading>
                         <Box maxW="xl">
-                            <TimelineEvent {...event} />
+                            <TimelineEvent event={editingEvent} />
                         </Box>
                     </VStack>
                     <Divider />
                     <EventForm
                         onSubmit={saveEvent}
                         onChange={(updated) =>
-                            setEvent({ id: event.id, ...updated })
+                            setEditingEvent({ id: event.id, ...updated })
                         }
-                        initialValue={originalEvent}
-                        loading={loading}
+                        initialValue={event}
+                        loading={updating}
                         onDelete={handleDeleteEvent}
                     />
                     <Divider />
-                    <Registrations eventId={event.id} />
+                    <Registrations {...event} />
                 </>
             ) : (
                 <Spinner />

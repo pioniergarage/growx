@@ -1,24 +1,23 @@
-import ConnectLayout from 'layouts/ConnectLayout';
-import {
-    Box,
-    Heading,
-    VStack,
-    Text,
-    Grid,
-    Button,
-    useToast,
-    Skeleton,
-} from '@chakra-ui/react';
-import { useProfile } from 'hooks/profile';
-import { useMemo, useState } from 'react';
+import UserAvatar from '@/components/avatar/UserAvatar';
+import FileSelect from '@/components/FileSelect';
 import LazySpinner from '@/components/profile/LazySpinner';
 import ProfileForm from '@/components/profile/ProfileForm';
-import UserAvatar from '@/components/avatar/UserAvatar';
-import { Profile } from 'model';
-import { NextPageWithLayout } from 'utils/types';
-import { uploadUserAvatar } from 'api/avatar';
+import {
+    Box,
+    Button,
+    Grid,
+    Heading,
+    Skeleton,
+    Text,
+    useToast,
+    VStack,
+} from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import FileSelect from '@/components/FileSelect';
+import { useProfile, useUpdateProfile, useUploadAvatar } from 'hooks/profile';
+import ConnectLayout from 'layouts/ConnectLayout';
+import { Profile } from 'model';
+import { useMemo, useState } from 'react';
+import { NextPageWithLayout } from 'utils/types';
 
 function ProfileView() {
     return (
@@ -63,9 +62,10 @@ function SkeletonLoader() {
 }
 
 function AvatarControl() {
-    const { profile, setProfile } = useProfile();
+    const { profile } = useProfile();
     const [loading, setLoading] = useState(false);
     const toast = useToast();
+    const { uploadUserAvatar } = useUploadAvatar();
     async function uploadAvatar(files: FileList | null) {
         if (!profile) return;
         if (!files || files.length === 0) {
@@ -73,24 +73,24 @@ function AvatarControl() {
         }
         setLoading(true);
         const file = files[0];
-        const { error: uploadError, fileName } = await uploadUserAvatar(
-            profile,
-            file
+        await uploadUserAvatar(
+            { profile, file },
+            {
+                onError: () => {
+                    toast({
+                        title: 'Something went wrong.',
+                        status: 'error',
+                    });
+                },
+                onSuccess: () => {
+                    toast({
+                        title: 'Profile picture upadted!',
+                        status: 'success',
+                    });
+                },
+            }
         );
         setLoading(false);
-        if (uploadError) {
-            console.error(uploadError.message);
-            toast({
-                title: 'Something went wrong.',
-                status: 'error',
-            });
-        } else {
-            toast({
-                title: 'Profile picture upadted!',
-                status: 'success',
-            });
-            setProfile({ ...profile, avatar: fileName });
-        }
     }
     return (
         <Box>
@@ -112,12 +112,13 @@ function AvatarControl() {
 
 function ProfileDetailsControl() {
     const [isEditing, setEditing] = useState(false);
-    const { profile, loading, update } = useProfile();
+    const { profile, isLoading: loading } = useProfile();
+    const { updateProfile } = useUpdateProfile();
     const toast = useToast();
 
     async function handleSave(profile: Profile) {
         try {
-            await update(profile);
+            await updateProfile(profile);
 
             toast({
                 title: 'Profile updated.',

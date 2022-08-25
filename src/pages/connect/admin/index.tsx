@@ -1,83 +1,55 @@
 import FullTable from '@/components/FullTable';
-import ConnectLayout from 'layouts/ConnectLayout';
+import PartnerAdmin from '@/components/partners/PartnerAdmin';
 import {
-    Heading,
-    useToast,
-    VStack,
     Button,
-    TableContainer,
+    Divider,
+    Heading,
     Link,
     Table,
+    TableContainer,
     Tbody,
     Td,
     Th,
     Thead,
     Tr,
-    Divider,
+    useToast,
+    VStack,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import PartnerAdmin from '@/components/partners/PartnerAdmin';
-import { GrowEvent, Profile } from 'model';
-import { NextPageWithLayout } from 'utils/types';
-import { getEvents, createEvent } from 'api/events';
-import { getProfiles } from 'api/profile';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { useCreateEvent, useGrowEvents } from 'hooks/event';
+import { useProfiles } from 'hooks/profile';
+import ConnectLayout from 'layouts/ConnectLayout';
+import { useRouter } from 'next/router';
+import { NextPageWithLayout } from 'utils/types';
 
 function Profiles() {
-    const toast = useToast();
-    const [profiles, setProfiles] = useState<Profile[]>([]);
+    const { profiles, isLoading } = useProfiles();
 
-    useEffect(() => {
-        (async () => {
-            const { data, error } = await getProfiles();
-            if (error) {
-                toast({
-                    title: error.message,
-                    status: 'error',
-                    duration: 4000,
-                    isClosable: true,
-                });
-            }
-            if (data) {
-                setProfiles(data);
-            }
-        })();
-    }, [toast]);
-    return <FullTable values={profiles} idProp="userId" heading="Profiles" />;
+    return (
+        <FullTable
+            loading={isLoading}
+            values={profiles || []}
+            idProp="userId"
+            heading="Profiles"
+        />
+    );
 }
 
 function Events() {
     const router = useRouter();
     const toast = useToast();
-    const [events, setEvents] = useState<GrowEvent[]>([]);
-
-    useEffect(() => {
-        (async () => {
-            const { data, error } = await getEvents();
-            if (error) {
-                toast({
-                    title: error.message,
-                    status: 'error',
-                    duration: 4000,
-                    isClosable: true,
-                });
-            }
-            if (data) {
-                setEvents(data.map((e) => ({ ...e, date: new Date(e.date) })));
-            }
-        })();
-    }, [toast]);
+    const { events } = useGrowEvents();
+    const { createEvent } = useCreateEvent();
 
     async function createNewEvent() {
-        const { error, data } = await createEvent();
-        if (error) {
+        try {
+            const result = await createEvent({ title: 'New Event' });
+            router.push('/connect/admin/events/' + result.id);
+        } catch (error) {
             toast({
-                title: error.message,
+                title: 'Could not create event',
                 status: 'error',
             });
-        } else if (data) {
-            router.push('/connect/admin/events/' + data.id);
         }
     }
 
@@ -96,20 +68,23 @@ function Events() {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {events.map((event) => (
-                            <Tr key={event.id}>
-                                <Td>{event.date.toISOString()}</Td>
-                                <Td>
-                                    <Link
-                                        href={
-                                            '/connect/admin/events/' + event.id
-                                        }
-                                    >
-                                        {event.title}
-                                    </Link>
-                                </Td>
-                            </Tr>
-                        ))}
+                        {events
+                            ? events.map((event) => (
+                                  <Tr key={event.id}>
+                                      <Td>{event.date.toISOString()}</Td>
+                                      <Td>
+                                          <Link
+                                              href={
+                                                  '/connect/admin/events/' +
+                                                  event.id
+                                              }
+                                          >
+                                              {event.title}
+                                          </Link>
+                                      </Td>
+                                  </Tr>
+                              ))
+                            : undefined}
                     </Tbody>
                 </Table>
             </TableContainer>

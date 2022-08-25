@@ -8,13 +8,13 @@ interface TimelineEventProps {
 
 const TimelineEvent: React.FC<TimelineEventProps> = ({ event }) => {
     const { day, month } = useMemo(() => {
-        const date = new Date(event.date);
+        const date = event.date;
         const day = String(date.getDate()).padStart(2, '0');
         const month = date.toLocaleString('en-US', { month: 'short' });
         return { day, month };
     }, [event.date]);
 
-    const over = new Date() > new Date(event.date);
+    const over = new Date() > event.date;
 
     return (
         <HStack

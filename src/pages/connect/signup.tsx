@@ -1,21 +1,22 @@
 import ParticipateForm, {
     ParticipateInfo,
 } from '@/components/forms/ParticipateForm';
-import LoginLayout from 'layouts/LoginLayout';
 import PageLink from '@/components/navigation/PageLink';
-import { VStack, Heading, Alert, AlertIcon, Box } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, Heading, VStack } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { useUser } from '@supabase/auth-helpers-react';
+import { useUpdateProfile } from 'hooks/profile';
+import LoginLayout from 'layouts/LoginLayout';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
-import { updateProfile } from 'api/profile';
-import { useUser } from '@supabase/auth-helpers-react';
 
 const SignUp: NextPageWithLayout = () => {
     const [loading, setLoading] = useState(false);
     const [signUpError, setSignUpError] = useState<string>('');
     const router = useRouter();
     const { user } = useUser();
+    const { updateProfile } = useUpdateProfile();
 
     useEffect(() => {
         if (user) {
@@ -39,7 +40,9 @@ const SignUp: NextPageWithLayout = () => {
     async function onSignUp(info: ParticipateInfo) {
         setLoading(true);
         await signUp(info)
-            .then(({ user, info }) => updateProfile(user.id, info))
+            .then(({ user, info }) =>
+                updateProfile({ ...info, userId: user.id })
+            )
             .then(() => router.replace('/connect/welcome'))
             .catch((error) => setSignUpError(String(error)));
         setLoading(false);

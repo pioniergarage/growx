@@ -1,7 +1,7 @@
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Profile } from 'model';
 import { definitions } from './supabase';
-import { mapSingleResponse, mapResponse, SupabaseResponse } from './utils';
+import { handleResponse, handleSingleResponse } from './utils';
 
 export const mapProfileDto: (dto: definitions['profiles']) => Profile = (
     dto
@@ -19,22 +19,20 @@ export const mapProfileDto: (dto: definitions['profiles']) => Profile = (
     avatar: dto.avatar,
 });
 
-export async function getProfile(
-    user_id: string
-): Promise<SupabaseResponse<Profile>> {
-    const response = await supabaseClient
+export async function fetchProfile(user_id: string): Promise<Profile> {
+    return supabaseClient
         .from<definitions['profiles']>('profiles')
         .select('*')
         .eq('user_id', user_id)
-        .single();
-    return mapSingleResponse(response, mapProfileDto);
+        .single()
+        .then((response) => handleSingleResponse(response, 'Profile not found'))
+        .then(mapProfileDto);
 }
 
 export const updateProfile = async (
-    userId: string,
-    profile: Partial<Profile>
+    profile: Partial<Profile> & Pick<Profile, 'userId'>
 ) =>
-    await supabaseClient
+    supabaseClient
         .from<definitions['profiles']>('profiles')
         .update(
             {
@@ -50,11 +48,15 @@ export const updateProfile = async (
             },
             { returning: 'representation' }
         )
-        .match({ user_id: userId });
+        .match({ user_id: profile.userId })
+        .single()
+        .then((response) => handleSingleResponse(response, 'Profile not found'))
+        .then(mapProfileDto);
 
-export const getProfiles = async (): Promise<SupabaseResponse<Profile[]>> => {
-    const response = await supabaseClient
+export const getProfiles = async (): Promise<Profile[]> => {
+    return supabaseClient
         .from<definitions['profiles']>('profiles')
-        .select('*');
-    return mapResponse(response, mapProfileDto);
+        .select('*')
+        .then((response) => handleResponse(response, 'No profiles found'))
+        .then((dtos) => dtos.map(mapProfileDto));
 };

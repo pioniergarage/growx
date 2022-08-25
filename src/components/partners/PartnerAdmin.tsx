@@ -1,7 +1,8 @@
 import {
-    VStack,
-    Heading,
     Button,
+    Heading,
+    IconButton,
+    Link,
     Table,
     TableContainer,
     Tbody,
@@ -9,17 +10,18 @@ import {
     Th,
     Thead,
     Tr,
-    Link,
-    IconButton,
+    VStack,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { FaPen } from 'react-icons/fa';
+import { useDeleteSponsor, useSponsors, useUpsertSponsor } from 'hooks/sponsor';
 import { Sponsor } from 'model';
+import { useState } from 'react';
+import { FaPen } from 'react-icons/fa';
 import PartnerModal from './PartnerModal';
-import { getSponsors, deleteSponsor, upsertSponsor } from 'api/sponsors';
 
 export default function PartnerAdmin() {
-    const [sponsors, setSponsors] = useState<Sponsor[]>([]);
+    const { sponsors } = useSponsors();
+    const { deleteSponsor } = useDeleteSponsor();
+    const { upsertSponsor } = useUpsertSponsor();
     const [sponsorOnEdit, setSponsorOnEdit] = useState<
         Omit<Sponsor, 'id'> & { id?: number }
     >({
@@ -29,17 +31,6 @@ export default function PartnerAdmin() {
         type: 1,
     });
     const [modalOpen, setModalOpen] = useState(false);
-
-    useEffect(() => {
-        (async () => {
-            const { data, error } = await getSponsors()
-            if (error) {
-                console.error(error.message);
-            } else if (data) {
-                setSponsors(data);
-            }
-        })();
-    }, []);
 
     function createNewSponsor() {
         setSponsorOnEdit({ name: '', link: '', logo: '', type: 1 });
@@ -53,29 +44,16 @@ export default function PartnerAdmin() {
 
     async function onDeleteSponsor() {
         if (sponsorOnEdit.id) {
-            await deleteSponsor(sponsorOnEdit.id)
-            setSponsors(sponsors.filter((s) => s.id !== sponsorOnEdit.id));
+            deleteSponsor(sponsorOnEdit.id);
         }
         setModalOpen(false);
     }
 
     async function saveSponsor(sponsor: Sponsor) {
-        const sponsorToUpdate = sponsors.find((s) => s.name === sponsor.name);
-        if (!sponsorToUpdate) return;
-        const { data, error } = await upsertSponsor({...sponsor, id: sponsorToUpdate?.id})
-        if (error) {
-            console.error(error);
-        } else if (data) {
-            const index = sponsors.findIndex((s) => s.id === data.id);
-            if (index >= 0) {
-                sponsors.splice(index, 1, data);
-                setSponsors(sponsors);
-            } else {
-                setSponsors(sponsors.concat(data));
-            }
-        }
+        await upsertSponsor(sponsor);
         setModalOpen(false);
     }
+
     const image = (sponsor: Sponsor) => (
         // eslint-disable-next-line @next/next/no-img-element
         <img
@@ -103,25 +81,29 @@ export default function PartnerAdmin() {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {sponsors.map((sponsor) => (
-                            <Tr key={sponsor.name}>
-                                <Td>
-                                    <IconButton
-                                        aria-label="Adjust sponsor"
-                                        icon={<FaPen />}
-                                        variant="ghost"
-                                        size="xs"
-                                        onClick={() => adjustSponsor(sponsor)}
-                                    />
-                                </Td>
-                                <Td>{sponsor.name}</Td>
-                                <Td>{image(sponsor)}</Td>
-                                <Td>{sponsor.type}</Td>
-                                <Td>
-                                    <Link>{sponsor.link}</Link>
-                                </Td>
-                            </Tr>
-                        ))}
+                        {sponsors
+                            ? sponsors.map((sponsor) => (
+                                  <Tr key={sponsor.name}>
+                                      <Td>
+                                          <IconButton
+                                              aria-label="Adjust sponsor"
+                                              icon={<FaPen />}
+                                              variant="ghost"
+                                              size="xs"
+                                              onClick={() =>
+                                                  adjustSponsor(sponsor)
+                                              }
+                                          />
+                                      </Td>
+                                      <Td>{sponsor.name}</Td>
+                                      <Td>{image(sponsor)}</Td>
+                                      <Td>{sponsor.type}</Td>
+                                      <Td>
+                                          <Link>{sponsor.link}</Link>
+                                      </Td>
+                                  </Tr>
+                              ))
+                            : undefined}
                     </Tbody>
                 </Table>
             </TableContainer>

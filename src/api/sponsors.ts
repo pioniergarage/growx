@@ -1,24 +1,26 @@
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Sponsor } from 'model';
 import { definitions } from './supabase';
-import { SupabaseResponse, mapResponse } from './utils';
+import { handleResponse, handleSingleResponse } from './utils';
 
-export async function getSponsors(): Promise<SupabaseResponse<Sponsor[]>> {
-    const response = await supabaseClient
-        .from<definitions['sponsors']>('sponsors')
-        .select('*');
-    return mapResponse(response, (s) => s);
-}
+export const getSponsors = () => supabaseClient
+    .from<definitions['sponsors']>('sponsors')
+    .select('*')
+    .then((response) => handleResponse(response, 'Could not load sponsors'))
+    .then((dtos) => dtos.map((sponsor) => sponsor as Sponsor));
 
-export const upsertSponsor = async (sponsor: Sponsor) =>
-    await supabaseClient
+export const upsertSponsor = (sponsor: Sponsor) =>
+    supabaseClient
         .from<definitions['sponsors']>('sponsors')
-        .upsert(sponsor)
+        .upsert(sponsor, { returning: 'representation' })
         .match({ id: sponsor.id })
-        .single();
+        .single()
+        .then((response) => handleSingleResponse(response));
 
 export const deleteSponsor = async (id: number) =>
-    await supabaseClient
+    supabaseClient
         .from<definitions['sponsors']>('sponsors')
-        .delete()
-        .match({ id });
+        .delete({ returning: 'representation' })
+        .match({ id })
+        .single()
+        .then((response) => handleSingleResponse(response));

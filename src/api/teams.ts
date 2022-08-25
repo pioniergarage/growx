@@ -1,129 +1,143 @@
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { Team, Profile } from 'model';
+import { Profile, Team } from 'model';
 import resizeImage from 'utils/resize';
 import { mapProfileDto } from './profile';
 import { definitions } from './supabase';
-import { mapResponse, SupabaseResponse, mapSingleResponse } from './utils';
+import {
+    handleMaybeSingleResponse,
+    handleResponse,
+    handleSingleResponse,
+} from './utils';
 
-const mapTeamDto = (teamDto: definitions['teams']) => ({
+const mapTeamDto = (teamDto: definitions['teams']): Team => ({
     ...teamDto,
     tags: teamDto.tags as string[],
 });
 
 export async function createTeam(team: Partial<Team>) {
-    const response = await supabaseClient
+    return supabaseClient
         .from<definitions['teams']>('teams')
         .insert(team, { returning: 'representation' })
-        .single();
-    return mapSingleResponse(response, (t) => t);
+        .single()
+        .then((response) => handleSingleResponse(response));
 }
 
-export async function getTeams(): Promise<SupabaseResponse<Team[]>> {
-    const response = await supabaseClient
+export async function getTeams() {
+    return supabaseClient
         .from<definitions['teams']>('teams')
-        .select('*');
-    return mapResponse(response, mapTeamDto);
+        .select('*')
+        .then((r) => handleResponse(r, 'Could not load teams'))
+        .then((dtos) => dtos.map(mapTeamDto));
 }
 
-export async function getTeam(id: number): Promise<SupabaseResponse<Team>> {
-    const response = await supabaseClient
+export async function getTeam(id: number) {
+    return supabaseClient
         .from<definitions['teams']>('teams')
         .select('*')
         .match({ id })
-        .single();
-    return mapSingleResponse(response, mapTeamDto);
+        .single()
+        .then((r) => handleSingleResponse(r, 'Team not found'))
+        .then(mapTeamDto);
 }
 
 export async function updateTeam(team: Partial<Team>) {
-    const response = await supabaseClient
+    return supabaseClient
         .from<definitions['teams']>('teams')
         .update(team, { returning: 'representation' })
         .eq('id', team.id)
-        .single();
-    return mapSingleResponse(response, mapTeamDto);
+        .single()
+        .then((r) => handleSingleResponse(r))
+        .then(mapTeamDto);
 }
 
 export async function leaveTeam(user_id: string) {
-    return await supabaseClient
+    return supabaseClient
         .from<definitions['team_members']>('team_members')
         .delete()
         .eq('user_id', user_id)
-        .single();
+        .single()
+        .then(({ error }) => {
+            if (error) throw new Error(error.message);
+        });
 }
 
 export async function requestToJoinTeam(userId: string, teamId: number) {
-    return await supabaseClient
+    return supabaseClient
         .from<definitions['team_requests']>('team_requests')
-        .insert({ user_id: userId, team_id: teamId });
+        .insert({ user_id: userId, team_id: teamId })
+        .then(({ error }) => {
+            if (error) throw new Error(error.message);
+        });
 }
 
 export async function withdrawRequest(userId: string) {
-    return await supabaseClient
+    return supabaseClient
         .from<definitions['team_requests']>('team_requests')
         .delete({ returning: 'minimal' })
         .match({ user_id: userId })
-        .single();
+        .single()
+        .then(({ error }) => {
+            if (error) throw new Error(error.message);
+        });
 }
 
 export async function acceptRequestToJoinTeam(joiningUserId: string) {
-    // team id is determined by rpc function
-    return await supabaseClient.rpc('accept_request', {
-        requesting_user_id: joiningUserId,
-    });
+    // team id is determined by rpc functionthen(r => handleResponse(r))
+    return supabaseClient
+        .rpc('accept_request', {
+            requesting_user_id: joiningUserId,
+        })
+        .then(({ error }) => {
+            if (error) throw new Error(error.message);
+        });
 }
 
 export async function declineRequestToJoinTeam(joiningUserId: string) {
-    return await supabaseClient
+    return supabaseClient
         .from<definitions['team_requests']>('team_requests')
         .delete({ returning: 'minimal' })
         .match({ user_id: joiningUserId })
-        .single();
+        .single()
+        .then(({ error }) => {
+            if (error) throw new Error(error.message);
+        });
 }
-export async function getRequestsToTeam(
-    team_id: number
-): Promise<SupabaseResponse<Profile[]>> {
-    const response = await supabaseClient
+export async function getRequestsToTeam(team_id: number): Promise<Profile[]> {
+    return supabaseClient
         .from<{ profiles: definitions['profiles'] }>('team_requests')
         .select('profiles (*)')
-        .match({ team_id });
-    return mapResponse(response, (r) => mapProfileDto(r.profiles));
+        .match({ team_id })
+        .then((r) => handleResponse(r, 'Requests not found'))
+        .then((dtos) => dtos.map((p) => p.profiles).map(mapProfileDto));
 }
 
 export async function getTeamRequestedToJoin(user_id: string) {
-    const response = await supabaseClient
+    return supabaseClient
         .from<{ teams: definitions['teams'] }>('team_requests')
         .select('teams (*)')
         .match({ user_id })
-        .maybeSingle();
-    return mapSingleResponse(response, (dto) =>
-        dto ? mapTeamDto(dto.teams) : undefined
-    );
+        .maybeSingle()
+        .then((r) => handleMaybeSingleResponse(r))
+        .then((dto) => (dto ? mapTeamDto(dto.teams) : null));
 }
 
-export async function getTeamOfUser(
-    user_id: string
-): Promise<SupabaseResponse<Team>> {
+export async function getTeamIdOfUser(user_id: string) {
     const teamResponse = await supabaseClient
         .from<definitions['team_members']>('team_members')
         .select('*')
         .match({ user_id });
-    if (teamResponse.error) return { error: teamResponse.error };
-    if (!teamResponse.data || teamResponse.data.length === 0) return {};
-    const teamId = teamResponse.data[0].team_id;
-    return await getTeam(teamId);
+    if (teamResponse.error) throw new Error(teamResponse.error.message);
+    if (!teamResponse.data || teamResponse.data.length === 0) return null;
+    return teamResponse.data[0].team_id;
 }
-export async function getTeamMembers(
-    teamId: number
-): Promise<SupabaseResponse<Profile[]>> {
-    const response = await supabaseClient
+
+export async function getTeamMembers(teamId: number): Promise<Profile[]> {
+    return supabaseClient
         .from<{ profiles: definitions['profiles'][] }>('team_members')
         .select('profiles (*)')
-        .match({ team_id: teamId });
-    const { data, error } = response;
-    if (!data) {
-        return { error };
-    }
-    return { data: data.flatMap((d) => d.profiles).map(mapProfileDto) };
+        .match({ team_id: teamId })
+        .then((r) => handleResponse(r))
+        .then((dtos) => dtos.flatMap((d) => d.profiles).map(mapProfileDto));
 }
 
 export const uploadTeamLogo = async (team: Team, logo: File) => {
@@ -133,19 +147,17 @@ export const uploadTeamLogo = async (team: Team, logo: File) => {
     const response = await supabaseClient.storage
         .from('logos')
         .upload(filePath, resizedImage, { upsert: true });
-    if (response.error) return { error: response.error, logo: '' };
+    if (response.error) throw new Error(response.error.message);
     const { publicURL, error } = supabaseClient.storage
         .from('logos')
         .getPublicUrl(filePath);
-    if (response.error || !publicURL)
-        return { error: error || 'Could not find team logo', logo: '' };
-    const updateResponse = await updateTeam({ ...team, logo: publicURL });
-    if (updateResponse.error) return { error: updateResponse.error, logo: '' };
-    return {
-        logo: updateResponse.data?.logo,
-    };
+
+    if (error || !publicURL) {
+        throw new Error(error?.message || 'Could not find logo');
+    }
+    return publicURL;
 };
 
-export const removeTeamLogo = async (team: Team) => {
-    return await updateTeam({ ...team, logo: '' });
+export const removeTeamLogo = (team: Team) => {
+    return updateTeam({ ...team, logo: '' });
 };

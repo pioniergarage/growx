@@ -1,36 +1,14 @@
 import { Avatar, AvatarProps, SkeletonCircle } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useAvatarUrl } from 'hooks/profile';
 import { Profile } from 'model';
-import { fetchUserAvatar } from 'api/avatar';
-import { useMemo } from 'react';
 
 interface UserAvatarProps extends AvatarProps {
     profile?: Profile;
 }
 
 const UserAvatar: React.FC<UserAvatarProps> = ({ profile, ...rest }) => {
-    const [avatarUrl, setAvatarUrl] = useState('');
-    const avatar = useMemo(
-        () => (profile ? profile.avatar : undefined),
-        [profile]
-    );
-    useEffect(() => {
-        (async () => {
-            if (!avatar) {
-                setAvatarUrl('');
-                return;
-            }
-            const { data, error } = await fetchUserAvatar(avatar);
-            if (error) {
-                console.error(error.message);
-            }
-            if (data) {
-                const url = URL.createObjectURL(data);
-                setAvatarUrl(url);
-            }
-        })();
-    }, [avatar]);
-    if (!profile) {
+    const { avatarUrl, isLoading } = useAvatarUrl(profile);
+    if (!profile || isLoading) {
         return <SkeletonCircle size="12" />;
     }
     return (
@@ -38,7 +16,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ profile, ...rest }) => {
             userSelect="none"
             size="md"
             name={profile.firstName + ' ' + profile.lastName}
-            src={avatarUrl}
+            src={avatarUrl || undefined}
             bg="primary-bg"
             {...rest}
         />

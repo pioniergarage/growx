@@ -1,4 +1,6 @@
-import ErrorAlert from '@/components/ErrorAlert';
+import MemberList from '@/components/teams/MemberList';
+import RequestButton from '@/components/teams/RequestButton';
+import TeamLogo from '@/components/teams/TeamLogo';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
     Box,
@@ -13,22 +15,20 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { useUser } from '@supabase/auth-helpers-react';
+import {
+    useCurrentRequest,
+    useRequestToJoinTeam,
+    useTeam,
+    useTeamIdOfUser,
+    useTeamMembers,
+    useWithdrawRequest,
+} from 'hooks/team';
 import ConnectLayout from 'layouts/ConnectLayout';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { NextPageWithLayout } from 'utils/types';
-import TeamLogo from '@/components/teams/TeamLogo';
-import {
-    useCurrentRequest,
-    useTeam,
-    useTeamMembers,
-    useTeamOfUser,
-} from 'hooks/team';
-import MemberList from '@/components/teams/MemberList';
-import { useUser } from '@supabase/auth-helpers-react';
-import { requestToJoinTeam, withdrawRequest } from 'api/teams';
-import RequestButton from '@/components/teams/RequestButton';
 import { useState } from 'react';
+import { NextPageWithLayout } from 'utils/types';
 const TeamDescription = dynamic(
     import('../../../components/teams/TeamDescriptions')
 );
@@ -37,16 +37,16 @@ const TeamDetails: NextPageWithLayout = () => {
     const router = useRouter();
     const teamId = Number.parseInt(router.query.teamId as string);
     const { user } = useUser();
-    const { error, team, loading: teamLoading } = useTeam(teamId);
-    const { members, loading: membersLoading } = useTeamMembers(teamId);
-    const {
-        teamRequested,
-        loading: teamRequestedLoading,
-        setTeamRequested,
-    } = useCurrentRequest(user?.id);
-    const { team: usersTeam, loading: usersTeamLoading } = useTeamOfUser(
-        user?.id
-    );
+    const { team, isLoading: teamLoading } = useTeam(teamId);
+    const { members, isLoading: membersLoading } = useTeamMembers(teamId);
+    const { request: teamRequested, isLoading: teamRequestedLoading } =
+        useCurrentRequest(user?.id);
+
+    const { teamId: teamIdOfUser, isLoading: usersTeamLoading } =
+        useTeamIdOfUser(user?.id);
+    const { makeRequest } = useRequestToJoinTeam();
+    const { withdrawRequest } = useWithdrawRequest();
+
     const [requestButtonLoading, setRequestButtonLoading] = useState(false);
     const toast = useToast();
 
@@ -59,38 +59,44 @@ const TeamDetails: NextPageWithLayout = () => {
     async function handleRequest() {
         if (!user) return;
         setRequestButtonLoading(true);
-        const { error } = await requestToJoinTeam(user.id, teamId);
-        if (error) {
-            toast({
-                title: error.message,
-                status: 'error',
-            });
-        } else {
-            toast({
-                title: 'Request sent',
-                status: 'success',
-            });
-            setTeamRequested(team);
-        }
-        setRequestButtonLoading(false);
+        makeRequest(
+            { userId: user.id, teamId },
+            {
+                onError: (error) => {
+                    toast({
+                        title: String(error),
+                        status: 'error',
+                    });
+                },
+                onSuccess: () => {
+                    toast({
+                        title: 'Request sent',
+                        status: 'success',
+                    });
+                },
+            }
+        );
     }
     async function handleWithdraw() {
         if (!user) return;
         setRequestButtonLoading(true);
-        const { error } = await withdrawRequest(user.id);
-        if (error) {
-            toast({
-                title: error.message,
-                status: 'error',
-            });
-        } else {
-            toast({
-                title: 'Request withdrawn',
-                status: 'success',
-            });
-            setTeamRequested(undefined);
-        }
-        setRequestButtonLoading(false);
+        withdrawRequest(
+            { userId: user.id },
+            {
+                onError: (error) => {
+                    toast({
+                        title: String(error),
+                        status: 'error',
+                    });
+                },
+                onSuccess: () => {
+                    toast({
+                        title: 'Request withdrawn',
+                        status: 'success',
+                    });
+                },
+            }
+        );
     }
 
     return (
@@ -130,8 +136,8 @@ const TeamDetails: NextPageWithLayout = () => {
                     {team ? (
                         <RequestButton
                             team={team}
-                            currentRequest={teamRequested}
-                            currentTeam={usersTeam}
+                            currentRequestId={teamRequested?.id}
+                            currentTeamId={teamIdOfUser}
                             onRequest={handleRequest}
                             onWithdraw={handleWithdraw}
                             isLoading={requestButtonLoading}
@@ -141,7 +147,6 @@ const TeamDetails: NextPageWithLayout = () => {
                     ) : undefined}
                 </Skeleton>
             </Flex>
-            <ErrorAlert message={error} />
 
             <SkeletonText
                 isLoaded={!loading}
@@ -151,7 +156,7 @@ const TeamDetails: NextPageWithLayout = () => {
                 skeletonHeight="4"
             />
             <TeamDescription description={team?.description} />
-            <MemberList members={members} loading={membersLoading} />
+            <MemberList members={members || []} loading={membersLoading} />
         </VStack>
     );
 };

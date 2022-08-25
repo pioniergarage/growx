@@ -13,14 +13,16 @@ import {
 } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { UserProvider } from '@supabase/auth-helpers-react';
-import { ProfileProvider, useProfile } from 'hooks/profile';
+import { useProfile } from 'hooks/profile';
+import { UserRole } from 'model';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { PropsWithChildren } from 'react';
-import { FaUser, FaSignOutAlt } from 'react-icons/fa';
-import { UserRole } from 'model';
+import { FaSignOutAlt, FaUser } from 'react-icons/fa';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import AnimatedLogo from '../components/landing/AnimatedLogo';
 import { Logo } from '../components/navigation/Nav';
 
@@ -213,6 +215,13 @@ function ContentContainer({ children }: PropsWithChildren) {
 }
 
 export default function ConnectLayout({ children }: PropsWithChildren) {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                retry: 0,
+            },
+        },
+    });
     return (
         <>
             <Head>
@@ -220,9 +229,11 @@ export default function ConnectLayout({ children }: PropsWithChildren) {
                 <meta name="description" content="GROWconnect" />
             </Head>
             <UserProvider supabaseClient={supabaseClient}>
-                <ProfileProvider>
+                <QueryClientProvider client={queryClient}>
                     <ContentContainer>{children}</ContentContainer>
-                </ProfileProvider>
+
+                    <ReactQueryDevtools initialIsOpen={false} />
+                </QueryClientProvider>
             </UserProvider>
         </>
     );

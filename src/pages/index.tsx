@@ -1,30 +1,21 @@
+import Faqs from '@/components/landing/FaqList';
 import MainInfoBlock from '@/components/landing/MainInfoBlock';
-import Timeline from '@/components/landing/ShortTimeline';
 import MotivationBlock from '@/components/landing/MotivationBlock';
-import WaitingForBlock from '@/components/landing/WaitingForBlock';
 import PartnerBlock from '@/components/landing/PartnerBlock';
-import { PropsWithChildren } from 'react';
-import { Box, BoxProps, Divider } from '@chakra-ui/react';
-import Faqs, { FaqType } from '@/components/landing/FaqList';
+import Timeline from '@/components/landing/ShortTimeline';
 import LongTimeline from '@/components/landing/Timeline';
-import { Sponsor, GrowEvent } from 'model';
+import WaitingForBlock from '@/components/landing/WaitingForBlock';
+import { Box, BoxProps, Divider } from '@chakra-ui/react';
 import { getFAQs } from 'api';
 import { getEvents } from 'api/events';
 import { getSponsors } from 'api/sponsors';
+import { FAQ, GrowEvent, Sponsor } from 'model';
+import { PropsWithChildren } from 'react';
 
 export async function getStaticProps() {
-    const { data: sponsors, error: sponsorError } = await getSponsors();
-    const { data: faqs, error: faqError } = await getFAQs();
-    const { data: events, error: eventsError } = await getEvents();
-    if (sponsorError) {
-        throw Error(sponsorError.message);
-    }
-    if (faqError) {
-        throw Error(faqError.message);
-    }
-    if (eventsError) {
-        throw Error(eventsError.message);
-    }
+    const sponsors = await getSponsors();
+    const faqs = await getFAQs();
+    const events = await getEvents();
     return { props: { sponsors, faqs, events } };
 }
 
@@ -49,7 +40,7 @@ export default function Home({
     events,
 }: {
     sponsors: Sponsor[];
-    faqs: FaqType[];
+    faqs: FAQ[];
     events: GrowEvent[];
 }) {
     return (

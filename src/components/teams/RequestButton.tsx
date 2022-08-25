@@ -3,24 +3,24 @@ import { Team } from 'model';
 
 interface RequestButtonProps extends ButtonProps {
     team: Team;
-    currentRequest?: Team;
-    currentTeam?: Team;
+    currentRequestId?: number | null;
+    currentTeamId?: number | null;
     onRequest: () => void;
     onWithdraw: () => void;
 }
 
 const RequestButton: React.FC<RequestButtonProps> = ({
     team,
-    currentRequest,
-    currentTeam,
+    currentRequestId,
+    currentTeamId,
     onRequest,
     onWithdraw,
     ...rest
 }) => {
-    if (currentTeam) return <></>;
+    if (currentTeamId) return <></>;
 
-    if (currentRequest) {
-        if (currentRequest.id === team.id) {
+    if (currentRequestId) {
+        if (currentTeamId === team.id) {
             return (
                 <Button onClick={onWithdraw} {...rest}>
                     Withdraw Request

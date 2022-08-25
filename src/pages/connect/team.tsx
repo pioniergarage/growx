@@ -1,44 +1,46 @@
 import PageLink from '@/components/navigation/PageLink';
-import { FocusableElement } from '@chakra-ui/utils';
+import SpinnerWrapper from '@/components/SpinnerWrapper';
+import MemberList from '@/components/teams/MemberList';
+import RequestList from '@/components/teams/RequestList';
+import TeamDescription from '@/components/teams/TeamDescriptions';
+import TeamForm from '@/components/teams/TeamForm';
+import TeamLogoControl from '@/components/teams/TeamLogoControl';
 import {
-    Box,
-    VStack,
-    Text,
-    Button,
-    useToast,
     AlertDialog,
     AlertDialogBody,
     AlertDialogContent,
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogOverlay,
-    useDisclosure,
+    Box,
+    Button,
     Flex,
     Heading,
     HStack,
+    Text,
+    useDisclosure,
+    useToast,
+    VStack,
 } from '@chakra-ui/react';
+import { FocusableElement } from '@chakra-ui/utils';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useProfile } from 'hooks/profile';
-import { useTeamMembers, useTeamOfUser, useTeamRequests } from 'hooks/team';
+import {
+    useAcceptRequest,
+    useCreateTeam,
+    useDeclineRequest,
+    useLeaveTeam,
+    useTeam,
+    useTeamIdOfUser,
+    useTeamMembers,
+    useTeamRequests,
+    useUpdateTeam,
+} from 'hooks/team';
 import ConnectLayout from 'layouts/ConnectLayout';
+import { Profile, Team } from 'model';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
-import TeamForm from '@/components/teams/TeamForm';
-import { Profile, Team } from 'model';
-import {
-    acceptRequestToJoinTeam,
-    createTeam,
-    declineRequestToJoinTeam,
-    leaveTeam,
-    updateTeam,
-} from 'api/teams';
-import TeamDescription from '@/components/teams/TeamDescriptions';
-import TeamLogoControl from '@/components/teams/TeamLogoControl';
-import MemberList from '@/components/teams/MemberList';
-import SpinnerWrapper from '@/components/SpinnerWrapper';
-import ErrorAlertWrapper from '@/components/ErrorAlertWrapper';
-import RequestList from '@/components/teams/RequestList';
 
 function LeaveTeam({ onLeave }: { onLeave: () => void }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -89,17 +91,23 @@ function NoTeam() {
     const router = useRouter();
     const { profile } = useProfile();
     const toast = useToast();
-    async function onCreateTeam() {
-        const { data, error } = await createTeam({
-            name: `${profile?.firstName}'s team`,
-        });
-        if (error || !data) {
-            return toast({
-                status: 'error',
-                title: 'Something went wrong.',
-            });
-        }
-        router.reload();
+    const { createTeam } = useCreateTeam();
+
+    function onCreateTeam() {
+        createTeam(
+            {
+                name: `${profile?.firstName}'s team`,
+            },
+            {
+                onError: () => {
+                    toast({
+                        status: 'error',
+                        title: 'Something went wrong.',
+                    });
+                },
+                onSuccess: () => router.reload(),
+            }
+        );
     }
     return (
         <VStack>
@@ -117,90 +125,81 @@ function NoTeam() {
     );
 }
 
-function TeamDetails({
-    team,
-    setTeam,
-    userId,
-}: {
-    team: Team;
-    setTeam: (t: Team) => void;
-    userId?: string;
-}) {
+function TeamDetails({ team, userId }: { team: Team; userId?: string }) {
     const toast = useToast();
     const router = useRouter();
-    const {
-        members,
-        loading: membersLoading,
-        setMembers,
-    } = useTeamMembers(team.id);
-    const {
-        requests,
-        loading: requestsLoading,
-        setRequests,
-    } = useTeamRequests(team.id);
+    const { members, isLoading: membersLoading } = useTeamMembers(team.id);
+    const { profiles: requests, isLoading: requestsLoading } = useTeamRequests(
+        team.id
+    );
+    const { leaveTeam } = useLeaveTeam();
+    const { updateTeam } = useUpdateTeam();
+    const { acceptRequest } = useAcceptRequest();
+    const { declineRequest } = useDeclineRequest();
     const [editing, setEditing] = useState(false);
     const [loadingIds, setLoadingIds] = useState<string[]>([]);
 
     async function onLeaveTeam() {
         if (!userId) return;
-        const { error } = await leaveTeam(userId);
-        if (error) {
-            toast({
-                status: 'error',
-                title: 'Something went wrong.',
-            });
-        } else {
-            router.reload();
-        }
+        await leaveTeam(userId, {
+            onError: () => {
+                toast({
+                    status: 'error',
+                    title: 'Something went wrong.',
+                });
+            },
+            onSuccess: () => {
+                router.reload();
+            },
+        });
     }
 
     async function onSaveTeam(team: Team) {
         if (!userId) return;
-        const { error } = await updateTeam(team);
-        if (error) {
-            return toast({
-                status: 'error',
-                title: 'Something went wrong.',
-            });
-        }
-        setTeam(team);
+        await updateTeam(team, {
+            onError: () => {
+                toast({
+                    status: 'error',
+                    title: 'Something went wrong.',
+                });
+            },
+        });
         setEditing(false);
     }
 
     async function onAcceptRequest(profile: Profile) {
         setLoadingIds([...loadingIds, profile.userId]);
-        const { error } = await acceptRequestToJoinTeam(profile.userId);
-        if (error) {
-            toast({
-                status: 'error',
-                title: error.message,
-            });
-        } else {
-            toast({
-                status: 'success',
-                title:
-                    profile.firstName +
-                    ' ' +
-                    profile.lastName +
-                    ' joined your team',
-            });
-            setRequests(requests.filter((p) => p.userId != profile.userId));
-            setMembers([...members, profile]);
-        }
+        await acceptRequest(profile.userId, {
+            onError: () => {
+                toast({
+                    status: 'error',
+                    title: 'Something went wrong',
+                });
+            },
+            onSuccess: () => {
+                toast({
+                    status: 'success',
+                    title:
+                        profile.firstName +
+                        ' ' +
+                        profile.lastName +
+                        ' joined your team',
+                });
+            },
+        });
         setLoadingIds(loadingIds.filter((i) => i != profile.userId));
     }
 
     async function onDeclineRequest(profile: Profile) {
         setLoadingIds([...loadingIds, profile.userId]);
-        const { error } = await declineRequestToJoinTeam(profile.userId);
-        if (error) {
-            toast({
-                status: 'error',
-                title: error.message,
-            });
-        } else {
-            setRequests(requests.filter((p) => p.userId != profile.userId));
-        }
+        await declineRequest(profile.userId, {
+            onError: () => {
+                toast({
+                    status: 'error',
+                    title: 'Something went wrong',
+                });
+            },
+        });
         setLoadingIds(loadingIds.filter((i) => i != profile.userId));
     }
 
@@ -228,9 +227,9 @@ function TeamDetails({
                 </Button>
                 <LeaveTeam onLeave={onLeaveTeam} />
             </Flex>
-            <MemberList members={members} loading={membersLoading} />
+            <MemberList members={members || []} loading={membersLoading} />
             <RequestList
-                requests={requests}
+                requests={requests || []}
                 loading={requestsLoading || membersLoading}
                 loadingRequests={loadingIds}
                 onAccept={onAcceptRequest}
@@ -243,21 +242,13 @@ function TeamDetails({
 const TeamPage: NextPageWithLayout = () => {
     const { profile } = useProfile();
     const userId = profile?.userId;
-    const { team, loading, error, setTeam } = useTeamOfUser(userId);
+    const { teamId } = useTeamIdOfUser();
+
+    const { team, isLoading: loading } = useTeam(teamId || -1);
 
     return (
         <SpinnerWrapper isLoading={loading}>
-            <ErrorAlertWrapper error={error}>
-                {team ? (
-                    <TeamDetails
-                        team={team}
-                        setTeam={setTeam}
-                        userId={userId}
-                    />
-                ) : (
-                    <NoTeam />
-                )}
-            </ErrorAlertWrapper>
+            {team ? <TeamDetails team={team} userId={userId} /> : <NoTeam />}
         </SpinnerWrapper>
     );
 };
