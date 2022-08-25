@@ -45,4 +45,4 @@ export type Team = {
 export type FAQ = {
     question: string;
     answer: string;
-}
+};
