@@ -48,7 +48,7 @@ export async function leaveTeam(user_id: string) {
         .from<definitions['team_members']>('team_members')
         .delete()
         .eq('user_id', user_id)
-        .single()
+        .single();
 }
 
 export async function requestToJoinTeam(userId: string, teamId: number) {
