@@ -1,14 +1,13 @@
-import { VStack, Flex, SkeletonCircle, Text } from '@chakra-ui/react';
+import { Flex, SkeletonCircle, Text, VStack } from '@chakra-ui/react';
 import { Profile } from 'model';
 import UserAvatar from '../avatar/UserAvatar';
 
-export default function MemberList({
-    members,
-    loading,
-}: {
+interface MemberListProps {
     members: Profile[];
     loading: boolean;
-}) {
+}
+
+const MemberList: React.FC<MemberListProps> = ({ members, loading }) => {
     return (
         <VStack alignItems="start">
             <Text fontSize="sm" color="gray.500">
@@ -28,4 +27,6 @@ export default function MemberList({
             </Flex>
         </VStack>
     );
-}
+};
+
+export default MemberList;

@@ -41,3 +41,8 @@ export type Team = {
     tags: string[];
     logo?: string;
 };
+
+export type FAQ = {
+    question: string;
+    answer: string;
+}

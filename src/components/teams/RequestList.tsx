@@ -1,26 +1,28 @@
 import {
-    VStack,
-    Text,
-    Skeleton,
+    Button,
+    ButtonGroup,
     Grid,
     GridItem,
-    ButtonGroup,
-    Button,
+    Skeleton,
+    Text,
+    VStack,
 } from '@chakra-ui/react';
 import { Profile } from 'model';
 import UserAvatar from '../avatar/UserAvatar';
 
-function RequestItem({
-    profile,
-    loading,
-    onAccept,
-    onDecline,
-}: {
+interface RequestItemProps {
     profile: Profile;
     loading: boolean;
     onAccept: () => void;
     onDecline: () => void;
-}) {
+}
+
+const RequestItem: React.FC<RequestItemProps> = ({
+    profile,
+    loading,
+    onAccept,
+    onDecline,
+}) => {
     return (
         <Grid
             templateColumns="4rem 10rem 1fr 1fr"
@@ -43,21 +45,23 @@ function RequestItem({
             </GridItem>
         </Grid>
     );
-}
+};
 
-export default function RequestList({
-    requests,
-    loading,
-    loadingRequests,
-    onAccept,
-    onDecline,
-}: {
+interface RequestListProps {
     requests: Profile[];
     loading: boolean;
     loadingRequests: string[];
     onDecline: (profile: Profile) => void;
     onAccept: (profile: Profile) => void;
-}) {
+}
+
+const RequestList: React.FC<RequestListProps> = ({
+    requests,
+    loading,
+    loadingRequests,
+    onAccept,
+    onDecline,
+}) => {
     return (
         <VStack alignItems="stretch">
             <Skeleton isLoaded={!loading} minH={2} minW={20}>
@@ -78,4 +82,6 @@ export default function RequestList({
             </Skeleton>
         </VStack>
     );
-}
+};
+
+export default RequestList;

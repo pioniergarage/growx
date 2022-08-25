@@ -1,12 +1,18 @@
 import { Spinner, SpinnerProps } from '@chakra-ui/react';
 import { PropsWithChildren } from 'react';
 
-export default function SpinnerWrapper({
+interface SpinnerWrapperProps extends PropsWithChildren, SpinnerProps {
+    isLoading: boolean;
+}
+
+const SpinnerWrapper: React.FC<SpinnerWrapperProps> = ({
     isLoading,
     children,
     ...rest
-}: { isLoading: boolean } & PropsWithChildren & SpinnerProps) {
+}) => {
     if (isLoading) return <Spinner {...rest} />;
 
     return <>{children}</>;
-}
+};
+
+export default SpinnerWrapper;

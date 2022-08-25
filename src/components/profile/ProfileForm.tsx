@@ -1,30 +1,32 @@
 import {
-    VStack,
-    SimpleGrid,
-    GridItem,
-    FormControl,
-    FormLabel,
-    Input,
-    FormErrorMessage,
-    RadioGroup,
-    HStack,
-    Radio,
     Button,
+    FormControl,
+    FormErrorMessage,
+    FormLabel,
+    GridItem,
+    HStack,
+    Input,
+    Radio,
+    RadioGroup,
+    SimpleGrid,
+    VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { Profile } from 'model';
 
-export default function ProfileForm({
-    onSave,
-    loading,
-    profile,
-    onCancel,
-}: {
+interface ProflieFormProps {
     onSave: (profile: Profile) => void;
     loading: boolean;
     profile: Profile;
     onCancel?: () => void;
-}) {
+}
+
+const ProfileForm: React.FC<ProflieFormProps> = ({
+    onSave,
+    loading,
+    profile,
+    onCancel,
+}) => {
     const formik = useFormik({
         initialValues: profile,
         onSubmit: (values) => onSave(values),
@@ -173,4 +175,6 @@ export default function ProfileForm({
             </VStack>
         </form>
     );
-}
+};
+
+export default ProfileForm;

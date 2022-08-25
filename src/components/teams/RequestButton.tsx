@@ -1,20 +1,22 @@
 import { Button, ButtonProps } from '@chakra-ui/react';
 import { Team } from 'model';
 
-export default function RequestButton({
+interface RequestButtonProps extends ButtonProps {
+    team: Team;
+    currentRequest?: Team;
+    currentTeam?: Team;
+    onRequest: () => void;
+    onWithdraw: () => void;
+}
+
+const RequestButton: React.FC<RequestButtonProps> = ({
     team,
     currentRequest,
     currentTeam,
     onRequest,
     onWithdraw,
     ...rest
-}: ButtonProps & {
-    team: Team;
-    currentRequest?: Team;
-    currentTeam?: Team;
-    onRequest: () => void;
-    onWithdraw: () => void;
-}) {
+}) => {
     if (currentTeam) return <></>;
 
     if (currentRequest) {
@@ -38,4 +40,6 @@ export default function RequestButton({
             </Button>
         );
     }
-}
+};
+
+export default RequestButton;

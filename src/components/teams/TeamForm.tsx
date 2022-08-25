@@ -1,30 +1,28 @@
 import {
-    VStack,
-    SimpleGrid,
+    Button,
+    Flex,
     FormControl,
     FormLabel,
-    Input,
+    GridItem,
     HStack,
-    Button,
+    Input,
+    SimpleGrid,
     Tag,
     TagCloseButton,
     TagLabel,
-    Flex,
-    GridItem,
     Textarea,
+    VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { Team } from 'model';
 
-export default function TeamForm({
-    onSave,
-    team,
-    onCancel,
-}: {
+interface TeamFormProps {
     onSave: (profile: Team) => void;
     team: Team;
     onCancel?: () => void;
-}) {
+}
+
+const TeamForm: React.FC<TeamFormProps> = ({ onSave, team, onCancel }) => {
     const formik = useFormik({
         initialValues: team,
         onSubmit: (values) => onSave(values),
@@ -107,4 +105,6 @@ export default function TeamForm({
             </VStack>
         </form>
     );
-}
+};
+
+export default TeamForm;

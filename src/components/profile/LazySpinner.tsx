@@ -1,15 +1,15 @@
 import { Box, Text } from '@chakra-ui/react';
 import { useProfile } from 'hooks/profile';
 import { Profile } from 'model';
+import React from 'react';
 
-export default function LazySpinner({
-    property,
-    name,
-}: {
+interface LazySpinnerProps {
     property: keyof Profile;
     name: string;
-}) {
-    const {profile} = useProfile()
+}
+
+const LazySpinner: React.FC<LazySpinnerProps> = ({ property, name }) => {
+    const { profile } = useProfile();
     return (
         <>
             <Box>
@@ -24,4 +24,6 @@ export default function LazySpinner({
             </Box>
         </>
     );
-}
+};
+
+export default LazySpinner;

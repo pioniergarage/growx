@@ -51,8 +51,7 @@ const style = `
 }
 </style>
 `;
-
-export default function AnimatedLogo(props: IconProps) {
+const AnimatedLogo: React.FC<IconProps> = (props) => {
     return (
         <>
             <Box dangerouslySetInnerHTML={{ __html: style }} />
@@ -81,4 +80,6 @@ export default function AnimatedLogo(props: IconProps) {
             </Icon>
         </>
     );
-}
+};
+
+export default AnimatedLogo;

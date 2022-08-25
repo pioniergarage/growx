@@ -1,18 +1,22 @@
-import Link from 'next/link';
+import { Button } from '@chakra-ui/button';
+import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import {
     Box,
-    Text,
-    Flex,
-    Stack,
-    LinkBox as ChakraLink,
     ButtonProps,
+    Flex,
+    LinkBox as ChakraLink,
+    Stack,
+    Text,
     TextProps,
 } from '@chakra-ui/react';
-import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
-import { Button } from '@chakra-ui/button';
+import Link from 'next/link';
 import { MouseEventHandler, PropsWithChildren } from 'react';
 
-export function Logo({children, href = '/', ...rest}: TextProps & {href?: string}) {
+interface LogoProps extends TextProps {
+    href?: string;
+}
+
+const Logo: React.FC<LogoProps> = ({ children, href = '/', ...rest }) => {
     return (
         <ChakraLink as="button">
             <Link href={href}>
@@ -22,28 +26,34 @@ export function Logo({children, href = '/', ...rest}: TextProps & {href?: string
             </Link>
         </ChakraLink>
     );
+};
+
+interface MenuToggleProps extends ButtonProps {
+    isOpen: boolean;
 }
 
-export function MenuToggle({
+const MenuToggle: React.FC<MenuToggleProps> = ({
     onClick,
     isOpen,
     ...rest
-}: ButtonProps & {
-    onClick: MouseEventHandler<HTMLButtonElement>;
-    isOpen: boolean;
-}) {
+}) => {
     return (
-        <Button display={{ base: 'block', md: 'none' }} onClick={onClick} {...rest}>
+        <Button
+            display={{ base: 'block', md: 'none' }}
+            onClick={onClick}
+            {...rest}
+        >
             {isOpen ? <CloseIcon /> : <HamburgerIcon />}
         </Button>
     );
+};
+
+interface NavItemProps extends PropsWithChildren {
+    to: string;
+    onClick: MouseEventHandler;
 }
 
-export function NavItem({
-    children,
-    to,
-    onClick,
-}: PropsWithChildren & { to: string; onClick: MouseEventHandler }) {
+const NavItem: React.FC<NavItemProps> = ({ children, to, onClick }) => {
     return (
         <Link href={to}>
             <a>
@@ -53,9 +63,9 @@ export function NavItem({
             </a>
         </Link>
     );
-}
+};
 
-export function NavBarContainer({ children }: PropsWithChildren) {
+const NavBarContainer: React.FC<PropsWithChildren> = ({ children }) => {
     return (
         <Flex
             as="nav"
@@ -80,12 +90,16 @@ export function NavBarContainer({ children }: PropsWithChildren) {
             </Flex>
         </Flex>
     );
+};
+
+interface MenuLinksContainerProps extends PropsWithChildren {
+    isOpen: boolean;
 }
 
-export function MenuLinksContainer({
+const MenuLinksContainer: React.FC<MenuLinksContainerProps> = ({
     children,
     isOpen,
-}: PropsWithChildren & { isOpen: boolean }) {
+}) => {
     return (
         <Box
             display={{ base: isOpen ? 'block' : 'none', md: 'block' }}
@@ -102,5 +116,6 @@ export function MenuLinksContainer({
             </Stack>
         </Box>
     );
-}
+};
 
+export { MenuLinksContainer, NavBarContainer, NavItem, MenuToggle, Logo };

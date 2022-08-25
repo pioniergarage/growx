@@ -1,12 +1,11 @@
 import React, { ChangeEvent, useRef } from 'react';
 
-export default function FileSelect({
-    children,
-    onSelect,
-}: {
+interface FileSelectProps {
     children: React.ReactElement;
     onSelect: (files: FileList | null) => void;
-}) {
+}
+
+const FileSelect: React.FC<FileSelectProps> = ({ children, onSelect }) => {
     const uploadRef = useRef<HTMLInputElement>(null);
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         e.preventDefault();
@@ -29,4 +28,6 @@ export default function FileSelect({
             />
         </>
     );
-}
+};
+
+export default FileSelect;

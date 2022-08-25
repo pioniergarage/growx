@@ -7,17 +7,19 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { FaUsers } from 'react-icons/fa';
 
-export default function TeamLogo({
-    logo = '',
-    name = '',
-    size = 24,
-    loading = false,
-}: {
+interface TeamLogoProps {
     logo?: string;
     name?: string;
     loading?: boolean;
     size?: ResponsiveValue<number | string>;
-}) {
+}
+
+const TeamLogo: React.FC<TeamLogoProps> = ({
+    logo = '',
+    name = '',
+    size = 24,
+    loading = false,
+}) => {
     const hash = useMemo(() => Date.now().toString() + loading, [loading]);
     const [imageLoaded, setImageLoaded] = useState(false);
     useEffect(() => {
@@ -50,4 +52,6 @@ export default function TeamLogo({
             </Skeleton>
         </>
     );
-}
+};
+
+export default TeamLogo;

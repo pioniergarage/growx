@@ -4,10 +4,11 @@ import { Profile } from 'model';
 import { fetchUserAvatar } from 'api/avatar';
 import { useMemo } from 'react';
 
-const UserAvatar = ({
-    profile,
-    ...rest
-}: { profile?: Profile } & AvatarProps) => {
+interface UserAvatarProps extends AvatarProps {
+    profile?: Profile;
+}
+
+const UserAvatar: React.FC<UserAvatarProps> = ({ profile, ...rest }) => {
     const [avatarUrl, setAvatarUrl] = useState('');
     const avatar = useMemo(
         () => (profile ? profile.avatar : undefined),

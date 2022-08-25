@@ -1,30 +1,32 @@
 import {
-    TableContainer,
+    Box,
+    BoxProps,
+    Heading,
+    Spinner,
     Table,
-    Thead,
-    Tr,
-    Th,
+    TableContainer,
     Tbody,
     Td,
-    Spinner,
-    Box,
-    Heading,
-    BoxProps,
     Text,
+    Th,
+    Thead,
+    Tr,
 } from '@chakra-ui/react';
 
-export default function FullTable<T>({
+interface FullTableProps<T> extends BoxProps {
+    values: T[];
+    idProp: keyof T;
+    heading: string;
+    loading?: boolean;
+}
+
+export default function FullTableProps<T>({
     values,
     idProp,
     heading,
     loading = false,
     ...rest
-}: BoxProps & {
-    values: T[];
-    idProp: keyof T;
-    heading: string;
-    loading?: boolean;
-}) {
+}: FullTableProps<T>) {
     return (
         <Box>
             <Heading as="h3" size="md">

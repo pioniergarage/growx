@@ -1,28 +1,25 @@
 import {
-    useToast,
-    Tooltip,
     Button,
-    HStack,
     Flex,
-    VStack,
     Heading,
+    HStack,
     Tag,
     Text,
+    Tooltip,
+    useToast,
+    VStack,
 } from '@chakra-ui/react';
 import { useUser } from '@supabase/auth-helpers-react';
-import { useState, useMemo } from 'react';
-import { GrowEvent } from 'model';
 import { registerUser, unregisterUser } from 'api/events';
+import { GrowEvent } from 'model';
+import { useMemo, useState } from 'react';
 
 type GrowEventCardProps = {
     event: GrowEvent;
     registered: boolean;
 };
 
-export default function GrowEventCard({
-    event,
-    registered,
-}: GrowEventCardProps) {
+const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
     const [registeredLocal, setRegisteredLocal] = useState(registered);
     const { user } = useUser();
     const toast = useToast();
@@ -123,4 +120,6 @@ export default function GrowEventCard({
             </VStack>
         </HStack>
     );
-}
+};
+
+export default GrowEventCard;

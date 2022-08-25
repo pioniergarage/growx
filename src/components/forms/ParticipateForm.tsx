@@ -1,12 +1,12 @@
 import rules from '@/components/forms/rules';
 import {
-    SimpleGrid,
-    FormControl,
-    FormLabel,
-    FormErrorMessage,
     Button,
-    Input,
+    FormControl,
+    FormErrorMessage,
+    FormLabel,
     GridItem,
+    Input,
+    SimpleGrid,
     VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
@@ -21,13 +21,15 @@ export type ParticipateInfo = {
     password: string;
 };
 
-export default function ParticipateForm({
-    onSubmit,
-    loading,
-}: {
+interface ParticipateFormProps {
     onSubmit: (value: ParticipateInfo) => void;
     loading: boolean;
-}) {
+}
+
+const ParticipateForm: React.FC<ParticipateFormProps> = ({
+    onSubmit,
+    loading,
+}) => {
     const [validateOnChange, setValidateOnChange] = useState(false);
     const formik = useFormik<ParticipateInfo & { passwordRepeat: string }>({
         initialValues: {
@@ -155,4 +157,6 @@ export default function ParticipateForm({
             </VStack>
         </form>
     );
-}
+};
+
+export default ParticipateForm;
