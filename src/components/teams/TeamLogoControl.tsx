@@ -22,11 +22,15 @@ export default function TeamLogoControl({ team }: { team: Team }) {
 
     return (
         <VStack>
-            <TeamLogo logo={team.logo} loading={uploading} />
+            <TeamLogo
+                logo={team.logo}
+                loading={uploading}
+                size={{ base: 16, sm: 24 }}
+            />
             <HStack alignSelf="start">
                 <FileSelect onSelect={handleLogoUpload}>
                     <IconButton
-                        size="sm"
+                        size={{ base: 'xs', md: 'sm' }}
                         aria-label="upload logo"
                         isLoading={uploading}
                         variant="outline"
@@ -37,7 +41,7 @@ export default function TeamLogoControl({ team }: { team: Team }) {
                     aria-label="delete logo"
                     onClick={handleLogoRemove}
                     isLoading={removing}
-                    size="sm"
+                    size={{ base: 'xs', md: 'sm' }}
                     variant="outline"
                     icon={<FaTrash />}
                 />

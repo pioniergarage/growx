@@ -36,7 +36,7 @@ function NoTeam() {
                 You are not part of a team yet.{' '}
                 <PageLink href="/connect/teams" color="primary">
                     Browse
-                </PageLink>
+                </PageLink>{' '}
                 the existing teams or create a new one.
             </Text>
             <Button onClick={onCreateTeam} variant="outline">
@@ -61,6 +61,7 @@ const TeamPage: NextPageWithLayout = () => {
                         href={'/connect/teams/' + team.id}
                         color="primary"
                     >
+                        {' '}
                         your team
                     </PageLink>
                 </Box>

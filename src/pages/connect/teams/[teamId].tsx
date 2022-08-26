@@ -183,8 +183,8 @@ const TeamDetails: NextPageWithLayout = () => {
                                 flexDir="column"
                                 flexGrow={1}
                             >
-                                <Heading>{team?.name || 'Team'}</Heading>
-                                <Box mt={0} color="whiteAlpha.500">
+                                <Heading>{team?.name}</Heading>
+                                <Box color="whiteAlpha.500">
                                     {team?.tags.join(' • ')}
                                 </Box>
                             </Flex>

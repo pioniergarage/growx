@@ -31,17 +31,22 @@ const RequestItem: React.FC<RequestItemProps> = ({
 }) => {
     return (
         <Grid
-            templateColumns="4rem 10rem 1fr 1fr"
+            templateColumns={{ base: '4rem 1fr', sm: '4rem 10rem 1fr 1fr' }}
             alignItems="center"
             justifyItems="start"
             gap={1}
         >
-            <GridItem>
+            <GridItem rowSpan={{ base: 2, sm: 1 }}>
                 <UserAvatar profile={profile} />
             </GridItem>
-            <GridItem>{profile.firstName + profile.lastName}</GridItem>
+            <GridItem fontWeight="bold">
+                {profile.firstName + profile.lastName}
+            </GridItem>
             <GridItem color="gray.500">{profile.email}</GridItem>
-            <GridItem justifySelf="end">
+            <GridItem
+                justifySelf={{ base: 'start', sm: 'end' }}
+                colStart={{ base: 2, sm: 'auto' }}
+            >
                 <ButtonGroup variant="outline" size="sm" isDisabled={loading}>
                     <Button onClick={onDecline}>Decline</Button>
                     <Button onClick={onAccept} colorScheme="green">

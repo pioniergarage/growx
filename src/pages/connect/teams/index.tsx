@@ -50,9 +50,11 @@ const TeamsPage: NextPageWithLayout = () => {
                 <SimpleGrid gap={4} columns={{ base: 1, md: 2 }}>
                     {!teams
                         ? undefined
-                        : teams.map((team) => (
-                              <TeamCard key={team.id} {...team} />
-                          ))}
+                        : teams
+                              .filter((t) => !t.archived)
+                              .map((team) => (
+                                  <TeamCard key={team.id} {...team} />
+                              ))}
                 </SimpleGrid>
             ) : undefined}
             <Skeletons loading={allTeamsLoading} />
