@@ -36,17 +36,17 @@ export const getEvent = (eventId: number) =>
 export const createEvent: (
     event: Omit<Partial<GrowEvent>, 'tags' | 'types' | 'date'>
 ) => Promise<GrowEvent> = async (event) =>
-    await supabaseClient
-        .from<definitions['events']>('events')
-        .insert(
-            { ...event, date: new Date().toISOString() },
-            { returning: 'representation' }
-        )
-        .single()
-        .then((response) =>
-            handleSingleResponse(response, 'Something went wrong')
-        )
-        .then(mapEventDto);
+        await supabaseClient
+            .from<definitions['events']>('events')
+            .insert(
+                { ...event, date: new Date().toISOString() },
+                { returning: 'representation' }
+            )
+            .single()
+            .then((response) =>
+                handleSingleResponse(response, 'Something went wrong')
+            )
+            .then(mapEventDto);
 
 export const deleteEvent = (eventId: number) =>
     supabaseClient
@@ -96,7 +96,7 @@ export const unregisterUser = async (userId: string, eventId: number) =>
         .from<definitions['event_registrations']>('event_registrations')
         .delete({ returning: 'minimal' })
         .match({ event_id: eventId, user_id: userId })
-        .limit(1)
+        .single()
         .then(({ error }) => {
             if (error) throw new Error(error.message);
         });

@@ -24,6 +24,6 @@ export const uploadUserAvatar = async (profile: Profile, avatar: File) => {
             if (error || !data) {
                 throw new Error(error?.message || 'Something went wrong');
             }
-            return data.Key;
+            return filePath;
         });
 };

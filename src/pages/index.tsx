@@ -15,7 +15,10 @@ import { PropsWithChildren } from 'react';
 export async function getStaticProps() {
     const sponsors = await getSponsors();
     const faqs = await getFAQs();
-    const events = await getEvents();
+    const events = (await getEvents()).map((e) => ({
+        ...e,
+        date: e.date.toISOString(),
+    }));
     return { props: { sponsors, faqs, events } };
 }
 
@@ -34,15 +37,14 @@ function Section({
     );
 }
 
-export default function Home({
-    sponsors,
-    faqs,
-    events,
-}: {
+interface HomeProps {
     sponsors: Sponsor[];
     faqs: FAQ[];
-    events: GrowEvent[];
-}) {
+    events: (Omit<GrowEvent, 'date'> & { date: string })[];
+}
+
+const Home: React.FC<HomeProps> = ({ sponsors, faqs, events: jsonEvents }) => {
+    const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
     return (
         <>
             <Section divider position="relative">
@@ -109,4 +111,6 @@ export default function Home({
             </Section>
         </>
     );
-}
+};
+
+export default Home;

@@ -63,15 +63,13 @@ function SkeletonLoader() {
 
 function AvatarControl() {
     const { profile } = useProfile();
-    const [loading, setLoading] = useState(false);
     const toast = useToast();
-    const { uploadUserAvatar } = useUploadAvatar();
+    const { uploadUserAvatar, isLoading } = useUploadAvatar();
     async function uploadAvatar(files: FileList | null) {
         if (!profile) return;
         if (!files || files.length === 0) {
             throw new Error('You must select an image to upload.');
         }
-        setLoading(true);
         const file = files[0];
         await uploadUserAvatar(
             { profile, file },
@@ -90,7 +88,6 @@ function AvatarControl() {
                 },
             }
         );
-        setLoading(false);
     }
     return (
         <Box>
@@ -98,11 +95,11 @@ function AvatarControl() {
                 <UserAvatar
                     size="xl"
                     profile={profile}
-                    filter={loading ? 'brightness(70%)' : undefined}
+                    filter={isLoading ? 'brightness(70%)' : undefined}
                 />
                 <FileSelect onSelect={uploadAvatar}>
-                    <Button isLoading={loading} size="sm" variant="outline">
-                        Update profile picture
+                    <Button isLoading={isLoading} size="sm" variant="outline">
+                        Update avatar
                     </Button>
                 </FileSelect>
             </VStack>

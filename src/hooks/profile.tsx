@@ -40,7 +40,7 @@ export function useUpdateProfile() {
 
 export function useAvatarUrl(profile?: Profile) {
     const result = useQuery(
-        ['avatar'],
+        'avatar',
         async () => {
             if (!profile) {
                 throw new Error('Cannot fetch profile avatar');
@@ -58,19 +58,14 @@ export function useAvatarUrl(profile?: Profile) {
 
 export function useUploadAvatar() {
     const queryClient = useQueryClient();
+    const { updateProfile } = useUpdateProfile();
     const mutation = useMutation(
         ({ profile, file }: { profile: Profile; file: File }) =>
             uploadUserAvatar(profile, file),
         {
-            onSuccess: (fileName) => {
-                queryClient.setQueryData<Profile | undefined>(
-                    'profile',
-                    (oldData) => {
-                        if (oldData) {
-                            return { ...oldData, avatar: fileName };
-                        }
-                    }
-                );
+            onSuccess: async (filename, { profile, file }) => {
+                updateProfile({ ...profile, avatar: filename });
+                queryClient.setQueryData('avatar', URL.createObjectURL(file));
             },
         }
     );
