@@ -22,7 +22,6 @@ import { useRouter } from 'next/router';
 import { PropsWithChildren } from 'react';
 import { FaSignOutAlt, FaUser } from 'react-icons/fa';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
 import AnimatedLogo from '../components/landing/AnimatedLogo';
 import { Logo } from '../components/navigation/Nav';
 
@@ -232,7 +231,7 @@ export default function ConnectLayout({ children }: PropsWithChildren) {
                 <QueryClientProvider client={queryClient}>
                     <ContentContainer>{children}</ContentContainer>
 
-                    <ReactQueryDevtools initialIsOpen={false} />
+                    {/* <ReactQueryDevtools initialIsOpen={false} /> */}
                 </QueryClientProvider>
             </UserProvider>
         </>

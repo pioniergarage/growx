@@ -244,7 +244,7 @@ const TeamPage: NextPageWithLayout = () => {
     const userId = profile?.userId;
     const { teamId } = useTeamIdOfUser();
 
-    const { team, isLoading: loading } = useTeam(teamId || -1);
+    const { team, isLoading: loading } = useTeam(teamId || undefined);
 
     return (
         <SpinnerWrapper isLoading={loading}>

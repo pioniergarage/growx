@@ -13,7 +13,7 @@ import {
     requestToJoinTeam,
     updateTeam,
     uploadTeamLogo,
-    withdrawRequest,
+    withdrawRequest
 } from 'api/teams';
 import { Team } from 'model';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -48,8 +48,13 @@ export function useAllTeams() {
     return { ...query, teams: query.data };
 }
 
-export function useTeam(teamId: number) {
-    const query = useQuery(['team', teamId], () => getTeam(teamId));
+export function useTeam(teamId?: number) {
+    const query = useQuery(['team', teamId], () => {
+        if (!teamId) {
+            throw new Error("Cannot fetch undefined team")
+        }
+        return getTeam(teamId)
+    }, { enabled: !!teamId });
     return { ...query, team: query.data };
 }
 
