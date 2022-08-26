@@ -3,11 +3,12 @@ import { Sponsor } from 'model';
 import { definitions } from './supabase';
 import { handleResponse, handleSingleResponse } from './utils';
 
-export const getSponsors = () => supabaseClient
-    .from<definitions['sponsors']>('sponsors')
-    .select('*')
-    .then((response) => handleResponse(response, 'Could not load sponsors'))
-    .then((dtos) => dtos.map((sponsor) => sponsor as Sponsor));
+export const getSponsors = () =>
+    supabaseClient
+        .from<definitions['sponsors']>('sponsors')
+        .select('*')
+        .then((response) => handleResponse(response, 'Could not load sponsors'))
+        .then((dtos) => dtos.map((sponsor) => sponsor as Sponsor));
 
 export const upsertSponsor = (sponsor: Sponsor) =>
     supabaseClient

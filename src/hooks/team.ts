@@ -13,7 +13,7 @@ import {
     requestToJoinTeam,
     updateTeam,
     uploadTeamLogo,
-    withdrawRequest
+    withdrawRequest,
 } from 'api/teams';
 import { Team } from 'model';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -26,7 +26,7 @@ export function useTeamIdOfUser(userId?: string) {
                 throw new Error('Cannot get team of undefined user');
             }
             const teamId = await getTeamIdOfUser(userId);
-            return teamId
+            return teamId;
         },
         {
             enabled: !!userId,
@@ -47,12 +47,16 @@ export function useAllTeams() {
 }
 
 export function useTeam(teamId?: number | null) {
-    const query = useQuery(['team', teamId], () => {
-        if (!teamId) {
-            throw new Error("Cannot fetch undefined team")
-        }
-        return getTeam(teamId)
-    }, { enabled: !!teamId });
+    const query = useQuery(
+        ['team', teamId],
+        () => {
+            if (!teamId) {
+                throw new Error('Cannot fetch undefined team');
+            }
+            return getTeam(teamId);
+        },
+        { enabled: !!teamId }
+    );
     return { ...query, team: query.data };
 }
 
@@ -62,9 +66,11 @@ export function useTeamMembers(teamId: number) {
 }
 
 export function useTeamRequests(teamId: number) {
-    const query = useQuery(['teamRequests', teamId], () =>
-        getRequestsToTeam(teamId)
-        , { initialData: [] });
+    const query = useQuery(
+        ['teamRequests', teamId],
+        () => getRequestsToTeam(teamId),
+        { initialData: [] }
+    );
     return { ...query, profiles: query.data };
 }
 
@@ -110,13 +116,13 @@ export function useDeclineRequest() {
 }
 
 export function useUploadTeamLogo() {
-    const { updateTeam } = useUpdateTeam()
+    const { updateTeam } = useUpdateTeam();
     const mutation = useMutation(
         ({ team, file }: { team: Team; file: File }) =>
             uploadTeamLogo(team, file),
         {
             onSuccess: (publicUrl, { team }) => {
-                updateTeam({ ...team, logo: publicUrl })
+                updateTeam({ ...team, logo: publicUrl });
             },
         }
     );
@@ -124,12 +130,12 @@ export function useUploadTeamLogo() {
 }
 
 export function useRemoveTeamLogo() {
-    const { updateTeam } = useUpdateTeam()
+    const { updateTeam } = useUpdateTeam();
     const mutation = useMutation(
         ({ team }: { team: Team }) => removeTeamLogo(team),
         {
             onSuccess: (_, { team }) => {
-                updateTeam({ ...team, logo: '' })
+                updateTeam({ ...team, logo: '' });
             },
         }
     );

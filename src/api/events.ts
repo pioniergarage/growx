@@ -36,17 +36,17 @@ export const getEvent = (eventId: number) =>
 export const createEvent: (
     event: Omit<Partial<GrowEvent>, 'tags' | 'types' | 'date'>
 ) => Promise<GrowEvent> = async (event) =>
-        await supabaseClient
-            .from<definitions['events']>('events')
-            .insert(
-                { ...event, date: new Date().toISOString() },
-                { returning: 'representation' }
-            )
-            .single()
-            .then((response) =>
-                handleSingleResponse(response, 'Something went wrong')
-            )
-            .then(mapEventDto);
+    await supabaseClient
+        .from<definitions['events']>('events')
+        .insert(
+            { ...event, date: new Date().toISOString() },
+            { returning: 'representation' }
+        )
+        .single()
+        .then((response) =>
+            handleSingleResponse(response, 'Something went wrong')
+        )
+        .then(mapEventDto);
 
 export const deleteEvent = (eventId: number) =>
     supabaseClient
