@@ -42,7 +42,6 @@ const TeamLogo: React.FC<TeamLogoProps> = ({
                         h={size}
                         objectFit="cover"
                         onLoad={() => setImageLoaded(true)}
-                        loading="eager"
                     />
                 ) : (
                     <Center w={size} h={size} bgColor="whiteAlpha.200">

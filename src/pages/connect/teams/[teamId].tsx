@@ -1,15 +1,22 @@
+import LeaveTeamButton from '@/components/teams/LeaveTeamButton';
 import MemberList from '@/components/teams/MemberList';
 import RequestButton from '@/components/teams/RequestButton';
+import TeamForm from '@/components/teams/TeamForm';
 import TeamLogo from '@/components/teams/TeamLogo';
+import TeamLogoControl from '@/components/teams/TeamLogoControl';
+import TeamRequests from '@/components/teams/TeamRequests';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
     Box,
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbLink,
+    Button,
     Flex,
     Heading,
+    HStack,
     Skeleton,
+    SkeletonCircle,
     SkeletonText,
     useToast,
     VStack,
@@ -22,33 +29,67 @@ import {
     useTeam,
     useTeamIdOfUser,
     useTeamMembers,
+    useUpdateTeam,
     useWithdrawRequest,
 } from 'hooks/team';
 import ConnectLayout from 'layouts/ConnectLayout';
-import dynamic from 'next/dynamic';
+import { Team } from 'model';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { PropsWithChildren, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
-const TeamDescription = dynamic(
-    import('../../../components/teams/TeamDescriptions')
-);
+import TeamDescription from '../../../components/teams/TeamDescriptions';
+
+interface TeamDetailsSekeltonProps extends PropsWithChildren {
+    isLoading: boolean;
+}
+
+const TeamDetailsSkeleton: React.FC<TeamDetailsSekeltonProps> = ({
+    isLoading,
+    children,
+}) => {
+    if (!isLoading) return <>{children}</>;
+    else
+        return (
+            <>
+                <Flex alignItems="start" gap={4} wrap="wrap">
+                    <Skeleton
+                        w={{ base: 16, sm: 24 }}
+                        h={{ base: 16, sm: 24 }}
+                    />
+                    <Flex alignItems="start" flexDir="column" flexGrow={1}>
+                        <Skeleton w="16rem" h={10} />
+                    </Flex>
+                </Flex>
+                <SkeletonText noOfLines={5} lineHeight={4} skeletonHeight={3} />
+                <HStack>
+                    <SkeletonCircle size="3rem" />{' '}
+                    <SkeletonCircle size="3rem" />{' '}
+                    <SkeletonCircle size="3rem" />
+                </HStack>
+            </>
+        );
+};
 
 const TeamDetails: NextPageWithLayout = () => {
     const router = useRouter();
+    const toast = useToast();
+
     const teamId = Number.parseInt(router.query.teamId as string);
-    const { user } = useUser();
     const { team, isLoading: teamLoading } = useTeam(teamId);
     const { members, isLoading: membersLoading } = useTeamMembers(teamId);
+
+    const { user } = useUser();
     const { request: teamRequested, isLoading: teamRequestedLoading } =
         useCurrentRequest(user?.id);
-
     const { teamId: teamIdOfUser, isLoading: usersTeamLoading } =
         useTeamIdOfUser(user?.id);
-    const { makeRequest } = useRequestToJoinTeam();
-    const { withdrawRequest } = useWithdrawRequest();
+    const isUsersTeam = !!teamIdOfUser && teamIdOfUser == teamId;
 
-    const [requestButtonLoading, setRequestButtonLoading] = useState(false);
-    const toast = useToast();
+    const { makeRequest, isLoading: joining } = useRequestToJoinTeam();
+    const { withdrawRequest, isLoading: withdrawing } = useWithdrawRequest();
+    const { updateTeam, isLoading: updatingTeam } = useUpdateTeam();
+
+    const [isEditing, setEditing] = useState(false);
 
     const loading =
         teamLoading ||
@@ -56,9 +97,8 @@ const TeamDetails: NextPageWithLayout = () => {
         teamRequestedLoading ||
         usersTeamLoading;
 
-    async function handleRequest() {
+    function handleRequest() {
         if (!user) return;
-        setRequestButtonLoading(true);
         makeRequest(
             { userId: user.id, teamId },
             {
@@ -77,9 +117,8 @@ const TeamDetails: NextPageWithLayout = () => {
             }
         );
     }
-    async function handleWithdraw() {
+    function handleWithdraw() {
         if (!user) return;
-        setRequestButtonLoading(true);
         withdrawRequest(
             { userId: user.id },
             {
@@ -99,6 +138,18 @@ const TeamDetails: NextPageWithLayout = () => {
         );
     }
 
+    function onSaveTeam(updated: Team) {
+        updateTeam(updated, {
+            onSuccess: () => {
+                toast({
+                    title: 'Changes saved',
+                    status: 'success',
+                });
+                setEditing(false);
+            },
+        });
+    }
+
     return (
         <VStack alignItems="stretch" gap={4}>
             <Breadcrumb
@@ -115,48 +166,68 @@ const TeamDetails: NextPageWithLayout = () => {
                     </BreadcrumbLink>
                 </BreadcrumbItem>
             </Breadcrumb>
-            <Flex alignItems="start" gap={4} wrap="wrap">
-                <Skeleton isLoaded={!loading}>
-                    <TeamLogo {...team} size={{ base: 16, sm: 24 }} />
-                </Skeleton>
-                <Flex alignItems="start" flexDir="column" flexGrow={1}>
-                    <Skeleton minW="10rem" isLoaded={!loading}>
-                        <Heading>{team?.name || 'Team'}</Heading>
-                    </Skeleton>
-                    <Box mt={0} color="whiteAlpha.500">
-                        {team?.tags.join(' • ')}
-                    </Box>
-                </Flex>
-                <Skeleton
-                    isLoaded={!loading}
-                    h={6}
-                    minW={32}
-                    flexGrow={{ base: 1, md: 0 }}
-                >
-                    {team ? (
-                        <RequestButton
-                            team={team}
-                            currentRequestId={teamRequested?.id}
-                            currentTeamId={teamIdOfUser}
-                            onRequest={handleRequest}
-                            onWithdraw={handleWithdraw}
-                            isLoading={requestButtonLoading}
-                            size="sm"
-                            w="100%"
-                        />
-                    ) : undefined}
-                </Skeleton>
-            </Flex>
-
-            <SkeletonText
-                isLoaded={!loading}
-                noOfLines={3}
-                spacing="4"
-                w="100%"
-                skeletonHeight="4"
-            />
-            <TeamDescription description={team?.description} />
-            <MemberList members={members || []} loading={membersLoading} />
+            <TeamDetailsSkeleton isLoading={loading}>
+                {!isEditing ? (
+                    <>
+                        <Flex alignItems="start" gap={4} wrap="wrap">
+                            {isUsersTeam && team ? (
+                                <TeamLogoControl team={team} />
+                            ) : (
+                                <TeamLogo
+                                    {...team}
+                                    size={{ base: 16, sm: 24 }}
+                                />
+                            )}
+                            <Flex
+                                alignItems="start"
+                                flexDir="column"
+                                flexGrow={1}
+                            >
+                                <Heading>{team?.name || 'Team'}</Heading>
+                                <Box mt={0} color="whiteAlpha.500">
+                                    {team?.tags.join(' • ')}
+                                </Box>
+                            </Flex>
+                            {team && !isUsersTeam ? (
+                                <RequestButton
+                                    team={team}
+                                    currentRequestId={teamRequested?.id}
+                                    onRequest={handleRequest}
+                                    onWithdraw={handleWithdraw}
+                                    isLoading={
+                                        teamRequestedLoading ||
+                                        joining ||
+                                        withdrawing
+                                    }
+                                    size="sm"
+                                    w={{ base: '100%', md: '10rem' }}
+                                />
+                            ) : (
+                                <Button
+                                    onClick={() => setEditing(true)}
+                                    size="sm"
+                                    isLoading={updatingTeam}
+                                >
+                                    Edit
+                                </Button>
+                            )}
+                        </Flex>
+                        <TeamDescription description={team?.description} />
+                        <MemberList members={members || []} />
+                        {team && isUsersTeam && user ? (
+                            <>
+                                <TeamRequests team={team} />
+                                <LeaveTeamButton
+                                    userId={user?.id}
+                                    maxW="10rem"
+                                />
+                            </>
+                        ) : undefined}
+                    </>
+                ) : team ? (
+                    <TeamForm onSave={onSaveTeam} team={team} />
+                ) : undefined}
+            </TeamDetailsSkeleton>
         </VStack>
     );
 };

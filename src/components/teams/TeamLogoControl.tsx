@@ -1,6 +1,7 @@
-import { Button, VStack } from '@chakra-ui/react';
+import { HStack, IconButton, VStack } from '@chakra-ui/react';
 import { useRemoveTeamLogo, useUploadTeamLogo } from 'hooks/team';
 import { Team } from 'model';
+import { FaCloudUploadAlt, FaTrash } from 'react-icons/fa';
 import FileSelect from '../FileSelect';
 import TeamLogo from './TeamLogo';
 
@@ -22,19 +23,25 @@ export default function TeamLogoControl({ team }: { team: Team }) {
     return (
         <VStack>
             <TeamLogo logo={team.logo} loading={uploading} />
-            <FileSelect onSelect={handleLogoUpload}>
-                <Button isLoading={uploading} size="xs" variant="outline">
-                    Update Logo
-                </Button>
-            </FileSelect>
-            <Button
-                onClick={handleLogoRemove}
-                isLoading={removing}
-                size="xs"
-                variant="outline"
-            >
-                Remove Logo
-            </Button>
+            <HStack alignSelf="start">
+                <FileSelect onSelect={handleLogoUpload}>
+                    <IconButton
+                        size="sm"
+                        aria-label="upload logo"
+                        isLoading={uploading}
+                        variant="outline"
+                        icon={<FaCloudUploadAlt />}
+                    />
+                </FileSelect>
+                <IconButton
+                    aria-label="delete logo"
+                    onClick={handleLogoRemove}
+                    isLoading={removing}
+                    size="sm"
+                    variant="outline"
+                    icon={<FaTrash />}
+                />
+            </HStack>
         </VStack>
     );
 }

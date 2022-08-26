@@ -1,13 +1,12 @@
-import { Flex, SkeletonCircle, Text, VStack } from '@chakra-ui/react';
+import { Flex, Text, VStack } from '@chakra-ui/react';
 import { Profile } from 'model';
 import UserAvatar from '../avatar/UserAvatar';
 
 interface MemberListProps {
     members: Profile[];
-    loading: boolean;
 }
 
-const MemberList: React.FC<MemberListProps> = ({ members, loading }) => {
+const MemberList: React.FC<MemberListProps> = ({ members }) => {
     return (
         <VStack alignItems="start">
             <Text fontSize="sm" color="gray.500">
@@ -17,13 +16,6 @@ const MemberList: React.FC<MemberListProps> = ({ members, loading }) => {
                 {members.map((member) => (
                     <UserAvatar key={member.userId} profile={member} />
                 ))}
-                {loading ? (
-                    <>
-                        <SkeletonCircle size="10" />
-                        <SkeletonCircle size="10" />
-                        <SkeletonCircle size="10" />
-                    </>
-                ) : undefined}
             </Flex>
         </VStack>
     );

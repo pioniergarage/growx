@@ -20,15 +20,13 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export function useTeamIdOfUser(userId?: string) {
     const result = useQuery(
-        'team',
+        'currentTeamId',
         async () => {
             if (!userId) {
                 throw new Error('Cannot get team of undefined user');
             }
             const teamId = await getTeamIdOfUser(userId);
-            if (!teamId) {
-                return null;
-            }
+            return teamId
         },
         {
             enabled: !!userId,
@@ -48,7 +46,7 @@ export function useAllTeams() {
     return { ...query, teams: query.data };
 }
 
-export function useTeam(teamId?: number) {
+export function useTeam(teamId?: number | null) {
     const query = useQuery(['team', teamId], () => {
         if (!teamId) {
             throw new Error("Cannot fetch undefined team")
@@ -66,7 +64,7 @@ export function useTeamMembers(teamId: number) {
 export function useTeamRequests(teamId: number) {
     const query = useQuery(['teamRequests', teamId], () =>
         getRequestsToTeam(teamId)
-    );
+        , { initialData: [] });
     return { ...query, profiles: query.data };
 }
 
@@ -112,20 +110,13 @@ export function useDeclineRequest() {
 }
 
 export function useUploadTeamLogo() {
-    const queryClient = useQueryClient();
+    const { updateTeam } = useUpdateTeam()
     const mutation = useMutation(
         ({ team, file }: { team: Team; file: File }) =>
             uploadTeamLogo(team, file),
         {
             onSuccess: (publicUrl, { team }) => {
-                queryClient.setQueryData<Team | undefined>(
-                    ['team', team.id],
-                    (oldData) => {
-                        if (oldData) {
-                            return { ...oldData, avatar: publicUrl };
-                        }
-                    }
-                );
+                updateTeam({ ...team, logo: publicUrl })
             },
         }
     );
@@ -133,19 +124,12 @@ export function useUploadTeamLogo() {
 }
 
 export function useRemoveTeamLogo() {
-    const queryClient = useQueryClient();
+    const { updateTeam } = useUpdateTeam()
     const mutation = useMutation(
         ({ team }: { team: Team }) => removeTeamLogo(team),
         {
             onSuccess: (_, { team }) => {
-                queryClient.setQueryData<Team | undefined>(
-                    ['team', team.id],
-                    (oldData) => {
-                        if (oldData) {
-                            return { ...oldData, avatar: undefined };
-                        }
-                    }
-                );
+                updateTeam({ ...team, logo: '' })
             },
         }
     );
@@ -205,7 +189,7 @@ export function useLeaveTeam() {
     const mutation = useMutation((userId: string) => leaveTeam(userId), {
         onSuccess: () => {
             queryClient.invalidateQueries(['members']);
-            queryClient.invalidateQueries('team');
+            queryClient.invalidateQueries('currentTeamId');
         },
     });
     return { ...mutation, leaveTeam: mutation.mutateAsync };

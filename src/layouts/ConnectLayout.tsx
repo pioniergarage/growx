@@ -22,6 +22,7 @@ import { useRouter } from 'next/router';
 import { PropsWithChildren } from 'react';
 import { FaSignOutAlt, FaUser } from 'react-icons/fa';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import AnimatedLogo from '../components/landing/AnimatedLogo';
 import { Logo } from '../components/navigation/Nav';
 
@@ -117,11 +118,6 @@ function ConnectHeader({ role }: { role?: UserRole }) {
                                 Teams
                             </MenuItem>
                             <MenuItem
-                                onClick={() => router.push('/connect/team')}
-                            >
-                                Your Team
-                            </MenuItem>
-                            <MenuItem
                                 onClick={handleLogout}
                                 icon={<FaSignOutAlt />}
                             >
@@ -184,7 +180,6 @@ function SideNav({ role }: { role?: UserRole }) {
                 <SideNavItem href="/connect">Home</SideNavItem>
                 <SideNavItem href="/connect/events">Events</SideNavItem>
                 <SideNavItem href="/connect/profile">Profile</SideNavItem>
-                <SideNavItem href="/connect/team">Your Team</SideNavItem>
                 <SideNavItem href="/connect/teams">All Teams</SideNavItem>
                 {role === 'ORGA' ? (
                     <SideNavItem href="/connect/admin">Admin</SideNavItem>
@@ -231,7 +226,7 @@ export default function ConnectLayout({ children }: PropsWithChildren) {
                 <QueryClientProvider client={queryClient}>
                     <ContentContainer>{children}</ContentContainer>
 
-                    {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+                    <ReactQueryDevtools initialIsOpen={false} />
                 </QueryClientProvider>
             </UserProvider>
         </>
