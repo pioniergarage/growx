@@ -26,7 +26,8 @@ function NoTeam() {
                         title: 'Something went wrong.',
                     });
                 },
-                onSuccess: () => router.reload(),
+                onSuccess: (created) =>
+                    router.push('/connect/teams/' + created.id),
             }
         );
     }
