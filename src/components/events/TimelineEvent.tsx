@@ -1,6 +1,6 @@
 import { HStack, VStack, Flex, Heading, Tag, Text } from '@chakra-ui/react';
 import { useMemo } from 'react';
-import { GrowEvent } from 'model';
+import { EventType, GrowEvent } from 'model';
 
 export default function TimelineEvent(event: GrowEvent) {
     const { day, month } = useMemo(() => {
@@ -33,9 +33,10 @@ export default function TimelineEvent(event: GrowEvent) {
                 <Heading size="md">{event.title}</Heading>
                 <Text mt={0}>{event.description}</Text>
                 <HStack mt={1}>
-                    {event.type ? <Tag>{event.type}</Tag> : <></>}
                     {event.mandatory ? <Tag>Mandatory</Tag> : <></>}^
                     {event.location ? <Tag>{event.location}</Tag> : undefined}
+                    {event.type ? <Tag>{event.type}</Tag> : undefined}
+                    <Tag> {EventType.Hybrid}</Tag>
                 </HStack>
             </Flex>
         </HStack>

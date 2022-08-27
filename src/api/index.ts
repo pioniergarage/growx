@@ -4,7 +4,13 @@ import {
     PostgrestResponse,
     PostgrestSingleResponse,
 } from '@supabase/supabase-js';
-import { GrowEvent, Profile, Sponsor, UserRole } from 'model';
+import {
+    eventTypeIdToString,
+    GrowEvent,
+    Profile,
+    Sponsor,
+    UserRole,
+} from 'model';
 import resizeImage from 'utils/resize';
 import { definitions } from './supabase';
 
@@ -180,6 +186,7 @@ export const createEvent = async () =>
             {
                 title: 'New Event',
                 date: new Date().toISOString(),
+                // TODO: noch mehr?
             },
             { returning: 'minimal' }
         )
@@ -204,5 +211,8 @@ export const updateEvent = async (
             mandatory: growEvent.mandatory,
             location: growEvent.location,
             sq_mandatory: growEvent.sq_mandatory,
+            type: growEvent.type, // TODO Partial{id: number, inserted_at: String}
         })
         .match({ id: eventId });
+
+// TODO: https://stackoverflow.com/questions/229856/ways-to-save-enums-in-database

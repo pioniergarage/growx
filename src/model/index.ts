@@ -8,8 +8,8 @@ export type Profile = {
     university: string;
     homeland: string;
     gender: string;
-    role: UserRole
-}
+    role: UserRole;
+};
 
 export type Sponsor = {
     name: string;
@@ -19,12 +19,35 @@ export type Sponsor = {
     id: number;
 };
 
+export type UserRole = 'admin' | undefined;
 
+export enum EventType {
+    Online = 'Online',
+    Offline = 'Offline',
+    Hybrid = 'Hyprid',
+}
 
-export type UserRole = "admin" | undefined
+/*
+export function eventTypeIdToString(et: EventType) {
+    switch (et) {
+        case EventType.Online:
+            return 'Online';
+            break;
+        case EventType.Offline:
+            return 'Offline';
+            break;
+        case EventType.Hybrid:
+            return 'Hybrid';
+            break;
 
+        default:
+            return '';
+            break;
+    }
+}
+*/
 
-export type GrowEvent = { 
+export type GrowEvent = {
     date: Date;
     id: number;
     title: string;
@@ -32,4 +55,6 @@ export type GrowEvent = {
     mandatory: boolean;
     location?: string;
     sq_mandatory?: boolean;
-}
+    //type?: { id: number; name: string };
+    type?: EventType;
+};

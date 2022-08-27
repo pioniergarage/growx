@@ -118,7 +118,6 @@ export default function GrowEventCard({
                     <Heading size="md">{event.title}</Heading>
                     {event.mandatory ? <Tag>mandatory</Tag> : undefined}
                     {event.location ? <Tag>{event.location}</Tag> : undefined}
-                    {event.online ? <Tag>online</Tag> : undefined}
                 </HStack>
                 <Text>{event.description}</Text>
                 {!over ? actionButton : undefined}
