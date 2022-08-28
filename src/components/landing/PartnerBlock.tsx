@@ -9,7 +9,11 @@ function PartnerItem({ link: href, logo, name }: Partial<Sponsor>) {
     );
 }
 
-export default function PartnerBlock({ sponsors }: { sponsors: Sponsor[] }) {
+interface PartnerBlockProps {
+    sponsors: Sponsor[];
+}
+
+const PartnerBlock: React.FC<PartnerBlockProps> = ({ sponsors }) => {
     if (!sponsors) return <></>;
     return (
         <SimpleGrid columns={2}>
@@ -40,4 +44,6 @@ export default function PartnerBlock({ sponsors }: { sponsors: Sponsor[] }) {
             </GridItem>
         </SimpleGrid>
     );
-}
+};
+
+export default PartnerBlock;

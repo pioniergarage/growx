@@ -13,14 +13,15 @@ import {
 } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { UserProvider } from '@supabase/auth-helpers-react';
-import { ProfileProvider, useProfile } from 'hooks/profile';
+import { useProfile } from 'hooks/profile';
+import { UserRole } from 'model';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { PropsWithChildren } from 'react';
-import { FaUser, FaSignOutAlt } from 'react-icons/fa';
-import { UserRole } from 'model';
+import { FaSignOutAlt, FaUser } from 'react-icons/fa';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import AnimatedLogo from '../components/landing/AnimatedLogo';
 import { Logo } from '../components/navigation/Nav';
 
@@ -28,7 +29,7 @@ const Countdown = dynamic(import('../components/landing/Countdown'), {
     ssr: false,
 });
 
-function ConnectHeader({ role }: { role: UserRole }) {
+function ConnectHeader({ role }: { role?: UserRole }) {
     const router = useRouter();
     const { profile } = useProfile();
 
@@ -111,12 +112,17 @@ function ConnectHeader({ role }: { role: UserRole }) {
                                 Profile
                             </MenuItem>
                             <MenuItem
+                                onClick={() => router.push('/connect/teams')}
+                            >
+                                Teams
+                            </MenuItem>
+                            <MenuItem
                                 onClick={handleLogout}
                                 icon={<FaSignOutAlt />}
                             >
                                 Logout
                             </MenuItem>
-                            {role === 'admin' ? (
+                            {role === 'ORGA' ? (
                                 <MenuItem
                                     onClick={() =>
                                         router.push('/connect/admin')
@@ -156,7 +162,7 @@ function SideNavItem({ href, children }: PropsWithChildren & { href: string }) {
     );
 }
 
-function SideNav({ role }: { role: UserRole }) {
+function SideNav({ role }: { role?: UserRole }) {
     return (
         <Box
             display={{ base: 'none', lg: 'block' }}
@@ -173,7 +179,8 @@ function SideNav({ role }: { role: UserRole }) {
                 <SideNavItem href="/connect">Home</SideNavItem>
                 <SideNavItem href="/connect/events">Events</SideNavItem>
                 <SideNavItem href="/connect/profile">Profile</SideNavItem>
-                {role === 'admin' ? (
+                <SideNavItem href="/connect/teams">All Teams</SideNavItem>
+                {role === 'ORGA' ? (
                     <SideNavItem href="/connect/admin">Admin</SideNavItem>
                 ) : undefined}
             </VStack>
@@ -201,6 +208,13 @@ function ContentContainer({ children }: PropsWithChildren) {
 }
 
 export default function ConnectLayout({ children }: PropsWithChildren) {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                retry: 0,
+            },
+        },
+    });
     return (
         <>
             <Head>
@@ -208,9 +222,11 @@ export default function ConnectLayout({ children }: PropsWithChildren) {
                 <meta name="description" content="GROWconnect" />
             </Head>
             <UserProvider supabaseClient={supabaseClient}>
-                <ProfileProvider>
+                <QueryClientProvider client={queryClient}>
                     <ContentContainer>{children}</ContentContainer>
-                </ProfileProvider>
+
+                    {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+                </QueryClientProvider>
             </UserProvider>
         </>
     );

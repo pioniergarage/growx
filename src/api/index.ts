@@ -1,17 +1,4 @@
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import {
-    PostgrestError,
-    PostgrestResponse,
-    PostgrestSingleResponse,
-} from '@supabase/supabase-js';
-import {
-    eventTypeIdToString,
-    GrowEvent,
-    Profile,
-    Sponsor,
-    UserRole,
-} from 'model';
-import resizeImage from 'utils/resize';
 import { definitions } from './supabase';
 
 type SupabaseResponse<T> = { data?: T; error?: PostgrestError | null };

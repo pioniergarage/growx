@@ -1,49 +1,44 @@
 import {
-    useToast,
-    Tooltip,
     Button,
-    HStack,
     Flex,
-    VStack,
     Heading,
+    HStack,
     Tag,
     Text,
+    Tooltip,
+    useToast,
+    VStack,
 } from '@chakra-ui/react';
 import { useUser } from '@supabase/auth-helpers-react';
-import { registerUser, unregisterUser } from 'api';
-import { useState, useMemo } from 'react';
+import {
+    useRegisterUserToEvent,
+    useUnregisterUserFromEvent,
+} from 'hooks/event';
 import { GrowEvent } from 'model';
+import { useMemo, useState } from 'react';
 
 type GrowEventCardProps = {
     event: GrowEvent;
     registered: boolean;
 };
 
-export default function GrowEventCard({
-    event,
-    registered,
-}: GrowEventCardProps) {
+const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
     const [registeredLocal, setRegisteredLocal] = useState(registered);
+    const { registerUser } = useRegisterUserToEvent();
+    const { unregisterUser } = useUnregisterUserFromEvent();
     const { user } = useUser();
     const toast = useToast();
-    const { day, month } = useMemo(() => {
+    const { day, month, over } = useMemo(() => {
         const day = String(event.date.getDate()).padStart(2, '0');
         const month = event.date.toLocaleString('en-US', { month: 'short' });
-        return { day, month };
+        const over = new Date() > event.date;
+        return { day, month, over };
     }, [event.date]);
-    const over = new Date() > new Date(event.date);
 
     async function register() {
         if (!user) return;
-        const { error } = await registerUser(user?.id, event.id);
-        if (error) {
-            toast({
-                title: 'Something went wrong...',
-                status: 'error',
-                duration: 4000,
-                isClosable: true,
-            });
-        } else {
+        try {
+            await registerUser({ user, event });
             toast({
                 title: 'Registered to ' + event.title,
                 status: 'success',
@@ -51,20 +46,20 @@ export default function GrowEventCard({
                 isClosable: true,
             });
             setRegisteredLocal(true);
-        }
-    }
-
-    async function withdrawRegistration() {
-        if (!user) return;
-        const { error } = await unregisterUser(user.id, event.id);
-        if (error) {
+        } catch (error) {
             toast({
                 title: 'Something went wrong...',
                 status: 'error',
                 duration: 4000,
                 isClosable: true,
             });
-        } else {
+        }
+    }
+
+    async function withdrawRegistration() {
+        if (!user) return;
+        try {
+            await unregisterUser({ user, event });
             toast({
                 title: 'Unregistered from ' + event.title,
                 status: 'success',
@@ -72,6 +67,13 @@ export default function GrowEventCard({
                 isClosable: true,
             });
             setRegisteredLocal(false);
+        } catch (error) {
+            toast({
+                title: 'Something went wrong...',
+                status: 'error',
+                duration: 4000,
+                isClosable: true,
+            });
         }
     }
 
@@ -124,4 +126,6 @@ export default function GrowEventCard({
             </VStack>
         </HStack>
     );
-}
+};
+
+export default GrowEventCard;

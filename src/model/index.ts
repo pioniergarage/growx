@@ -1,14 +1,17 @@
+export type Gender = 'MALE' | 'FEMALE' | 'OTHER';
+
 export type Profile = {
     userId: string;
     firstName: string;
     lastName: string;
     email: string;
-    phone: string;
-    studies: string;
-    university: string;
-    homeland: string;
-    gender: string;
+    phone?: string;
+    studies?: string;
+    university?: string;
+    homeland?: string;
+    gender?: Gender;
     role: UserRole;
+    avatar?: string;
 };
 
 export type Sponsor = {
@@ -19,33 +22,7 @@ export type Sponsor = {
     id: number;
 };
 
-export type UserRole = 'admin' | undefined;
-
-export enum EventType {
-    Online = 'Online',
-    Offline = 'Offline',
-    Hybrid = 'Hyprid',
-}
-
-/*
-export function eventTypeIdToString(et: EventType) {
-    switch (et) {
-        case EventType.Online:
-            return 'Online';
-            break;
-        case EventType.Offline:
-            return 'Offline';
-            break;
-        case EventType.Hybrid:
-            return 'Hybrid';
-            break;
-
-        default:
-            return '';
-            break;
-    }
-}
-*/
+export type UserRole = 'PARTICIPANT' | 'BUDDY' | 'MENTOR' | 'EXPERT' | 'ORGA';
 
 export type GrowEvent = {
     date: Date;
@@ -55,6 +32,18 @@ export type GrowEvent = {
     mandatory: boolean;
     location?: string;
     sq_mandatory?: boolean;
-    //type?: { id: number; name: string };
-    type?: EventType;
+};
+
+export type Team = {
+    id: number;
+    name: string;
+    description: string;
+    tags: string[];
+    logo?: string;
+    archived: boolean;
+};
+
+export type FAQ = {
+    question: string;
+    answer: string;
 };

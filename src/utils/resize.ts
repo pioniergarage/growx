@@ -1,11 +1,17 @@
 function toBlob(canvas: HTMLCanvasElement) {
-    return new Promise<Blob>((resolve, reject) => canvas.toBlob((blob) => {
-        if (blob) resolve(blob)
-        else reject("Could not convert canvas to blob")
-    }, 'image/jpeg'))
+    return new Promise<Blob>((resolve, reject) =>
+        canvas.toBlob((blob) => {
+            if (blob) resolve(blob);
+            else reject('Could not convert canvas to blob');
+        }, 'image/jpeg')
+    );
 }
 
-export default function resizeImage(originalImage: Blob, maxWidth: number, maxHeight: number) {
+export default function resizeImage(
+    originalImage: Blob,
+    maxWidth: number,
+    maxHeight: number
+) {
     return new Promise<Blob>((resolve, reject) => {
         const img = new Image();
         img.onload = async function () {
@@ -20,18 +26,17 @@ export default function resizeImage(originalImage: Blob, maxWidth: number, maxHe
                 height = maxHeight;
             }
 
-            const canvas = document.createElement("canvas");
+            const canvas = document.createElement('canvas');
             canvas.width = width;
             canvas.height = height;
-            const ctx = canvas.getContext("2d");
+            const ctx = canvas.getContext('2d');
             if (!ctx) {
-                return reject("Error during resizing of image")
+                return reject('Error during resizing of image');
             }
             ctx.drawImage(img, 0, 0, width, height);
 
-            toBlob(canvas).then(resolve).catch(reject)
-        }
+            toBlob(canvas).then(resolve).catch(reject);
+        };
         img.src = URL.createObjectURL(originalImage);
-    })
-
+    });
 }

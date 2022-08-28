@@ -3,16 +3,21 @@ import { PropsWithChildren } from 'react';
 import { IconType } from 'react-icons';
 import { FaRegComments, FaRocket, FaUserFriends } from 'react-icons/fa';
 
-function MotivationItem({
+interface MotivationItemProps extends PropsWithChildren {
+    heading: string;
+    icon: IconType;
+}
+
+const MotivationItem: React.FC<MotivationItemProps> = ({
     heading,
     icon: Icon,
     children,
-}: PropsWithChildren & { heading: string; icon: IconType }) {
+}) => {
     return (
         <VStack gap={1} alignItems="flex-start">
             <Flex
                 borderRadius={4}
-                bgColor='whiteAlpha.200'
+                bgColor="whiteAlpha.200"
                 width="2.5rem"
                 height="2.5rem"
                 justifyContent="center"
@@ -26,18 +31,18 @@ function MotivationItem({
             <Text>{children}</Text>
         </VStack>
     );
-}
+};
 
 export default function MotivationBlock() {
     return (
-        <VStack alignItems='start'>
+        <VStack alignItems="start">
             <Heading size="lg">Why GROW?</Heading>
             <SimpleGrid
                 columns={{ base: 1, md: 3 }}
                 gap={8}
                 w="full"
-                alignItems='start'
-                textAlign='left'
+                alignItems="start"
+                textAlign="left"
             >
                 <MotivationItem icon={FaUserFriends} heading="Find Your Team">
                     You don&apos;t have a team yet? GROW is the perfect
@@ -57,8 +62,8 @@ export default function MotivationBlock() {
                     icon={FaRegComments}
                     heading="Learn Through Mentorship"
                 >
-                    Each team will receive support from our experienced mentors and
-                    buddies. This will help your business to grow beyond its
+                    Each team will receive support from our experienced mentors
+                    and buddies. This will help your business to grow beyond its
                     limits.
                 </MotivationItem>
             </SimpleGrid>

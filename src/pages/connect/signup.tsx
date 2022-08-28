@@ -1,24 +1,29 @@
 import ParticipateForm, {
     ParticipateInfo,
 } from '@/components/forms/ParticipateForm';
-import LoginLayout from 'layouts/LoginLayout';
 import PageLink from '@/components/navigation/PageLink';
-import { VStack, Heading, Alert, AlertIcon, Box } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, Heading, VStack } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { useUser } from '@supabase/auth-helpers-react';
+import { useUpdateProfile } from 'hooks/profile';
+import LoginLayout from 'layouts/LoginLayout';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { updateProfile } from 'api';
+import { useEffect, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 
 const SignUp: NextPageWithLayout = () => {
     const [loading, setLoading] = useState(false);
     const [signUpError, setSignUpError] = useState<string>('');
     const router = useRouter();
+    const { user } = useUser();
+    const { updateProfile } = useUpdateProfile();
 
-    if (supabaseClient.auth.user()) {
-        router.replace('/connect/')
-    }
-
+    useEffect(() => {
+        if (user) {
+            router.replace('/connect/');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     async function signUp(info: ParticipateInfo) {
         return supabaseClient.auth
             .signUp({
@@ -32,11 +37,12 @@ const SignUp: NextPageWithLayout = () => {
             });
     }
 
-
     async function onSignUp(info: ParticipateInfo) {
         setLoading(true);
         await signUp(info)
-            .then(({user, info}) => updateProfile(user.id, info))
+            .then(({ user, info }) =>
+                updateProfile({ ...info, userId: user.id })
+            )
             .then(() => router.replace('/connect/welcome'))
             .catch((error) => setSignUpError(String(error)));
         setLoading(false);

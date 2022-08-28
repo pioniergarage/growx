@@ -35,11 +35,11 @@ const LoginPage: NextPageWithLayout = () => {
             setLoginError(error.message);
         } else {
             // wait 500ms
-            await (new Promise<void>((resolve) => {
+            await new Promise<void>((resolve) => {
                 setTimeout(() => {
-                    resolve()
+                    resolve();
                 }, 500);
-            }))
+            });
         }
         router.replace('/connect/');
         setLoading(false);

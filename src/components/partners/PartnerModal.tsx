@@ -12,22 +12,24 @@ import {
     ModalHeader,
     ModalOverlay,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
 import { Sponsor } from 'model';
+import { useEffect, useState } from 'react';
 
-export default function PartnerModal({
-    isOpen,
-    onClose,
-    onSave,
-    onDelete,
-    initialValue,
-}: {
+interface PartnerModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSave: (sponsor: Omit<Sponsor, 'id'>) => void;
     onDelete: () => void;
     initialValue: Omit<Sponsor, 'id'>;
-}) {
+}
+
+const PartnerModal: React.FC<PartnerModalProps> = ({
+    isOpen,
+    onClose,
+    onSave,
+    onDelete,
+    initialValue,
+}) => {
     const [sponsor, setSponsor] = useState(initialValue);
     useEffect(() => setSponsor(initialValue), [initialValue]);
     return (
@@ -71,10 +73,13 @@ export default function PartnerModal({
                     <FormControl mt={4}>
                         <FormLabel>Type</FormLabel>
                         <Input
-                            type='number'
+                            type="number"
                             value={sponsor.type}
                             onChange={(e) =>
-                                setSponsor({ ...sponsor, type: Number.parseInt(e.target.value) })
+                                setSponsor({
+                                    ...sponsor,
+                                    type: Number.parseInt(e.target.value),
+                                })
                             }
                             placeholder="1"
                         />
@@ -94,4 +99,6 @@ export default function PartnerModal({
             </ModalContent>
         </Modal>
     );
-}
+};
+
+export default PartnerModal;

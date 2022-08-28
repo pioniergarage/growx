@@ -1,22 +1,22 @@
-import ConnectLayout from 'layouts/ConnectLayout';
-import {
-    Box,
-    Heading,
-    VStack,
-    Text,
-    Grid,
-    Button,
-    useToast,
-    Skeleton
-} from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { useProfile } from 'hooks/profile';
-import { ChangeEvent, useMemo, useRef, useState } from 'react';
+import UserAvatar from '@/components/avatar/UserAvatar';
+import FileSelect from '@/components/FileSelect';
 import LazySpinner from '@/components/profile/LazySpinner';
 import ProfileForm from '@/components/profile/ProfileForm';
-import UserAvatar from '@/components/avatar/UserAvatar';
-import { uploadUserAvatar } from 'api';
+import {
+    Box,
+    Button,
+    Grid,
+    Heading,
+    Skeleton,
+    Text,
+    useToast,
+    VStack,
+} from '@chakra-ui/react';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { useProfile, useUpdateProfile, useUploadAvatar } from 'hooks/profile';
+import ConnectLayout from 'layouts/ConnectLayout';
 import { Profile } from 'model';
+import { useMemo, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 
 function ProfileView() {
@@ -63,30 +63,31 @@ function SkeletonLoader() {
 
 function AvatarControl() {
     const { profile } = useProfile();
-    const [loading, setLoading] = useState(false);
     const toast = useToast();
-    const uploadRef = useRef<HTMLInputElement>(null);
-    async function uploadAvatar(event: ChangeEvent<HTMLInputElement>) {
-        if (!profile) return
-        if (!event.target.files || event.target.files.length === 0) {
+    const { uploadUserAvatar, isLoading } = useUploadAvatar();
+    async function uploadAvatar(files: FileList | null) {
+        if (!profile) return;
+        if (!files || files.length === 0) {
             throw new Error('You must select an image to upload.');
         }
-        setLoading(true);
-        const file = event.target.files[0];
-        const {error: uploadError} = await uploadUserAvatar(profile, file)
-        setLoading(false);
-        if (uploadError) {
-            console.error(uploadError.message);
-            toast({
-                title: 'Something went wrong.',
-                status: 'error',
-            });
-        } else {
-            toast({
-                title: 'Profile picture upadted!',
-                status: 'success',
-            });
-        }
+        const file = files[0];
+        await uploadUserAvatar(
+            { profile, file },
+            {
+                onError: () => {
+                    toast({
+                        title: 'Something went wrong.',
+                        status: 'error',
+                    });
+                },
+                onSuccess: () => {
+                    toast({
+                        title: 'Profile picture upadted!',
+                        status: 'success',
+                    });
+                },
+            }
+        );
     }
     return (
         <Box>
@@ -94,37 +95,27 @@ function AvatarControl() {
                 <UserAvatar
                     size="xl"
                     profile={profile}
-                    filter={loading ? 'brightness(70%)' : undefined}
+                    filter={isLoading ? 'brightness(70%)' : undefined}
                 />
-                <Button
-                    isLoading={loading}
-                    size="sm"
-                    variant="outline"
-                    onClick={() => uploadRef.current?.click()}
-                >
-                    Update profile picture
-                </Button>
+                <FileSelect onSelect={uploadAvatar}>
+                    <Button isLoading={isLoading} size="sm" variant="outline">
+                        Update avatar
+                    </Button>
+                </FileSelect>
             </VStack>
-            <input
-                ref={uploadRef}
-                type="file"
-                id="single"
-                accept="image/*"
-                onChange={uploadAvatar}
-                style={{ position: 'absolute', visibility: 'hidden' }}
-            />
         </Box>
     );
 }
 
 function ProfileDetailsControl() {
     const [isEditing, setEditing] = useState(false);
-    const { profile, loading, update } = useProfile();
+    const { profile, isLoading: loading } = useProfile();
+    const { updateProfile } = useUpdateProfile();
     const toast = useToast();
 
     async function handleSave(profile: Profile) {
         try {
-            await update(profile);
+            await updateProfile(profile);
 
             toast({
                 title: 'Profile updated.',
@@ -152,7 +143,7 @@ function ProfileDetailsControl() {
                         <Button
                             onClick={() => setEditing(true)}
                             width={20}
-                            variant='outline'
+                            variant="outline"
                         >
                             Edit
                         </Button>
