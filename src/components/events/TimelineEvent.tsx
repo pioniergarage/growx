@@ -40,7 +40,6 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({ event }) => {
                     {event.mandatory ? <Tag>Mandatory</Tag> : <></>}^
                     {event.location ? <Tag>{event.location}</Tag> : undefined}
                     {event.type ? <Tag>{event.type}</Tag> : undefined}
-                    <Tag> {EventType.Hybrid}</Tag>
                 </HStack>
             </Flex>
         </HStack>

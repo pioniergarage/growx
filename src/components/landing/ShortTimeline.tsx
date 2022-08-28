@@ -78,7 +78,7 @@ export default function ShortTimeline() {
             <Heading size="lg" textAlign="center">
                 From idea to prototype in 11 weeks
             </Heading>
-            <SimpleGrid columns={[1, 1, 1, 3]} gap={4} width="100%">
+            <SimpleGrid columns={[1, 1, 1, 3]} gap={8} width="100%">
                 {events.map((event) => (
                     <TimelineItem {...event} key={event.title} />
                 ))}

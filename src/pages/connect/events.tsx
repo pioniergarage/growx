@@ -14,8 +14,8 @@ const EventsPage: NextPageWithLayout = () => {
 
     return (
         <Box>
-            <Heading mb={4}>Events</Heading>
-            <VStack alignItems="stretch" gap={4}>
+            <Heading mb={10}>Events</Heading>
+            <VStack alignItems="stretch" gap={10}>
                 {events
                     ? events.map((event) => (
                           <GrowEventCard

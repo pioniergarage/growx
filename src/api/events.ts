@@ -12,6 +12,7 @@ const mapEventDto: (dto: definitions['events']) => GrowEvent = (dto) => ({
     mandatory: dto.mandatory,
     location: dto.location,
     sq_mandatory: dto.sq_mandatory,
+    type: dto.type,
 });
 
 export const getEvents = () =>
@@ -73,6 +74,7 @@ export const updateEvent = (
                 mandatory: growEvent.mandatory,
                 location: growEvent.location,
                 sq_mandatory: growEvent.sq_mandatory,
+                type: growEvent.type,
             },
             { returning: 'representation' }
         )

@@ -116,9 +116,10 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
                 <Text>{month}</Text>
             </Flex>
             <VStack alignItems="start">
+                <Heading size="md">{event.title}</Heading>
                 <HStack>
-                    <Heading size="md">{event.title}</Heading>
                     {event.mandatory ? <Tag>mandatory</Tag> : undefined}
+                    {event.type ? <Tag>{event.type}</Tag> : undefined}
                     {event.location ? <Tag>{event.location}</Tag> : undefined}
                 </HStack>
                 <Text>{event.description}</Text>

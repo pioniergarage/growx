@@ -23,6 +23,7 @@ export type Sponsor = {
 };
 
 export type UserRole = 'PARTICIPANT' | 'BUDDY' | 'MENTOR' | 'EXPERT' | 'ORGA';
+export type EventType = 'Online' | 'Offline' | 'Hybrid';
 
 export type GrowEvent = {
     date: Date;
@@ -32,6 +33,7 @@ export type GrowEvent = {
     mandatory: boolean;
     location?: string;
     sq_mandatory?: boolean;
+    type?: EventType;
 };
 
 export type Team = {
