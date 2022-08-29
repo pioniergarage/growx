@@ -3,7 +3,6 @@ import { Box, Heading, VStack } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useGrowEvents, useRegistrationsOfUser } from 'hooks/event';
 import { useProfile } from 'hooks/profile';
-import ConnectLayout from 'layouts/ConnectLayout';
 import { NextPageWithLayout } from 'utils/types';
 
 const EventsPage: NextPageWithLayout = () => {
@@ -31,8 +30,6 @@ const EventsPage: NextPageWithLayout = () => {
         </Box>
     );
 };
-
-EventsPage.getLayout = (page) => <ConnectLayout>{page}</ConnectLayout>;
 
 export default EventsPage;
 

@@ -12,7 +12,6 @@ import {
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useAllTeams } from 'hooks/team';
-import ConnectLayout from 'layouts/ConnectLayout';
 import _ from 'lodash';
 import { NextPageWithLayout } from 'utils/types';
 
@@ -62,7 +61,6 @@ const TeamsPage: NextPageWithLayout = () => {
     );
 };
 
-TeamsPage.getLayout = (page) => <ConnectLayout>{page}</ConnectLayout>;
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
 });

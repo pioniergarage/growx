@@ -32,7 +32,6 @@ import {
     useRegistrationsToEvent,
     useUpdateEvent,
 } from 'hooks/event';
-import ConnectLayout from 'layouts/ConnectLayout';
 import { GrowEvent } from 'model';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
@@ -323,8 +322,6 @@ const EventDetails: NextPageWithLayout = () => {
         </VStack>
     );
 };
-
-EventDetails.getLayout = (page) => <ConnectLayout>{page}</ConnectLayout>;
 
 export default EventDetails;
 

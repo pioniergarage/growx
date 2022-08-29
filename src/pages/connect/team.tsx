@@ -4,7 +4,6 @@ import { Box, Button, Text, useToast, VStack } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useProfile } from 'hooks/profile';
 import { useCreateTeam, useTeam, useTeamIdOfUser } from 'hooks/team';
-import ConnectLayout from 'layouts/ConnectLayout';
 import { useRouter } from 'next/router';
 import { NextPageWithLayout } from 'utils/types';
 
@@ -73,7 +72,6 @@ const TeamPage: NextPageWithLayout = () => {
     );
 };
 
-TeamPage.getLayout = (page) => <ConnectLayout>{page}</ConnectLayout>;
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
 });

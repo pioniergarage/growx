@@ -14,7 +14,6 @@ import {
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useProfile, useUpdateProfile, useUploadAvatar } from 'hooks/profile';
-import ConnectLayout from 'layouts/ConnectLayout';
 import { Profile } from 'model';
 import { useMemo, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
@@ -179,8 +178,6 @@ const ProfilePage: NextPageWithLayout = () => {
         </VStack>
     );
 };
-
-ProfilePage.getLayout = (page) => <ConnectLayout>{page}</ConnectLayout>;
 
 export default ProfilePage;
 export const getServerSideProps = withPageAuth({

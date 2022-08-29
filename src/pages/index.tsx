@@ -28,7 +28,7 @@ function Section({
     ...rest
 }: PropsWithChildren & { divider?: boolean } & BoxProps) {
     return (
-        <Box as="section" px={{ base: 4, xl: 0 }} my={8} {...rest}>
+        <Box as="section" my={8} {...rest}>
             <Box mx="auto" maxW="container.xl">
                 {children}
                 {divider && <Divider my={8} />}
@@ -56,6 +56,7 @@ const Home: React.FC<HomeProps> = ({ sponsors, faqs, events: jsonEvents }) => {
                     h={{ base: '40rem', md: '100%' }}
                     position="absolute"
                     zIndex={-10}
+                    opacity={0.6}
                 >
                     <Box
                         position="absolute"

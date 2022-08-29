@@ -32,7 +32,6 @@ import {
     useUpdateTeam,
     useWithdrawRequest,
 } from 'hooks/team';
-import ConnectLayout from 'layouts/ConnectLayout';
 import { Team } from 'model';
 import { useRouter } from 'next/router';
 import { PropsWithChildren, useState } from 'react';
@@ -232,7 +231,6 @@ const TeamDetails: NextPageWithLayout = () => {
     );
 };
 
-TeamDetails.getLayout = (page) => <ConnectLayout>{page}</ConnectLayout>;
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
 });

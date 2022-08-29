@@ -18,7 +18,6 @@ import {
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useCreateEvent, useGrowEvents } from 'hooks/event';
 import { useProfiles } from 'hooks/profile';
-import ConnectLayout from 'layouts/ConnectLayout';
 import { useRouter } from 'next/router';
 import { NextPageWithLayout } from 'utils/types';
 
@@ -105,8 +104,6 @@ const AdminPage: NextPageWithLayout = () => {
         </VStack>
     );
 };
-
-AdminPage.getLayout = (page) => <ConnectLayout>{page}</ConnectLayout>;
 
 export default AdminPage;
 
