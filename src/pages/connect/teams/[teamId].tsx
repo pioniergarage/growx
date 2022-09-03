@@ -1,6 +1,7 @@
 import LeaveTeamButton from '@/components/teams/LeaveTeamButton';
 import MemberList from '@/components/teams/MemberList';
 import RequestButton from '@/components/teams/RequestButton';
+import TeamDetailsSkeleton from '@/components/teams/TeamDetailsSkeleton';
 import TeamForm from '@/components/teams/TeamForm';
 import TeamLogo from '@/components/teams/TeamLogo';
 import TeamLogoControl from '@/components/teams/TeamLogoControl';
@@ -14,10 +15,6 @@ import {
     Button,
     Flex,
     Heading,
-    HStack,
-    Skeleton,
-    SkeletonCircle,
-    SkeletonText,
     useToast,
     VStack,
 } from '@chakra-ui/react';
@@ -34,40 +31,9 @@ import {
 } from 'hooks/team';
 import { Team } from 'model';
 import { useRouter } from 'next/router';
-import { PropsWithChildren, useState } from 'react';
+import { useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 import TeamDescription from '../../../components/teams/TeamDescriptions';
-
-interface TeamDetailsSekeltonProps extends PropsWithChildren {
-    isLoading: boolean;
-}
-
-const TeamDetailsSkeleton: React.FC<TeamDetailsSekeltonProps> = ({
-    isLoading,
-    children,
-}) => {
-    if (!isLoading) return <>{children}</>;
-    else
-        return (
-            <>
-                <Flex alignItems="start" gap={4} wrap="wrap">
-                    <Skeleton
-                        w={{ base: 16, sm: 24 }}
-                        h={{ base: 16, sm: 24 }}
-                    />
-                    <Flex alignItems="start" flexDir="column" flexGrow={1}>
-                        <Skeleton w="16rem" h={10} />
-                    </Flex>
-                </Flex>
-                <SkeletonText noOfLines={5} lineHeight={4} skeletonHeight={3} />
-                <HStack>
-                    <SkeletonCircle size="3rem" />{' '}
-                    <SkeletonCircle size="3rem" />{' '}
-                    <SkeletonCircle size="3rem" />
-                </HStack>
-            </>
-        );
-};
 
 const TeamDetails: NextPageWithLayout = () => {
     const router = useRouter();
@@ -187,7 +153,15 @@ const TeamDetails: NextPageWithLayout = () => {
                                     {team?.tags.join(' • ')}
                                 </Box>
                             </Flex>
-                            {team && !isUsersTeam ? (
+                            {isUsersTeam ? (
+                                <Button
+                                    onClick={() => setEditing(true)}
+                                    size="sm"
+                                    isLoading={updatingTeam}
+                                >
+                                    Edit
+                                </Button>
+                            ) : team && !teamIdOfUser ? (
                                 <RequestButton
                                     team={team}
                                     currentRequestId={teamRequested?.id}
@@ -201,15 +175,7 @@ const TeamDetails: NextPageWithLayout = () => {
                                     size="sm"
                                     w={{ base: '100%', md: '10rem' }}
                                 />
-                            ) : (
-                                <Button
-                                    onClick={() => setEditing(true)}
-                                    size="sm"
-                                    isLoading={updatingTeam}
-                                >
-                                    Edit
-                                </Button>
-                            )}
+                            ) : undefined}
                         </Flex>
                         <TeamDescription description={team?.description} />
                         <MemberList members={members || []} />
