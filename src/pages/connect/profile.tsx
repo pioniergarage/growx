@@ -1,6 +1,5 @@
 import UserAvatar from '@/components/avatar/UserAvatar';
 import FileSelect from '@/components/FileSelect';
-import LazySpinner from '@/components/profile/LazySpinner';
 import ProfileForm from '@/components/profile/ProfileForm';
 import {
     Box,
@@ -18,24 +17,42 @@ import { Profile } from 'model';
 import { useMemo, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 
-function ProfileView() {
+const ProfilePropertyRow = ({
+    name,
+    value,
+}: {
+    name: string;
+    value?: string | number;
+}) => (
+    <>
+        <Box fontWeight="semibold">{name}</Box>
+        <Box>{value}</Box>
+    </>
+);
+
+function ProfileView({ profile }: { profile: Profile }) {
     return (
         <Grid
             templateColumns={{ base: '1fr', md: '10rem 1fr' }}
             gap={{ base: 0, md: 2 }}
             maxW="container.lg"
-            bg="whiteAlpha.100"
-            p={4}
-            borderRadius={3}
         >
-            <LazySpinner name="First name" property="firstName" />
-            <LazySpinner name="Last name" property="lastName" />
-            <LazySpinner name="Gender" property="gender" />
-            <LazySpinner name="Email address" property="email" />
-            <LazySpinner name="Phone number" property="phone" />
-            <LazySpinner name="Studies" property="studies" />
-            <LazySpinner name="Homeland" property="homeland" />
-            <LazySpinner name="University" property="university" />
+            <ProfilePropertyRow
+                name="Name"
+                value={profile.firstName + ' ' + profile.lastName}
+            />
+            <ProfilePropertyRow name="Email" value={profile.email} />
+            <ProfilePropertyRow name="Phone" value={profile.phone} />
+            <ProfilePropertyRow name="Gender" value={profile.gender} />
+            <ProfilePropertyRow name="Homeland" value={profile.homeland} />
+            <ProfilePropertyRow name="University" value={profile.university} />
+            <ProfilePropertyRow name="Studies" value={profile.studies} />
+            {['MENTOR', 'EXPERT', 'ORGA'].includes(profile.role) ? (
+                <ProfilePropertyRow
+                    name="Skills"
+                    value={profile.skills.join(', ')}
+                />
+            ) : undefined}
         </Grid>
     );
 }
@@ -138,7 +155,7 @@ function ProfileDetailsControl() {
             {!isEditing || !profile ? (
                 profile ? (
                     <>
-                        <ProfileView />
+                        <ProfileView profile={profile} />
                         <Button
                             onClick={() => setEditing(true)}
                             width={20}

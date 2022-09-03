@@ -1,5 +1,7 @@
 import {
     Button,
+    Checkbox,
+    Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
@@ -12,7 +14,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { Profile } from 'model';
+import { availableSkills, Profile } from 'model';
 
 interface ProflieFormProps {
     onSave: (profile: Profile) => void;
@@ -162,6 +164,38 @@ const ProfileForm: React.FC<ProflieFormProps> = ({
                             value={formik.values.homeland || ''}
                         />
                     </FormControl>
+                    <GridItem colSpan={2}>
+                        <FormControl>
+                            <FormLabel htmlFor="skills">Skills</FormLabel>
+                            <Flex wrap="wrap" gap={2}>
+                                {availableSkills.map((skill, i) => (
+                                    <Checkbox
+                                        key={skill + i}
+                                        isChecked={formik.values.skills.includes(
+                                            skill
+                                        )}
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                formik.setFieldValue('skills', [
+                                                    ...formik.values.skills,
+                                                    skill,
+                                                ]);
+                                            } else {
+                                                formik.setFieldValue(
+                                                    'skills',
+                                                    formik.values.skills.filter(
+                                                        (s) => s != skill
+                                                    )
+                                                );
+                                            }
+                                        }}
+                                    >
+                                        {skill}
+                                    </Checkbox>
+                                ))}
+                            </Flex>
+                        </FormControl>
+                    </GridItem>
                 </SimpleGrid>
 
                 <HStack>

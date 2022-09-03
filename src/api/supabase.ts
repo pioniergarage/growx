@@ -748,6 +748,7 @@ export interface paths {
                     homeland?: parameters['rowFilter.profiles.homeland'];
                     avatar?: parameters['rowFilter.profiles.avatar'];
                     role?: parameters['rowFilter.profiles.role'];
+                    skills?: parameters['rowFilter.profiles.skills'];
                     /** Filtering Columns */
                     select?: parameters['select'];
                     /** Ordering */
@@ -810,6 +811,7 @@ export interface paths {
                     homeland?: parameters['rowFilter.profiles.homeland'];
                     avatar?: parameters['rowFilter.profiles.avatar'];
                     role?: parameters['rowFilter.profiles.role'];
+                    skills?: parameters['rowFilter.profiles.skills'];
                 };
                 header: {
                     /** Preference */
@@ -836,6 +838,7 @@ export interface paths {
                     homeland?: parameters['rowFilter.profiles.homeland'];
                     avatar?: parameters['rowFilter.profiles.avatar'];
                     role?: parameters['rowFilter.profiles.role'];
+                    skills?: parameters['rowFilter.profiles.skills'];
                 };
                 body: {
                     /** profiles */
@@ -1247,6 +1250,8 @@ export interface definitions {
          * @enum {string}
          */
         role: 'PARTICIPANT' | 'BUDDY' | 'MENTOR' | 'EXPERT' | 'ORGA';
+        /** Format: json */
+        skills: unknown;
     };
     sponsors: {
         /**
@@ -1443,6 +1448,8 @@ export interface parameters {
     'rowFilter.profiles.avatar': string;
     /** Format: public.user_role */
     'rowFilter.profiles.role': string;
+    /** Format: json */
+    'rowFilter.profiles.skills': string;
     /** @description sponsors */
     'body.sponsors': definitions['sponsors'];
     /** Format: bigint */
