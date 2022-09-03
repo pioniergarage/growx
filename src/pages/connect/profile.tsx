@@ -1,6 +1,7 @@
 import UserAvatar from '@/components/avatar/UserAvatar';
 import FileSelect from '@/components/FileSelect';
 import ProfileForm from '@/components/profile/ProfileForm';
+import ProfileView from '@/components/profile/UsersProfileView';
 import {
     Box,
     Button,
@@ -16,46 +17,6 @@ import { useProfile, useUpdateProfile, useUploadAvatar } from 'hooks/profile';
 import { Profile } from 'model';
 import { useMemo, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
-
-const ProfilePropertyRow = ({
-    name,
-    value,
-}: {
-    name: string;
-    value?: string | number;
-}) => (
-    <>
-        <Box fontWeight="semibold">{name}</Box>
-        <Box>{value}</Box>
-    </>
-);
-
-function ProfileView({ profile }: { profile: Profile }) {
-    return (
-        <Grid
-            templateColumns={{ base: '1fr', md: '10rem 1fr' }}
-            gap={{ base: 0, md: 2 }}
-            maxW="container.lg"
-        >
-            <ProfilePropertyRow
-                name="Name"
-                value={profile.firstName + ' ' + profile.lastName}
-            />
-            <ProfilePropertyRow name="Email" value={profile.email} />
-            <ProfilePropertyRow name="Phone" value={profile.phone} />
-            <ProfilePropertyRow name="Gender" value={profile.gender} />
-            <ProfilePropertyRow name="Homeland" value={profile.homeland} />
-            <ProfilePropertyRow name="University" value={profile.university} />
-            <ProfilePropertyRow name="Studies" value={profile.studies} />
-            {['MENTOR', 'EXPERT', 'ORGA'].includes(profile.role) ? (
-                <ProfilePropertyRow
-                    name="Skills"
-                    value={profile.skills.join(', ')}
-                />
-            ) : undefined}
-        </Grid>
-    );
-}
 
 function SkeletonLoader() {
     const rows = 6;
@@ -110,7 +71,7 @@ function AvatarControl() {
             <VStack alignItems="start">
                 <UserAvatar
                     size="xl"
-                    profile={profile}
+                    {...profile}
                     filter={isLoading ? 'brightness(70%)' : undefined}
                 />
                 <FileSelect onSelect={uploadAvatar}>

@@ -1,13 +1,13 @@
 import PageLink from '@/components/navigation/PageLink';
-import SpinnerWrapper from '@/components/SpinnerWrapper';
-import { Box, Button, Text, useToast, VStack } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { Button, Text, useToast, VStack } from '@chakra-ui/react';
+import { getUser, withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { getTeamIdOfUser } from 'api/teams';
 import { useProfile } from 'hooks/profile';
-import { useCreateTeam, useTeam, useTeamIdOfUser } from 'hooks/team';
+import { useCreateTeam } from 'hooks/team';
 import { useRouter } from 'next/router';
 import { NextPageWithLayout } from 'utils/types';
 
-function NoTeam() {
+const TeamPage: NextPageWithLayout = () => {
     const router = useRouter();
     const { profile } = useProfile();
     const toast = useToast();
@@ -44,36 +44,24 @@ function NoTeam() {
             </Button>
         </VStack>
     );
-}
-
-const TeamPage: NextPageWithLayout = () => {
-    const { profile } = useProfile();
-    const { teamId } = useTeamIdOfUser(profile?.userId);
-
-    const { team, isLoading: loading } = useTeam(teamId || undefined);
-
-    return (
-        <SpinnerWrapper isLoading={loading}>
-            {team ? (
-                <Box>
-                    Go to{' '}
-                    <PageLink
-                        href={'/connect/teams/' + team.id}
-                        color="primary"
-                    >
-                        {' '}
-                        your team
-                    </PageLink>
-                </Box>
-            ) : (
-                <NoTeam />
-            )}
-        </SpinnerWrapper>
-    );
 };
 
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
+    getServerSideProps: async (context) => {
+        const { user } = await getUser(context);
+        const teamId = await getTeamIdOfUser(user.id);
+        if (teamId) {
+            return {
+                redirect: {
+                    permanent: false,
+                    destination: '/connect/teams/' + teamId,
+                },
+            };
+        } else {
+            return { props: {} };
+        }
+    },
 });
 
 export default TeamPage;

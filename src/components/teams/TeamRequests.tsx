@@ -3,6 +3,8 @@ import {
     ButtonGroup,
     Grid,
     GridItem,
+    LinkBox,
+    LinkOverlay,
     Text,
     useToast,
     VStack,
@@ -13,6 +15,7 @@ import {
     useTeamRequests,
 } from 'hooks/team';
 import { Profile, Team } from 'model';
+import Link from 'next/link';
 import { useState } from 'react';
 import UserAvatar from '../avatar/UserAvatar';
 
@@ -30,31 +33,41 @@ const RequestItem: React.FC<RequestItemProps> = ({
     onDecline,
 }) => {
     return (
-        <Grid
-            templateColumns={{ base: '4rem 1fr', sm: '4rem 10rem 1fr 1fr' }}
-            alignItems="center"
-            justifyItems="start"
-            gap={1}
-        >
-            <GridItem rowSpan={{ base: 2, sm: 1 }}>
-                <UserAvatar profile={profile} />
-            </GridItem>
-            <GridItem fontWeight="bold">
-                {profile.firstName + profile.lastName}
-            </GridItem>
-            <GridItem color="gray.500">{profile.email}</GridItem>
-            <GridItem
-                justifySelf={{ base: 'start', sm: 'end' }}
-                colStart={{ base: 2, sm: 'auto' }}
+        <LinkBox>
+            <Grid
+                templateColumns={{ base: '4rem 1fr', sm: '4rem 10rem 1fr 1fr' }}
+                alignItems="center"
+                justifyItems="start"
+                gap={1}
             >
-                <ButtonGroup variant="outline" size="sm" isDisabled={loading}>
-                    <Button onClick={onDecline}>Decline</Button>
-                    <Button onClick={onAccept} colorScheme="green">
-                        Accept
-                    </Button>
-                </ButtonGroup>
-            </GridItem>
-        </Grid>
+                <GridItem rowSpan={{ base: 2, sm: 1 }}>
+                    <UserAvatar profile={profile} />
+                </GridItem>
+                <GridItem fontWeight="bold">
+                    <Link href={'/connect/profiles/' + profile.userId} passHref>
+                        <LinkOverlay>
+                            {profile.firstName + profile.lastName}
+                        </LinkOverlay>
+                    </Link>
+                </GridItem>
+                <GridItem color="gray.500">{profile.email}</GridItem>
+                <GridItem
+                    justifySelf={{ base: 'start', sm: 'end' }}
+                    colStart={{ base: 2, sm: 'auto' }}
+                >
+                    <ButtonGroup
+                        variant="outline"
+                        size="sm"
+                        isDisabled={loading}
+                    >
+                        <Button onClick={onDecline}>Decline</Button>
+                        <Button onClick={onAccept} colorScheme="green">
+                            Accept
+                        </Button>
+                    </ButtonGroup>
+                </GridItem>
+            </Grid>
+        </LinkBox>
     );
 };
 

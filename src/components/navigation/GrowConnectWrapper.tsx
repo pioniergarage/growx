@@ -121,12 +121,17 @@ const GrowConnectWrapper: React.FC = () => {
                                 isRound={true}
                                 as={IconButton}
                                 size="lg"
-                                icon={<UserAvatar profile={profile} />}
+                                icon={<UserAvatar {...profile} />}
                             />
                             <MenuList>
                                 <Link href="/connect/profile">
                                     <MenuItem icon={<FaUser />}>
                                         Profile
+                                    </MenuItem>
+                                </Link>
+                                <Link href="/connect/team">
+                                    <MenuItem icon={<FaUsers />}>
+                                        Your Team
                                     </MenuItem>
                                 </Link>
                                 <MenuItem
