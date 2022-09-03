@@ -1,31 +1,30 @@
 import GrowEventCard from '@/components/events/GrowEventCard';
 import { Box, Heading, VStack } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { useGrowEvents, useRegistrationsOfUser } from 'hooks/event';
+import {
+    supabaseServerClient,
+    withPageAuth,
+} from '@supabase/auth-helpers-nextjs';
+import { mapEventDto } from 'api/events';
+import { definitions } from 'api/supabase';
+import { useRegistrationsOfUser } from 'hooks/event';
 import { useProfile } from 'hooks/profile';
-import { NextPageWithLayout } from 'utils/types';
 
-const EventsPage: NextPageWithLayout = () => {
+const EventsPage = ({ eventsRaw }: { eventsRaw: definitions['events'][] }) => {
     const { profile } = useProfile();
-
-    const { events } = useGrowEvents();
     const { eventIds: registeredTo } = useRegistrationsOfUser(profile?.userId);
+    const events = eventsRaw.map(mapEventDto);
 
     return (
         <Box>
             <Heading mb={4}>Events</Heading>
             <VStack alignItems="stretch" gap={4}>
-                {events
-                    ? events.map((event) => (
-                          <GrowEventCard
-                              key={event.id}
-                              event={event}
-                              registered={(registeredTo || []).includes(
-                                  event.id
-                              )}
-                          />
-                      ))
-                    : undefined}
+                {events.map((event) => (
+                    <GrowEventCard
+                        key={event.id}
+                        event={event}
+                        registered={(registeredTo || []).includes(event.id)}
+                    />
+                ))}
             </VStack>
         </Box>
     );
@@ -35,4 +34,14 @@ export default EventsPage;
 
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
+    getServerSideProps: async (context) => {
+        const { data, error } = await supabaseServerClient(context)
+            .from<definitions['events']>('events')
+            .select('*')
+            .order('date');
+        if (error) {
+            throw new Error(error.message);
+        }
+        return { props: { eventsRaw: data } };
+    },
 });

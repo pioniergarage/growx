@@ -7,7 +7,11 @@ import {
     LinkOverlay,
 } from '@chakra-ui/react';
 import { Team } from 'model';
-import TeamLogo from './TeamLogo';
+import dynamic from 'next/dynamic';
+
+const TeamLogo = dynamic(() => import('./TeamLogo'), {
+    ssr: false,
+});
 
 export default function TeamCard(team: Team) {
     return (

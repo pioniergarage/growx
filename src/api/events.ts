@@ -4,7 +4,7 @@ import { mapProfileDto } from './profile';
 import { definitions } from './supabase';
 import { handleResponse, handleSingleResponse } from './utils';
 
-const mapEventDto: (dto: definitions['events']) => GrowEvent = (dto) => ({
+export const mapEventDto: (dto: definitions['events']) => GrowEvent = (dto) => ({
     date: new Date(dto.date),
     id: dto.id,
     title: dto.title,
@@ -36,17 +36,17 @@ export const getEvent = (eventId: number) =>
 export const createEvent: (
     event: Omit<Partial<GrowEvent>, 'tags' | 'types' | 'date'>
 ) => Promise<GrowEvent> = async (event) =>
-    await supabaseClient
-        .from<definitions['events']>('events')
-        .insert(
-            { ...event, date: new Date().toISOString() },
-            { returning: 'representation' }
-        )
-        .single()
-        .then((response) =>
-            handleSingleResponse(response, 'Something went wrong')
-        )
-        .then(mapEventDto);
+        await supabaseClient
+            .from<definitions['events']>('events')
+            .insert(
+                { ...event, date: new Date().toISOString() },
+                { returning: 'representation' }
+            )
+            .single()
+            .then((response) =>
+                handleSingleResponse(response, 'Something went wrong')
+            )
+            .then(mapEventDto);
 
 export const deleteEvent = (eventId: number) =>
     supabaseClient
