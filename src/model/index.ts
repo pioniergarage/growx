@@ -41,7 +41,44 @@ export type Team = {
     tags: string[];
     logo?: string;
     archived: boolean;
+    requestSupport: string[];
 };
+
+export const availableSkills = [
+    'AgriTech',
+    'Blockchain',
+    'Finance',
+    'IT Security',
+    'Data',
+    'Cloud',
+    'Software',
+    'Physics',
+    'Energy',
+    'Hydrogen',
+    'Product Design',
+    'Sustainability',
+    'UX/UI',
+    'Smart Home',
+    'Hardware',
+    'CAD',
+    'Social Entrepreneurship',
+    'HR',
+    'Life Sciences',
+    'Healthcare',
+    'Consumer Goods',
+    'AI',
+    'Ideation',
+    'Customer Development',
+    'Sales',
+    'Marketing',
+    'Finances',
+    'Validation',
+    'Pitching',
+    'Branding',
+    'Prototyping',
+    'Market Research',
+    'Legal',
+];
 
 export type FAQ = {
     question: string;

@@ -30,7 +30,14 @@ export default function Layout({ children }: PropsWithChildren) {
             <UserProvider supabaseClient={supabaseClient}>
                 <QueryClientProvider client={queryClient}>
                     <GrowNav />
-                    <Box as="main" maxW="container.xl" mx="auto" pt={20} px={4}>
+                    <Box
+                        as="main"
+                        maxW="container.xl"
+                        mx="auto"
+                        pt={24}
+                        px={4}
+                        position="relative"
+                    >
                         <Box
                             position="absolute"
                             h="10rem"
@@ -43,6 +50,7 @@ export default function Layout({ children }: PropsWithChildren) {
                                 maxW="container.xl"
                                 transform="translate(-1rem, -50%)"
                                 top={0}
+                                right={0}
                                 w="100%"
                                 h={{ base: '40rem', md: '100%' }}
                                 position="absolute"

@@ -1,6 +1,7 @@
 import LeaveTeamButton from '@/components/teams/LeaveTeamButton';
 import MemberList from '@/components/teams/MemberList';
 import RequestButton from '@/components/teams/RequestButton';
+import SupportRequestInfo from '@/components/teams/SupportRequestInfo';
 import TeamDetailsSkeleton from '@/components/teams/TeamDetailsSkeleton';
 import TeamForm from '@/components/teams/TeamForm';
 import TeamLogo from '@/components/teams/TeamLogo';
@@ -152,6 +153,7 @@ const TeamDetails: NextPageWithLayout = () => {
                                 <Box color="whiteAlpha.500">
                                     {team?.tags.join(' • ')}
                                 </Box>
+                                <SupportRequestInfo team={team} />
                             </Flex>
                             {isUsersTeam ? (
                                 <Button
