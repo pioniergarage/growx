@@ -4,6 +4,7 @@ import {
     Button,
     Divider,
     Heading,
+    IconButton,
     Link,
     Table,
     TableContainer,
@@ -20,6 +21,7 @@ import { useCreateEvent, useGrowEvents } from 'hooks/event';
 import { useProfiles } from 'hooks/profile';
 import ConnectLayout from 'layouts/ConnectLayout';
 import { useRouter } from 'next/router';
+import { FaPen } from 'react-icons/fa';
 import { NextPageWithLayout } from 'utils/types';
 
 function Profiles() {
@@ -71,6 +73,15 @@ function Events() {
                         {events
                             ? events.map((event) => (
                                   <Tr key={event.id}>
+                                      <Td>
+                                          <IconButton
+                                              aria-label="Adjust sponsor"
+                                              icon={<FaPen />}
+                                              variant="ghost"
+                                              size="xs"
+                                              onClick={() => adjustEvent(event)}
+                                          />
+                                      </Td>
                                       <Td>{event.date.toISOString()}</Td>
                                       <Td>
                                           <Link
