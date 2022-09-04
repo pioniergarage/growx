@@ -8,6 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { Team } from 'model';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 
 const TeamLogo = dynamic(() => import('./TeamLogo'), {
     ssr: false,
@@ -33,9 +34,11 @@ export default function TeamCard(team: Team) {
                     flexGrow={1}
                     gap={0}
                 >
-                    <LinkOverlay my="auto" href={`/connect/teams/${team.id}`}>
-                        <Heading size="md">{team.name}</Heading>
-                    </LinkOverlay>
+                    <Link href={`/connect/teams/${team.id}`} passHref>
+                        <LinkOverlay my="auto">
+                            <Heading size="md">{team.name}</Heading>
+                        </LinkOverlay>
+                    </Link>
                     <Box mt={0} fontSize="md" color="whiteAlpha.500">
                         {team.tags.join(' • ')}
                     </Box>

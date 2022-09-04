@@ -5,8 +5,9 @@
 html {
     scroll-behavior: smooth;
 }
+
 main {
-    min-height: calc(100vh - 7.2rem);
+    min-height: calc(100vh - 30px);
 }
 
 .arrow-down {

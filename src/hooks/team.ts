@@ -47,7 +47,7 @@ export function useAllTeams(initialData?: Team[]) {
     return { ...query, teams: query.data };
 }
 
-export function useTeam(teamId?: number | null) {
+export function useTeam(teamId?: number | null, initialData?: Team) {
     const query = useQuery(
         ['team', teamId],
         () => {
@@ -56,7 +56,7 @@ export function useTeam(teamId?: number | null) {
             }
             return getTeam(teamId);
         },
-        { enabled: !!teamId }
+        { enabled: !!teamId, initialData }
     );
     return { ...query, team: query.data };
 }

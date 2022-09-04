@@ -34,7 +34,7 @@ export default function Layout({ children }: PropsWithChildren) {
                         as="main"
                         maxW="container.xl"
                         mx="auto"
-                        pt={24}
+                        py={24}
                         px={4}
                         position="relative"
                     >

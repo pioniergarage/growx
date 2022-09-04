@@ -4,7 +4,6 @@ import RequestButton from '@/components/teams/RequestButton';
 import SupportRequestInfo from '@/components/teams/SupportRequestInfo';
 import TeamDetailsSkeleton from '@/components/teams/TeamDetailsSkeleton';
 import TeamForm from '@/components/teams/TeamForm';
-import TeamLogo from '@/components/teams/TeamLogo';
 import TeamLogoControl from '@/components/teams/TeamLogoControl';
 import TeamRequests from '@/components/teams/TeamRequests';
 import { ChevronRightIcon } from '@chakra-ui/icons';
@@ -21,6 +20,7 @@ import {
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
+import { getTeam } from 'api/teams';
 import {
     useCurrentRequest,
     useRequestToJoinTeam,
@@ -31,23 +31,28 @@ import {
     useWithdrawRequest,
 } from 'hooks/team';
 import { Team } from 'model';
-import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { useState } from 'react';
-import { NextPageWithLayout } from 'utils/types';
 import TeamDescription from '../../../components/teams/TeamDescriptions';
+const TeamLogo = dynamic(() => import('@/components/teams/TeamLogo'), {
+    ssr: false,
+});
 
-const TeamDetails: NextPageWithLayout = () => {
-    const router = useRouter();
+interface TeamDetails {
+    team: Team;
+}
+
+const TeamDetails: React.FC<TeamDetails> = ({ team: serverSideTeam }) => {
     const toast = useToast();
-
-    const teamId = Number.parseInt(router.query.teamId as string);
-    const { team, isLoading: teamLoading } = useTeam(teamId);
-    const { members, isLoading: membersLoading } = useTeamMembers(teamId);
+    const teamId = serverSideTeam.id;
+    const { team, isLoading } = useTeam(serverSideTeam.id, serverSideTeam);
+    const { members } = useTeamMembers(teamId);
 
     const { user } = useUser();
     const { request: teamRequested, isLoading: teamRequestedLoading } =
         useCurrentRequest(user?.id);
-    const { teamId: teamIdOfUser, isLoading: usersTeamLoading } =
+    const { teamId: teamIdOfUser, isLoading: teamIdOfUserLoading } =
         useTeamIdOfUser(user?.id);
     const isUsersTeam = !!teamIdOfUser && teamIdOfUser == teamId;
 
@@ -57,16 +62,10 @@ const TeamDetails: NextPageWithLayout = () => {
 
     const [isEditing, setEditing] = useState(false);
 
-    const loading =
-        teamLoading ||
-        membersLoading ||
-        teamRequestedLoading ||
-        usersTeamLoading;
-
     function handleRequest() {
         if (!user) return;
         makeRequest(
-            { userId: user.id, teamId },
+            { userId: user.id, teamId: teamId },
             {
                 onError: (error) => {
                     toast({
@@ -123,7 +122,9 @@ const TeamDetails: NextPageWithLayout = () => {
                 separator={<ChevronRightIcon color="gray.500" />}
             >
                 <BreadcrumbItem>
-                    <BreadcrumbLink href="/connect/teams">Teams</BreadcrumbLink>
+                    <Link href="/connect/teams" passHref>
+                        <BreadcrumbLink>Teams</BreadcrumbLink>
+                    </Link>
                 </BreadcrumbItem>
 
                 <BreadcrumbItem isCurrentPage>
@@ -132,7 +133,7 @@ const TeamDetails: NextPageWithLayout = () => {
                     </BreadcrumbLink>
                 </BreadcrumbItem>
             </Breadcrumb>
-            <TeamDetailsSkeleton isLoading={loading}>
+            <TeamDetailsSkeleton isLoading={isLoading}>
                 {!isEditing ? (
                     <>
                         <Flex alignItems="start" gap={4} wrap="wrap">
@@ -163,7 +164,9 @@ const TeamDetails: NextPageWithLayout = () => {
                                 >
                                     Edit
                                 </Button>
-                            ) : team && !teamIdOfUser ? (
+                            ) : team &&
+                              !teamIdOfUser &&
+                              !teamIdOfUserLoading ? (
                                 <RequestButton
                                     team={team}
                                     currentRequestId={teamRequested?.id}
@@ -201,5 +204,9 @@ const TeamDetails: NextPageWithLayout = () => {
 
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
+    getServerSideProps: async (context) => {
+        const team = await getTeam(parseInt(context.query.teamId as string));
+        return { props: { team } };
+    },
 });
 export default TeamDetails;

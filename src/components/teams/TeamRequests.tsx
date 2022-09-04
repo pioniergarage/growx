@@ -41,7 +41,7 @@ const RequestItem: React.FC<RequestItemProps> = ({
                 gap={1}
             >
                 <GridItem rowSpan={{ base: 2, sm: 1 }}>
-                    <UserAvatar profile={profile} />
+                    <UserAvatar {...profile} />
                 </GridItem>
                 <GridItem fontWeight="bold">
                     <Link href={'/connect/profiles/' + profile.userId} passHref>

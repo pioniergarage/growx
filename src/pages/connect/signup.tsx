@@ -43,7 +43,7 @@ const SignUp: NextPageWithLayout = () => {
             .then(({ user, info }) =>
                 updateProfile({ ...info, userId: user.id })
             )
-            .then(() => router.replace('/connect/welcome'))
+            .then(() => router.replace('/connect'))
             .catch((error) => setSignUpError(String(error)));
         setLoading(false);
     }

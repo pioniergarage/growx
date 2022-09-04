@@ -12,8 +12,9 @@ import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { getTeams } from 'api/teams';
 import { useAllTeams } from 'hooks/team';
 import { Team } from 'model';
+import Link from 'next/link';
 
-const TeamsPage = ({ teams: serversideTeams }: { teams: Team[] }) => {
+const TeamsPage = ({ teams: serversideTeams = [] }: { teams: Team[] }) => {
     const { teams } = useAllTeams(serversideTeams);
     return (
         <VStack alignItems="stretch" gap={4}>
@@ -22,7 +23,9 @@ const TeamsPage = ({ teams: serversideTeams }: { teams: Team[] }) => {
                 separator={<ChevronRightIcon color="gray.500" />}
             >
                 <BreadcrumbItem isCurrentPage>
-                    <BreadcrumbLink href="/connect/teams">Teams</BreadcrumbLink>
+                    <Link href="/connect/teams" passHref>
+                        <BreadcrumbLink>Teams</BreadcrumbLink>
+                    </Link>
                     <BreadcrumbSeparator />
                 </BreadcrumbItem>
             </Breadcrumb>
