@@ -2,7 +2,8 @@
 
 // TODOO copyed from adjust Event.
 import {
-    Button, FormControl,
+    Button,
+    FormControl,
     FormHelperText,
     FormLabel,
     Input,
@@ -12,10 +13,10 @@ import {
     ModalContent,
     ModalFooter,
     ModalHeader,
-    ModalOverlay
+    ModalOverlay,
 } from '@chakra-ui/react';
 // import { Sponsor } from 'model';
-import { GrowEvent } from 'model';
+import { EventType, GrowEvent } from 'model';
 import { useEffect, useState } from 'react';
 
 interface EventModalProps {
@@ -38,7 +39,6 @@ interface EventModalProps {
     type?: EventType;
  */
 
-
 // const PartnerModal: React.FC<PartnerModalProps> = ({
 const EventModal: React.FC<EventModalProps> = ({
     isOpen,
@@ -54,10 +54,9 @@ const EventModal: React.FC<EventModalProps> = ({
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
-                <ModalHeader>Adjust Sponsor</ModalHeader>
+                <ModalHeader>Adjust Event</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody pb={6}>
-                    
                     <FormControl>
                         <FormLabel>Name</FormLabel>
                         <Input
@@ -71,32 +70,33 @@ const EventModal: React.FC<EventModalProps> = ({
                             placeholder="XYZ Gmbh"
                         />
                     </FormControl>
-
                     <FormControl mt={4}>
                         <FormLabel>Description</FormLabel>
                         <Input
                             value={event.description}
                             onChange={(e) =>
-                                setEvent({ ...event, description: e.target.value })
+                                setEvent({
+                                    ...event,
+                                    description: e.target.value,
+                                })
                             }
                             placeholder="Little Discription"
                         />
                     </FormControl>
-
-
                     <FormControl mt={4}>
                         <FormLabel>mandatory</FormLabel>
                         <Input
                             type="checkbox"
                             checked={event.mandatory}
                             onChange={(e) =>
-                                setEvent({ ...event, mandatory: e.target.checked })
+                                setEvent({
+                                    ...event,
+                                    mandatory: e.target.checked,
+                                })
                             }
                             // placeholder="http://dsjflsdafj.dsafjlk.jpg"
                         />
                     </FormControl>
-
-
                     <FormControl mt={4}>
                         <FormLabel>Location</FormLabel>
                         <Input
@@ -106,36 +106,42 @@ const EventModal: React.FC<EventModalProps> = ({
                             }
                             placeholder="Launchpad"
                         />
-                        <FormHelperText>The place where the event takes place</FormHelperText>
+                        <FormHelperText>
+                            The place where the event takes place
+                        </FormHelperText>
                     </FormControl>
-
-
-                    // todo droped down select menu !!!!!!!!!!!!!!!!
                     <FormControl>
-                        <FormLabel>Is it mandatory for Schlüsselqualifikation</FormLabel>
-                        <Input
-                            value={event.sq_mandatory}
-                            onChange{(e) => 
-                                setEvent({...event, sq_mandatory: e.target.value})
-                            }
-                            />
-                        <FormHelperText>Some events are mandatory for Schlüsselqualifikation qualification</FormHelperText>
+                        <FormLabel>
+                            Is it mandatory for Schlüsselqualifikation
+                        </FormLabel>
+                        <select name="SelectEventSQMandatory">
+                            <option value="EventType.Online">
+                                {EventType.Online}
+                            </option>
+                            <option value="EventType.Offline">
+                                {EventType.Offline}
+                            </option>
+                            <option value="EventType.Hybrid">
+                                {EventType.Hybrid}
+                            </option>
+                        </select>
+                        <FormHelperText>
+                            Some events are mandatory for Schlüsselqualifikation
+                            qualification
+                        </FormHelperText>
                     </FormControl>
-                
-                    
-
-
-
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button onClick={() => onSave(sponsor)} mr={3}>
+                    <Button onClick={() => onSave(event)} mr={3}>
                         Save
+                    </Button>
+                    <Button onClick={onDelete} colorScheme="red" mr={3}>
+                        Delete
                     </Button>
                     <Button onClick={onClose} mr={3}>
                         Cancel
                     </Button>
-                    <Button onClick={onDelete}>Delete</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>

@@ -1,3 +1,4 @@
+import EventModal from '@/components/events/EventModal';
 import FullTable from '@/components/FullTable';
 import PartnerAdmin from '@/components/partners/PartnerAdmin';
 import {
@@ -17,10 +18,17 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { useCreateEvent, useGrowEvents } from 'hooks/event';
+import {
+    useCreateEvent,
+    useDeleteEvent,
+    useGrowEvents,
+    useUpdateEvent,
+} from 'hooks/event';
 import { useProfiles } from 'hooks/profile';
 import ConnectLayout from 'layouts/ConnectLayout';
+import { EventType, GrowEvent } from 'model';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { FaPen } from 'react-icons/fa';
 import { NextPageWithLayout } from 'utils/types';
 
@@ -42,6 +50,21 @@ function Events() {
     const toast = useToast();
     const { events } = useGrowEvents();
     const { createEvent } = useCreateEvent();
+    const { deleteEvent } = useDeleteEvent();
+    const { updateEvent } = useUpdateEvent();
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const [eventOnEdit, setEventOnEdit] = useState<
+        Omit<GrowEvent, 'id'> & { id?: number }
+    >({
+        date: Date.prototype,
+        title: '',
+        description: '',
+        location: '',
+        mandatory: false,
+        sq_mandatory: false,
+        type: EventType.Hybrid,
+    });
 
     async function createNewEvent() {
         try {
@@ -53,6 +76,23 @@ function Events() {
                 status: 'error',
             });
         }
+    }
+
+    function adjustEvent(event: GrowEvent) {
+        setEventOnEdit(event);
+        setModalOpen(true);
+    }
+
+    async function onDeleteEvent() {
+        if (eventOnEdit.id) {
+            deleteEvent(eventOnEdit.id);
+        }
+        setModalOpen(false);
+    }
+
+    async function saveEvent(event: GrowEvent) {
+        await updateEvent(event);
+        setModalOpen(false);
     }
 
     return (
@@ -75,7 +115,7 @@ function Events() {
                                   <Tr key={event.id}>
                                       <Td>
                                           <IconButton
-                                              aria-label="Adjust sponsor"
+                                              aria-label="Adjust Event"
                                               icon={<FaPen />}
                                               variant="ghost"
                                               size="xs"
@@ -99,6 +139,15 @@ function Events() {
                     </Tbody>
                 </Table>
             </TableContainer>
+
+            <EventModal
+                isOpen={modalOpen}
+                initialValue={eventOnEdit}
+                onClose={() => setModalOpen(false)}
+                onSave={(event) => saveEvent(event as GrowEvent)}
+                onDelete={onDeleteEvent}
+            />
+
             <Button onClick={createNewEvent}>New Event</Button>
         </VStack>
     );
