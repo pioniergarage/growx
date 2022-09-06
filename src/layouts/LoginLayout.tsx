@@ -16,8 +16,7 @@ export default function Layout({ children }: PropsWithChildren) {
     return (
         <>
             <Head>
-                <title>GROWconnect</title>
-                <meta name="description" content="GROWconnect" />
+                <title>GROW</title>
             </Head>
             <UserProvider supabaseClient={supabaseClient}>
                 <QueryClientProvider client={queryClient}>
@@ -26,12 +25,21 @@ export default function Layout({ children }: PropsWithChildren) {
                         height="100vh"
                         justifyContent="center"
                         alignItems="center"
-                        bg="whiteAlpha.100"
+                        position="relative"
                     >
                         <Box
-                            bg="var(--chakra-colors-chakra-body-bg)"
+                            position="absolute"
+                            width="50%"
+                            height="50%"
+                            bgGradient="linear-gradient(128.16deg, #5557f777 8.06%, #d34dbc80 45% , #d6265170 83.26%)"
+                            borderRadius="50%"
+                            filter="blur(150px)"
+                        />
+                        <Box
+                            bg="blackAlpha.500"
                             p={8}
                             borderRadius={4}
+                            zIndex={12}
                         >
                             {children}
                         </Box>
