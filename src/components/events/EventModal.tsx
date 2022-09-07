@@ -3,6 +3,7 @@
 // TODOO copyed from adjust Event.
 import {
     Button,
+    Checkbox,
     FormControl,
     FormHelperText,
     FormLabel,
@@ -80,23 +81,41 @@ const EventModal: React.FC<EventModalProps> = ({
                                     description: e.target.value,
                                 })
                             }
-                            placeholder="Little Discription"
+                            placeholder="Discribe the event here"
                         />
                     </FormControl>
                     <FormControl mt={4}>
                         <FormLabel>mandatory</FormLabel>
-                        <Input
-                            type="checkbox"
-                            checked={event.mandatory}
+                        <Checkbox
+                            isChecked={event.mandatory}
                             onChange={(e) =>
                                 setEvent({
                                     ...event,
                                     mandatory: e.target.checked,
                                 })
                             }
-                            // placeholder="http://dsjflsdafj.dsafjlk.jpg"
-                        />
+                        ></Checkbox>
                     </FormControl>
+
+                    <FormControl mt={4}>
+                        <FormLabel>
+                            Mandatory for Schlüsselqualifikation
+                        </FormLabel>
+                        <Checkbox
+                            isChecked={event.sq_mandatory}
+                            onChange={(e) =>
+                                setEvent({
+                                    ...event,
+                                    sq_mandatory: e.target.checked,
+                                })
+                            }
+                        ></Checkbox>
+                        <FormHelperText>
+                            Some events are mandatory for Schlüsselqualifikation
+                            qualification
+                        </FormHelperText>
+                    </FormControl>
+
                     <FormControl mt={4}>
                         <FormLabel>Location</FormLabel>
                         <Input
@@ -110,25 +129,30 @@ const EventModal: React.FC<EventModalProps> = ({
                             The place where the event takes place
                         </FormHelperText>
                     </FormControl>
+
                     <FormControl>
-                        <FormLabel>
-                            Is it mandatory for Schlüsselqualifikation
-                        </FormLabel>
-                        <select name="SelectEventSQMandatory">
-                            <option value="EventType.Online">
+                        <FormLabel>How to participate</FormLabel>
+                        <select
+                            name="SelectEventSQMandatory"
+                            placeholder="Select event type"
+                            value={event.type}
+                            onChange={(e) =>
+                                setEvent({
+                                    ...event,
+                                    type: e.target.value as EventType,
+                                })
+                            }
+                        >
+                            <option value={EventType.Online}>
                                 {EventType.Online}
                             </option>
-                            <option value="EventType.Offline">
+                            <option value={EventType.Offline}>
                                 {EventType.Offline}
                             </option>
-                            <option value="EventType.Hybrid">
+                            <option value={EventType.Hybrid}>
                                 {EventType.Hybrid}
                             </option>
                         </select>
-                        <FormHelperText>
-                            Some events are mandatory for Schlüsselqualifikation
-                            qualification
-                        </FormHelperText>
                     </FormControl>
                 </ModalBody>
 
