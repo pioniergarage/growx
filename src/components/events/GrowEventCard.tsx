@@ -1,13 +1,11 @@
 import {
     Button,
     Flex,
+    Grid,
     Heading,
-    HStack,
     Tag,
     Text,
-    Tooltip,
     useToast,
-    VStack,
 } from '@chakra-ui/react';
 import { useUser } from '@supabase/auth-helpers-react';
 import {
@@ -78,17 +76,9 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
     }
 
     let actionButton;
-    if (event.mandatory) {
+    if (registeredLocal) {
         actionButton = (
-            <Tooltip label="Event is mandatory" shouldWrapChildren>
-                <Button disabled={true} size="sm" variant="outline">
-                    Withdraw Registration
-                </Button>
-            </Tooltip>
-        );
-    } else if (registeredLocal) {
-        actionButton = (
-            <Button onClick={withdrawRegistration} size="sm" variant="outline">
+            <Button onClick={withdrawRegistration} size="xs" variant="outline">
                 Withdraw Registration
             </Button>
         );
@@ -97,7 +87,7 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
             <Button
                 onClick={register}
                 color="primary"
-                size="sm"
+                size="xs"
                 variant="outline"
             >
                 Register
@@ -106,15 +96,16 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
     }
 
     return (
-        <HStack
+        <Grid
             gap={4}
-            alignItems="start"
+            gridTemplateColumns="3.5rem 1fr"
             color={over ? 'gray.500' : 'inherit'}
         >
-            <Flex justify="space-between" w="3.5rem" fontWeight="semibold">
+            <Flex justify="space-between">
                 <Text>{day}</Text>
                 <Text>{month}</Text>
             </Flex>
+<<<<<<< HEAD
             <VStack alignItems="start">
                 <Heading size="md">{event.title}</Heading>
                 <HStack>
@@ -126,6 +117,20 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
                 {!over ? actionButton : undefined}
             </VStack>
         </HStack>
+=======
+            <Flex flexDir="column">
+                <Flex gap={2}>
+                    <Heading size="md">{event.title}</Heading>
+                    {event.mandatory ? (
+                        <Tag>mandatory</Tag>
+                    ) : !over ? (
+                        actionButton
+                    ) : undefined}
+                </Flex>
+                <Text color="gray.400">{event.description}</Text>
+            </Flex>
+        </Grid>
+>>>>>>> main
     );
 };
 

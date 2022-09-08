@@ -1,7 +1,7 @@
 import UserAvatar from '@/components/avatar/UserAvatar';
 import FileSelect from '@/components/FileSelect';
-import LazySpinner from '@/components/profile/LazySpinner';
 import ProfileForm from '@/components/profile/ProfileForm';
+import ProfileView from '@/components/profile/UsersProfileView';
 import {
     Box,
     Button,
@@ -14,32 +14,9 @@ import {
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useProfile, useUpdateProfile, useUploadAvatar } from 'hooks/profile';
-import ConnectLayout from 'layouts/ConnectLayout';
 import { Profile } from 'model';
 import { useMemo, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
-
-function ProfileView() {
-    return (
-        <Grid
-            templateColumns={{ base: '1fr', md: '10rem 1fr' }}
-            gap={{ base: 0, md: 2 }}
-            maxW="container.lg"
-            bg="whiteAlpha.100"
-            p={4}
-            borderRadius={3}
-        >
-            <LazySpinner name="First name" property="firstName" />
-            <LazySpinner name="Last name" property="lastName" />
-            <LazySpinner name="Gender" property="gender" />
-            <LazySpinner name="Email address" property="email" />
-            <LazySpinner name="Phone number" property="phone" />
-            <LazySpinner name="Studies" property="studies" />
-            <LazySpinner name="Homeland" property="homeland" />
-            <LazySpinner name="University" property="university" />
-        </Grid>
-    );
-}
 
 function SkeletonLoader() {
     const rows = 6;
@@ -94,7 +71,7 @@ function AvatarControl() {
             <VStack alignItems="start">
                 <UserAvatar
                     size="xl"
-                    profile={profile}
+                    {...profile}
                     filter={isLoading ? 'brightness(70%)' : undefined}
                 />
                 <FileSelect onSelect={uploadAvatar}>
@@ -139,7 +116,7 @@ function ProfileDetailsControl() {
             {!isEditing || !profile ? (
                 profile ? (
                     <>
-                        <ProfileView />
+                        <ProfileView profile={profile} />
                         <Button
                             onClick={() => setEditing(true)}
                             width={20}
@@ -179,8 +156,6 @@ const ProfilePage: NextPageWithLayout = () => {
         </VStack>
     );
 };
-
-ProfilePage.getLayout = (page) => <ConnectLayout>{page}</ConnectLayout>;
 
 export default ProfilePage;
 export const getServerSideProps = withPageAuth({

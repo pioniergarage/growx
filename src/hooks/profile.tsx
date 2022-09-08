@@ -5,18 +5,18 @@ import { fetchUserAvatar, uploadUserAvatar } from 'api/avatar';
 import { fetchProfile, getProfiles, updateProfile } from 'api/profile';
 import { Profile } from 'model';
 
-export function useProfile() {
+export function useProfile(userId?: string) {
     const { user } = useUser();
-    const userId = user?.id;
+    const userId2 = userId || user?.id;
     const result = useQuery(
-        'profile',
+        ['profile', userId2],
         () => {
-            if (!userId) {
+            if (!userId2) {
                 throw new Error('user id not available. Cannot fetch Profile');
             }
-            return fetchProfile(userId);
+            return fetchProfile(userId2);
         },
-        { enabled: !!userId }
+        { enabled: !!userId2 }
     );
     return { ...result, profile: result.data };
 }
@@ -29,7 +29,7 @@ export function useUpdateProfile() {
         {
             onSuccess: (updated) => {
                 queryClient.setQueryData<Profile | undefined>(
-                    'profile',
+                    ['profile', updated.userId],
                     updated
                 );
             },
@@ -38,20 +38,23 @@ export function useUpdateProfile() {
     return { ...mutation, updateProfile: mutation.mutateAsync };
 }
 
-export function useAvatarUrl(profile?: Profile) {
+export function useAvatarUrl({
+    userId,
+    avatar,
+}: {
+    userId?: Profile['userId'];
+    avatar: Profile['avatar'];
+}) {
     const result = useQuery(
-        ['avatar', profile?.userId],
+        ['avatar', userId],
         async () => {
-            if (!profile) {
-                throw new Error('Cannot fetch profile avatar');
-            }
-            if (!profile.avatar) {
+            if (!avatar) {
                 return null;
             }
-            const blob = await fetchUserAvatar(profile.avatar);
+            const blob = await fetchUserAvatar(avatar);
             return URL.createObjectURL(blob);
         },
-        { enabled: !!profile }
+        { enabled: !!userId }
     );
     return { ...result, avatarUrl: result.data };
 }
@@ -76,6 +79,13 @@ export function useUploadAvatar() {
 }
 
 export function useProfiles() {
-    const query = useQuery('profiles', getProfiles);
+    const queryClient = useQueryClient();
+    const query = useQuery('profiles', getProfiles, {
+        onSuccess: (profiles) => {
+            profiles.forEach((profile) =>
+                queryClient.setQueryData(['profile', profile.userId], profile)
+            );
+        },
+    });
     return { ...query, profiles: query.data };
 }

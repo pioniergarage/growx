@@ -25,8 +25,11 @@ import {
     useUpdateEvent,
 } from 'hooks/event';
 import { useProfiles } from 'hooks/profile';
+<<<<<<< HEAD
 import ConnectLayout from 'layouts/ConnectLayout';
 import { EventType, GrowEvent } from 'model';
+=======
+>>>>>>> main
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FaPen } from 'react-icons/fa';
@@ -165,8 +168,6 @@ const AdminPage: NextPageWithLayout = () => {
         </VStack>
     );
 };
-
-AdminPage.getLayout = (page) => <ConnectLayout>{page}</ConnectLayout>;
 
 export default AdminPage;
 

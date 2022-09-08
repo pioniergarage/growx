@@ -12,6 +12,7 @@ import {
 const mapTeamDto = (teamDto: definitions['teams']): Team => ({
     ...teamDto,
     tags: teamDto.tags as string[],
+    requestSupport: teamDto.requestSupport as string[],
 });
 
 export async function createTeam(team: Partial<Team>) {

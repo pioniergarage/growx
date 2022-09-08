@@ -17,6 +17,7 @@ export const mapProfileDto: (dto: definitions['profiles']) => Profile = (
     gender: dto.gender,
     role: dto.role,
     avatar: dto.avatar,
+    skills: dto.skills as string[],
 });
 
 export async function fetchProfile(user_id: string): Promise<Profile> {
@@ -45,6 +46,7 @@ export const updateProfile = async (
                 homeland: profile.homeland,
                 gender: profile.gender,
                 avatar: profile.avatar,
+                skills: profile.skills,
             },
             { returning: 'representation' }
         )

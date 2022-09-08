@@ -1,4 +1,4 @@
-import { Box, Text, TextProps } from '@chakra-ui/react';
+import { Flex, Text, TextProps } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
 interface CountdownProps extends TextProps {
@@ -49,7 +49,7 @@ const Countdown: React.FC<CountdownProps> = ({
     }, [to, timer]);
 
     return (
-        <Box p={6}>
+        <Flex flexDir="column" p={2} alignItems="center">
             <Text fontWeight="bold" fontSize="2xl" {...props}>
                 {timeLeft.days + 'd'}&nbsp;
                 {timeLeft.hours + 'h'}&nbsp;
@@ -62,7 +62,7 @@ const Countdown: React.FC<CountdownProps> = ({
                     Kickoff Event
                 </Text>
             </Text>
-        </Box>
+        </Flex>
     );
 };
 

@@ -43,7 +43,7 @@ const SignUp: NextPageWithLayout = () => {
             .then(({ user, info }) =>
                 updateProfile({ ...info, userId: user.id })
             )
-            .then(() => router.replace('/connect/welcome'))
+            .then(() => router.replace('/connect'))
             .catch((error) => setSignUpError(String(error)));
         setLoading(false);
     }
@@ -51,10 +51,7 @@ const SignUp: NextPageWithLayout = () => {
         <VStack maxW="container.sm" mx="auto" alignItems="stretch">
             <Box>
                 <Heading as="h1" size="xl" color="secondary">
-                    GROWconnect
-                </Heading>
-                <Heading as="h3" size="sm" fontWeight="light">
-                    the platform for participants
+                    GROW
                 </Heading>
             </Box>
             <ParticipateForm loading={loading} onSubmit={onSignUp} />

@@ -35,9 +35,10 @@ export function useTeamIdOfUser(userId?: string) {
     return { ...result, teamId: result.data };
 }
 
-export function useAllTeams() {
+export function useAllTeams(initialData?: Team[]) {
     const queryClient = useQueryClient();
     const query = useQuery<Team[], string>('teams', getTeams, {
+        initialData: initialData,
         onSuccess: (teams) =>
             teams.forEach((team) => {
                 queryClient.setQueryData(['team', team.id], team);
@@ -46,7 +47,7 @@ export function useAllTeams() {
     return { ...query, teams: query.data };
 }
 
-export function useTeam(teamId?: number | null) {
+export function useTeam(teamId?: number | null, initialData?: Team) {
     const query = useQuery(
         ['team', teamId],
         () => {
@@ -55,7 +56,7 @@ export function useTeam(teamId?: number | null) {
             }
             return getTeam(teamId);
         },
-        { enabled: !!teamId }
+        { enabled: !!teamId, initialData }
     );
     return { ...query, team: query.data };
 }

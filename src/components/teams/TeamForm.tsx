@@ -1,5 +1,6 @@
 import {
     Button,
+    Checkbox,
     Flex,
     FormControl,
     FormLabel,
@@ -14,7 +15,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { Team } from 'model';
+import { availableSkills, Team } from 'model';
 
 interface TeamFormProps {
     onSave: (profile: Team) => void;
@@ -26,8 +27,9 @@ const TeamForm: React.FC<TeamFormProps> = ({ onSave, team, onCancel }) => {
     const formik = useFormik({
         initialValues: team,
         onSubmit: (values) => onSave(values),
-        validate: () => {
+        validate: (values) => {
             const errors: Record<string, string> = {};
+            if (!values.name) errors['name'] = 'Required';
             return errors;
         },
     });
@@ -78,7 +80,7 @@ const TeamForm: React.FC<TeamFormProps> = ({ onSave, team, onCancel }) => {
                             ))}
                         </Flex>
                     </FormControl>
-                    <GridItem colSpan={2}>
+                    <GridItem>
                         <FormControl>
                             <FormLabel htmlFor="description">
                                 Description
@@ -90,6 +92,44 @@ const TeamForm: React.FC<TeamFormProps> = ({ onSave, team, onCancel }) => {
                                 onChange={formik.handleChange}
                                 placeholder="Describe what the startup is about."
                             />
+                        </FormControl>
+                    </GridItem>
+                    <GridItem>
+                        <FormControl>
+                            <FormLabel htmlFor="mentoring">
+                                Require Mentoring
+                            </FormLabel>
+                            <Flex wrap="wrap" gap={2}>
+                                {availableSkills.map((skill, i) => (
+                                    <Checkbox
+                                        key={skill + i}
+                                        isChecked={formik.values.requestSupport.includes(
+                                            skill
+                                        )}
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                formik.setFieldValue(
+                                                    'requestSupport',
+                                                    [
+                                                        ...formik.values
+                                                            .requestSupport,
+                                                        skill,
+                                                    ]
+                                                );
+                                            } else {
+                                                formik.setFieldValue(
+                                                    'requestSupport',
+                                                    formik.values.requestSupport.filter(
+                                                        (s) => s != skill
+                                                    )
+                                                );
+                                            }
+                                        }}
+                                    >
+                                        {skill}
+                                    </Checkbox>
+                                ))}
+                            </Flex>
                         </FormControl>
                     </GridItem>
                 </SimpleGrid>

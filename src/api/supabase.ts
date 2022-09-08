@@ -332,6 +332,7 @@ export interface paths {
                     tags?: parameters['rowFilter.teams.tags'];
                     logo?: parameters['rowFilter.teams.logo'];
                     archived?: parameters['rowFilter.teams.archived'];
+                    requestSupport?: parameters['rowFilter.teams.requestSupport'];
                     /** Filtering Columns */
                     select?: parameters['select'];
                     /** Ordering */
@@ -389,6 +390,7 @@ export interface paths {
                     tags?: parameters['rowFilter.teams.tags'];
                     logo?: parameters['rowFilter.teams.logo'];
                     archived?: parameters['rowFilter.teams.archived'];
+                    requestSupport?: parameters['rowFilter.teams.requestSupport'];
                 };
                 header: {
                     /** Preference */
@@ -410,6 +412,7 @@ export interface paths {
                     tags?: parameters['rowFilter.teams.tags'];
                     logo?: parameters['rowFilter.teams.logo'];
                     archived?: parameters['rowFilter.teams.archived'];
+                    requestSupport?: parameters['rowFilter.teams.requestSupport'];
                 };
                 body: {
                     /** teams */
@@ -745,6 +748,7 @@ export interface paths {
                     homeland?: parameters['rowFilter.profiles.homeland'];
                     avatar?: parameters['rowFilter.profiles.avatar'];
                     role?: parameters['rowFilter.profiles.role'];
+                    skills?: parameters['rowFilter.profiles.skills'];
                     /** Filtering Columns */
                     select?: parameters['select'];
                     /** Ordering */
@@ -807,6 +811,7 @@ export interface paths {
                     homeland?: parameters['rowFilter.profiles.homeland'];
                     avatar?: parameters['rowFilter.profiles.avatar'];
                     role?: parameters['rowFilter.profiles.role'];
+                    skills?: parameters['rowFilter.profiles.skills'];
                 };
                 header: {
                     /** Preference */
@@ -833,6 +838,7 @@ export interface paths {
                     homeland?: parameters['rowFilter.profiles.homeland'];
                     avatar?: parameters['rowFilter.profiles.avatar'];
                     role?: parameters['rowFilter.profiles.role'];
+                    skills?: parameters['rowFilter.profiles.skills'];
                 };
                 body: {
                     /** profiles */
@@ -1126,6 +1132,8 @@ export interface definitions {
          * @default false
          */
         archived: boolean;
+        /** Format: json */
+        requestSupport: unknown;
     };
     team_requests: {
         /**
@@ -1242,6 +1250,8 @@ export interface definitions {
          * @enum {string}
          */
         role: 'PARTICIPANT' | 'BUDDY' | 'MENTOR' | 'EXPERT' | 'ORGA';
+        /** Format: json */
+        skills: unknown;
     };
     sponsors: {
         /**
@@ -1370,6 +1380,8 @@ export interface parameters {
     'rowFilter.teams.logo': string;
     /** Format: boolean */
     'rowFilter.teams.archived': string;
+    /** Format: json */
+    'rowFilter.teams.requestSupport': string;
     /** @description team_requests */
     'body.team_requests': definitions['team_requests'];
     /** Format: timestamp with time zone */
@@ -1436,6 +1448,8 @@ export interface parameters {
     'rowFilter.profiles.avatar': string;
     /** Format: public.user_role */
     'rowFilter.profiles.role': string;
+    /** Format: json */
+    'rowFilter.profiles.skills': string;
     /** @description sponsors */
     'body.sponsors': definitions['sponsors'];
     /** Format: bigint */

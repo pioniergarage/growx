@@ -4,7 +4,9 @@ import { mapProfileDto } from './profile';
 import { definitions } from './supabase';
 import { handleResponse, handleSingleResponse } from './utils';
 
-const mapEventDto: (dto: definitions['events']) => GrowEvent = (dto) => ({
+export const mapEventDto: (dto: definitions['events']) => GrowEvent = (
+    dto
+) => ({
     date: new Date(dto.date),
     id: dto.id,
     title: dto.title,
