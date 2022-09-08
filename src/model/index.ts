@@ -33,8 +33,8 @@ export type GrowEvent = {
     date: Date;
     id: number;
     title: string;
-    description: string;
-    mandatory: boolean;
+    description?: string;
+    mandatory: boolean | undefined;
     location?: string;
     sq_mandatory?: boolean;
     type?: EventType;

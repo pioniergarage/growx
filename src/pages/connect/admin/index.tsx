@@ -57,6 +57,7 @@ function Events() {
     const [eventOnEdit, setEventOnEdit] = useState<
         Omit<GrowEvent, 'id'> & { id?: number }
     >({
+        id: undefined,
         date: Date.prototype,
         title: '',
         description: '',
@@ -67,15 +68,14 @@ function Events() {
     });
 
     async function createNewEvent() {
-        try {
-            const result = await createEvent({ title: 'New Event' });
-            router.push('/connect/admin/events/' + result.id);
-        } catch (error) {
-            toast({
-                title: 'Could not create event',
-                status: 'error',
-            });
-        }
+        createEvent({
+            date: new Date(),
+            title: '',
+            id: undefined,
+            description: undefined,
+            mandatory: undefined,
+        });
+        setModalOpen(true);
     }
 
     function adjustEvent(event: GrowEvent) {

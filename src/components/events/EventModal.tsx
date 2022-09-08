@@ -25,12 +25,73 @@ interface EventModalProps {
     onClose: () => void;
     onSave: (event: Omit<GrowEvent, 'id'>) => void;
     onDelete: () => void;
-    initialValue: Omit<GrowEvent, 'id'>;
+    initialValue: Omit<GrowEvent, 'id'> & { id?: number };
+}
+
+// View Theme properties
+// Modal view type
+enum ModalViewType {
+    adjust = 'adjust',
+    create = 'create',
+}
+
+// Adjust:
+
+const adjustTitleText = 'Adjust Event';
+const createTitleText = 'Create new Event';
+
+const SavebuttonText = 'Save';
+const CreatebuttonText = 'Create';
+
+function getThemeText1(viewTheme: ModalViewType) {
+    switch (viewTheme) {
+        case ModalViewType.adjust:
+            return adjustTitleText;
+        case ModalViewType.create:
+            return createTitleText;
+    }
+}
+
+function getThemeText(id: number | undefined) {
+    if (isIdUndefined(id)) {
+        // id is empty -> create new Event
+        return createTitleText;
+    } else {
+        return adjustTitleText;
+    }
+}
+
+function getButtonText(viewTheme: ModalViewType) {
+    switch (viewTheme) {
+        case ModalViewType.adjust:
+            return SavebuttonText;
+        case ModalViewType.create:
+            return CreatebuttonText;
+    }
+}
+
+function isViewThemeEqual(
+    viewTheme1: ModalViewType,
+    viewTheme2: ModalViewType
+) {
+    if (viewTheme1 == viewTheme2) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function isIdUndefined(id: number | undefined) {
+    if (id == undefined) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /**
  * 
- * date: Date;
+ * date: Date
     id: number;
     Done: title: string; 
     DONE: description: string;
@@ -59,7 +120,7 @@ const EventModal: React.FC<EventModalProps> = ({
                 <ModalCloseButton />
                 <ModalBody pb={6}>
                     <FormControl>
-                        <FormLabel>Name</FormLabel>
+                        <FormLabel>{getThemeText(event.id)}</FormLabel>
                         <Input
                             value={event.title}
                             onChange={(e) =>
@@ -71,7 +132,7 @@ const EventModal: React.FC<EventModalProps> = ({
                             placeholder="XYZ Gmbh"
                         />
                     </FormControl>
-                    <FormControl mt={4}>
+                    <FormControl mt={6}>
                         <FormLabel>Description</FormLabel>
                         <Input
                             value={event.description}
@@ -84,8 +145,8 @@ const EventModal: React.FC<EventModalProps> = ({
                             placeholder="Discribe the event here"
                         />
                     </FormControl>
-                    <FormControl mt={4}>
-                        <FormLabel>mandatory</FormLabel>
+                    <FormControl mt={6}>
+                        <FormLabel>Mandatory</FormLabel>
                         <Checkbox
                             isChecked={event.mandatory}
                             onChange={(e) =>
@@ -97,7 +158,7 @@ const EventModal: React.FC<EventModalProps> = ({
                         ></Checkbox>
                     </FormControl>
 
-                    <FormControl mt={4}>
+                    <FormControl mt={6}>
                         <FormLabel>
                             Mandatory for Schlüsselqualifikation
                         </FormLabel>
@@ -116,7 +177,7 @@ const EventModal: React.FC<EventModalProps> = ({
                         </FormHelperText>
                     </FormControl>
 
-                    <FormControl mt={4}>
+                    <FormControl mt={6}>
                         <FormLabel>Location</FormLabel>
                         <Input
                             value={event.location}
@@ -130,7 +191,7 @@ const EventModal: React.FC<EventModalProps> = ({
                         </FormHelperText>
                     </FormControl>
 
-                    <FormControl>
+                    <FormControl mt={6}>
                         <FormLabel>How to participate</FormLabel>
                         <select
                             name="SelectEventSQMandatory"
@@ -160,7 +221,12 @@ const EventModal: React.FC<EventModalProps> = ({
                     <Button onClick={() => onSave(event)} mr={3}>
                         Save
                     </Button>
-                    <Button onClick={onDelete} colorScheme="red" mr={3}>
+                    <Button
+                        onClick={onDelete}
+                        colorScheme="red"
+                        mr={3}
+                        disabled={isIdUndefined(event.id)}
+                    >
                         Delete
                     </Button>
                     <Button onClick={onClose} mr={3}>
