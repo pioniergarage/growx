@@ -1,20 +1,14 @@
-import { GridItem, Heading, Image, Link, SimpleGrid } from '@chakra-ui/react';
+import { GridItem, Heading, SimpleGrid } from '@chakra-ui/react';
 import { Sponsor } from 'model';
+import PartnerItem from './PartnerItem';
 
-function PartnerItem({ link: href, logo, name }: Partial<Sponsor>) {
-    return (
-        <Link href={href} isExternal>
-            <Image className="max-h-16 brightness-75" src={logo} alt={name} />
-        </Link>
-    );
-}
-
-interface PartnerBlockProps {
+type PartnerBlockProps = {
     sponsors: Sponsor[];
-}
+};
 
-const PartnerBlock: React.FC<PartnerBlockProps> = ({ sponsors }) => {
-    if (!sponsors) return <></>;
+const PartnerBlock = ({ sponsors }: PartnerBlockProps) => {
+    if (!sponsors) return null;
+
     return (
         <SimpleGrid columns={2}>
             <GridItem>
@@ -25,7 +19,12 @@ const PartnerBlock: React.FC<PartnerBlockProps> = ({ sponsors }) => {
                     {sponsors
                         .filter((s) => s.type === 1)
                         .map((sponsor) => (
-                            <PartnerItem key={sponsor.name} {...sponsor} />
+                            <PartnerItem
+                                key={sponsor.name}
+                                href={sponsor.link}
+                                logo={sponsor.logo}
+                                name={sponsor.name}
+                            />
                         ))}
                 </SimpleGrid>
             </GridItem>
@@ -38,7 +37,12 @@ const PartnerBlock: React.FC<PartnerBlockProps> = ({ sponsors }) => {
                     {sponsors
                         .filter((s) => s.type === 2)
                         .map((sponsor) => (
-                            <PartnerItem key={sponsor.name} {...sponsor} />
+                            <PartnerItem
+                                key={sponsor.name}
+                                href={sponsor.link}
+                                logo={sponsor.logo}
+                                name={sponsor.name}
+                            />
                         ))}
                 </SimpleGrid>
             </GridItem>
