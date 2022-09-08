@@ -76,7 +76,7 @@ export default function ShortTimeline() {
     return (
         <VStack alignItems={{ base: 'center', md: 'start' }} spacing={4}>
             <Heading size="lg" textAlign="center">
-                From idea to prototype in 11 weeks
+                From the ideation to the launch in 11 weeks
             </Heading>
             <SimpleGrid columns={[1, 1, 1, 3]} gap={8} width="100%">
                 {events.map((event) => (
