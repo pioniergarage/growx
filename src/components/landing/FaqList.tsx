@@ -9,13 +9,13 @@ import {
     Text,
     VStack,
 } from '@chakra-ui/react';
+import { FAQ } from 'model';
 
-export interface FaqType {
-    question: string;
-    answer: string;
+interface FaqListProps {
+    faqs: FAQ[];
 }
 
-export default function FaqList({ faqs }: { faqs: FaqType[] }) {
+const FaqList: React.FC<FaqListProps> = ({ faqs }) => {
     return (
         <VStack alignItems={{ base: 'center', md: 'stretch' }}>
             <Heading size="lg">FAQs</Heading>
@@ -38,4 +38,6 @@ export default function FaqList({ faqs }: { faqs: FaqType[] }) {
             </Accordion>
         </VStack>
     );
-}
+};
+
+export default FaqList;

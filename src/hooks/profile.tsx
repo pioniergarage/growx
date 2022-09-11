@@ -1,99 +1,91 @@
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
-import {
-    createContext,
-    PropsWithChildren,
-    useContext,
-    useEffect,
-    useState,
-} from 'react';
-import { Profile, ProfileDto, UserRole } from 'types';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
-const ProfileContext = createContext<{
-    profile?: Profile;
-    loading: boolean;
-    error?: string;
-    update: (profile: Profile) => Promise<void>;
-}>({ loading: false, update: () => Promise.reject() });
+import { fetchUserAvatar, uploadUserAvatar } from 'api/avatar';
+import { fetchProfile, getProfiles, updateProfile } from 'api/profile';
+import { Profile } from 'model';
 
-export function ProfileProvider({ children }: PropsWithChildren) {
+export function useProfile(userId?: string) {
     const { user } = useUser();
-    const [profile, setProfile] = useState<Profile | undefined>();
-    const [error, setError] = useState<string>();
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        async function fetchProfile() {
-            setLoading(true);
-            if (!user) return;
-            const { data, error } = await supabaseClient
-                .from<ProfileDto & { user_roles: { role: UserRole }[] }>(
-                    'profiles'
-                )
-                .select(
-                    `
-                    *,
-                    user_roles (
-                        role
-                    )
-                `
-                )
-                .eq('user_id', user.id)
-                .single();
-            if (error) {
-                setError(error.message);
-            } else {
-                const { first_name, last_name, user_roles } = data;
-                setProfile({
-                    ...data,
-                    firstName: first_name,
-                    lastName: last_name,
-                    role:
-                        user_roles.length > 0 ? user_roles[0].role : undefined,
-                });
+    const userId2 = userId || user?.id;
+    const result = useQuery(
+        ['profile', userId2],
+        () => {
+            if (!userId2) {
+                throw new Error('user id not available. Cannot fetch Profile');
             }
-            setLoading(false);
-        }
-        fetchProfile();
-    }, [user]);
-
-    async function update(profile: Profile) {
-        setLoading(true);
-        const dto: ProfileDto = {
-            first_name: profile.firstName,
-            last_name: profile.lastName,
-            email: profile.email,
-            phone: profile.phone,
-            gender: profile.gender,
-            user_id: profile.user_id,
-            studies: profile.studies,
-            homeland: profile.homeland,
-            university: profile.university
-        }
-        const { error } = await supabaseClient
-            .from<ProfileDto>('profiles')
-            .update(dto, { returning: 'minimal' })
-            .eq('user_id', user?.id || '');
-        if (!error) {
-            setProfile(profile);
-        }
-        setLoading(false);
-        if (error) {
-            throw error.message;
-        }
-    }
-
-    return (
-        <ProfileContext.Provider value={{ profile, loading, error, update }}>
-            {children}
-        </ProfileContext.Provider>
+            return fetchProfile(userId2);
+        },
+        { enabled: !!userId2 }
     );
+    return { ...result, profile: result.data };
 }
 
-export function useProfile() {
-    const context = useContext(ProfileContext);
-    if (!context) {
-        throw Error('useProfile must be wrapped inside a ProfileProvider');
-    }
-    return context;
+export function useUpdateProfile() {
+    const queryClient = useQueryClient();
+    const mutation = useMutation(
+        (profile: Partial<Profile> & Pick<Profile, 'userId'>) =>
+            updateProfile(profile),
+        {
+            onSuccess: (updated) => {
+                queryClient.setQueryData<Profile | undefined>(
+                    ['profile', updated.userId],
+                    updated
+                );
+            },
+        }
+    );
+    return { ...mutation, updateProfile: mutation.mutateAsync };
+}
+
+export function useAvatarUrl({
+    userId,
+    avatar,
+}: {
+    userId?: Profile['userId'];
+    avatar: Profile['avatar'];
+}) {
+    const result = useQuery(
+        ['avatar', userId],
+        async () => {
+            if (!avatar) {
+                return null;
+            }
+            const blob = await fetchUserAvatar(avatar);
+            return URL.createObjectURL(blob);
+        },
+        { enabled: !!userId }
+    );
+    return { ...result, avatarUrl: result.data };
+}
+
+export function useUploadAvatar() {
+    const queryClient = useQueryClient();
+    const { updateProfile } = useUpdateProfile();
+    const mutation = useMutation(
+        ({ profile, file }: { profile: Profile; file: File }) =>
+            uploadUserAvatar(profile, file),
+        {
+            onSuccess: async (filename, { profile, file }) => {
+                updateProfile({ ...profile, avatar: filename });
+                queryClient.setQueryData(
+                    ['avatar', profile.userId],
+                    URL.createObjectURL(file)
+                );
+            },
+        }
+    );
+    return { ...mutation, uploadUserAvatar: mutation.mutateAsync };
+}
+
+export function useProfiles() {
+    const queryClient = useQueryClient();
+    const query = useQuery('profiles', getProfiles, {
+        onSuccess: (profiles) => {
+            profiles.forEach((profile) =>
+                queryClient.setQueryData(['profile', profile.userId], profile)
+            );
+        },
+    });
+    return { ...query, profiles: query.data };
 }

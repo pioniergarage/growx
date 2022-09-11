@@ -1,10 +1,14 @@
-import { Box, Text, TextProps } from '@chakra-ui/react';
+import { Flex, Text, TextProps } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
-export default function Countdown({
+interface CountdownProps extends TextProps {
+    to?: Date;
+}
+
+const Countdown: React.FC<CountdownProps> = ({
     to = new Date('11/05/2022'),
     ...props
-}: { to?: Date } & TextProps) {
+}) => {
     const calculateTimeLeft = (to: Date) => {
         const difference = +to - +new Date();
 
@@ -24,7 +28,12 @@ export default function Countdown({
             };
         }
 
-        return timeLeft;
+        return Object.fromEntries(
+            Object.entries(timeLeft).map(([key, value]) => [
+                key,
+                String(value).padStart(2, '0'),
+            ])
+        );
     };
 
     const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(to));
@@ -40,7 +49,7 @@ export default function Countdown({
     }, [to, timer]);
 
     return (
-        <Box p={6}>
+        <Flex flexDir="column" p={2} alignItems="center">
             <Text fontWeight="bold" fontSize="2xl" {...props}>
                 {timeLeft.days + 'd'}&nbsp;
                 {timeLeft.hours + 'h'}&nbsp;
@@ -53,6 +62,8 @@ export default function Countdown({
                     Kickoff Event
                 </Text>
             </Text>
-        </Box>
+        </Flex>
     );
-}
+};
+
+export default Countdown;

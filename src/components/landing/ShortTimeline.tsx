@@ -1,7 +1,7 @@
-import { Box, Heading, SimpleGrid, Text, VStack } from '@chakra-ui/react';
+import { Box, Heading, SimpleGrid, Tag, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 
-type Item = {
+type TimeLineItemProps = {
     date: string;
     title: string;
     description: string;
@@ -9,13 +9,13 @@ type Item = {
     objectPosition?: string;
 };
 
-function TimelineItem({
+const TimelineItem: React.FC<TimeLineItemProps> = ({
     date,
     title,
     description,
     image,
     objectPosition,
-}: Item) {
+}) => {
     return (
         <Box borderRadius={2} overflow="hidden">
             <Box position="relative" height="320px">
@@ -33,19 +33,22 @@ function TimelineItem({
                     bottom={0}
                     left={0}
                     p={6}
-                    bgGradient="linear(to-t, #000000bb 0%, #00000000 100%)"
+                    pt={14}
+                    bgGradient="linear(to-t, #000000cc 30%, #00000000 100%)"
                 >
-                    <Text variant="info">{date}</Text>
+                    <Tag bgColor="blackAlpha.600" mb={2}>
+                        {date}
+                    </Tag>
                     <Heading size="md">{title}</Heading>
                     <Text mt={2}>{description}</Text>
                 </Box>
             </Box>
         </Box>
     );
-}
+};
 
 export default function ShortTimeline() {
-    const events: Item[] = [
+    const events: TimeLineItemProps[] = [
         {
             date: '05. Nov 22', // date is fix
             title: 'Kickoff Event',
@@ -63,7 +66,7 @@ export default function ShortTimeline() {
         },
         {
             date: '21. Jan 23', // date is fix
-            title: 'Finale',
+            title: 'Final',
             description: `Present your results to a huge crowd and show how far you have come. 
             Each participant will have learned a lot and gained a lot of experience by this point. 
             The groups with the greatest progress will receive prizes. This is what you've been working for!`,
@@ -73,9 +76,9 @@ export default function ShortTimeline() {
     return (
         <VStack alignItems={{ base: 'center', md: 'start' }} spacing={4}>
             <Heading size="lg" textAlign="center">
-                From idea to prototype in 11 weeks
+                From the ideation to the launch in 11 weeks
             </Heading>
-            <SimpleGrid columns={[1, 1, 1, 3]} gap={4} width="100%">
+            <SimpleGrid columns={[1, 1, 1, 3]} gap={8} width="100%">
                 {events.map((event) => (
                     <TimelineItem {...event} key={event.title} />
                 ))}

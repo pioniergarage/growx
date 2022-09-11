@@ -1,50 +1,42 @@
 import {
-    useToast,
-    Tooltip,
     Button,
-    HStack,
     Flex,
-    VStack,
+    Grid,
     Heading,
     Tag,
     Text,
+    useToast,
 } from '@chakra-ui/react';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
-import { useState, useMemo } from 'react';
-import { GrowEvent } from 'types';
+import {
+    useRegisterUserToEvent,
+    useUnregisterUserFromEvent,
+} from 'hooks/event';
+import { GrowEvent } from 'model';
+import { useMemo, useState } from 'react';
 
 type GrowEventCardProps = {
     event: GrowEvent;
     registered: boolean;
 };
 
-export default function GrowEventCard({
-    event,
-    registered,
-}: GrowEventCardProps) {
+const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
     const [registeredLocal, setRegisteredLocal] = useState(registered);
+    const { registerUser } = useRegisterUserToEvent();
+    const { unregisterUser } = useUnregisterUserFromEvent();
     const { user } = useUser();
     const toast = useToast();
-    const { day, month } = useMemo(() => {
+    const { day, month, over } = useMemo(() => {
         const day = String(event.date.getDate()).padStart(2, '0');
         const month = event.date.toLocaleString('en-US', { month: 'short' });
-        return { day, month };
+        const over = new Date() > event.date;
+        return { day, month, over };
     }, [event.date]);
-    const over = new Date() > new Date(event.date);
 
     async function register() {
-        const { error } = await supabaseClient
-            .from('registrations')
-            .insert({ user_id: user?.id, event_id: event.id });
-        if (error) {
-            toast({
-                title: 'Something went wrong...',
-                status: 'error',
-                duration: 4000,
-                isClosable: true,
-            });
-        } else {
+        if (!user) return;
+        try {
+            await registerUser({ user, event });
             toast({
                 title: 'Registered to ' + event.title,
                 status: 'success',
@@ -52,22 +44,20 @@ export default function GrowEventCard({
                 isClosable: true,
             });
             setRegisteredLocal(true);
-        }
-    }
-
-    async function withdrawRegistration() {
-        const { error } = await supabaseClient
-            .from('registrations')
-            .delete()
-            .match({ event_id: event.id, user_id: user?.id });
-        if (error) {
+        } catch (error) {
             toast({
                 title: 'Something went wrong...',
                 status: 'error',
                 duration: 4000,
                 isClosable: true,
             });
-        } else {
+        }
+    }
+
+    async function withdrawRegistration() {
+        if (!user) return;
+        try {
+            await unregisterUser({ user, event });
             toast({
                 title: 'Unregistered from ' + event.title,
                 status: 'success',
@@ -75,21 +65,20 @@ export default function GrowEventCard({
                 isClosable: true,
             });
             setRegisteredLocal(false);
+        } catch (error) {
+            toast({
+                title: 'Something went wrong...',
+                status: 'error',
+                duration: 4000,
+                isClosable: true,
+            });
         }
     }
 
     let actionButton;
-    if (event.mandatory) {
+    if (registeredLocal) {
         actionButton = (
-            <Tooltip label="Event is mandatory" shouldWrapChildren>
-                <Button disabled={true} size="sm" variant="outline">
-                    Withdraw Registration
-                </Button>
-            </Tooltip>
-        );
-    } else if (registeredLocal) {
-        actionButton = (
-            <Button onClick={withdrawRegistration} size="sm" variant="outline">
+            <Button onClick={withdrawRegistration} size="xs" variant="outline">
                 Withdraw Registration
             </Button>
         );
@@ -98,7 +87,7 @@ export default function GrowEventCard({
             <Button
                 onClick={register}
                 color="primary"
-                size="sm"
+                size="xs"
                 variant="outline"
             >
                 Register
@@ -107,25 +96,42 @@ export default function GrowEventCard({
     }
 
     return (
-        <HStack
+        <Grid
             gap={4}
-            alignItems="start"
+            gridTemplateColumns="3.5rem 1fr"
             color={over ? 'gray.500' : 'inherit'}
         >
-            <Flex justify="space-between" w="3.5rem" fontWeight="semibold">
+            <Flex justify="space-between">
                 <Text>{day}</Text>
                 <Text>{month}</Text>
             </Flex>
+<<<<<<< HEAD
             <VStack alignItems="start">
+                <Heading size="md">{event.title}</Heading>
                 <HStack>
-                    <Heading size="md">{event.title}</Heading>
                     {event.mandatory ? <Tag>mandatory</Tag> : undefined}
+                    {event.type ? <Tag>{event.type}</Tag> : undefined}
                     {event.location ? <Tag>{event.location}</Tag> : undefined}
-                    {event.online ? <Tag>online</Tag> : undefined}
                 </HStack>
                 <Text>{event.description}</Text>
                 {!over ? actionButton : undefined}
             </VStack>
         </HStack>
+=======
+            <Flex flexDir="column">
+                <Flex gap={2}>
+                    <Heading size="md">{event.title}</Heading>
+                    {event.mandatory ? (
+                        <Tag>mandatory</Tag>
+                    ) : !over ? (
+                        actionButton
+                    ) : undefined}
+                </Flex>
+                <Text color="gray.400">{event.description}</Text>
+            </Flex>
+        </Grid>
+>>>>>>> main
     );
-}
+};
+
+export default GrowEventCard;

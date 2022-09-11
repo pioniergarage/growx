@@ -1,41 +1,24 @@
+import Faqs from '@/components/landing/FaqList';
 import MainInfoBlock from '@/components/landing/MainInfoBlock';
-import Timeline from '@/components/landing/ShortTimeline';
 import MotivationBlock from '@/components/landing/MotivationBlock';
-import WaitingForBlock from '@/components/landing/WaitingForBlock';
-import PartnerBlock from '@/components/landing/PartnerBlock';
-import { supabaseClient as supabase } from '@supabase/auth-helpers-nextjs';
-import { EventType, GrowEvent, GrowEventDto, Sponsor } from 'types';
-import { PropsWithChildren } from 'react';
-import { Box, BoxProps, Divider } from '@chakra-ui/react';
-import Faqs, { FaqType } from '@/components/landing/FaqList';
+import Timeline from '@/components/landing/ShortTimeline';
+import SponsorBlock from '@/components/landing/sponsor/SponsorBlock';
 import LongTimeline from '@/components/landing/Timeline';
+import WaitingForBlock from '@/components/landing/WaitingForBlock';
+import { Box, BoxProps, Divider } from '@chakra-ui/react';
+import { getFAQs } from 'api';
+import { getEvents } from 'api/events';
+import { getSponsors } from 'api/sponsors';
+import { FAQ, GrowEvent, Sponsor } from 'model';
+import { PropsWithChildren } from 'react';
 
 export async function getStaticProps() {
-    const { data: sponsors, error: sponsorError } = await supabase
-        .from('sponsors')
-        .select('*');
-    const { data: faqs, error: faqError } = await supabase
-        .from('faqs')
-        .select('*');
-    const { data: events, error: eventsError } = await supabase
-        .from<GrowEventDto>('events')
-        .select('*')
-        .order('date');
-    const { data: event_types, error: event_typeError } = await supabase
-        .from<EventType>('event_types')
-        .select('*');
-    if (sponsorError) {
-        throw Error(sponsorError.message);
-    }
-    if (faqError) {
-        throw Error(faqError.message);
-    }
-    if (eventsError) {
-        throw Error(eventsError.message);
-    }
-    if (event_typeError) {
-        throw Error(event_typeError.message);
-    }
+    const sponsors = await getSponsors();
+    const faqs = await getFAQs();
+    const events = (await getEvents()).map((e) => ({
+        ...e,
+        date: e.date.toISOString(),
+    }));
     return { props: { sponsors, faqs, events } };
 }
 
@@ -45,7 +28,7 @@ function Section({
     ...rest
 }: PropsWithChildren & { divider?: boolean } & BoxProps) {
     return (
-        <Box as="section" px={{ base: 4, xl: 0 }} my={8} {...rest}>
+        <Box as="section" my={8} {...rest}>
             <Box mx="auto" maxW="container.xl">
                 {children}
                 {divider && <Divider my={8} />}
@@ -54,15 +37,14 @@ function Section({
     );
 }
 
-export default function Home({
-    sponsors,
-    faqs,
-    events,
-}: {
+interface HomeProps {
     sponsors: Sponsor[];
-    faqs: FaqType[];
-    events: GrowEvent[];
-}) {
+    faqs: FAQ[];
+    events: (Omit<GrowEvent, 'date'> & { date: string })[];
+}
+
+const Home: React.FC<HomeProps> = ({ sponsors, faqs, events: jsonEvents }) => {
+    const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
     return (
         <>
             <Section divider position="relative">
@@ -74,6 +56,7 @@ export default function Home({
                     h={{ base: '40rem', md: '100%' }}
                     position="absolute"
                     zIndex={-10}
+                    opacity={0.6}
                 >
                     <Box
                         position="absolute"
@@ -125,8 +108,10 @@ export default function Home({
             </Section>
 
             <Section mt={6}>
-                <PartnerBlock sponsors={sponsors} />
+                <SponsorBlock sponsors={sponsors} />
             </Section>
         </>
     );
-}
+};
+
+export default Home;

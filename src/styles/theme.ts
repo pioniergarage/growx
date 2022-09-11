@@ -26,8 +26,18 @@ const textConfig: ComponentStyleConfig = {
 };
 
 const theme = extendTheme({
-    config, colors, components: { Text: textConfig }, fonts: {
-        body: `'Open Sans', sans-serif`
-    }
+    config,
+    colors,
+    components: { Text: textConfig },
+    fonts: {
+        body: `'Open Sans', sans-serif`,
+    },
+    styles: {
+        global: () => ({
+            body: {
+                bg: 'gray.900',
+            },
+        }),
+    },
 });
 export default theme;

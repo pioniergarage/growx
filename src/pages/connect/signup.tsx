@@ -1,23 +1,29 @@
 import ParticipateForm, {
     ParticipateInfo,
 } from '@/components/forms/ParticipateForm';
-import LoginLayout from 'layouts/LoginLayout';
 import PageLink from '@/components/navigation/PageLink';
-import { VStack, Heading, Alert, AlertIcon, Box } from '@chakra-ui/react';
-import { supabaseClient, User } from '@supabase/auth-helpers-nextjs';
+import { Alert, AlertIcon, Heading, VStack } from '@chakra-ui/react';
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { useUser } from '@supabase/auth-helpers-react';
+import { useUpdateProfile } from 'hooks/profile';
+import LoginLayout from 'layouts/LoginLayout';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { NextPageWithLayout } from 'types';
+import { useEffect, useState } from 'react';
+import { NextPageWithLayout } from 'utils/types';
 
 const SignUp: NextPageWithLayout = () => {
     const [loading, setLoading] = useState(false);
     const [signUpError, setSignUpError] = useState<string>('');
     const router = useRouter();
+    const { user } = useUser();
+    const { updateProfile } = useUpdateProfile();
 
-    if (supabaseClient.auth.user()) {
-        router.replace('/connect/')
-    }
-
+    useEffect(() => {
+        if (user) {
+            router.replace('/connect/');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     async function signUp(info: ParticipateInfo) {
         return supabaseClient.auth
             .signUp({
@@ -31,45 +37,21 @@ const SignUp: NextPageWithLayout = () => {
             });
     }
 
-    function buildProfile({
-        user,
-        info,
-    }: {
-        user: User;
-        info: ParticipateInfo;
-    }) {
-        return supabaseClient
-            .from('profiles')
-            .update({
-                first_name: info.firstName,
-                last_name: info.lastName,
-                gender: info.gender,
-                phone: info.phone,
-                studies: info.studies,
-                university: info.university,
-                homeland: info.homeland,
-            })
-            .eq('user_id', user.id);
-    }
-
     async function onSignUp(info: ParticipateInfo) {
         setLoading(true);
         await signUp(info)
-            .then(buildProfile)
-            .then(() => router.replace('/connect/welcome'))
+            .then(({ user, info }) =>
+                updateProfile({ ...info, userId: user.id })
+            )
+            .then(() => router.replace('/connect'))
             .catch((error) => setSignUpError(String(error)));
         setLoading(false);
     }
     return (
         <VStack maxW="container.sm" mx="auto" alignItems="stretch">
-            <Box>
-                <Heading as="h1" size="xl" color="secondary">
-                    GROWconnect
-                </Heading>
-                <Heading as="h3" size="sm" fontWeight="light">
-                    the platform for participants
-                </Heading>
-            </Box>
+            <Heading as="h1" size="xl" color="secondary">
+                GROW
+            </Heading>
             <ParticipateForm loading={loading} onSubmit={onSignUp} />
             {signUpError ? (
                 <Alert status="error">

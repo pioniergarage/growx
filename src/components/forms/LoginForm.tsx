@@ -18,24 +18,28 @@ type LoginFormProps = {
     loading: boolean;
 };
 
-const LoginForm = (props: LoginFormProps) => {
+const LoginForm: React.FC<LoginFormProps> = (props) => {
     const formik = useFormik({
         initialValues: {
-            email: '', password: ''
+            email: '',
+            password: '',
         },
         onSubmit: (values) => props.onSubmit(values),
         validate: (values) => {
-            const errors: Record<string, string> = {}
-            if (!values.email) errors.email = 'Required'
-            if (!values.password) errors.password = 'Required'
-            return errors
-        }
-    })
+            const errors: Record<string, string> = {};
+            if (!values.email) errors.email = 'Required';
+            if (!values.password) errors.password = 'Required';
+            return errors;
+        },
+    });
 
     return (
         <form onSubmit={formik.handleSubmit}>
-            <VStack alignItems="stretch" gap={2}>
-                <FormControl isInvalid={!!formik.errors.email} isDisabled={props.loading}>
+            <VStack alignItems="stretch">
+                <FormControl
+                    isInvalid={!!formik.errors.email}
+                    isDisabled={props.loading}
+                >
                     <FormLabel htmlFor="email">Email adress</FormLabel>
                     <Input
                         id="email"
@@ -44,7 +48,10 @@ const LoginForm = (props: LoginFormProps) => {
                         onChange={formik.handleChange}
                     />
                 </FormControl>
-                <FormControl isInvalid={!!formik.errors.password}  isDisabled={props.loading}>
+                <FormControl
+                    isInvalid={!!formik.errors.password}
+                    isDisabled={props.loading}
+                >
                     <FormLabel htmlFor="password">Password</FormLabel>
                     <Input
                         id="password"
@@ -53,7 +60,9 @@ const LoginForm = (props: LoginFormProps) => {
                         onChange={formik.handleChange}
                     />
                 </FormControl>
-                <Button type="submit" isLoading={props.loading}>Log in</Button>
+                <Button type="submit" isLoading={props.loading}>
+                    Log in
+                </Button>
             </VStack>
         </form>
     );

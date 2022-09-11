@@ -1,51 +1,42 @@
 import rules from '@/components/forms/rules';
 import {
-    SimpleGrid,
-    FormControl,
-    FormLabel,
-    FormErrorMessage,
     Button,
-    Input,
-    HStack,
-    RadioGroup,
-    Radio,
+    FormControl,
+    FormErrorMessage,
+    FormLabel,
     GridItem,
+    Input,
+    SimpleGrid,
     VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
+import { Gender } from 'model';
 import { useState } from 'react';
-import { Consumer } from 'types';
 
 export type ParticipateInfo = {
     firstName: string;
     lastName: string;
     email: string;
-    gender: string;
-    phone: string;
-    studies: string;
-    university: string;
-    homeland: string;
+    gender: Gender;
     password: string;
 };
 
-export default function ParticipateForm({
+interface ParticipateFormProps {
+    onSubmit: (value: ParticipateInfo) => void;
+    loading: boolean;
+}
+
+const ParticipateForm: React.FC<ParticipateFormProps> = ({
     onSubmit,
     loading,
-}: {
-    onSubmit: Consumer<ParticipateInfo>;
-    loading: boolean;
-}) {
+}) => {
     const [validateOnChange, setValidateOnChange] = useState(false);
-    const formik = useFormik({
+    const formik = useFormik<ParticipateInfo & { passwordRepeat: string }>({
         initialValues: {
             firstName: '',
             lastName: '',
             email: '',
-            gender: '',
-            phone: '',
-            studies: '',
-            university: '',
-            homeland: '',
+            gender: 'OTHER',
             password: '',
             passwordRepeat: '',
         },
@@ -68,12 +59,9 @@ export default function ParticipateForm({
 
     return (
         <form onSubmit={formik.handleSubmit}>
-            <VStack
-                gap={4}
-                alignItems="stretch"
-            >
-                <SimpleGrid columns={2} gap={4}>
-                    <GridItem colSpan={2}>
+            <VStack gap={4} alignItems="stretch">
+                <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
+                    <GridItem colSpan={{ base: 1, md: 2 }}>
                         <FormControl
                             isDisabled={loading}
                             isInvalid={!!formik.errors.email}
@@ -156,81 +144,6 @@ export default function ParticipateForm({
                             {formik.errors.lastName}
                         </FormErrorMessage>
                     </FormControl>
-                    <GridItem colSpan={2}>
-                        <FormControl isDisabled={loading} as="fieldset">
-                            <FormLabel as="legend">Gender</FormLabel>
-                            <RadioGroup defaultValue="other">
-                                <HStack spacing="24px">
-                                    <Radio
-                                        value="male"
-                                        name="gender"
-                                        isChecked={
-                                            formik.values.gender === 'male'
-                                        }
-                                        onChange={formik.handleChange}
-                                    >
-                                        Male
-                                    </Radio>
-                                    <Radio
-                                        value="female"
-                                        name="gender"
-                                        isChecked={
-                                            formik.values.gender === 'female'
-                                        }
-                                        onChange={formik.handleChange}
-                                    >
-                                        Female
-                                    </Radio>
-                                    <Radio
-                                        value="other"
-                                        name="gender"
-                                        isChecked={
-                                            formik.values.gender === 'other'
-                                        }
-                                        onChange={formik.handleChange}
-                                    >
-                                        Other
-                                    </Radio>
-                                </HStack>
-                            </RadioGroup>
-                        </FormControl>
-                    </GridItem>
-                    <FormControl isDisabled={loading}>
-                        <FormLabel>Phone number</FormLabel>
-                        <Input
-                            name="phone"
-                            id="phone"
-                            onChange={formik.handleChange}
-                            value={formik.values.phone}
-                        />
-                    </FormControl>
-                    <FormControl isDisabled={loading}>
-                        <FormLabel>Course of studies</FormLabel>
-                        <Input
-                            name="studies"
-                            id="studies"
-                            onChange={formik.handleChange}
-                            value={formik.values.studies}
-                        />
-                    </FormControl>
-                    <FormControl isDisabled={loading}>
-                        <FormLabel>University</FormLabel>
-                        <Input
-                            id="university"
-                            name="university"
-                            onChange={formik.handleChange}
-                            value={formik.values.university}
-                        />
-                    </FormControl>
-                    <FormControl isDisabled={loading}>
-                        <FormLabel>Homeland</FormLabel>
-                        <Input
-                            name="homeland"
-                            id="homeland"
-                            onChange={formik.handleChange}
-                            value={formik.values.homeland}
-                        />
-                    </FormControl>
                 </SimpleGrid>
 
                 <Button
@@ -244,4 +157,6 @@ export default function ParticipateForm({
             </VStack>
         </form>
     );
-}
+};
+
+export default ParticipateForm;

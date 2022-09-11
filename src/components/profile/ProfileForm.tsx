@@ -1,18 +1,34 @@
-import { VStack, SimpleGrid, GridItem, FormControl, FormLabel, Input, FormErrorMessage, RadioGroup, HStack, Radio, Button } from "@chakra-ui/react";
-import { useFormik } from "formik";
-import { Consumer, Profile } from "types";
+import {
+    Button,
+    Checkbox,
+    Flex,
+    FormControl,
+    FormErrorMessage,
+    FormLabel,
+    GridItem,
+    HStack,
+    Input,
+    Radio,
+    RadioGroup,
+    SimpleGrid,
+    VStack,
+} from '@chakra-ui/react';
+import { useFormik } from 'formik';
+import { availableSkills, Profile } from 'model';
 
-export default function ProfileForm({
+interface ProflieFormProps {
+    onSave: (profile: Profile) => void;
+    loading: boolean;
+    profile: Profile;
+    onCancel?: () => void;
+}
+
+const ProfileForm: React.FC<ProflieFormProps> = ({
     onSave,
     loading,
     profile,
     onCancel,
-}: {
-    onSave: Consumer<Profile>;
-    loading: boolean;
-    profile: Profile;
-    onCancel?: () => void;
-}) {
+}) => {
     const formik = useFormik({
         initialValues: profile,
         onSubmit: (values) => onSave(values),
@@ -75,34 +91,34 @@ export default function ProfileForm({
                         <FormControl isDisabled={loading} as="fieldset">
                             <FormLabel as="legend">Gender</FormLabel>
                             <RadioGroup
-                                defaultValue={profile.gender || 'other'}
+                                defaultValue={profile.gender || 'OTHER'}
                             >
                                 <HStack spacing="24px">
                                     <Radio
-                                        value="male"
+                                        value="MALE"
                                         name="gender"
                                         isChecked={
-                                            formik.values.gender === 'male'
+                                            formik.values.gender === 'MALE'
                                         }
                                         onChange={formik.handleChange}
                                     >
                                         Male
                                     </Radio>
                                     <Radio
-                                        value="female"
+                                        value="FEMALE"
                                         name="gender"
                                         isChecked={
-                                            formik.values.gender === 'female'
+                                            formik.values.gender === 'FEMALE'
                                         }
                                         onChange={formik.handleChange}
                                     >
                                         Female
                                     </Radio>
                                     <Radio
-                                        value="other"
+                                        value="OTHER"
                                         name="gender"
                                         isChecked={
-                                            formik.values.gender === 'other'
+                                            formik.values.gender === 'OTHER'
                                         }
                                         onChange={formik.handleChange}
                                     >
@@ -118,7 +134,7 @@ export default function ProfileForm({
                             name="phone"
                             id="phone"
                             onChange={formik.handleChange}
-                            value={formik.values.phone}
+                            value={formik.values.phone || ''}
                         />
                     </FormControl>
                     <FormControl isDisabled={loading}>
@@ -127,7 +143,7 @@ export default function ProfileForm({
                             name="studies"
                             id="studies"
                             onChange={formik.handleChange}
-                            value={formik.values.studies}
+                            value={formik.values.studies || ''}
                         />
                     </FormControl>
                     <FormControl isDisabled={loading}>
@@ -136,7 +152,7 @@ export default function ProfileForm({
                             id="university"
                             name="university"
                             onChange={formik.handleChange}
-                            value={formik.values.university}
+                            value={formik.values.university || ''}
                         />
                     </FormControl>
                     <FormControl isDisabled={loading}>
@@ -145,9 +161,47 @@ export default function ProfileForm({
                             name="homeland"
                             id="homeland"
                             onChange={formik.handleChange}
-                            value={formik.values.homeland}
+                            value={formik.values.homeland || ''}
                         />
                     </FormControl>
+                    {['MENTOR', 'EXPERT', 'ORGA'].includes(profile.role) ? (
+                        <GridItem colSpan={2}>
+                            <FormControl>
+                                <FormLabel htmlFor="skills">Skills</FormLabel>
+                                <Flex wrap="wrap" gap={2}>
+                                    {availableSkills.map((skill, i) => (
+                                        <Checkbox
+                                            key={skill + i}
+                                            isChecked={formik.values.skills.includes(
+                                                skill
+                                            )}
+                                            onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    formik.setFieldValue(
+                                                        'skills',
+                                                        [
+                                                            ...formik.values
+                                                                .skills,
+                                                            skill,
+                                                        ]
+                                                    );
+                                                } else {
+                                                    formik.setFieldValue(
+                                                        'skills',
+                                                        formik.values.skills.filter(
+                                                            (s) => s != skill
+                                                        )
+                                                    );
+                                                }
+                                            }}
+                                        >
+                                            {skill}
+                                        </Checkbox>
+                                    ))}
+                                </Flex>
+                            </FormControl>
+                        </GridItem>
+                    ) : undefined}
                 </SimpleGrid>
 
                 <HStack>
@@ -161,4 +215,6 @@ export default function ProfileForm({
             </VStack>
         </form>
     );
-}
+};
+
+export default ProfileForm;

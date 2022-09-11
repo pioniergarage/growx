@@ -1,88 +1,105 @@
+import EventModal from '@/components/events/EventModal';
 import FullTable from '@/components/FullTable';
-import ConnectLayout from 'layouts/ConnectLayout';
+import SponsorAdmin from '@/components/sponsor/SponsorAdmin';
 import {
-    Heading,
-    useToast,
-    VStack,
     Button,
-    TableContainer,
+    Divider,
+    Heading,
+    IconButton,
     Link,
     Table,
+    TableContainer,
     Tbody,
     Td,
     Th,
     Thead,
     Tr,
-    Divider,
+    VStack,
 } from '@chakra-ui/react';
-import { supabaseClient, withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { GrowEvent, GrowEventDto, NextPageWithLayout, ProfileDto } from 'types';
-import PartnerAdmin from '@/components/partners/PartnerAdmin';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import {
+    useDeleteEvent,
+    useGrowEvents,
+    useInsertEvent,
+    useUpdateEvent,
+} from 'hooks/event';
+import { useProfiles } from 'hooks/profile';
+import { EventType, GrowEvent } from 'model';
+import { useState } from 'react';
+import { FaPen } from 'react-icons/fa';
+import { NextPageWithLayout } from 'utils/types';
 
 function Profiles() {
-    const toast = useToast();
-    const [profiles, setProfiles] = useState<ProfileDto[]>([]);
+    const { profiles, isLoading } = useProfiles();
 
-    useEffect(() => {
-        (async () => {
-            const { data, error } = await supabaseClient
-                .from<ProfileDto>('profiles')
-                .select('*');
-            if (error) {
-                toast({
-                    title: error.message,
-                    status: 'error',
-                    duration: 4000,
-                    isClosable: true,
-                });
-            }
-            if (data) {
-                setProfiles(data);
-            }
-        })();
-    }, [toast]);
-    return <FullTable values={profiles} idProp="user_id" heading="Profiles" />;
+    return (
+        <FullTable
+            loading={isLoading}
+            values={profiles || []}
+            idProp="userId"
+            heading="Profiles"
+        />
+    );
 }
 
 function Events() {
-    const router = useRouter();
-    const toast = useToast();
-    const [events, setEvents] = useState<GrowEvent[]>([]);
+    const { events } = useGrowEvents();
+    const { insertEvent } = useInsertEvent();
+    const { deleteEvent } = useDeleteEvent();
+    const { updateEvent } = useUpdateEvent();
+    const [modalOpen, setModalOpen] = useState(false);
 
-    useEffect(() => {
-        (async () => {
-            const { data, error } = await supabaseClient
-                .from<GrowEventDto>('events')
-                .select('*')
-                .order('date');
-            if (error) {
-                toast({
-                    title: error.message,
-                    status: 'error',
-                    duration: 4000,
-                    isClosable: true,
-                });
-            }
-            if (data) {
-                setEvents(data.map((e) => ({ ...e, date: new Date(e.date) })));
-            }
-        })();
-    }, [toast]);
+    const [eventOnEdit, setEventOnEdit] = useState<
+        Omit<GrowEvent, 'id'> & { id?: number }
+    >({
+        id: undefined,
+        date: Date.prototype,
+        title: '',
+        description: '',
+        location: '',
+        mandatory: false,
+        sq_mandatory: false,
+        type: EventType.Hybrid,
+    });
 
-    async function createNewEvent() {
-        const { error, data } = await supabaseClient
-            .from<GrowEvent>('events')
-            .insert({ title: 'New Event' })
-            .single();
-        if (error) {
-            toast({
-                title: error.message,
-                status: 'error',
-            });
-        } else if (data) {
-            router.push('/connect/admin/events/' + data.id);
+    function setNewEventModal() {
+        setEventOnEdit({
+            title: '',
+            description: undefined,
+            mandatory: undefined,
+            location: '',
+            date: new Date(),
+        });
+        setModalOpen(true);
+    }
+
+    function adjustEvent(event: GrowEvent) {
+        setEventOnEdit(event);
+        setModalOpen(true);
+    }
+
+    async function onDeleteEvent() {
+        if (eventOnEdit.id) {
+            deleteEvent(eventOnEdit.id);
+        }
+        setModalOpen(false);
+    }
+
+    async function saveEvent(event: GrowEvent) {
+        await updateEvent(event);
+        setModalOpen(false);
+    }
+
+    async function createEvent(event: GrowEvent) {
+        await insertEvent(event);
+        setModalOpen(false);
+    }
+
+    function undefinedBooleanToString(b: boolean | undefined) {
+        if (b != undefined) {
+            return b.toString();
+        } else {
+            return '';
         }
     }
 
@@ -91,26 +108,75 @@ function Events() {
             <Heading size="md" as="h3">
                 Events
             </Heading>
-            
+
             <TableContainer>
                 <Table size="sm">
                     <Thead>
                         <Tr>
+                            <Th></Th>
                             <Th>Date</Th>
                             <Th>Title</Th>
+                            <Th>Description</Th>
+                            <Th>Location</Th>
+                            <Th>Type</Th>
+                            <Th>Mandatory</Th>
+                            <Th>SQ-Mandatory</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {events.map((event) => (
-                            <Tr key={event.id}>
-                                <Td>{event.date.toISOString()}</Td>
-                                <Td><Link href={'/connect/admin/events/'+event.id}>{event.title}</Link></Td>
-                            </Tr>
-                        ))}
+                        {events
+                            ? events.map((event) => (
+                                  <Tr key={event.id}>
+                                      <Td>
+                                          <IconButton
+                                              aria-label="Adjust Event"
+                                              icon={<FaPen />}
+                                              variant="ghost"
+                                              size="xs"
+                                              onClick={() => adjustEvent(event)}
+                                          />
+                                      </Td>
+                                      <Td>{event.date.toLocaleString()}</Td>
+                                      <Td>
+                                          <Link
+                                              href={
+                                                  '/connect/admin/events/' +
+                                                  event.id
+                                              }
+                                          >
+                                              {event.title}
+                                          </Link>
+                                      </Td>
+                                      <Td>{event.description}</Td>
+                                      <Td>{event.location}</Td>
+                                      <Td>{event.type}</Td>
+                                      <Td>
+                                          {undefinedBooleanToString(
+                                              event.mandatory
+                                          )}
+                                      </Td>
+                                      <Td>
+                                          {undefinedBooleanToString(
+                                              event.sq_mandatory
+                                          )}
+                                      </Td>
+                                  </Tr>
+                              ))
+                            : undefined}
                     </Tbody>
                 </Table>
             </TableContainer>
-            <Button onClick={createNewEvent}>New Event</Button>
+
+            <EventModal
+                isOpen={modalOpen}
+                initialValue={eventOnEdit}
+                onClose={() => setModalOpen(false)}
+                onSave={(event) => saveEvent(event as GrowEvent)}
+                onDelete={onDeleteEvent}
+                onCreate={(event) => createEvent(event as GrowEvent)}
+            />
+
+            <Button onClick={setNewEventModal}>New Event</Button>
         </VStack>
     );
 }
@@ -123,12 +189,10 @@ const AdminPage: NextPageWithLayout = () => {
             <Divider />
             <Events />
             <Divider />
-            <PartnerAdmin />
+            <SponsorAdmin />
         </VStack>
     );
 };
-
-AdminPage.getLayout = (page) => <ConnectLayout>{page}</ConnectLayout>;
 
 export default AdminPage;
 
