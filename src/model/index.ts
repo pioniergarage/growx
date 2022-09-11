@@ -35,7 +35,7 @@ export type GrowEvent = {
     id: number;
     title: string;
     description?: string;
-    mandatory: boolean | undefined;
+    mandatory?: boolean;
     location?: string;
     sq_mandatory?: boolean;
     type?: EventType;

@@ -14,7 +14,6 @@ import {
     Th,
     Thead,
     Tr,
-    useToast,
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
@@ -26,7 +25,6 @@ import {
 } from 'hooks/event';
 import { useProfiles } from 'hooks/profile';
 import { EventType, GrowEvent } from 'model';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FaPen } from 'react-icons/fa';
 import { NextPageWithLayout } from 'utils/types';
@@ -45,8 +43,6 @@ function Profiles() {
 }
 
 function Events() {
-    const router = useRouter();
-    const toast = useToast();
     const { events } = useGrowEvents();
     const { insertEvent } = useInsertEvent();
     const { deleteEvent } = useDeleteEvent();
@@ -99,6 +95,14 @@ function Events() {
         setModalOpen(false);
     }
 
+    function undefinedBooleanToString(b: boolean | undefined) {
+        if (b != undefined) {
+            return b.toString();
+        } else {
+            return '';
+        }
+    }
+
     return (
         <VStack alignItems="start">
             <Heading size="md" as="h3">
@@ -112,7 +116,11 @@ function Events() {
                             <Th></Th>
                             <Th>Date</Th>
                             <Th>Title</Th>
-                            <Th></Th>
+                            <Th>Description</Th>
+                            <Th>Location</Th>
+                            <Th>Type</Th>
+                            <Th>Mandatory</Th>
+                            <Th>SQ-Mandatory</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -138,6 +146,19 @@ function Events() {
                                           >
                                               {event.title}
                                           </Link>
+                                      </Td>
+                                      <Td>{event.description}</Td>
+                                      <Td>{event.location}</Td>
+                                      <Td>{event.type}</Td>
+                                      <Td>
+                                          {undefinedBooleanToString(
+                                              event.mandatory
+                                          )}
+                                      </Td>
+                                      <Td>
+                                          {undefinedBooleanToString(
+                                              event.sq_mandatory
+                                          )}
                                       </Td>
                                   </Tr>
                               ))
