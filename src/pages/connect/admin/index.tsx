@@ -1,5 +1,5 @@
 import FullTable from '@/components/FullTable';
-import PartnerAdmin from '@/components/partners/PartnerAdmin';
+import SponsorAdmin from '@/components/sponsor/SponsorAdmin';
 import {
     Button,
     Divider,
@@ -100,7 +100,7 @@ const AdminPage: NextPageWithLayout = () => {
             <Divider />
             <Events />
             <Divider />
-            <PartnerAdmin />
+            <SponsorAdmin />
         </VStack>
     );
 };

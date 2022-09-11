@@ -1,8 +1,8 @@
 import Faqs from '@/components/landing/FaqList';
 import MainInfoBlock from '@/components/landing/MainInfoBlock';
 import MotivationBlock from '@/components/landing/MotivationBlock';
-import PartnerBlock from '@/components/landing/partner/PartnerBlock';
 import Timeline from '@/components/landing/ShortTimeline';
+import SponsorBlock from '@/components/landing/sponsor/SponsorBlock';
 import LongTimeline from '@/components/landing/Timeline';
 import WaitingForBlock from '@/components/landing/WaitingForBlock';
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
@@ -108,7 +108,7 @@ const Home: React.FC<HomeProps> = ({ sponsors, faqs, events: jsonEvents }) => {
             </Section>
 
             <Section mt={6}>
-                <PartnerBlock sponsors={sponsors} />
+                <SponsorBlock sponsors={sponsors} />
             </Section>
         </>
     );

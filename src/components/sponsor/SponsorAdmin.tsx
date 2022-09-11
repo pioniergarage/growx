@@ -16,9 +16,9 @@ import { useDeleteSponsor, useSponsors, useUpsertSponsor } from 'hooks/sponsor';
 import { Sponsor } from 'model';
 import { useState } from 'react';
 import { FaPen } from 'react-icons/fa';
-import PartnerModal from './PartnerModal';
+import SponsorModal from './SponsorModal';
 
-export default function PartnerAdmin() {
+export default function SponsorAdmin() {
     const { sponsors } = useSponsors();
     const { deleteSponsor } = useDeleteSponsor();
     const { upsertSponsor } = useUpsertSponsor();
@@ -28,12 +28,12 @@ export default function PartnerAdmin() {
         name: '',
         link: '',
         logo: '',
-        type: 1,
+        type: 'BRONZE',
     });
     const [modalOpen, setModalOpen] = useState(false);
 
     function createNewSponsor() {
-        setSponsorOnEdit({ name: '', link: '', logo: '', type: 1 });
+        setSponsorOnEdit({ name: '', link: '', logo: '', type: 'BRONZE' });
         setModalOpen(true);
     }
 
@@ -66,7 +66,7 @@ export default function PartnerAdmin() {
     return (
         <VStack alignItems="start">
             <Heading size="md" as="h3">
-                Partner
+                Sponsors
             </Heading>
 
             <TableContainer>
@@ -107,7 +107,7 @@ export default function PartnerAdmin() {
                     </Tbody>
                 </Table>
             </TableContainer>
-            <PartnerModal
+            <SponsorModal
                 isOpen={modalOpen}
                 initialValue={sponsorOnEdit}
                 onClose={() => setModalOpen(false)}
