@@ -60,8 +60,8 @@ const ParticipateForm: React.FC<ParticipateFormProps> = ({
     return (
         <form onSubmit={formik.handleSubmit}>
             <VStack gap={4} alignItems="stretch">
-                <SimpleGrid columns={2} gap={4}>
-                    <GridItem colSpan={2}>
+                <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
+                    <GridItem colSpan={{ base: 1, md: 2 }}>
                         <FormControl
                             isDisabled={loading}
                             isInvalid={!!formik.errors.email}

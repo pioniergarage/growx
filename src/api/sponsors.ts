@@ -25,3 +25,21 @@ export const deleteSponsor = async (id: number) =>
         .match({ id })
         .single()
         .then((response) => handleSingleResponse(response));
+
+export const uploadLogo = async (name: string, image: Blob) => {
+    await supabaseClient.storage
+        .from('sponsors')
+        .upload(name, image, { upsert: true })
+        .then(({ error, data }) => {
+            if (error || !data) {
+                throw new Error(error?.message || 'Something went wrong');
+            }
+        });
+    const { publicURL, error } = supabaseClient.storage
+        .from('sponsors')
+        .getPublicUrl(name);
+    if (error || !publicURL) {
+        throw new Error(error?.message || 'Something went wrong');
+    }
+    return publicURL;
+};

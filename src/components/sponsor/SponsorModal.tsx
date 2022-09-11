@@ -1,8 +1,9 @@
 import {
     Button,
     FormControl,
-    FormHelperText,
     FormLabel,
+    HStack,
+    Image,
     Input,
     Modal,
     ModalBody,
@@ -11,11 +12,14 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
+    Select,
 } from '@chakra-ui/react';
+import { uploadLogo } from 'api/sponsors';
 import { Sponsor } from 'model';
 import { useEffect, useState } from 'react';
+import FileSelect from '../FileSelect';
 
-interface PartnerModalProps {
+interface SponsorModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSave: (sponsor: Omit<Sponsor, 'id'>) => void;
@@ -23,7 +27,7 @@ interface PartnerModalProps {
     initialValue: Omit<Sponsor, 'id'>;
 }
 
-const PartnerModal: React.FC<PartnerModalProps> = ({
+const SponsorModal: React.FC<SponsorModalProps> = ({
     isOpen,
     onClose,
     onSave,
@@ -32,6 +36,16 @@ const PartnerModal: React.FC<PartnerModalProps> = ({
 }) => {
     const [sponsor, setSponsor] = useState(initialValue);
     useEffect(() => setSponsor(initialValue), [initialValue]);
+
+    const onUpload = async (files: FileList | null) => {
+        if (!files || files.length === 0) {
+            return;
+        }
+
+        const url = await uploadLogo(files[0].name, files[0]);
+        setSponsor({ ...sponsor, logo: url });
+    };
+
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
@@ -62,28 +76,48 @@ const PartnerModal: React.FC<PartnerModalProps> = ({
                     </FormControl>
                     <FormControl mt={4}>
                         <FormLabel>Logo</FormLabel>
-                        <Input
-                            value={sponsor.logo}
-                            onChange={(e) =>
-                                setSponsor({ ...sponsor, logo: e.target.value })
-                            }
-                            placeholder="http://dsjflsdafj.dsafjlk.jpg"
-                        />
+                        <HStack>
+                            <Input
+                                value={sponsor.logo}
+                                onChange={(e) =>
+                                    setSponsor({
+                                        ...sponsor,
+                                        logo: e.target.value,
+                                    })
+                                }
+                                placeholder="http://dsjflsdafj.dsafjlk.jpg"
+                            />
+
+                            <FileSelect onSelect={onUpload}>
+                                <Button variant="outline">Upload</Button>
+                            </FileSelect>
+                        </HStack>
+                        {sponsor.logo ? (
+                            <Image
+                                mt={2}
+                                alt="Sponsor logo preview"
+                                src={sponsor.logo}
+                                maxH={100}
+                            />
+                        ) : undefined}
                     </FormControl>
+
                     <FormControl mt={4}>
                         <FormLabel>Type</FormLabel>
-                        <Input
-                            type="number"
-                            value={sponsor.type}
+                        <Select
                             onChange={(e) =>
                                 setSponsor({
                                     ...sponsor,
-                                    type: Number.parseInt(e.target.value),
+                                    type: e.target.value as Sponsor['type'],
                                 })
                             }
-                            placeholder="1"
-                        />
-                        <FormHelperText>1 = GOLD, 2 = SILVER</FormHelperText>
+                            defaultValue="BRONZE"
+                        >
+                            <option value="BRONZE">Bronze</option>
+                            <option value="SILVER">Silver</option>
+                            <option value="GOLD">Gold</option>
+                            <option value="FLAGSHIP">Flagship</option>
+                        </Select>
                     </FormControl>
                 </ModalBody>
 
@@ -101,4 +135,4 @@ const PartnerModal: React.FC<PartnerModalProps> = ({
     );
 };
 
-export default PartnerModal;
+export default SponsorModal;

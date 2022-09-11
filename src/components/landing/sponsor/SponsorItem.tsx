@@ -1,11 +1,11 @@
 import { Image, Link } from '@chakra-ui/react';
 
-type PartnerItemProps = {
+type SponsorItemProps = {
     href: string;
     logo: string;
     name: string;
 };
-const PartnerItem = (props: PartnerItemProps) => {
+const SponsorItem = (props: SponsorItemProps) => {
     return (
         <Link href={props.href} isExternal>
             <Image
@@ -16,4 +16,4 @@ const PartnerItem = (props: PartnerItemProps) => {
         </Link>
     );
 };
-export default PartnerItem;
+export default SponsorItem;

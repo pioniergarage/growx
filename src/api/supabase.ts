@@ -1280,8 +1280,11 @@ export interface definitions {
          * @default
          */
         link: string;
-        /** Format: smallint */
-        type: number;
+        /**
+         * Format: public.sponsor_type
+         * @enum {string}
+         */
+        type: 'GOLD' | 'SILVER' | 'BRONZE' | 'FLAGSHIP';
     };
 }
 
@@ -1462,7 +1465,7 @@ export interface parameters {
     'rowFilter.sponsors.logo': string;
     /** Format: text */
     'rowFilter.sponsors.link': string;
-    /** Format: smallint */
+    /** Format: public.sponsor_type */
     'rowFilter.sponsors.type': string;
 }
 
