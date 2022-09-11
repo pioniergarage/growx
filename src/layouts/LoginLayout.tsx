@@ -37,7 +37,7 @@ export default function Layout({ children }: PropsWithChildren) {
                         />
                         <Box
                             bg="blackAlpha.500"
-                            p={8}
+                            p={6}
                             borderRadius={4}
                             zIndex={12}
                         >
