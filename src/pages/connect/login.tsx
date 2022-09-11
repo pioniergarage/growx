@@ -1,6 +1,6 @@
 import LogInForm from '@/components/forms/LoginForm';
 import PageLink from '@/components/navigation/PageLink';
-import { Alert, AlertIcon, Box, Heading, VStack } from '@chakra-ui/react';
+import { Alert, AlertIcon, Heading, VStack } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
 import LoginLayout from 'layouts/LoginLayout';
@@ -45,15 +45,10 @@ const LoginPage: NextPageWithLayout = () => {
         setLoading(false);
     }
     return (
-        <VStack gap={2}>
-            <Box>
-                <Heading as="h1" size="xl" color="secondary">
-                    GROWconnect
-                </Heading>
-                <Heading as="h3" size="sm" fontWeight="light">
-                    the platform for participants
-                </Heading>
-            </Box>
+        <VStack gap={2} alignItems="stretch">
+            <Heading as="h1" size="xl" color="secondary">
+                GROW
+            </Heading>
             <LogInForm onSubmit={handleLogin} loading={loading} />
             {loginError ? (
                 <Alert status="error" width="16rem">

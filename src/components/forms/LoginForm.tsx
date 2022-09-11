@@ -35,7 +35,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
 
     return (
         <form onSubmit={formik.handleSubmit}>
-            <VStack alignItems="stretch" gap={2}>
+            <VStack alignItems="stretch">
                 <FormControl
                     isInvalid={!!formik.errors.email}
                     isDisabled={props.loading}
