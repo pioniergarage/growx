@@ -30,7 +30,12 @@ export function useUpsertSponsor() {
             onSuccess: (upserted) => {
                 queryClient.setQueryData(
                     'sponsors',
-                    sponsors ? [...sponsors, upserted] : [upserted]
+                    sponsors
+                        ? [
+                              ...sponsors.filter((s) => s.id != upserted.id),
+                              upserted,
+                          ]
+                        : [upserted]
                 );
             },
         }
