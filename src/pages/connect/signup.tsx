@@ -2,7 +2,7 @@ import ParticipateForm, {
     ParticipateInfo,
 } from '@/components/forms/ParticipateForm';
 import PageLink from '@/components/navigation/PageLink';
-import { Alert, AlertIcon, Box, Heading, VStack } from '@chakra-ui/react';
+import { Alert, AlertIcon, Heading, VStack } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
 import { useUpdateProfile } from 'hooks/profile';
@@ -49,11 +49,9 @@ const SignUp: NextPageWithLayout = () => {
     }
     return (
         <VStack maxW="container.sm" mx="auto" alignItems="stretch">
-            <Box>
-                <Heading as="h1" size="xl" color="secondary">
-                    GROW
-                </Heading>
-            </Box>
+            <Heading as="h1" size="xl" color="secondary">
+                GROW
+            </Heading>
             <ParticipateForm loading={loading} onSubmit={onSignUp} />
             {signUpError ? (
                 <Alert status="error">

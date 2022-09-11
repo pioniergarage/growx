@@ -2,7 +2,7 @@ import {
     Colors,
     ComponentStyleConfig,
     extendTheme,
-    ThemeConfig
+    ThemeConfig,
 } from '@chakra-ui/react';
 
 const config: ThemeConfig = {
@@ -35,9 +35,9 @@ const theme = extendTheme({
     styles: {
         global: () => ({
             body: {
-                bg: "gray.900"
-            }
-        })
-    }
+                bg: 'gray.900',
+            },
+        }),
+    },
 });
 export default theme;
