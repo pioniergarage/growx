@@ -16,23 +16,8 @@ const EventsPage = ({ eventsRaw }: { eventsRaw: definitions['events'][] }) => {
 
     return (
         <Box>
-<<<<<<< HEAD
             <Heading mb={10}>Events</Heading>
             <VStack alignItems="stretch" gap={10}>
-                {events
-                    ? events.map((event) => (
-                          <GrowEventCard
-                              key={event.id}
-                              event={event}
-                              registered={(registeredTo || []).includes(
-                                  event.id
-                              )}
-                          />
-                      ))
-                    : undefined}
-=======
-            <Heading mb={4}>Events</Heading>
-            <VStack alignItems="stretch" gap={4}>
                 {events.map((event) => (
                     <GrowEventCard
                         key={event.id}
@@ -40,7 +25,6 @@ const EventsPage = ({ eventsRaw }: { eventsRaw: definitions['events'][] }) => {
                         registered={(registeredTo || []).includes(event.id)}
                     />
                 ))}
->>>>>>> main
             </VStack>
         </Box>
     );

@@ -1,11 +1,11 @@
 import { User } from '@supabase/supabase-js';
 import {
-    createEvent,
     deleteEvent,
     getEvent,
     getEvents,
     getRegistrationsOfUser,
     getRegistrationsTo,
+    insertEvent,
     registerUser,
     unregisterUser,
     updateEvent,
@@ -103,12 +103,12 @@ export function useDeleteEvent() {
     return { ...mutation, deleteEvent: mutation.mutateAsync };
 }
 
-export function useCreateEvent() {
+export function useInsertEvent() {
     const queryClient = useQueryClient();
-    const mutation = useMutation(createEvent, {
+    const mutation = useMutation(insertEvent, {
         onSuccess: (created) => {
             queryClient.setQueryData(['events', created.id], created);
         },
     });
-    return { ...mutation, createEvent: mutation.mutateAsync };
+    return { ...mutation, insertEvent: mutation.mutateAsync };
 }

@@ -26,6 +26,7 @@ interface EventModalProps {
     onSave: (event: Omit<GrowEvent, 'id'>) => void;
     onDelete: () => void;
     initialValue: Omit<GrowEvent, 'id'> & { id?: number };
+    onCreate: (event: Omit<GrowEvent, 'id'>) => void;
 }
 
 // View Theme properties
@@ -52,6 +53,11 @@ function getThemeText1(viewTheme: ModalViewType) {
     }
 }
 
+/**
+ * Get the Window Headline of the modal, if the event will create or adjust.
+ * @param id event id
+ * @returns if the id is undefine return create Title String, otherwiese return the adjust title String
+ */
 function getThemeText(id: number | undefined) {
     if (isIdUndefined(id)) {
         // id is empty -> create new Event
@@ -61,12 +67,19 @@ function getThemeText(id: number | undefined) {
     }
 }
 
-function getButtonText(viewTheme: ModalViewType) {
-    switch (viewTheme) {
-        case ModalViewType.adjust:
-            return SavebuttonText;
-        case ModalViewType.create:
-            return CreatebuttonText;
+function getButtonText(id: number | undefined) {
+    if (isIdUndefined(id)) {
+        return SavebuttonText;
+    } else {
+        return CreatebuttonText;
+    }
+}
+
+function getButtonAction(event) {
+    if (isIdUndefined(event.id)) {
+        return;
+    } else {
+        return () => onSave(event);
     }
 }
 
@@ -81,6 +94,11 @@ function isViewThemeEqual(
     }
 }
 
+/**
+ * Check if the event id is valid
+ * @param id: the event id
+ * @returns true if the id is valid, otherwise false
+ */
 function isIdUndefined(id: number | undefined) {
     if (id == undefined) {
         return true;
@@ -106,6 +124,7 @@ const EventModal: React.FC<EventModalProps> = ({
     isOpen,
     onClose,
     onSave,
+    onCreate,
     onDelete,
     initialValue,
 }) => {
@@ -116,11 +135,11 @@ const EventModal: React.FC<EventModalProps> = ({
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
-                <ModalHeader>Adjust Event</ModalHeader>
+                <ModalHeader>{getThemeText(event.id)}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody pb={6}>
                     <FormControl>
-                        <FormLabel>{getThemeText(event.id)}</FormLabel>
+                        <FormLabel>Title</FormLabel>
                         <Input
                             value={event.title}
                             onChange={(e) =>
@@ -129,7 +148,7 @@ const EventModal: React.FC<EventModalProps> = ({
                                 // TODO?
                                 setEvent({ ...event, title: e.target.value })
                             }
-                            placeholder="XYZ Gmbh"
+                            placeholder="Enter Title"
                         />
                     </FormControl>
                     <FormControl mt={6}>
@@ -218,8 +237,17 @@ const EventModal: React.FC<EventModalProps> = ({
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button onClick={() => onSave(event)} mr={3}>
-                        Save
+                    <Button
+                        onClick={() => {
+                            if (isIdUndefined(event.id)) {
+                                onCreate(event);
+                            } else {
+                                onSave(event);
+                            }
+                        }}
+                        mr={3}
+                    >
+                        {getButtonText(event.id)}
                     </Button>
                     <Button
                         onClick={onDelete}

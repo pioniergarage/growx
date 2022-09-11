@@ -1,5 +1,6 @@
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { GrowEvent } from 'model';
+import { EventType } from './../model/index';
 import { mapProfileDto } from './profile';
 import { definitions } from './supabase';
 import { handleResponse, handleSingleResponse } from './utils';
@@ -14,7 +15,7 @@ export const mapEventDto: (dto: definitions['events']) => GrowEvent = (
     mandatory: dto.mandatory,
     location: dto.location,
     sq_mandatory: dto.sq_mandatory,
-    type: dto.type,
+    type: dto.type as EventType,
 });
 
 export const getEvents = () =>
@@ -36,7 +37,7 @@ export const getEvent = (eventId: number) =>
         )
         .then(mapEventDto);
 
-export const createEvent: (
+export const insertEvent: (
     event: Omit<Partial<GrowEvent>, 'tags' | 'types' | 'date'>
 ) => Promise<GrowEvent> = async (event) =>
     await supabaseClient

@@ -19,17 +19,13 @@ import {
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import {
-    useCreateEvent,
     useDeleteEvent,
     useGrowEvents,
+    useInsertEvent,
     useUpdateEvent,
 } from 'hooks/event';
 import { useProfiles } from 'hooks/profile';
-<<<<<<< HEAD
-import ConnectLayout from 'layouts/ConnectLayout';
 import { EventType, GrowEvent } from 'model';
-=======
->>>>>>> main
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FaPen } from 'react-icons/fa';
@@ -52,7 +48,7 @@ function Events() {
     const router = useRouter();
     const toast = useToast();
     const { events } = useGrowEvents();
-    const { createEvent } = useCreateEvent();
+    const { insertEvent } = useInsertEvent();
     const { deleteEvent } = useDeleteEvent();
     const { updateEvent } = useUpdateEvent();
     const [modalOpen, setModalOpen] = useState(false);
@@ -70,13 +66,13 @@ function Events() {
         type: EventType.Hybrid,
     });
 
-    async function createNewEvent() {
-        createEvent({
-            date: new Date(),
+    function setNewEventModal() {
+        setEventOnEdit({
             title: '',
-            id: undefined,
             description: undefined,
             mandatory: undefined,
+            location: '',
+            date: new Date(),
         });
         setModalOpen(true);
     }
@@ -98,6 +94,11 @@ function Events() {
         setModalOpen(false);
     }
 
+    async function createEvent(event: GrowEvent) {
+        await insertEvent(event);
+        setModalOpen(false);
+    }
+
     return (
         <VStack alignItems="start">
             <Heading size="md" as="h3">
@@ -108,8 +109,10 @@ function Events() {
                 <Table size="sm">
                     <Thead>
                         <Tr>
+                            <Th></Th>
                             <Th>Date</Th>
                             <Th>Title</Th>
+                            <Th></Th>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -125,7 +128,7 @@ function Events() {
                                               onClick={() => adjustEvent(event)}
                                           />
                                       </Td>
-                                      <Td>{event.date.toISOString()}</Td>
+                                      <Td>{event.date.toLocaleString()}</Td>
                                       <Td>
                                           <Link
                                               href={
@@ -149,9 +152,10 @@ function Events() {
                 onClose={() => setModalOpen(false)}
                 onSave={(event) => saveEvent(event as GrowEvent)}
                 onDelete={onDeleteEvent}
+                onCreate={(event) => createEvent(event as GrowEvent)}
             />
 
-            <Button onClick={createNewEvent}>New Event</Button>
+            <Button onClick={setNewEventModal}>New Event</Button>
         </VStack>
     );
 }
