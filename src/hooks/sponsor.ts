@@ -1,4 +1,4 @@
-import { deleteSponsor, getSponsors, upsertSponsor } from 'api/sponsors';
+import { deleteSponsor, getSponsors, upsertSponsor } from 'database/sponsors';
 import { Sponsor } from 'model';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 

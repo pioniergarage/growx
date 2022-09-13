@@ -9,7 +9,7 @@ import {
     registerUser,
     unregisterUser,
     updateEvent,
-} from 'api/events';
+} from 'database/events';
 import { GrowEvent } from 'model';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 

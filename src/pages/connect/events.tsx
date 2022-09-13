@@ -4,8 +4,8 @@ import {
     supabaseServerClient,
     withPageAuth,
 } from '@supabase/auth-helpers-nextjs';
-import { mapEventDto } from 'api/events';
-import { definitions } from 'api/supabase';
+import { mapEventDto } from 'database/events';
+import { definitions } from 'database/supabase';
 import { useRegistrationsOfUser } from 'hooks/event';
 import { useProfile } from 'hooks/profile';
 

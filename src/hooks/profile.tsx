@@ -1,8 +1,8 @@
 import { useUser } from '@supabase/auth-helpers-react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
-import { fetchUserAvatar, uploadUserAvatar } from 'api/avatar';
-import { fetchProfile, getProfiles, updateProfile } from 'api/profile';
+import { fetchUserAvatar, uploadUserAvatar } from 'database/avatar';
+import { fetchProfile, getProfiles, updateProfile } from 'database/profile';
 import { Profile } from 'model';
 
 export function useProfile(userId?: string) {
