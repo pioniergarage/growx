@@ -1,37 +1,18 @@
-import ConnectLayout from 'layouts/ConnectLayout';
-import {
-    Box,
-    Heading,
-    VStack,
-} from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { useProfile } from 'hooks/profile';
-import { useEffect, useState } from 'react';
 import GrowEventCard from '@/components/events/GrowEventCard';
-import { getEvents, getRegistrationsOfUser } from 'api';
-import { GrowEvent } from 'model';
-import { NextPageWithLayout } from 'utils/types';
+import { Box, Heading, VStack } from '@chakra-ui/react';
+import {
+    supabaseServerClient,
+    withPageAuth,
+} from '@supabase/auth-helpers-nextjs';
+import { mapEventDto } from 'api/events';
+import { definitions } from 'api/supabase';
+import { useRegistrationsOfUser } from 'hooks/event';
+import { useProfile } from 'hooks/profile';
 
-
-const EventsPage: NextPageWithLayout = () => {
+const EventsPage = ({ eventsRaw }: { eventsRaw: definitions['events'][] }) => {
     const { profile } = useProfile();
-
-    const [events, setEvents] = useState<GrowEvent[]>([]);
-    const [registeredTo, setRegisteredTo] = useState<number[]>([]);
-
-    useEffect(() => {
-        (async () => {
-            if (!profile) return;
-            const { data } = await getEvents()
-            const { data: registered } = await getRegistrationsOfUser(profile.userId)
-            if (registered) {
-                setRegisteredTo(registered.map((r) => r.eventId));
-            }
-            if (data) {
-                setEvents(data.map((e) => ({ ...e, date: new Date(e.date) })));
-            }
-        })();
-    }, [profile]);
+    const { eventIds: registeredTo } = useRegistrationsOfUser(profile?.userId);
+    const events = eventsRaw.map(mapEventDto);
 
     return (
         <Box>
@@ -41,7 +22,7 @@ const EventsPage: NextPageWithLayout = () => {
                     <GrowEventCard
                         key={event.id}
                         event={event}
-                        registered={registeredTo.includes(event.id)}
+                        registered={(registeredTo || []).includes(event.id)}
                     />
                 ))}
             </VStack>
@@ -49,10 +30,18 @@ const EventsPage: NextPageWithLayout = () => {
     );
 };
 
-EventsPage.getLayout = (page) => <ConnectLayout>{page}</ConnectLayout>;
-
 export default EventsPage;
 
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
+    getServerSideProps: async (context) => {
+        const { data, error } = await supabaseServerClient(context)
+            .from<definitions['events']>('events')
+            .select('*')
+            .order('date');
+        if (error) {
+            throw new Error(error.message);
+        }
+        return { props: { eventsRaw: data } };
+    },
 });

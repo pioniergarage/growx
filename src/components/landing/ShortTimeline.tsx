@@ -1,7 +1,7 @@
 import { Box, Heading, SimpleGrid, Tag, Text, VStack } from '@chakra-ui/react';
 import Image from 'next/image';
 
-type Item = {
+type TimeLineItemProps = {
     date: string;
     title: string;
     description: string;
@@ -9,13 +9,13 @@ type Item = {
     objectPosition?: string;
 };
 
-function TimelineItem({
+const TimelineItem: React.FC<TimeLineItemProps> = ({
     date,
     title,
     description,
     image,
     objectPosition,
-}: Item) {
+}) => {
     return (
         <Box borderRadius={2} overflow="hidden">
             <Box position="relative" height="320px">
@@ -36,17 +36,19 @@ function TimelineItem({
                     pt={14}
                     bgGradient="linear(to-t, #000000cc 30%, #00000000 100%)"
                 >
-                    <Tag bgColor='blackAlpha.600' mb={2}>{date}</Tag>
+                    <Tag bgColor="blackAlpha.600" mb={2}>
+                        {date}
+                    </Tag>
                     <Heading size="md">{title}</Heading>
                     <Text mt={2}>{description}</Text>
                 </Box>
             </Box>
         </Box>
     );
-}
+};
 
 export default function ShortTimeline() {
-    const events: Item[] = [
+    const events: TimeLineItemProps[] = [
         {
             date: '05. Nov 22', // date is fix
             title: 'Kickoff Event',
@@ -64,7 +66,7 @@ export default function ShortTimeline() {
         },
         {
             date: '21. Jan 23', // date is fix
-            title: 'Finale',
+            title: 'Final',
             description: `Present your results to a huge crowd and show how far you have come. 
             Each participant will have learned a lot and gained a lot of experience by this point. 
             The groups with the greatest progress will receive prizes. This is what you've been working for!`,

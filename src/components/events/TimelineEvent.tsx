@@ -1,16 +1,20 @@
-import { HStack, VStack, Flex, Heading, Tag, Text } from '@chakra-ui/react';
-import { useMemo } from 'react';
+import { Flex, Heading, HStack, Tag, Text, VStack } from '@chakra-ui/react';
 import { EventType, GrowEvent } from 'model';
+import { useMemo } from 'react';
 
-export default function TimelineEvent(event: GrowEvent) {
+interface TimelineEventProps {
+    event: GrowEvent;
+}
+
+const TimelineEvent: React.FC<TimelineEventProps> = ({ event }) => {
     const { day, month } = useMemo(() => {
-        const date = new Date(event.date);
+        const date = event.date;
         const day = String(date.getDate()).padStart(2, '0');
         const month = date.toLocaleString('en-US', { month: 'short' });
         return { day, month };
     }, [event.date]);
 
-    const over = new Date() > new Date(event.date);
+    const over = new Date() > event.date;
 
     return (
         <HStack
@@ -41,4 +45,6 @@ export default function TimelineEvent(event: GrowEvent) {
             </Flex>
         </HStack>
     );
-}
+};
+
+export default TimelineEvent;

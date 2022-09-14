@@ -7,7 +7,7 @@ type PageLinkProps = LinkProps & {
     children: ReactNode;
 };
 
-const PageLink = ({href, children, ...rest}: PageLinkProps) => {
+const PageLink: React.FC<PageLinkProps> = ({ href, children, ...rest }) => {
     return (
         <NextLink href={href} passHref>
             <Link {...rest}>{children}</Link>

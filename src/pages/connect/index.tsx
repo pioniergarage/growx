@@ -1,33 +1,90 @@
-import ConnectLayout from 'layouts/ConnectLayout';
-import PageLink from '@/components/navigation/PageLink';
+import AnimatedLogo from '@/components/landing/AnimatedLogo';
+import TeamCard from '@/components/teams/TeamCard';
 import {
     Box,
-    Heading
+    Button,
+    Flex,
+    Heading,
+    Link,
+    Text,
+    VStack,
 } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { NextPageWithLayout } from 'utils/types';
+import {
+    getUser,
+    supabaseServerClient,
+    withPageAuth,
+} from '@supabase/auth-helpers-nextjs';
+import { definitions } from 'api/supabase';
+import { getTeam, getTeamIdOfUser } from 'api/teams';
+import { Team } from 'model';
+import dynamic from 'next/dynamic';
 
+const Countdown = dynamic(import('@/components/landing/Countdown'), {
+    ssr: false,
+});
 
+interface ConnectIndexProps {
+    profile: definitions['profiles'];
+    team?: Team;
+}
 
-const ConnectIndex: NextPageWithLayout = () => {
+const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile, team }) => {
     return (
-        <Box>
-            <Heading>GROWconnect</Heading>
-            <PageLink href="/">Back to Landing Page</PageLink>
-
-            <Box mt={8}>
-                <Heading size="md" as="h3">
-                    Participants
+        <Flex wrap="wrap">
+            <VStack flexGrow={1} alignItems="start">
+                <Heading size="md">
+                    <Text as="span" color="gray.500">
+                        Welcome back,
+                    </Text>{' '}
+                    {profile.first_name}
                 </Heading>
-            </Box>
-        </Box>
+                <Box>
+                    {!team ? (
+                        <>
+                            <Text>
+                                You have not joined a team yet.
+                                <Link
+                                    href="/connect/teams"
+                                    display="inline-block"
+                                    mx={2}
+                                >
+                                    <Button variant="outline" size="sm">
+                                        Browse Teams
+                                    </Button>
+                                </Link>{' '}
+                            </Text>
+                        </>
+                    ) : (
+                        <TeamCard {...team} />
+                    )}
+                </Box>
+            </VStack>
+            <VStack>
+                <AnimatedLogo fill="whiteAlpha.900" boxSize={300} />
+                <Countdown />
+            </VStack>
+        </Flex>
     );
 };
-
-ConnectIndex.getLayout = (page) => <ConnectLayout>{page}</ConnectLayout>;
 
 export default ConnectIndex;
 
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
+    getServerSideProps: async (context) => {
+        const client = supabaseServerClient(context);
+        const { user } = await getUser(context);
+        const { data: profile, error } = await client
+            .from<definitions['profiles']>('profiles')
+            .select('*')
+            .match({ user_id: user.id })
+            .single();
+        if (error) {
+            throw new Error(error.message);
+        }
+
+        const teamId = await getTeamIdOfUser(user.id);
+        const team = teamId ? await getTeam(teamId) : null;
+        return { props: { profile, team } };
+    },
 });

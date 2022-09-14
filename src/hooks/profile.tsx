@@ -1,65 +1,91 @@
 import { useUser } from '@supabase/auth-helpers-react';
-import { getProfile, updateProfile } from 'api';
-import {
-    createContext,
-    PropsWithChildren,
-    useContext,
-    useEffect,
-    useState,
-} from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+
+import { fetchUserAvatar, uploadUserAvatar } from 'api/avatar';
+import { fetchProfile, getProfiles, updateProfile } from 'api/profile';
 import { Profile } from 'model';
 
-const ProfileContext = createContext<{
-    profile?: Profile;
-    loading: boolean;
-    error?: string;
-    update: (profile: Profile) => Promise<void>;
-}>({ loading: false, update: () => Promise.reject() });
-
-export function ProfileProvider({ children }: PropsWithChildren) {
+export function useProfile(userId?: string) {
     const { user } = useUser();
-    const [profile, setProfile] = useState<Profile | undefined>();
-    const [error, setError] = useState<string>();
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        async function fetchProfile() {
-            setLoading(true);
-            if (!user) return;
-            const { data, error } = await getProfile(user.id)
-            if (error) {
-                setError(error.message);
-            } else {
-                setProfile(data);
+    const userId2 = userId || user?.id;
+    const result = useQuery(
+        ['profile', userId2],
+        () => {
+            if (!userId2) {
+                throw new Error('user id not available. Cannot fetch Profile');
             }
-            setLoading(false);
-        }
-        fetchProfile();
-    }, [user]);
-
-    async function update(profile: Profile) {
-        setLoading(true);
-        const { error } = await updateProfile(user?.id || '', profile)
-        if (!error) {
-            setProfile(profile);
-        }
-        setLoading(false);
-        if (error) {
-            throw error.message;
-        }
-    }
-
-    return (
-        <ProfileContext.Provider value={{ profile, loading, error, update }}>
-            {children}
-        </ProfileContext.Provider>
+            return fetchProfile(userId2);
+        },
+        { enabled: !!userId2 }
     );
+    return { ...result, profile: result.data };
 }
 
-export function useProfile() {
-    const context = useContext(ProfileContext);
-    if (!context) {
-        throw Error('useProfile must be wrapped inside a ProfileProvider');
-    }
-    return context;
+export function useUpdateProfile() {
+    const queryClient = useQueryClient();
+    const mutation = useMutation(
+        (profile: Partial<Profile> & Pick<Profile, 'userId'>) =>
+            updateProfile(profile),
+        {
+            onSuccess: (updated) => {
+                queryClient.setQueryData<Profile | undefined>(
+                    ['profile', updated.userId],
+                    updated
+                );
+            },
+        }
+    );
+    return { ...mutation, updateProfile: mutation.mutateAsync };
+}
+
+export function useAvatarUrl({
+    userId,
+    avatar,
+}: {
+    userId?: Profile['userId'];
+    avatar: Profile['avatar'];
+}) {
+    const result = useQuery(
+        ['avatar', userId],
+        async () => {
+            if (!avatar) {
+                return null;
+            }
+            const blob = await fetchUserAvatar(avatar);
+            return URL.createObjectURL(blob);
+        },
+        { enabled: !!userId }
+    );
+    return { ...result, avatarUrl: result.data };
+}
+
+export function useUploadAvatar() {
+    const queryClient = useQueryClient();
+    const { updateProfile } = useUpdateProfile();
+    const mutation = useMutation(
+        ({ profile, file }: { profile: Profile; file: File }) =>
+            uploadUserAvatar(profile, file),
+        {
+            onSuccess: async (filename, { profile, file }) => {
+                updateProfile({ ...profile, avatar: filename });
+                queryClient.setQueryData(
+                    ['avatar', profile.userId],
+                    URL.createObjectURL(file)
+                );
+            },
+        }
+    );
+    return { ...mutation, uploadUserAvatar: mutation.mutateAsync };
+}
+
+export function useProfiles() {
+    const queryClient = useQueryClient();
+    const query = useQuery('profiles', getProfiles, {
+        onSuccess: (profiles) => {
+            profiles.forEach((profile) =>
+                queryClient.setQueryData(['profile', profile.userId], profile)
+            );
+        },
+    });
+    return { ...query, profiles: query.data };
 }

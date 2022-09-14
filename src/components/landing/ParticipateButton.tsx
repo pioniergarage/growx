@@ -1,9 +1,9 @@
-import { BoxProps, Box } from '@chakra-ui/react';
+import { Box, BoxProps } from '@chakra-ui/react';
 import PageLink from '../navigation/PageLink';
 
-export default function ParticipateButton(props: BoxProps) {
+const ParticipateButton: React.FC<BoxProps> = (props) => {
     return (
-        <PageLink href='/connect'>
+        <PageLink href="/connect">
             <Box
                 as="button"
                 bgGradient="linear(to-r, secondary, primary)"
@@ -23,4 +23,6 @@ export default function ParticipateButton(props: BoxProps) {
             </Box>
         </PageLink>
     );
-}
+};
+
+export default ParticipateButton;
