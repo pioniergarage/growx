@@ -29,21 +29,25 @@ interface EventModalProps {
     onCreate: (event: Omit<GrowEvent, 'id'>) => void;
 }
 
+// TODO: delete Commits
 // View Theme properties
 // Modal view type
+/*
 enum ModalViewType {
     adjust = 'adjust',
     create = 'create',
 }
+*/
 
 // Adjust:
 
 const adjustTitleText = 'Adjust Event';
-const createTitleText = 'Create new Event';
+const createTitleText = 'Create New Event';
 
 const SavebuttonText = 'Save';
 const CreatebuttonText = 'Create';
 
+/*
 function getThemeText1(viewTheme: ModalViewType) {
     switch (viewTheme) {
         case ModalViewType.adjust:
@@ -52,6 +56,7 @@ function getThemeText1(viewTheme: ModalViewType) {
             return createTitleText;
     }
 }
+*/
 
 /**
  * Get the Window Headline of the modal, if the event will create or adjust.
@@ -69,12 +74,13 @@ function getThemeText(id: number | undefined) {
 
 function getButtonText(id: number | undefined) {
     if (isIdUndefined(id)) {
-        return SavebuttonText;
-    } else {
         return CreatebuttonText;
+    } else {
+        return SavebuttonText;
     }
 }
 
+/* 
 function getButtonAction(event) {
     if (isIdUndefined(event.id)) {
         return;
@@ -93,6 +99,7 @@ function isViewThemeEqual(
         return false;
     }
 }
+*/
 
 /**
  * Check if the event id is valid
