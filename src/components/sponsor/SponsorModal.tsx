@@ -1,3 +1,5 @@
+// Component for the Ajust Sponsor form
+
 import {
     Button,
     FormControl,

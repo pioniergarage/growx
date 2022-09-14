@@ -23,40 +23,19 @@ export type Sponsor = {
     id: number;
 };
 
-export type UserRole = 'admin' | undefined;
-
+export type UserRole = 'PARTICIPANT' | 'BUDDY' | 'MENTOR' | 'EXPERT' | 'ORGA';
 export enum EventType {
     Online = 'Online',
     Offline = 'Offline',
-    Hybrid = 'Hyprid',
+    Hybrid = 'Hybrid',
 }
-
-/*
-export function eventTypeIdToString(et: EventType) {
-    switch (et) {
-        case EventType.Online:
-            return 'Online';
-            break;
-        case EventType.Offline:
-            return 'Offline';
-            break;
-        case EventType.Hybrid:
-            return 'Hybrid';
-            break;
-
-        default:
-            return '';
-            break;
-    }
-}
-*/
 
 export type GrowEvent = {
     date: Date;
     id: number;
     title: string;
-    description: string;
-    mandatory: boolean;
+    description?: string;
+    mandatory?: boolean;
     location?: string;
     sq_mandatory?: boolean;
     type?: EventType;
