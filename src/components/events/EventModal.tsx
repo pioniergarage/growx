@@ -1,6 +1,4 @@
-// Component for the Ajust Event form
-
-// TODOO copyed from adjust Event.
+// Component for the Ajust and create Event modl
 import {
     Button,
     Checkbox,
@@ -16,7 +14,6 @@ import {
     ModalHeader,
     ModalOverlay,
 } from '@chakra-ui/react';
-// import { Sponsor } from 'model';
 import { EventType, GrowEvent } from 'model';
 import { useEffect, useState } from 'react';
 
@@ -29,13 +26,6 @@ interface EventModalProps {
     onCreate: (event: Omit<GrowEvent, 'id'>) => void;
 }
 
-// View Theme properties
-// Modal view type
-enum ModalViewType {
-    adjust = 'adjust',
-    create = 'create',
-}
-
 // Adjust:
 
 const adjustTitleText = 'Adjust Event';
@@ -44,22 +34,13 @@ const createTitleText = 'Create new Event';
 const SavebuttonText = 'Save';
 const CreatebuttonText = 'Create';
 
-function getThemeText1(viewTheme: ModalViewType) {
-    switch (viewTheme) {
-        case ModalViewType.adjust:
-            return adjustTitleText;
-        case ModalViewType.create:
-            return createTitleText;
-    }
-}
-
 /**
- * Get the Window Headline of the modal, if the event will create or adjust.
- * @param id event id
- * @returns if the id is undefine return create Title String, otherwiese return the adjust title String
+ * Get the Window Headline for modal, if the event will create or adjust.
+ * @param id is the checking parameter. new events has undefined id.
+ * @returns if the id is undefine return create Title String, otherwise return the adjust title String
  */
 function getThemeText(id: number | undefined) {
-    if (isIdUndefined(id)) {
+    if (id === undefined) {
         // id is empty -> create new Event
         return createTitleText;
     } else {
@@ -67,59 +48,19 @@ function getThemeText(id: number | undefined) {
     }
 }
 
+/**
+ * Get button text for the model, check if the event will create or adjust.
+ * @param id is the checking parameter. new events has undefined id.
+ * @returns if the id is undefine it returns a title string for the button, otherwise return the adjust text string
+ */
 function getButtonText(id: number | undefined) {
-    if (isIdUndefined(id)) {
+    if (id === undefined) {
         return SavebuttonText;
     } else {
         return CreatebuttonText;
     }
 }
 
-function getButtonAction(event) {
-    if (isIdUndefined(event.id)) {
-        return;
-    } else {
-        return () => onSave(event);
-    }
-}
-
-function isViewThemeEqual(
-    viewTheme1: ModalViewType,
-    viewTheme2: ModalViewType
-) {
-    if (viewTheme1 == viewTheme2) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-/**
- * Check if the event id is valid
- * @param id: the event id
- * @returns true if the id is valid, otherwise false
- */
-function isIdUndefined(id: number | undefined) {
-    if (id == undefined) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-/**
- * 
- * date: Date
-    id: number;
-    Done: title: string; 
-    DONE: description: string;
-    mandatory: boolean;
-    location?: string;
-    sq_mandatory?: boolean;
-    type?: EventType;
- */
-
-// const PartnerModal: React.FC<PartnerModalProps> = ({
 const EventModal: React.FC<EventModalProps> = ({
     isOpen,
     onClose,
@@ -128,7 +69,6 @@ const EventModal: React.FC<EventModalProps> = ({
     onDelete,
     initialValue,
 }) => {
-    //  const [sponsor, setSponsor] = useState(initialValue);
     const [event, setEvent] = useState(initialValue);
     useEffect(() => setEvent(initialValue), [initialValue]);
     return (
@@ -143,9 +83,6 @@ const EventModal: React.FC<EventModalProps> = ({
                         <Input
                             value={event.title}
                             onChange={(e) =>
-                                // setSponsor({ ...event, name: e.target.value })
-
-                                // TODO?
                                 setEvent({ ...event, title: e.target.value })
                             }
                             placeholder="Enter Title"
@@ -239,7 +176,7 @@ const EventModal: React.FC<EventModalProps> = ({
                 <ModalFooter>
                     <Button
                         onClick={() => {
-                            if (isIdUndefined(event.id)) {
+                            if (event.id === undefined) {
                                 onCreate(event);
                             } else {
                                 onSave(event);
@@ -253,7 +190,7 @@ const EventModal: React.FC<EventModalProps> = ({
                         onClick={onDelete}
                         colorScheme="red"
                         mr={3}
-                        disabled={isIdUndefined(event.id)}
+                        disabled={event.id === undefined}
                     >
                         Delete
                     </Button>
