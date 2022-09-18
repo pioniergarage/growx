@@ -37,18 +37,22 @@ const GrowConnectNavButton: React.FC<
         <>
             <Show above="md">
                 <Link {...rest}>
-                    <Button variant="ghost" leftIcon={variant}>
-                        {children}
-                    </Button>
+                    <a>
+                        <Button variant="ghost" leftIcon={variant}>
+                            {children}
+                        </Button>
+                    </a>
                 </Link>
             </Show>
             <Show below="md">
                 <Link {...rest}>
-                    <IconButton
-                        aria-label={rest['aria-label']}
-                        icon={icon}
-                        variant="ghost"
-                    />
+                    <a>
+                        <IconButton
+                            aria-label={rest['aria-label']}
+                            icon={icon}
+                            variant="ghost"
+                        />
+                    </a>
                 </Link>
             </Show>
         </>
