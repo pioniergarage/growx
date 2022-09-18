@@ -1,10 +1,7 @@
-import FullTable from '@/components/FullTable';
-import SponsorAdmin from '@/components/sponsor/SponsorAdmin';
+import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
 import {
     Button,
-    Divider,
     Heading,
-    Link,
     Table,
     TableContainer,
     Tbody,
@@ -17,24 +14,10 @@ import {
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useCreateEvent, useGrowEvents } from 'hooks/event';
-import { useProfiles } from 'hooks/profile';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { NextPageWithLayout } from 'utils/types';
 
-function Profiles() {
-    const { profiles, isLoading } = useProfiles();
-
-    return (
-        <FullTable
-            loading={isLoading}
-            values={profiles || []}
-            idProp="userId"
-            heading="Profiles"
-        />
-    );
-}
-
-function Events() {
+export default function Events() {
     const router = useRouter();
     const toast = useToast();
     const { events } = useGrowEvents();
@@ -54,6 +37,7 @@ function Events() {
 
     return (
         <VStack alignItems="start">
+            <AdminBreadcrumbs route={[['Events', '/connect/admin/events']]} />
             <Heading size="md" as="h3">
                 Events
             </Heading>
@@ -91,21 +75,6 @@ function Events() {
         </VStack>
     );
 }
-
-const AdminPage: NextPageWithLayout = () => {
-    return (
-        <VStack maxW="container.lg" alignItems="stretch" gap={4} mb={4}>
-            <Heading>Admin</Heading>
-            <Profiles />
-            <Divider />
-            <Events />
-            <Divider />
-            <SponsorAdmin />
-        </VStack>
-    );
-};
-
-export default AdminPage;
 
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',

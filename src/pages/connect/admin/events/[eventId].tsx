@@ -1,5 +1,6 @@
 import TimelineEvent from '@/components/events/TimelineEvent';
 import FullTable from '@/components/FullTable';
+import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
 import {
     AlertDialog,
     AlertDialogBody,
@@ -115,125 +116,134 @@ function EventForm({
     const cancelRef = useRef<FocusableElement & HTMLButtonElement>(null);
 
     return (
-        <form onSubmit={formik.handleSubmit}>
-            <VStack alignItems="stretch">
-                <HStack alignItems="start">
+        <>
+            <form onSubmit={formik.handleSubmit}>
+                <VStack alignItems="stretch">
+                    <HStack alignItems="start">
+                        <FormControl isDisabled={loading}>
+                            <FormLabel htmlFor="title">Title</FormLabel>
+                            <Input
+                                name="title"
+                                id="title"
+                                onChange={formik.handleChange}
+                                value={formik.values.title}
+                            />
+                        </FormControl>
+                        <FormControl
+                            isDisabled={loading}
+                            isInvalid={!!formik.errors.date}
+                        >
+                            <FormLabel htmlFor="date">Date</FormLabel>
+                            <Input
+                                name="date"
+                                id="date"
+                                onChange={formik.handleChange}
+                                value={formik.values.date}
+                                placeholder="2022-08-01"
+                            />
+                            <FormErrorMessage>
+                                {formik.errors.date}
+                            </FormErrorMessage>
+                        </FormControl>
+                        <FormControl
+                            isDisabled={loading}
+                            isInvalid={!!formik.errors.time}
+                        >
+                            <FormLabel htmlFor="time">Time</FormLabel>
+                            <Input
+                                name="time"
+                                id="time"
+                                onChange={formik.handleChange}
+                                value={formik.values.time}
+                                placeholder="00:00"
+                            />
+                            <FormErrorMessage>
+                                {formik.errors.time}
+                            </FormErrorMessage>
+                        </FormControl>
+                        <FormControl isDisabled={loading}>
+                            <FormLabel htmlFor="mandatory">Mandatory</FormLabel>
+                            <Switch
+                                id="mandatory"
+                                isChecked={formik.values.mandatory}
+                                onChange={formik.handleChange}
+                            />
+                        </FormControl>
+                    </HStack>
                     <FormControl isDisabled={loading}>
-                        <FormLabel htmlFor="title">Title</FormLabel>
-                        <Input
-                            name="title"
-                            id="title"
+                        <FormLabel htmlFor="description">Description</FormLabel>
+                        <Textarea
+                            name="description"
+                            id="description"
                             onChange={formik.handleChange}
-                            value={formik.values.title}
-                        />
-                    </FormControl>
-                    <FormControl
-                        isDisabled={loading}
-                        isInvalid={!!formik.errors.date}
-                    >
-                        <FormLabel htmlFor="date">Date</FormLabel>
-                        <Input
-                            name="date"
-                            id="date"
-                            onChange={formik.handleChange}
-                            value={formik.values.date}
-                            placeholder="2022-08-01"
+                            value={formik.values.description}
                         />
                         <FormErrorMessage>
-                            {formik.errors.date}
+                            {formik.errors.description}
                         </FormErrorMessage>
                     </FormControl>
-                    <FormControl
-                        isDisabled={loading}
-                        isInvalid={!!formik.errors.time}
-                    >
-                        <FormLabel htmlFor="time">Time</FormLabel>
-                        <Input
-                            name="time"
-                            id="time"
-                            onChange={formik.handleChange}
-                            value={formik.values.time}
-                            placeholder="00:00"
-                        />
-                        <FormErrorMessage>
-                            {formik.errors.time}
-                        </FormErrorMessage>
-                    </FormControl>
-                    <FormControl isDisabled={loading}>
-                        <FormLabel htmlFor="mandatory">Mandatory</FormLabel>
-                        <Switch
-                            id="mandatory"
-                            isChecked={formik.values.mandatory}
-                            onChange={formik.handleChange}
-                        />
-                    </FormControl>
-                </HStack>
-                <FormControl isDisabled={loading}>
-                    <FormLabel htmlFor="description">Description</FormLabel>
-                    <Textarea
-                        name="description"
-                        id="description"
-                        onChange={formik.handleChange}
-                        value={formik.values.description}
-                    />
-                    <FormErrorMessage>
-                        {formik.errors.description}
-                    </FormErrorMessage>
-                </FormControl>
-                <HStack>
-                    <Button color="secondary" isLoading={loading} type="submit">
-                        Save
-                    </Button>
-                    <Button
-                        isDisabled={loading}
-                        onClick={() => formik.setValues(initialFormValue)}
-                    >
-                        Reset
-                    </Button>
-                    <Box flexGrow={1} />
-                    <Button isLoading={loading} onClick={openDialog}>
-                        Delete
-                    </Button>
-                    <AlertDialog
-                        isOpen={isOpen}
-                        leastDestructiveRef={cancelRef}
-                        onClose={onClose}
-                    >
-                        <AlertDialogOverlay>
-                            <AlertDialogContent>
-                                <AlertDialogHeader
-                                    fontSize="lg"
-                                    fontWeight="bold"
-                                >
-                                    Delete Event
-                                </AlertDialogHeader>
-
-                                <AlertDialogBody>
-                                    Are you sure? You can&apos;t undo this
-                                    action afterwards.
-                                </AlertDialogBody>
-
-                                <AlertDialogFooter>
-                                    <Button ref={cancelRef} onClick={onClose}>
-                                        Cancel
-                                    </Button>
-                                    <Button
-                                        colorScheme="red"
-                                        onClick={() => {
-                                            onClose();
-                                            onDelete();
-                                        }}
-                                        ml={3}
+                    <HStack>
+                        <Button
+                            color="secondary"
+                            isLoading={loading}
+                            type="submit"
+                        >
+                            Save
+                        </Button>
+                        <Button
+                            isDisabled={loading}
+                            onClick={() => formik.setValues(initialFormValue)}
+                        >
+                            Reset
+                        </Button>
+                        <Box flexGrow={1} />
+                        <Button isLoading={loading} onClick={openDialog}>
+                            Delete
+                        </Button>
+                        <AlertDialog
+                            isOpen={isOpen}
+                            leastDestructiveRef={cancelRef}
+                            onClose={onClose}
+                        >
+                            <AlertDialogOverlay>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader
+                                        fontSize="lg"
+                                        fontWeight="bold"
                                     >
-                                        Delete
-                                    </Button>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialogOverlay>
-                    </AlertDialog>
-                </HStack>
-            </VStack>
-        </form>
+                                        Delete Event
+                                    </AlertDialogHeader>
+
+                                    <AlertDialogBody>
+                                        Are you sure? You can&apos;t undo this
+                                        action afterwards.
+                                    </AlertDialogBody>
+
+                                    <AlertDialogFooter>
+                                        <Button
+                                            ref={cancelRef}
+                                            onClick={onClose}
+                                        >
+                                            Cancel
+                                        </Button>
+                                        <Button
+                                            colorScheme="red"
+                                            onClick={() => {
+                                                onClose();
+                                                onDelete();
+                                            }}
+                                            ml={3}
+                                        >
+                                            Delete
+                                        </Button>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialogOverlay>
+                        </AlertDialog>
+                    </HStack>
+                </VStack>
+            </form>
+        </>
     );
 }
 
@@ -294,6 +304,15 @@ const EventDetails: NextPageWithLayout = () => {
 
     return (
         <VStack maxW="container.lg" alignItems="stretch" gap={4}>
+            <AdminBreadcrumbs
+                route={[
+                    ['Events', '/connect/admin/events'],
+                    [
+                        event?.title || '',
+                        `/connect/admin/events/${event?.id}`,
+                    ],
+                ]}
+            />
             <Heading>Event</Heading>
             {event && editingEvent ? (
                 <>
