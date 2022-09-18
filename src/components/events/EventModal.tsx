@@ -55,9 +55,9 @@ function getThemeText(id: number | undefined) {
  */
 function getButtonText(id: number | undefined) {
     if (id === undefined) {
-        return SavebuttonText;
-    } else {
         return CreatebuttonText;
+    } else {
+        return SavebuttonText;
     }
 }
 
