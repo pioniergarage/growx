@@ -79,7 +79,7 @@ export const availableSkills = [
     'Prototyping',
     'Market Research',
     'Legal',
-];
+].sort();
 
 export type FAQ = {
     question: string;
