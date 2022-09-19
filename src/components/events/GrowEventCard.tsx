@@ -113,6 +113,8 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
                     ) : !over ? (
                         actionButton
                     ) : undefined}
+                    {event.type ? <Tag>{event.type}</Tag> : undefined}
+                    {event.location ? <Tag>{event.location}</Tag> : undefined}
                 </Flex>
                 <Text color="gray.400">{event.description}</Text>
             </Flex>

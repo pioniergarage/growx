@@ -1,3 +1,5 @@
+// Component for the Ajust Sponsor form
+
 import {
     Button,
     FormControl,
@@ -125,10 +127,10 @@ const SponsorModal: React.FC<SponsorModalProps> = ({
                     <Button onClick={() => onSave(sponsor)} mr={3}>
                         Save
                     </Button>
-                    <Button onClick={onClose} mr={3}>
+                    <Button onClick={onDelete}  mr={3} colorScheme="red">Delete</Button>
+                    <Button onClick={onClose}>
                         Cancel
                     </Button>
-                    <Button onClick={onDelete}>Delete</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>

@@ -1,6 +1,5 @@
 import {
     Button,
-    Checkbox,
     Flex,
     FormControl,
     FormLabel,
@@ -16,6 +15,8 @@ import {
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { availableSkills, Team } from 'model';
+import { useState } from 'react';
+import TagSelect from '../TagSelect';
 
 interface TeamFormProps {
     onSave: (profile: Team) => void;
@@ -24,9 +25,11 @@ interface TeamFormProps {
 }
 
 const TeamForm: React.FC<TeamFormProps> = ({ onSave, team, onCancel }) => {
+    const { requestSupport: initialRequestSupport, ...initialTeam } = team;
+    const [requestSupport, setRequestSupport] = useState(initialRequestSupport);
     const formik = useFormik({
-        initialValues: team,
-        onSubmit: (values) => onSave(values),
+        initialValues: initialTeam,
+        onSubmit: (values) => onSave({ ...values, requestSupport }),
         validate: (values) => {
             const errors: Record<string, string> = {};
             if (!values.name) errors['name'] = 'Required';
@@ -99,37 +102,26 @@ const TeamForm: React.FC<TeamFormProps> = ({ onSave, team, onCancel }) => {
                             <FormLabel htmlFor="mentoring">
                                 Require Mentoring
                             </FormLabel>
-                            <Flex wrap="wrap" gap={2}>
-                                {availableSkills.map((skill, i) => (
-                                    <Checkbox
-                                        key={skill + i}
-                                        isChecked={formik.values.requestSupport.includes(
-                                            skill
-                                        )}
-                                        onChange={(e) => {
-                                            if (e.target.checked) {
-                                                formik.setFieldValue(
-                                                    'requestSupport',
-                                                    [
-                                                        ...formik.values
-                                                            .requestSupport,
-                                                        skill,
-                                                    ]
-                                                );
-                                            } else {
-                                                formik.setFieldValue(
-                                                    'requestSupport',
-                                                    formik.values.requestSupport.filter(
-                                                        (s) => s != skill
-                                                    )
-                                                );
-                                            }
-                                        }}
-                                    >
-                                        {skill}
-                                    </Checkbox>
-                                ))}
-                            </Flex>
+                            <TagSelect
+                                selected={requestSupport}
+                                values={availableSkills}
+                                onSelect={(value) =>
+                                    setRequestSupport([
+                                        ...requestSupport,
+                                        value,
+                                    ])
+                                }
+                                onDeselect={(value) => {
+                                    const newSupportRequests = [
+                                        ...requestSupport,
+                                    ];
+                                    newSupportRequests.splice(
+                                        newSupportRequests.indexOf(value),
+                                        1
+                                    );
+                                    setRequestSupport(newSupportRequests);
+                                }}
+                            />
                         </FormControl>
                     </GridItem>
                 </SimpleGrid>

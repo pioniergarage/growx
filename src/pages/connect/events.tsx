@@ -16,8 +16,8 @@ const EventsPage = ({ eventsRaw }: { eventsRaw: definitions['events'][] }) => {
 
     return (
         <Box>
-            <Heading mb={4}>Events</Heading>
-            <VStack alignItems="stretch" gap={4}>
+            <Heading mb={10}>Events</Heading>
+            <VStack alignItems="stretch" gap={10}>
                 {events.map((event) => (
                     <GrowEventCard
                         key={event.id}
