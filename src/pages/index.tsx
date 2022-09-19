@@ -12,7 +12,7 @@ import { getSponsors } from 'api/sponsors';
 import { FAQ, GrowEvent, Sponsor } from 'model';
 import { PropsWithChildren } from 'react';
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
     const sponsors = await getSponsors();
     const faqs = await getFAQs();
     const events = (await getEvents()).map((e) => ({
