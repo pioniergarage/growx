@@ -19,6 +19,7 @@ import { useGrowEvents, useInsertEvent, useDeleteEvent, useUpdateEvent } from 'h
 import { GrowEvent, EventType } from 'model';
 import { useState } from 'react';
 import { FaPen } from 'react-icons/fa';
+import PageLink from '@/components/navigation/PageLink';
 
 
 export default function EventManagement() {
@@ -118,14 +119,14 @@ export default function EventManagement() {
                                       </Td>
                                       <Td>{event.date.toLocaleString()}</Td>
                                       <Td>
-                                          <Link
+                                          <PageLink
                                               href={
                                                   '/connect/admin/events/' +
                                                   event.id
                                               }
                                           >
                                               {event.title}
-                                          </Link>
+                                          </PageLink>
                                       </Td>
                                       <Td>{event.description}</Td>
                                       <Td>{event.location}</Td>
