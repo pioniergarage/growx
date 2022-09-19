@@ -37,7 +37,9 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({ event }) => {
                 <Heading size="md">{event.title}</Heading>
                 <Text mt={0}>{event.description}</Text>
                 <HStack mt={1}>
-                    {event.mandatory ? <Tag>Mandatory</Tag> : <></>}
+                    {event.mandatory ? <Tag>Mandatory</Tag> : <></>}^
+                    {event.location ? <Tag>{event.location}</Tag> : undefined}
+                    {event.type ? <Tag>{event.type}</Tag> : undefined}
                 </HStack>
             </Flex>
         </HStack>

@@ -24,15 +24,21 @@ export type Sponsor = {
 };
 
 export type UserRole = 'PARTICIPANT' | 'BUDDY' | 'MENTOR' | 'EXPERT' | 'ORGA';
+export enum EventType {
+    Online = 'Online',
+    Offline = 'Offline',
+    Hybrid = 'Hybrid',
+}
 
 export type GrowEvent = {
     date: Date;
     id: number;
     title: string;
-    description: string;
-    mandatory: boolean;
+    description?: string;
+    mandatory?: boolean;
     location?: string;
     sq_mandatory?: boolean;
+    type?: EventType;
 };
 
 export type Team = {
