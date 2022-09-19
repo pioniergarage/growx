@@ -12,10 +12,6 @@ import Link from 'next/link';
 import { FaCogs } from 'react-icons/fa';
 
 const ResponsiveMenuButton = () => {
-    const variant = useBreakpointValue({
-        base: undefined,
-        lg: <FaCogs />,
-    });
     return (
         <>
             <Show above="md">
@@ -35,9 +31,20 @@ const ResponsiveMenuButton = () => {
 };
 
 const NavAdminMenu = () => {
+    const variant = useBreakpointValue({
+        base: IconButton,
+        lg: Button,
+    });
     return (
         <Menu>
-            <MenuButton><ResponsiveMenuButton /></MenuButton>
+            <MenuButton
+                as={variant}
+                variant="ghost"
+                icon={<FaCogs />}
+                rightIcon={variant === Button ? <FaCogs /> : undefined}
+            >
+                Admin
+            </MenuButton>
             <MenuList>
                 <Link href="/connect/admin/profiles">
                     <MenuItem>Profiles</MenuItem>

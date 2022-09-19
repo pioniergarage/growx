@@ -10,6 +10,7 @@ import {
     Spinner,
     useToast,
     VStack,
+    Text
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import {
@@ -25,6 +26,10 @@ import { NextPageWithLayout } from 'utils/types';
 
 function Registrations(event: GrowEvent) {
     const { registeredUsers } = useRegistrationsToEvent(event);
+
+    if (event.mandatory) {
+        return <Text>Event is mandatory → no registrations</Text>
+    }
 
     return (
         <Box>
