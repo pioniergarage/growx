@@ -105,19 +105,6 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
                 <Text>{day}</Text>
                 <Text>{month}</Text>
             </Flex>
-<<<<<<< HEAD
-            <VStack alignItems="start">
-                <Heading size="md">{event.title}</Heading>
-                <HStack>
-                    {event.mandatory ? <Tag>mandatory</Tag> : undefined}
-                    {event.type ? <Tag>{event.type}</Tag> : undefined}
-                    {event.location ? <Tag>{event.location}</Tag> : undefined}
-                </HStack>
-                <Text>{event.description}</Text>
-                {!over ? actionButton : undefined}
-            </VStack>
-        </HStack>
-=======
             <Flex flexDir="column">
                 <Flex gap={2}>
                     <Heading size="md">{event.title}</Heading>
@@ -126,11 +113,12 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
                     ) : !over ? (
                         actionButton
                     ) : undefined}
+                    {event.type ? <Tag>{event.type}</Tag> : undefined}
+                    {event.location ? <Tag>{event.location}</Tag> : undefined}
                 </Flex>
                 <Text color="gray.400">{event.description}</Text>
             </Flex>
         </Grid>
->>>>>>> main
     );
 };
 
