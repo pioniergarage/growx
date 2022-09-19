@@ -13,6 +13,7 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
+    Select,
 } from '@chakra-ui/react';
 import { EventType, GrowEvent } from 'model';
 import { useEffect, useState } from 'react';
@@ -45,19 +46,6 @@ function getThemeText(id: number | undefined) {
         return createTitleText;
     } else {
         return adjustTitleText;
-    }
-}
-
-/**
- * Get button text for the model, check if the event will create or adjust.
- * @param id is the checking parameter. new events has undefined id.
- * @returns if the id is undefine it returns a title string for the button, otherwise return the adjust text string
- */
-function getButtonText(id: number | undefined) {
-    if (id === undefined) {
-        return CreatebuttonText;
-    } else {
-        return SavebuttonText;
     }
 }
 
@@ -102,7 +90,6 @@ const EventModal: React.FC<EventModalProps> = ({
                         />
                     </FormControl>
                     <FormControl mt={6}>
-                        <FormLabel>Mandatory</FormLabel>
                         <Checkbox
                             isChecked={event.mandatory}
                             onChange={(e) =>
@@ -111,13 +98,12 @@ const EventModal: React.FC<EventModalProps> = ({
                                     mandatory: e.target.checked,
                                 })
                             }
-                        ></Checkbox>
+                        >
+                            Mandatory
+                        </Checkbox>
                     </FormControl>
 
                     <FormControl mt={6}>
-                        <FormLabel>
-                            Mandatory for Schlüsselqualifikation
-                        </FormLabel>
                         <Checkbox
                             isChecked={event.sq_mandatory}
                             onChange={(e) =>
@@ -126,7 +112,9 @@ const EventModal: React.FC<EventModalProps> = ({
                                     sq_mandatory: e.target.checked,
                                 })
                             }
-                        ></Checkbox>
+                        >
+                            Mandatory for Schlüsselqualifikation
+                        </Checkbox>
                         <FormHelperText>
                             Some events are mandatory for Schlüsselqualifikation
                             qualification
@@ -149,9 +137,8 @@ const EventModal: React.FC<EventModalProps> = ({
 
                     <FormControl mt={6}>
                         <FormLabel>How to participate</FormLabel>
-                        <select
+                        <Select
                             name="SelectEventSQMandatory"
-                            placeholder="Select event type"
                             value={event.type}
                             onChange={(e) =>
                                 setEvent({
@@ -169,32 +156,25 @@ const EventModal: React.FC<EventModalProps> = ({
                             <option value={EventType.Hybrid}>
                                 {EventType.Hybrid}
                             </option>
-                        </select>
+                        </Select>
                     </FormControl>
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button
-                        onClick={() => {
-                            if (event.id === undefined) {
-                                onCreate(event);
-                            } else {
-                                onSave(event);
-                            }
-                        }}
-                        mr={3}
-                    >
-                        {getButtonText(event.id)}
-                    </Button>
+                    {event.id === undefined ? (
+                        <Button onClick={() => onCreate(event)}>Create</Button>
+                    ) : (
+                        <Button onClick={() => onSave(event)}>Save</Button>
+                    )}
                     <Button
                         onClick={onDelete}
                         colorScheme="red"
-                        mr={3}
-                        disabled={event.id === undefined}
+                        hidden={event.id === undefined}
+                        ml={3}
                     >
                         Delete
                     </Button>
-                    <Button onClick={onClose} mr={3}>
+                    <Button onClick={onClose} ml={3}>
                         Cancel
                     </Button>
                 </ModalFooter>
