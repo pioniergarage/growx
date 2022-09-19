@@ -1,15 +1,15 @@
 import { User } from '@supabase/supabase-js';
 import {
-    createEvent,
     deleteEvent,
     getEvent,
     getEvents,
     getRegistrationsOfUser,
     getRegistrationsTo,
+    insertEvent,
     registerUser,
     unregisterUser,
     updateEvent,
-} from 'api/events';
+} from 'database/events';
 import { GrowEvent } from 'model';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
@@ -83,7 +83,7 @@ export function useUpdateEvent() {
             await updateEvent(patch),
         {
             onSuccess: (updated) => {
-                queryClient.setQueryData(['events', updated.id], updated);
+                queryClient.setQueryData(['event', updated.id], updated);
             },
         }
     );
@@ -96,19 +96,23 @@ export function useDeleteEvent() {
         async (eventId: number) => await deleteEvent(eventId),
         {
             onSuccess: (_, eventId) => {
-                queryClient.setQueryData(['events', eventId], undefined);
+                queryClient.setQueryData(['event', eventId], undefined);
             },
         }
     );
     return { ...mutation, deleteEvent: mutation.mutateAsync };
 }
 
-export function useCreateEvent() {
+export function useInsertEvent() {
     const queryClient = useQueryClient();
-    const mutation = useMutation(createEvent, {
+    const mutation = useMutation(insertEvent, {
         onSuccess: (created) => {
-            queryClient.setQueryData(['events', created.id], created);
+            queryClient.setQueryData(['event', created.id], created);
+            const oldEvents: GrowEvent[] = queryClient.getQueryData(
+                'events'
+            ) as GrowEvent[];
+            queryClient.setQueryData('events', [...oldEvents, created]);
         },
     });
-    return { ...mutation, createEvent: mutation.mutateAsync };
+    return { ...mutation, insertEvent: mutation.mutateAsync };
 }

@@ -1,7 +1,5 @@
 import {
     Button,
-    Checkbox,
-    Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
@@ -15,6 +13,8 @@ import {
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { availableSkills, Profile } from 'model';
+import { useState } from 'react';
+import TagSelect from '../TagSelect';
 
 interface ProflieFormProps {
     onSave: (profile: Profile) => void;
@@ -29,9 +29,11 @@ const ProfileForm: React.FC<ProflieFormProps> = ({
     profile,
     onCancel,
 }) => {
+    const { skills: initialSkills, ...restProfile } = profile;
+    const [skills, setSkills] = useState(initialSkills);
     const formik = useFormik({
-        initialValues: profile,
-        onSubmit: (values) => onSave(values),
+        initialValues: restProfile,
+        onSubmit: (values) => onSave({ ...values, skills }),
         validate: (values) => {
             const errors: Record<string, string> = {};
             if (!values.firstName) errors.firstName = 'Required';
@@ -168,37 +170,18 @@ const ProfileForm: React.FC<ProflieFormProps> = ({
                         <GridItem colSpan={2}>
                             <FormControl>
                                 <FormLabel htmlFor="skills">Skills</FormLabel>
-                                <Flex wrap="wrap" gap={2}>
-                                    {availableSkills.map((skill, i) => (
-                                        <Checkbox
-                                            key={skill + i}
-                                            isChecked={formik.values.skills.includes(
-                                                skill
-                                            )}
-                                            onChange={(e) => {
-                                                if (e.target.checked) {
-                                                    formik.setFieldValue(
-                                                        'skills',
-                                                        [
-                                                            ...formik.values
-                                                                .skills,
-                                                            skill,
-                                                        ]
-                                                    );
-                                                } else {
-                                                    formik.setFieldValue(
-                                                        'skills',
-                                                        formik.values.skills.filter(
-                                                            (s) => s != skill
-                                                        )
-                                                    );
-                                                }
-                                            }}
-                                        >
-                                            {skill}
-                                        </Checkbox>
-                                    ))}
-                                </Flex>
+                                <TagSelect
+                                    values={availableSkills}
+                                    selected={skills}
+                                    onDeselect={(v) => {
+                                        const newSkills = [...skills];
+                                        newSkills.splice(skills.indexOf(v), 1);
+                                        setSkills(newSkills);
+                                    }}
+                                    onSelect={(v) => {
+                                        setSkills([...skills, v]);
+                                    }}
+                                />
                             </FormControl>
                         </GridItem>
                     ) : undefined}

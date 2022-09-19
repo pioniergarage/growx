@@ -17,7 +17,6 @@ import { useRouter } from 'next/router';
 import { PropsWithChildren } from 'react';
 import {
     FaCalendarAlt,
-    FaCogs,
     FaHome,
     FaSignOutAlt,
     FaUser,
@@ -25,6 +24,7 @@ import {
 } from 'react-icons/fa';
 import { useQueryClient } from 'react-query';
 import UserAvatar from '../avatar/UserAvatar';
+import NavAdminMenu from './NavAdminMenu';
 
 const GrowConnectNavButton: React.FC<
     PropsWithChildren & LinkProps & Pick<IconButtonProps, 'aria-label' | 'icon'>
@@ -37,18 +37,22 @@ const GrowConnectNavButton: React.FC<
         <>
             <Show above="md">
                 <Link {...rest}>
-                    <Button variant="ghost" leftIcon={variant}>
-                        {children}
-                    </Button>
+                    <a>
+                        <Button variant="ghost" leftIcon={variant}>
+                            {children}
+                        </Button>
+                    </a>
                 </Link>
             </Show>
             <Show below="md">
                 <Link {...rest}>
-                    <IconButton
-                        aria-label={rest['aria-label']}
-                        icon={icon}
-                        variant="ghost"
-                    />
+                    <a>
+                        <IconButton
+                            aria-label={rest['aria-label']}
+                            icon={icon}
+                            variant="ghost"
+                        />
+                    </a>
                 </Link>
             </Show>
         </>
@@ -104,15 +108,7 @@ const GrowConnectWrapper: React.FC = () => {
                 >
                     Teams
                 </GrowConnectNavButton>
-                {profile.role === 'ORGA' ? (
-                    <GrowConnectNavButton
-                        href="/connect/admin"
-                        icon={<FaCogs />}
-                        aria-label="Admin"
-                    >
-                        Admin
-                    </GrowConnectNavButton>
-                ) : undefined}
+                {profile.role === 'ORGA' ? <NavAdminMenu /> : undefined}
                 <Menu placement="bottom-end">
                     {({ isOpen }) => (
                         <>

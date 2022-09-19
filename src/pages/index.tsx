@@ -6,13 +6,13 @@ import SponsorBlock from '@/components/landing/sponsor/SponsorBlock';
 import LongTimeline from '@/components/landing/Timeline';
 import WaitingForBlock from '@/components/landing/WaitingForBlock';
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
-import { getFAQs } from 'api';
-import { getEvents } from 'api/events';
-import { getSponsors } from 'api/sponsors';
+import { getFAQs } from 'database';
+import { getEvents } from 'database/events';
+import { getSponsors } from 'database/sponsors';
 import { FAQ, GrowEvent, Sponsor } from 'model';
 import { PropsWithChildren } from 'react';
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
     const sponsors = await getSponsors();
     const faqs = await getFAQs();
     const events = (await getEvents()).map((e) => ({

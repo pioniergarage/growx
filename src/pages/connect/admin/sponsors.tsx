@@ -1,3 +1,4 @@
+import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
 import {
     Button,
     Heading,
@@ -16,7 +17,7 @@ import { useDeleteSponsor, useSponsors, useUpsertSponsor } from 'hooks/sponsor';
 import { Sponsor } from 'model';
 import { useState } from 'react';
 import { FaPen } from 'react-icons/fa';
-import SponsorModal from './SponsorModal';
+import SponsorModal from '../../../components/sponsor/SponsorModal';
 
 export default function SponsorAdmin() {
     const { sponsors } = useSponsors();
@@ -65,6 +66,9 @@ export default function SponsorAdmin() {
 
     return (
         <VStack alignItems="start">
+            <AdminBreadcrumbs
+                route={[['Sponsors', '/connect/admin/sponsors']]}
+            />
             <Heading size="md" as="h3">
                 Sponsors
             </Heading>
