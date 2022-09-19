@@ -1,10 +1,8 @@
+import CreateEventModal from '@/components/events/CreateEventModal';
 import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
-import EventModal from '@/components/events/EventModal';
+import PageLink from '@/components/navigation/PageLink';
 import {
     Button,
-    Heading,
-    IconButton,
-    Link,
     Table,
     TableContainer,
     Tbody,
@@ -15,62 +13,16 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { useGrowEvents, useInsertEvent, useDeleteEvent, useUpdateEvent } from 'hooks/event';
-import { GrowEvent, EventType } from 'model';
+import { useGrowEvents, useInsertEvent } from 'hooks/event';
+import { GrowEvent } from 'model';
 import { useState } from 'react';
-import { FaPen } from 'react-icons/fa';
-import PageLink from '@/components/navigation/PageLink';
-
 
 export default function EventManagement() {
     const { events } = useGrowEvents();
     const { insertEvent } = useInsertEvent();
-    const { deleteEvent } = useDeleteEvent();
-    const { updateEvent } = useUpdateEvent();
     const [modalOpen, setModalOpen] = useState(false);
 
-    const [eventOnEdit, setEventOnEdit] = useState<
-        Omit<GrowEvent, 'id'> & { id?: number }
-    >({
-        id: undefined,
-        date: Date.prototype,
-        title: '',
-        description: '',
-        location: '',
-        mandatory: false,
-        sq_mandatory: false,
-        type: EventType.Hybrid,
-    });
-
-    function setNewEventModal() {
-        setEventOnEdit({
-            title: '',
-            description: undefined,
-            mandatory: undefined,
-            location: '',
-            date: new Date(),
-        });
-        setModalOpen(true);
-    }
-
-    function adjustEvent(event: GrowEvent) {
-        setEventOnEdit(event);
-        setModalOpen(true);
-    }
-
-    async function onDeleteEvent() {
-        if (eventOnEdit.id) {
-            deleteEvent(eventOnEdit.id);
-        }
-        setModalOpen(false);
-    }
-
-    async function saveEvent(event: GrowEvent) {
-        await updateEvent(event);
-        setModalOpen(false);
-    }
-
-    async function createEvent(event: GrowEvent) {
+    async function createEvent(event: Omit<GrowEvent, 'id'>) {
         await insertEvent(event);
         setModalOpen(false);
     }
@@ -86,15 +38,11 @@ export default function EventManagement() {
     return (
         <VStack alignItems="start">
             <AdminBreadcrumbs route={[['Events', '/connect/admin/events']]} />
-            <Heading size="md" as="h3">
-                Events
-            </Heading>
 
             <TableContainer>
                 <Table size="sm">
                     <Thead>
                         <Tr>
-                            <Th></Th>
                             <Th>Date</Th>
                             <Th>Title</Th>
                             <Th>Description</Th>
@@ -108,18 +56,10 @@ export default function EventManagement() {
                         {events
                             ? events.map((event) => (
                                   <Tr key={event.id}>
-                                      <Td>
-                                          <IconButton
-                                              aria-label="Adjust Event"
-                                              icon={<FaPen />}
-                                              variant="ghost"
-                                              size="xs"
-                                              onClick={() => adjustEvent(event)}
-                                          />
-                                      </Td>
                                       <Td>{event.date.toLocaleString()}</Td>
                                       <Td>
                                           <PageLink
+                                              color="primary"
                                               href={
                                                   '/connect/admin/events/' +
                                                   event.id
@@ -148,16 +88,13 @@ export default function EventManagement() {
                 </Table>
             </TableContainer>
 
-            <EventModal
+            <CreateEventModal
                 isOpen={modalOpen}
-                initialValue={eventOnEdit}
                 onClose={() => setModalOpen(false)}
-                onSave={(event) => saveEvent(event as GrowEvent)}
-                onDelete={onDeleteEvent}
-                onCreate={(event) => createEvent(event as GrowEvent)}
+                onCreate={(event) => createEvent(event)}
             />
 
-            <Button onClick={setNewEventModal}>New Event</Button>
+            <Button onClick={() => setModalOpen(true)}>New Event</Button>
         </VStack>
     );
 }

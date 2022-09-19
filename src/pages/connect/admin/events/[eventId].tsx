@@ -1,11 +1,12 @@
 import EventForm from '@/components/events/EventForm';
 import TimelineEvent from '@/components/events/TimelineEvent';
-import FullTable from '@/components/FullTable';
 import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
+import ProfileCard from '@/components/profile/ProfileCard';
 import {
     Box,
     Divider,
     Heading,
+    SimpleGrid,
     Spinner,
     useToast,
     VStack,
@@ -22,18 +23,25 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 
-
-
 function Registrations(event: GrowEvent) {
-    const { registeredUsers, isLoading } = useRegistrationsToEvent(event);
+    const { registeredUsers } = useRegistrationsToEvent(event);
 
     return (
-        <FullTable
-            loading={isLoading}
-            values={registeredUsers || []}
-            idProp="userId"
-            heading="Registrations"
-        />
+        <Box>
+            <Heading size="sm" mb={2}>{registeredUsers?.length || 0} Registrations</Heading>
+            <SimpleGrid columns={2}>
+                {registeredUsers?.map((user) => (
+                    <ProfileCard
+                        key={user.userId}
+                        firstName={user.firstName}
+                        lastName={user.lastName}
+                        email={user.email}
+                        avatar={user.avatar}
+                        userId={user.userId}
+                    />
+                ))}
+            </SimpleGrid>
+        </Box>
     );
 }
 
@@ -71,7 +79,7 @@ const EventDetails: NextPageWithLayout = () => {
     async function handleDeleteEvent() {
         try {
             await deleteEvent(eventId);
-            router.push('/connect/admin');
+            router.push('/connect/admin/events');
         } catch (error) {
             toast({
                 title: 'Could not delete event',

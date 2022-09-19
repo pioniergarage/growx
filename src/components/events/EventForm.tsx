@@ -108,6 +108,7 @@ export default function EventForm({
                                 id="title"
                                 onChange={formik.handleChange}
                                 value={formik.values.title}
+                                borderColor={formik.values.title !== initialFormValue.title ? 'green.200' : undefined}
                             />
                         </FormControl>
                         <FormControl
@@ -121,6 +122,7 @@ export default function EventForm({
                                 onChange={formik.handleChange}
                                 value={formik.values.date}
                                 placeholder="2022-08-01"
+                                borderColor={formik.values.date !== initialFormValue.date ? 'green.200' : undefined}
                             />
                             <FormErrorMessage>
                                 {formik.errors.date}
@@ -137,6 +139,7 @@ export default function EventForm({
                                 onChange={formik.handleChange}
                                 value={formik.values.time}
                                 placeholder="00:00"
+                                borderColor={formik.values.time !== initialFormValue.time ? 'green.200' : undefined}
                             />
                             <FormErrorMessage>
                                 {formik.errors.time}
@@ -149,6 +152,7 @@ export default function EventForm({
                                 id="location"
                                 onChange={formik.handleChange}
                                 value={formik.values.location}
+                                borderColor={formik.values.location !== initialFormValue.location ? 'green.200' : undefined}
                             />
                         </FormControl>
                     </HStack>
@@ -198,6 +202,7 @@ export default function EventForm({
                             id="description"
                             onChange={formik.handleChange}
                             value={formik.values.description}
+                            borderColor={formik.values.description !== initialFormValue.description ? 'green.200' : undefined}
                         />
                         <FormErrorMessage>
                             {formik.errors.description}
