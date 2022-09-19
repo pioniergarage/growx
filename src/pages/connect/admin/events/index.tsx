@@ -1,6 +1,7 @@
 import CreateEventModal from '@/components/events/CreateEventModal';
 import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
 import PageLink from '@/components/navigation/PageLink';
+import { CheckIcon } from '@chakra-ui/icons';
 import {
     Button,
     Table,
@@ -25,14 +26,6 @@ export default function EventManagement() {
     async function createEvent(event: Omit<GrowEvent, 'id'>) {
         await insertEvent(event);
         setModalOpen(false);
-    }
-
-    function undefinedBooleanToString(b: boolean | undefined) {
-        if (b != undefined) {
-            return b.toString();
-        } else {
-            return '';
-        }
     }
 
     return (
@@ -72,14 +65,10 @@ export default function EventManagement() {
                                       <Td>{event.location}</Td>
                                       <Td>{event.type}</Td>
                                       <Td>
-                                          {undefinedBooleanToString(
-                                              event.mandatory
-                                          )}
+                                        <CheckIcon visibility={event.mandatory ? 'visible' : 'hidden'} />
                                       </Td>
                                       <Td>
-                                          {undefinedBooleanToString(
-                                              event.sq_mandatory
-                                          )}
+                                        <CheckIcon visibility={event.sq_mandatory ? 'visible' : 'hidden'} />
                                       </Td>
                                   </Tr>
                               ))
