@@ -22,7 +22,7 @@ interface EventModalProps {
     isOpen: boolean;
     onClose: () => void;
     onCreate: (event: Omit<GrowEvent, 'id'>) => void;
-    initialValue?: Parial<GrowEvent>;
+    initialValue?: Partial<GrowEvent>;
 }
 
 const emptyEvent = {
