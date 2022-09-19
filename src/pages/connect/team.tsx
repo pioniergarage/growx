@@ -1,7 +1,7 @@
 import PageLink from '@/components/navigation/PageLink';
 import { Button, Text, useToast, VStack } from '@chakra-ui/react';
 import { getUser, withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { getTeamIdOfUser } from 'api/teams';
+import { getTeamIdOfUser } from 'database/teams';
 import { useProfile } from 'hooks/profile';
 import { useCreateTeam } from 'hooks/team';
 import { useRouter } from 'next/router';

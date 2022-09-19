@@ -16,7 +16,7 @@ import {
     ModalOverlay,
     Select,
 } from '@chakra-ui/react';
-import { uploadLogo } from 'api/sponsors';
+import { uploadLogo } from 'database/sponsors';
 import { Sponsor } from 'model';
 import { useEffect, useState } from 'react';
 import FileSelect from '../FileSelect';

@@ -14,7 +14,7 @@ import {
     updateTeam,
     uploadTeamLogo,
     withdrawRequest,
-} from 'api/teams';
+} from 'database/teams';
 import { Team } from 'model';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 

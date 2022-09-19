@@ -9,7 +9,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { getTeams } from 'api/teams';
+import { getTeams } from 'database/teams';
 import { useAllTeams } from 'hooks/team';
 import { Team } from 'model';
 import Link from 'next/link';

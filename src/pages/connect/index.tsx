@@ -14,8 +14,8 @@ import {
     supabaseServerClient,
     withPageAuth,
 } from '@supabase/auth-helpers-nextjs';
-import { definitions } from 'api/supabase';
-import { getTeam, getTeamIdOfUser } from 'api/teams';
+import { definitions } from 'database/supabase';
+import { getTeam, getTeamIdOfUser } from 'database/teams';
 import { Team } from 'model';
 import dynamic from 'next/dynamic';
 
