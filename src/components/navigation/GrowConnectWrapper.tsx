@@ -17,7 +17,6 @@ import { useRouter } from 'next/router';
 import { PropsWithChildren } from 'react';
 import {
     FaCalendarAlt,
-    FaCogs,
     FaHome,
     FaSignOutAlt,
     FaUser,
@@ -25,6 +24,7 @@ import {
 } from 'react-icons/fa';
 import { useQueryClient } from 'react-query';
 import UserAvatar from '../avatar/UserAvatar';
+import NavAdminMenu from './NavAdminMenu';
 
 const GrowConnectNavButton: React.FC<
     PropsWithChildren & LinkProps & Pick<IconButtonProps, 'aria-label' | 'icon'>
@@ -108,15 +108,7 @@ const GrowConnectWrapper: React.FC = () => {
                 >
                     Teams
                 </GrowConnectNavButton>
-                {profile.role === 'ORGA' ? (
-                    <GrowConnectNavButton
-                        href="/connect/admin"
-                        icon={<FaCogs />}
-                        aria-label="Admin"
-                    >
-                        Admin
-                    </GrowConnectNavButton>
-                ) : undefined}
+                {profile.role === 'ORGA' ? <NavAdminMenu /> : undefined}
                 <Menu placement="bottom-end">
                     {({ isOpen }) => (
                         <>

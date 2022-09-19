@@ -16,54 +16,35 @@ import {
     Select,
 } from '@chakra-ui/react';
 import { EventType, GrowEvent } from 'model';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface EventModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSave: (event: Omit<GrowEvent, 'id'>) => void;
-    onDelete: () => void;
-    initialValue: Omit<GrowEvent, 'id'> & { id?: number };
     onCreate: (event: Omit<GrowEvent, 'id'>) => void;
+    initialValue?: Partial<GrowEvent>;
 }
 
-// Adjust:
+const emptyEvent = {
+    title: '',
+    description: undefined,
+    mandatory: undefined,
+    location: '',
+    date: new Date(),
+};
 
-const adjustTitleText = 'Adjust Event';
-const createTitleText = 'Create new Event';
-
-const SavebuttonText = 'Save';
-const CreatebuttonText = 'Create';
-
-/**
- * Get the Window Headline for modal, if the event will create or adjust.
- * @param id is the checking parameter. new events has undefined id.
- * @returns if the id is undefine return create Title String, otherwise return the adjust title String
- */
-function getThemeText(id: number | undefined) {
-    if (id === undefined) {
-        // id is empty -> create new Event
-        return createTitleText;
-    } else {
-        return adjustTitleText;
-    }
-}
-
-const EventModal: React.FC<EventModalProps> = ({
+const CreateEventModal: React.FC<EventModalProps> = ({
     isOpen,
     onClose,
-    onSave,
     onCreate,
-    onDelete,
     initialValue,
 }) => {
-    const [event, setEvent] = useState(initialValue);
-    useEffect(() => setEvent(initialValue), [initialValue]);
+    const [event, setEvent] = useState({ ...emptyEvent, ...initialValue });
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
-                <ModalHeader>{getThemeText(event.id)}</ModalHeader>
+                <ModalHeader>Create Event</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody pb={6}>
                     <FormControl>
@@ -103,7 +84,7 @@ const EventModal: React.FC<EventModalProps> = ({
                         </Checkbox>
                     </FormControl>
 
-                    <FormControl mt={6}>
+                    <FormControl mt={2}>
                         <Checkbox
                             isChecked={event.sq_mandatory}
                             onChange={(e) =>
@@ -161,19 +142,7 @@ const EventModal: React.FC<EventModalProps> = ({
                 </ModalBody>
 
                 <ModalFooter>
-                    {event.id === undefined ? (
-                        <Button onClick={() => onCreate(event)}>Create</Button>
-                    ) : (
-                        <Button onClick={() => onSave(event)}>Save</Button>
-                    )}
-                    <Button
-                        onClick={onDelete}
-                        colorScheme="red"
-                        hidden={event.id === undefined}
-                        ml={3}
-                    >
-                        Delete
-                    </Button>
+                    <Button onClick={() => onCreate(event)}>Create</Button>
                     <Button onClick={onClose} ml={3}>
                         Cancel
                     </Button>
@@ -183,4 +152,4 @@ const EventModal: React.FC<EventModalProps> = ({
     );
 };
 
-export default EventModal;
+export default CreateEventModal;
