@@ -22,7 +22,7 @@ import { useUpdateProfile } from 'hooks/profile';
 import LoginLayout from 'layouts/LoginLayout';
 import { availableSkills, Gender } from 'model';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 
 const SelectSkills = ({
@@ -239,6 +239,13 @@ const MentorNameAndPassword = ({
         validateOnChange: false,
     });
 
+    useEffect(() => {
+        if (initialEmail) {
+            formik.setFieldValue('email', initialEmail)
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [initialEmail])
+
     return (
         <>
             <Box>
@@ -321,6 +328,8 @@ const MentorSignUp: NextPageWithLayout = () => {
     const [signUpError, setSignUpError] = useState<string>('');
     const { updateProfile } = useUpdateProfile();
     const router = useRouter();
+    
+    const {firstName, lastName, email} = router.query
 
     async function onSignUp(info: SignUpInfo) {
         setLoading(true);
@@ -362,6 +371,7 @@ const MentorSignUp: NextPageWithLayout = () => {
             {step == 0 ? (
                 <>
                     <MentorNameAndPassword
+                        initialEmail={email as string}
                         onNext={onSignUp}
                         isLoading={isLoading}
                     />
@@ -375,6 +385,8 @@ const MentorSignUp: NextPageWithLayout = () => {
             ) : step == 1 ? (
                 <PersonalInfoForm
                     onNext={(info) => setPersonalInfo(info)}
+                    initialFirstName={firstName as string}
+                    initialLastName={lastName as string}
                     isLoading={isLoading}
                 />
             ) : step == 2 ? (
