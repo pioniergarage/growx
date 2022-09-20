@@ -47,6 +47,7 @@ export const updateProfile = async (
                 gender: profile.gender,
                 avatar: profile.avatar,
                 skills: profile.skills,
+                role: profile.role,
             },
             { returning: 'representation' }
         )
