@@ -38,6 +38,9 @@ export default function Layout({ children }: PropsWithChildren) {
                         <Box
                             bg="blackAlpha.500"
                             p={6}
+                            w="100%"
+                            h={{base: "100%", sm: "auto"}}
+                            maxW={{sm: '80%', md: "container.sm"}}
                             borderRadius={4}
                             zIndex={12}
                         >
