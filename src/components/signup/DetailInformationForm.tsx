@@ -51,7 +51,7 @@ const DetailInformation = ({ onContinue, isLoading }: DetailInformationFormProps
                 </FormControl>
                 <FormControl>
                     <FormLabel>Describe yourself</FormLabel>
-                    <Textarea value={bio} onChange={(e) => setBio(e.target.value)} placeholder="I work at Dagobert Duck's firm and I am looking forward to helping you"/>
+                    <Textarea onBlur={(e) => setBio(e.target.value)} placeholder="I work at Dagobert Duck's firm and I am looking forward to helping you"/>
                 </FormControl>
                 <Button
                     type="submit"
