@@ -1,7 +1,33 @@
 import { Box, BoxProps } from '@chakra-ui/react';
 import PageLink from '../navigation/PageLink';
 
-const ParticipateButton: React.FC<BoxProps> = (props) => {
+type ParticipateButtonProps = BoxProps & {
+    disabled: boolean;
+};
+
+const ParticipateButton: React.FC<ParticipateButtonProps> = ({
+    disabled,
+    ...props
+}) => {
+    if (disabled) {
+        return (
+            <Box
+                as="button"
+                disabled
+                bgGradient="linear(to-r, secondary, primary)"
+                filter="brightness(0.5)"
+                px={4}
+                py={3}
+                borderRadius={4}
+                minW={72}
+                fontWeight="black"
+                opacity={0.9}
+                {...props}
+            >
+                Participate
+            </Box>
+        );
+    }
     return (
         <PageLink href="/connect">
             <Box

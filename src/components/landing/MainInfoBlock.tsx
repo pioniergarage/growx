@@ -52,8 +52,11 @@ export default function MainInfoBlock() {
                     </Text>
 
                     <Box>
-                        <ParticipateButton />
+                        <ParticipateButton disabled />
                         <Text variant="info" mt={2}>
+                            Sign-up from 05.10.2022
+                        </Text>
+                        <Text variant="info">
                             It&apos;s free and without obligation!
                         </Text>
                     </Box>

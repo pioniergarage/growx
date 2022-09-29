@@ -146,7 +146,7 @@ const GrowConnectWrapper: React.FC = () => {
 
     return (
         <>
-            <Button>
+            <Button disabled>
                 <Link href="/connect/signup">Participate</Link>
             </Button>
             <Button>
