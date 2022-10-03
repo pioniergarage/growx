@@ -1,7 +1,8 @@
 import AnimatedLogo from '@/components/landing/AnimatedLogo';
-import { Text, Box, Heading, Grid, GridItem, VStack } from '@chakra-ui/react';
-import ParticipateButton from './ParticipateButton';
+import { Box, Grid, GridItem, Heading, Text, VStack } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
+import { isSignUpEnabled, signUpStart } from 'utils/dates';
+import ParticipateButton from './ParticipateButton';
 
 const Countdown = dynamic(import('./Countdown'), { ssr: false });
 
@@ -52,13 +53,18 @@ export default function MainInfoBlock() {
                     </Text>
 
                     <Box>
-                        <ParticipateButton disabled />
-                        <Text variant="info" mt={2}>
-                            Sign-up from 05.10.2022
-                        </Text>
-                        <Text variant="info">
-                            It&apos;s free and without obligation!
-                        </Text>
+                        <ParticipateButton />
+                        <Box mt={2}>
+                            {isSignUpEnabled ? undefined : (
+                                <Text variant="info">
+                                    Sign-up from{' '}
+                                    {signUpStart.toLocaleDateString()}
+                                </Text>
+                            )}
+                            <Text variant="info">
+                                It&apos;s free and without obligation!
+                            </Text>
+                        </Box>
                     </Box>
                 </VStack>
             </GridItem>
