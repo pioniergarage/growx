@@ -1252,6 +1252,7 @@ export interface definitions {
         role: 'PARTICIPANT' | 'BUDDY' | 'MENTOR' | 'EXPERT' | 'ORGA';
         /** Format: json */
         skills: unknown;
+        bio?: string;
     };
     sponsors: {
         /**

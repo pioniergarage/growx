@@ -1,15 +1,10 @@
-import { Box, BoxProps } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
+import { isSignUpEnabled } from 'utils/dates';
 import PageLink from '../navigation/PageLink';
 
-type ParticipateButtonProps = BoxProps & {
-    disabled: boolean;
-};
 
-const ParticipateButton: React.FC<ParticipateButtonProps> = ({
-    disabled,
-    ...props
-}) => {
-    if (disabled) {
+const ParticipateButton = () => {
+    if (!isSignUpEnabled) {
         return (
             <Box
                 as="button"
@@ -22,7 +17,6 @@ const ParticipateButton: React.FC<ParticipateButtonProps> = ({
                 minW={72}
                 fontWeight="black"
                 opacity={0.9}
-                {...props}
             >
                 Participate
             </Box>
@@ -43,7 +37,6 @@ const ParticipateButton: React.FC<ParticipateButtonProps> = ({
                 _active={{ opacity: '1', boxShadow: 'outline' }}
                 _focus={{ opacity: '1', boxShadow: 'outline' }}
                 transition="all .15s"
-                {...props}
             >
                 Participate
             </Box>

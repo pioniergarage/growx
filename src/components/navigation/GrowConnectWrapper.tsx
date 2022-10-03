@@ -23,6 +23,7 @@ import {
     FaUsers,
 } from 'react-icons/fa';
 import { useQueryClient } from 'react-query';
+import { isSignUpEnabled } from 'utils/dates';
 import UserAvatar from '../avatar/UserAvatar';
 import NavAdminMenu from './NavAdminMenu';
 
@@ -146,9 +147,13 @@ const GrowConnectWrapper: React.FC = () => {
 
     return (
         <>
-            <Button disabled>
-                Participate
-            </Button>
+            {isSignUpEnabled ? (
+                <Button>
+                    <Link href="/connect/signup">Participate</Link>
+                </Button>
+            ) : (
+                <Button disabled>Participate</Button>
+            )}
             <Button>
                 <Link href="/connect/login">Sign in</Link>
             </Button>

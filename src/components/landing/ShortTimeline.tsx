@@ -50,14 +50,14 @@ const TimelineItem: React.FC<TimeLineItemProps> = ({
 export default function ShortTimeline() {
     const events: TimeLineItemProps[] = [
         {
-            date: '05. Nov 22', // date is fix
+            date: '05. Nov 22',
             title: 'Kickoff Event',
             description: `Pitch your idea, find a team or simply learn more about the contest. 
             The kickoff is where the fun starts, no matter whether you have already applied or you're up for a spontaneous adventure. `,
             image: 'notes.jpg',
         },
         {
-            date: '14. Dec 22', // Date not fix. KW 50 2022 -> 12.12.22 until 18.12.2022
+            date: '17. Dec 22',
             title: 'Midterm Pitch',
             description: `Half time break! Teams pitch their first progress and fight about advancing to the final. 
             Pitch what you've accomplished in the last 5 weeks in front of a small audience and the jury. `,
@@ -65,7 +65,7 @@ export default function ShortTimeline() {
             objectPosition: '0 0',
         },
         {
-            date: '21. Jan 23', // date is fix
+            date: '21. Jan 23', 
             title: 'Final',
             description: `Present your results to a huge crowd and show how far you have come. 
             Each participant will have learned a lot and gained a lot of experience by this point. 
