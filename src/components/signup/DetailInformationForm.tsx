@@ -14,10 +14,9 @@ import TagSelect from '../TagSelect';
 
 type DetailInformationFormProps = {
     onContinue: (skills: string[], bio: string) => void;
-    isLoading: boolean;
 };
 
-const DetailInformation = ({ onContinue, isLoading }: DetailInformationFormProps) => {
+const DetailInformation = ({ onContinue }: DetailInformationFormProps) => {
     const [skills, setSkills] = useState<string[]>(['Social Entrepreneurship']);
     const [bio, setBio] = useState('')
     return (
@@ -51,13 +50,12 @@ const DetailInformation = ({ onContinue, isLoading }: DetailInformationFormProps
                 </FormControl>
                 <FormControl>
                     <FormLabel>Describe yourself</FormLabel>
-                    <Textarea onBlur={(e) => setBio(e.target.value)} placeholder="I work at Dagobert Duck's firm and I am looking forward to helping you"/>
+                    <Textarea onBlur={(e) => setBio(e.target.value)} placeholder="Tell others something about your current job, for example what company you work for"/>
                 </FormControl>
                 <Button
                     type="submit"
                     variant="solid"
                     width="100%"
-                    isLoading={isLoading}
                 >
                     Continue
                 </Button>

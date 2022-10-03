@@ -13,6 +13,7 @@ export type Profile = {
     role: UserRole;
     avatar?: string;
     skills: string[];
+    bio: string;
 };
 
 export type Sponsor = {
