@@ -32,10 +32,13 @@ export default function UsersProfileView({ profile }: { profile: Profile }) {
             <ProfilePropertyRow name="University" value={profile.university} />
             <ProfilePropertyRow name="Studies" value={profile.studies} />
             {['MENTOR', 'EXPERT', 'ORGA'].includes(profile.role) ? (
-                <ProfilePropertyRow
-                    name="Skills"
-                    value={profile.skills.join(', ')}
-                />
+                <>
+                    <ProfilePropertyRow
+                        name="Skills"
+                        value={profile.skills.join(', ')}
+                    />
+                    <ProfilePropertyRow name="Bio" value={profile.bio} />
+                </>
             ) : undefined}
         </Grid>
     );

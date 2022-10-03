@@ -9,6 +9,7 @@ import {
     Radio,
     RadioGroup,
     SimpleGrid,
+    Textarea,
     VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
@@ -167,23 +168,41 @@ const ProfileForm: React.FC<ProflieFormProps> = ({
                         />
                     </FormControl>
                     {['MENTOR', 'EXPERT', 'ORGA'].includes(profile.role) ? (
-                        <GridItem colSpan={2}>
-                            <FormControl>
-                                <FormLabel htmlFor="skills">Skills</FormLabel>
-                                <TagSelect
-                                    values={availableSkills}
-                                    selected={skills}
-                                    onDeselect={(v) => {
-                                        const newSkills = [...skills];
-                                        newSkills.splice(skills.indexOf(v), 1);
-                                        setSkills(newSkills);
-                                    }}
-                                    onSelect={(v) => {
-                                        setSkills([...skills, v]);
-                                    }}
-                                />
-                            </FormControl>
-                        </GridItem>
+                        <>
+                            <GridItem colSpan={2}>
+                                <FormControl>
+                                    <FormLabel htmlFor="skills">
+                                        Skills
+                                    </FormLabel>
+                                    <TagSelect
+                                        values={availableSkills}
+                                        selected={skills}
+                                        onDeselect={(v) => {
+                                            const newSkills = [...skills];
+                                            newSkills.splice(
+                                                skills.indexOf(v),
+                                                1
+                                            );
+                                            setSkills(newSkills);
+                                        }}
+                                        onSelect={(v) => {
+                                            setSkills([...skills, v]);
+                                        }}
+                                    />
+                                </FormControl>
+                            </GridItem>
+                            <GridItem>
+                                <FormControl>
+                                    <FormLabel>Describe yourself</FormLabel>
+                                    <BioTextArea
+                                        initialValue={formik.values.bio}
+                                        onBlur={(v) =>
+                                            formik.setFieldValue('bio', v)
+                                        }
+                                    />
+                                </FormControl>
+                            </GridItem>
+                        </>
                     ) : undefined}
                 </SimpleGrid>
 
@@ -197,6 +216,24 @@ const ProfileForm: React.FC<ProflieFormProps> = ({
                 </HStack>
             </VStack>
         </form>
+    );
+};
+
+const BioTextArea = ({
+    initialValue = '',
+    onBlur,
+}: {
+    initialValue: string;
+    onBlur: (value: string) => void;
+}) => {
+    const [value, setValue] = useState(initialValue);
+    return (
+        <Textarea
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onBlur={(e) => onBlur(e.target.value)}
+            placeholder="Tell others something about you, e.g. your current job"
+        />
     );
 };
 

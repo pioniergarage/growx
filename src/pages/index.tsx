@@ -50,7 +50,7 @@ const Home: React.FC<HomeProps> = ({ sponsors, faqs, events: jsonEvents }) => {
             <Section divider position="relative">
                 <Box
                     maxW="container.xl"
-                    transform="translate(-1rem, -50%)"
+                    transform="translate(0, -50%)"
                     top={0}
                     w="100%"
                     h={{ base: '40rem', md: '100%' }}
@@ -64,7 +64,7 @@ const Home: React.FC<HomeProps> = ({ sponsors, faqs, events: jsonEvents }) => {
                         height="100%"
                         bgGradient="linear-gradient(128.16deg, #5557f777 8.06%, #d34dbc80 45% , #d6265170 83.26%)"
                         borderRadius="50%"
-                        filter={{ base: 'blur(20px)', md: 'blur(150px)' }}
+                        filter={{ base: 'blur(80px)', md: 'blur(150px)' }}
                     />
                 </Box>
                 <MainInfoBlock />
