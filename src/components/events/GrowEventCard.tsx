@@ -3,9 +3,12 @@ import {
     Flex,
     Grid,
     Heading,
+    HStack,
+    Icon,
     Tag,
     Text,
     useToast,
+    VStack,
 } from '@chakra-ui/react';
 import { useUser } from '@supabase/auth-helpers-react';
 import {
@@ -14,11 +17,19 @@ import {
 } from 'hooks/event';
 import { GrowEvent } from 'model';
 import { useMemo, useState } from 'react';
+import { FiMapPin } from 'react-icons/fi';
 
 type GrowEventCardProps = {
     event: GrowEvent;
     registered: boolean;
 };
+
+/**
+ * Event element component for the grow connact page
+ * @param event the event contain all important information of the event.
+ * @param registered This parameter set the state for the registration
+ * @returns HTML code that display one event with the date, title, description, location, type and if the event is mandatory.
+ */
 
 const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
     const [registeredLocal, setRegisteredLocal] = useState(registered);
@@ -26,11 +37,15 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
     const { unregisterUser } = useUnregisterUserFromEvent();
     const { user } = useUser();
     const toast = useToast();
-    const { day, month, over } = useMemo(() => {
+    const { day, month, time, over } = useMemo(() => {
         const day = String(event.date.getDate()).padStart(2, '0');
         const month = event.date.toLocaleString('en-US', { month: 'short' });
+        const time = event.date.toLocaleString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+        });
         const over = new Date() > event.date;
-        return { day, month, over };
+        return { day, month, time, over };
     }, [event.date]);
 
     async function register() {
@@ -98,25 +113,41 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
     return (
         <Grid
             gap={4}
-            gridTemplateColumns="3.5rem 1fr"
+            gridTemplateColumns="4.5rem 1fr"
             color={over ? 'gray.500' : 'inherit'}
         >
-            <Flex justify="space-between">
-                <Text>{day}</Text>
-                <Text>{month}</Text>
-            </Flex>
+            <VStack alignItems="start">
+                <HStack>
+                    <Text>{day}</Text>
+                    <Text>{month}</Text>
+                </HStack>
+                <Text>{time}</Text>
+            </VStack>
             <Flex flexDir="column">
-                <Flex gap={2}>
-                    <Heading size="md">{event.title}</Heading>
+                <Heading size="md" mb={1}>
+                    {event.title}
+                </Heading>
+
+                <Text color="gray.400" mb={1}>
+                    {event.description}
+                </Text>
+
+                <HStack mb={1}>
                     {event.mandatory ? (
-                        <Tag>mandatory</Tag>
+                        <Tag>Mandatory</Tag>
                     ) : !over ? (
                         actionButton
                     ) : undefined}
+                </HStack>
+                <HStack>
                     {event.type ? <Tag>{event.type}</Tag> : undefined}
-                    {event.location ? <Tag>{event.location}</Tag> : undefined}
-                </Flex>
-                <Text color="gray.400">{event.description}</Text>
+                    {event.location ? (
+                        <Tag>
+                            <Icon as={FiMapPin} mr={2} />
+                            {event.location}
+                        </Tag>
+                    ) : undefined}
+                </HStack>
             </Flex>
         </Grid>
     );
