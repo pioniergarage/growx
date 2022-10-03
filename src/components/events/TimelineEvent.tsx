@@ -6,6 +6,11 @@ interface TimelineEventProps {
     event: GrowEvent;
 }
 
+/**
+ * Event element component for the Landing page
+ * @param event - the event contain all important information of the event.
+ * @returns HTML code that display one event with the date, title, description, location, type and if the event is mandatory.
+ */
 const TimelineEvent: React.FC<TimelineEventProps> = ({ event }) => {
     const { day, month } = useMemo(() => {
         const date = event.date;
