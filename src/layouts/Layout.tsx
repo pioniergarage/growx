@@ -35,14 +35,13 @@ export default function Layout({ children }: PropsWithChildren) {
                         maxW="container.xl"
                         mx="auto"
                         py={24}
-                        px={4}
                         position="relative"
                     >
                         <Box
                             position="absolute"
                             h="10rem"
                             top={0}
-                            w="100%"
+                            w="100vw"
                             zIndex={-10}
                         >
                             <Box
@@ -66,7 +65,7 @@ export default function Layout({ children }: PropsWithChildren) {
                                 />
                             </Box>
                         </Box>
-                        {children}
+                        <Box px={4}>{children}</Box>
                     </Box>
                     {/* <ReactQueryDevtools initialIsOpen={false} /> */}
                 </QueryClientProvider>
