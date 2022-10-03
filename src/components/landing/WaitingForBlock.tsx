@@ -16,7 +16,7 @@ export default function WaitingForBlock() {
                     is the place for you!
                 </Text>
                 <Box textAlign="center">
-                    <ParticipateButton disabled />
+                    <ParticipateButton />
                     <Text variant="info" mt={2}>
                         Sign-up from 05.10.2022
                     </Text>
