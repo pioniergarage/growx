@@ -14,15 +14,12 @@ import {
     withPageAuth,
 } from '@supabase/auth-helpers-nextjs';
 import { definitions } from 'database/supabase';
-import { getTeam, getTeamIdOfUser } from 'database/teams';
-import { Team } from 'model';
 
 interface ConnectIndexProps {
     profile: definitions['profiles'];
-    team?: Team;
 }
 
-const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile, team }) => {
+const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile }) => {
     return (
         <Flex wrap="wrap">
             <VStack flexGrow={1} alignItems="start">
@@ -71,8 +68,6 @@ export const getServerSideProps = withPageAuth({
             throw new Error(error.message);
         }
 
-        const teamId = await getTeamIdOfUser(user.id);
-        const team = teamId ? await getTeam(teamId) : null;
-        return { props: { profile, team } };
+        return { props: { profile } };
     },
 });
