@@ -5,7 +5,7 @@ import {
     useUnregisterUserFromEvent,
 } from 'hooks/event';
 import { EventType, GrowEvent } from 'model';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
     FaBuilding,
     FaChromecast,
@@ -27,9 +27,10 @@ type GrowEventCardProps = {
  * @returns HTML code that display one event with the date, title, description, location, type and if the event is mandatory.
  */
 const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
-    const [registeredLocal, setRegisteredLocal] = useState(registered);
-    const { registerUser } = useRegisterUserToEvent();
-    const { unregisterUser } = useUnregisterUserFromEvent();
+    const [isRegistered, setRegistered] = useState(registered)
+    const { registerUser, isLoading: isRegistering } = useRegisterUserToEvent();
+    useEffect(() => setRegistered(registered), [registered])
+    const { unregisterUser, isLoading: isUnregistering } = useUnregisterUserFromEvent();
     const { user } = useUser();
     const toast = useToast();
     const { day, month, time, over } = useMemo(() => {
@@ -47,13 +48,13 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
         if (!user) return;
         try {
             await registerUser({ user, event });
+            setRegistered(true)
             toast({
                 title: 'Registered to ' + event.title,
                 status: 'success',
                 duration: 4000,
                 isClosable: true,
             });
-            setRegisteredLocal(true);
         } catch (error) {
             toast({
                 title: 'Something went wrong...',
@@ -68,13 +69,13 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
         if (!user) return;
         try {
             await unregisterUser({ user, event });
+            setRegistered(false)
             toast({
                 title: 'Unregistered from ' + event.title,
                 status: 'success',
                 duration: 4000,
                 isClosable: true,
             });
-            setRegisteredLocal(false);
         } catch (error) {
             toast({
                 title: 'Something went wrong...',
@@ -98,7 +99,7 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
                 Signed up
             </Button>
         );
-    } else if (registeredLocal) {
+    } else if (isRegistered) {
         actionButton = (
             <Button
                 onClick={withdrawRegistration}
@@ -106,6 +107,7 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
                 size="sm"
                 mt={2}
                 maxW={{ md: '20rem' }}
+                isLoading={isUnregistering}
             >
                 Withdraw Registration
             </Button>
@@ -118,6 +120,7 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
                 variant="outline"
                 mt={2}
                 maxW={{ md: '20rem' }}
+                isLoading={isRegistering}
             >
                 Sign up
             </Button>
