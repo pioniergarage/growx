@@ -27,9 +27,9 @@ const textConfig: ComponentStyleConfig = {
 
 const FormLabel: ComponentStyleConfig = {
     baseStyle: {
-        color: "var(--chakra-colors-gray-400)"
-    }
-}
+        color: 'var(--chakra-colors-gray-400)',
+    },
+};
 
 const theme = extendTheme({
     config,
@@ -44,7 +44,6 @@ const theme = extendTheme({
                 bg: 'gray.900',
             },
         }),
-        
     },
 });
 export default theme;

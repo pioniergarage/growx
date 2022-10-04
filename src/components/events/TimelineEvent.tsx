@@ -1,6 +1,14 @@
-import { Flex, Heading, HStack, Tag, Text, VStack } from '@chakra-ui/react';
-import { GrowEvent } from 'model';
+import { Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react';
+import { EventType, GrowEvent } from 'model';
 import { useMemo } from 'react';
+import {
+    FaBuilding,
+    FaChromecast,
+    FaCloud,
+    FaExclamation,
+    FaMapMarkerAlt,
+} from 'react-icons/fa';
+import EventTag from './EventTag';
 
 interface TimelineEventProps {
     event: GrowEvent;
@@ -18,16 +26,16 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({ event }) => {
 
     return (
         <HStack
-            gap={4}
-            alignItems="start"
+            gap={{ base: 2, md: 4 }}
+            alignItems="stretch"
             color={over ? 'gray.500' : 'inherit'}
         >
             <VStack
                 lineHeight={0.7}
                 alignItems="end"
-                fontSize="2xl"
+                fontSize={{ base: 'lg', md: '2xl' }}
                 fontWeight="semibold"
-                width="3.5rem"
+                width={{ base: '2.5rem', md: '3.5rem' }}
                 flexShrink={0}
             >
                 <Text>{day}</Text>
@@ -36,11 +44,29 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({ event }) => {
             <Flex flexDir="column" alignItems="start">
                 <Heading size="md">{event.title}</Heading>
                 <Text mt={0}>{event.description}</Text>
-                <HStack mt={1}>
-                    {event.mandatory ? <Tag>Mandatory</Tag> : <></>}^
-                    {event.location ? <Tag>{event.location}</Tag> : undefined}
-                    {event.type ? <Tag>{event.type}</Tag> : undefined}
-                </HStack>
+                <Flex
+                    mt={1}
+                    flexWrap="wrap"
+                    gap={2}
+                    flexDir={{ base: 'column', sm: 'row' }}
+                    alignItems="start"
+                >
+                    {event.location ? (
+                        <EventTag icon={FaMapMarkerAlt}>
+                            {event.location}
+                        </EventTag>
+                    ) : undefined}
+                    {event.type === EventType.Hybrid ? (
+                        <EventTag icon={FaChromecast}>Hybrid</EventTag>
+                    ) : event.type === EventType.Online ? (
+                        <EventTag icon={FaCloud}>Online</EventTag>
+                    ) : event.type === EventType.Offline ? (
+                        <EventTag icon={FaBuilding}>Offline</EventTag>
+                    ) : undefined}
+                    {event.mandatory ? (
+                        <EventTag icon={FaExclamation}>Mandatory</EventTag>
+                    ) : undefined}
+                </Flex>
             </Flex>
         </HStack>
     );
