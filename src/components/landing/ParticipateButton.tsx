@@ -2,7 +2,6 @@ import { Box } from '@chakra-ui/react';
 import { isSignUpEnabled } from 'utils/dates';
 import PageLink from '../navigation/PageLink';
 
-
 const ParticipateButton = () => {
     if (!isSignUpEnabled) {
         return (

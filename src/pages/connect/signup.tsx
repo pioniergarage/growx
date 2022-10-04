@@ -25,26 +25,24 @@ const SignUp: NextPageWithLayout = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     async function signUp(info: ParticipateInfo) {
-        return supabaseClient.auth
-            .signUp({
-                email: info.email,
-                password: info.password,
-            })
-            .then(({ user, error }) => {
-                if (error) throw error.message;
-                if (!user) throw 'Could not create user';
-                return { user, info };
-            });
+        const { user, error } = await supabaseClient.auth.signUp({
+            email: info.email,
+            password: info.password,
+        });
+        if (error) throw error.message;
+        if (!user) throw 'Could not create user';
+        return user;
     }
 
     async function onSignUp(info: ParticipateInfo) {
         setLoading(true);
-        await signUp(info)
-            .then(({ user, info }) =>
-                updateProfile({ ...info, userId: user.id })
-            )
-            .then(() => router.replace('/connect'))
-            .catch((error) => setSignUpError(String(error)));
+        try {
+            const user = await signUp(info);
+            await updateProfile({ ...info, userId: user.id });
+            router.replace('/connect');
+        } catch (error) {
+            setSignUpError((error as Error).message);
+        }
         setLoading(false);
     }
     return (
