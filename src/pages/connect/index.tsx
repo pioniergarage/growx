@@ -1,6 +1,7 @@
 import PageLink from '@/components/navigation/PageLink';
-import TeamCard from '@/components/teams/TeamCard';
 import {
+    Alert,
+    AlertTitle,
     Box,
     Flex,
     Heading,
@@ -32,17 +33,22 @@ const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile, team }) => {
                     {profile.first_name}
                 </Heading>
                 <Box>
-                    {!team ? (
-                        <>
-                            <Text>
-                                You have not joined a team yet.{' '}
-                                <PageLink href='/connect/temas' color="primary">Browse Teams</PageLink>
-                                
-                            </Text>
-                        </>
-                    ) : (
-                        <TeamCard {...team} />
-                    )}
+                    <Alert status="warning">
+                        <AlertTitle>
+                            🚧🏗 Website under construction!
+                        </AlertTitle>
+                    </Alert>
+                    <Text>
+                        Nevertheless, feel free to look around, e.g. you can{' '}
+                        <PageLink href="/connect/profile" color="primary">
+                            adjust your profile
+                        </PageLink>{' '}
+                        or{' '}
+                        <PageLink href="/connect/temas" color="primary">
+                            browse teams
+                        </PageLink>
+                        .
+                    </Text>
                 </Box>
             </VStack>
         </Flex>
