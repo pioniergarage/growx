@@ -58,7 +58,7 @@ const AnimatedLogo: React.FC<IconProps> = (props) => {
             <Icon
                 viewBox="-15 10 245 245"
                 boxSize={8}
-                fill="whiteAlpha.800"
+                fill="white"
                 {...props}
             >
                 <path

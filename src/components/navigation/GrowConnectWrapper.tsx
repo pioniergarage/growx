@@ -102,14 +102,16 @@ const GrowConnectWrapper: React.FC = () => {
                 >
                     Events
                 </GrowConnectNavButton>
-                <GrowConnectNavButton
-                    href="/connect/teams"
-                    icon={<FaUsers />}
-                    aria-label="Teams"
-                >
-                    Teams
-                </GrowConnectNavButton>
-                {profile.role === 'ORGA' ? <NavAdminMenu /> : undefined}
+                <Show above="sm">
+                    <GrowConnectNavButton
+                        href="/connect/teams"
+                        icon={<FaUsers />}
+                        aria-label="Teams"
+                    >
+                        Teams
+                    </GrowConnectNavButton>
+                    {profile.role === 'ORGA' ? <NavAdminMenu /> : undefined}
+                </Show>
                 <Menu placement="bottom-end">
                     {({ isOpen }) => (
                         <>
