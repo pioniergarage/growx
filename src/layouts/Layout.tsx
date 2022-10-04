@@ -41,7 +41,7 @@ export default function Layout({ children }: PropsWithChildren) {
                             position="absolute"
                             h="10rem"
                             top={0}
-                            w="100vw"
+                            w="100%"
                             zIndex={-10}
                         >
                             <Box
