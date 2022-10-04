@@ -1,9 +1,9 @@
 import {
+    Box,
     Button,
     Flex,
     Grid,
     Heading,
-    Tag,
     Text,
     useToast,
 } from '@chakra-ui/react';
@@ -12,8 +12,16 @@ import {
     useRegisterUserToEvent,
     useUnregisterUserFromEvent,
 } from 'hooks/event';
-import { GrowEvent } from 'model';
+import { EventType, GrowEvent } from 'model';
 import { useMemo, useState } from 'react';
+import {
+    FaBuilding,
+    FaChromecast,
+    FaCloud,
+    FaExclamation,
+    FaMapMarkerAlt,
+} from 'react-icons/fa';
+import EventTag from './EventTag';
 
 type GrowEventCardProps = {
     event: GrowEvent;
@@ -76,21 +84,40 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
     }
 
     let actionButton;
-    if (registeredLocal) {
+    if (event.mandatory) {
         actionButton = (
-            <Button onClick={withdrawRegistration} size="xs" variant="outline">
+            <Button
+                disabled
+                variant="outline"
+                size="sm"
+                mt={2}
+                maxW={{ md: '20rem' }}
+            >
+                Signed up
+            </Button>
+        );
+    } else if (registeredLocal) {
+        actionButton = (
+            <Button
+                onClick={withdrawRegistration}
+                variant="outline"
+                size="sm"
+                mt={2}
+                maxW={{ md: '20rem' }}
+            >
                 Withdraw Registration
             </Button>
         );
     } else {
         actionButton = (
             <Button
+                size="sm"
                 onClick={register}
-                color="primary"
-                size="xs"
                 variant="outline"
+                mt={2}
+                maxW={{ md: '20rem' }}
             >
-                Register
+                Sign up
             </Button>
         );
     }
@@ -101,22 +128,41 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({ event, registered }) => {
             gridTemplateColumns="3.5rem 1fr"
             color={over ? 'gray.500' : 'inherit'}
         >
-            <Flex justify="space-between">
-                <Text>{day}</Text>
-                <Text>{month}</Text>
-            </Flex>
+            <Box>
+                <Box as="span" verticalAlign="top">
+                    {month} {day}
+                </Box>
+            </Box>
             <Flex flexDir="column">
                 <Flex gap={2}>
                     <Heading size="md">{event.title}</Heading>
-                    {event.mandatory ? (
-                        <Tag>mandatory</Tag>
-                    ) : !over ? (
-                        actionButton
-                    ) : undefined}
-                    {event.type ? <Tag>{event.type}</Tag> : undefined}
-                    {event.location ? <Tag>{event.location}</Tag> : undefined}
                 </Flex>
                 <Text color="gray.400">{event.description}</Text>
+                <Flex
+                    mt={1}
+                    flexWrap="wrap"
+                    gap={2}
+                    flexDir={{ base: 'column', sm: 'row' }}
+                    alignItems="start"
+                >
+                    {event.location ? (
+                        <EventTag icon={FaMapMarkerAlt}>
+                            {event.location}
+                        </EventTag>
+                    ) : undefined}
+                    {event.type === EventType.Hybrid ? (
+                        <EventTag icon={FaChromecast}>Hybrid</EventTag>
+                    ) : event.type === EventType.Online ? (
+                        <EventTag icon={FaCloud}>Online</EventTag>
+                    ) : event.type === EventType.Offline ? (
+                        <EventTag icon={FaBuilding}>Offline</EventTag>
+                    ) : undefined}
+                    {event.mandatory ? (
+                        <EventTag icon={FaExclamation}>Mandatory</EventTag>
+                    ) : undefined}
+                </Flex>
+
+                {!over ? actionButton : undefined}
             </Flex>
         </Grid>
     );
