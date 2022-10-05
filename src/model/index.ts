@@ -8,12 +8,14 @@ export type Profile = {
     phone?: string;
     studies?: string;
     university?: string;
+    universityCountry?: string;
     homeland?: string;
     gender?: Gender;
     role: UserRole;
     avatar?: string;
     skills: string[];
     bio: string;
+    keyQualification: boolean;
 };
 
 export type Sponsor = {

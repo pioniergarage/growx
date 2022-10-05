@@ -14,11 +14,13 @@ export const mapProfileDto: (dto: definitions['profiles']) => Profile = (
     email: dto.email,
     studies: dto.studies,
     university: dto.university,
+    universityCountry: dto.universityCountry,
     gender: dto.gender,
     role: dto.role,
     avatar: dto.avatar,
     skills: dto.skills as string[],
     bio: dto.bio || '',
+    keyQualification: dto.keyQualification,
 });
 
 export async function fetchProfile(user_id: string): Promise<Profile> {
@@ -44,6 +46,7 @@ export const updateProfile = async (
                 phone: profile.phone,
                 studies: profile.studies,
                 university: profile.university,
+                universityCountry: profile.universityCountry,
                 homeland: profile.homeland,
                 gender: profile.gender,
                 avatar: profile.avatar,
