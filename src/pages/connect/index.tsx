@@ -2,7 +2,7 @@ import GrowEventCard from '@/components/events/GrowEventCard';
 import PageLink from '@/components/navigation/PageLink';
 import CreateTeamButton from '@/components/teams/CreateTeamButton';
 import TeamCard from '@/components/teams/TeamCard';
-import { Box, Flex, Heading, Text, VStack } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import {
     getUser,
     supabaseServerClient,
@@ -10,7 +10,8 @@ import {
 } from '@supabase/auth-helpers-nextjs';
 import { definitions } from 'database/supabase';
 import { useGrowEvents, useRegistrationsOfUser } from 'hooks/event';
-import { useTeam, useTeamIdOfUser } from 'hooks/team';
+import { useTeam, useTeamIdOfUser, useTeamRequests } from 'hooks/team';
+import { Team } from 'model';
 import { useMemo } from 'react';
 
 interface ConnectIndexProps {
@@ -24,7 +25,7 @@ const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile }) => {
             const now = new Date();
             return events
                 .filter((e) => e.date > now)
-                .slice(0, Math.min(events.length, 2));
+                .slice(0, Math.min(events.length, 1));
         } else {
             return [];
         }
@@ -49,7 +50,7 @@ const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile }) => {
                             color="gray.400"
                             fontSize={12}
                         >
-                            Upcoming Events
+                            Next Event
                         </Heading>
                         <VStack gap={4} alignItems="stretch">
                             {upcomingEvents.map((event) => (
@@ -101,12 +102,22 @@ const YourTeam = ({ userId }: { userId: string }) => {
                     Your Team
                 </Heading>
                 <TeamCard {...team} />
+                <TeamRequestInfo team={team} />
             </Box>
         );
     } else {
         return <></>;
     }
 };
+
+const TeamRequestInfo = ({team}: {team: Team}) => {
+    const { profiles } = useTeamRequests(team.id);
+    if (!profiles || profiles.length === 0) {
+        return <></>
+    } else {
+        return <Alert mt={2} status='info' py={2} px={3}><AlertIcon />Somebody sent a request to join your team</Alert>
+    }
+}
 
 export default ConnectIndex;
 
