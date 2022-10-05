@@ -6,11 +6,11 @@ import {
     Box,
     Divider,
     Heading,
+    HStack,
     SimpleGrid,
     Spinner,
     useToast,
     VStack,
-    Text
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import {
@@ -25,25 +25,25 @@ import { useEffect, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 
 function Registrations(event: GrowEvent) {
-    const { registeredUsers } = useRegistrationsToEvent(event);
-
-    if (event.mandatory) {
-        return <Text>Event is mandatory → no registrations</Text>
-    }
+    const { registrations } = useRegistrationsToEvent(event);
 
     return (
         <Box>
-            <Heading size="sm" mb={2}>{registeredUsers?.length || 0} Registrations</Heading>
+            <Heading size="sm" mb={2}>
+                {registrations?.length || 0} Registrations
+            </Heading>
             <SimpleGrid columns={2}>
-                {registeredUsers?.map((user) => (
-                    <ProfileCard
-                        key={user.userId}
-                        firstName={user.firstName}
-                        lastName={user.lastName}
-                        email={user.email}
-                        avatar={user.avatar}
-                        userId={user.userId}
-                    />
+                {registrations?.map((registration) => (
+                    <HStack key={registration.profile.userId}>
+                        <Box fontSize={10} width={12}>{registration.present ? "In Person" : "Online"}</Box>
+                        <ProfileCard
+                            firstName={registration.profile.firstName}
+                            lastName={registration.profile.lastName}
+                            email={registration.profile.email}
+                            avatar={registration.profile.avatar}
+                            userId={registration.profile.userId}
+                        />
+                    </HStack>
                 ))}
             </SimpleGrid>
         </Box>

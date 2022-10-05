@@ -54,7 +54,7 @@ export function useRegistrationsToEvent(event: GrowEvent) {
         ['eventRegistrations', event.id],
         async () => await getRegistrationsTo(event.id)
     );
-    return { ...query, registeredUsers: query.data };
+    return { ...query, registrations: query.data };
 }
 
 export function useRegistrationsOfUser(userId?: string) {
