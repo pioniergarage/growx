@@ -49,6 +49,7 @@ const UniversityForm = ({ onNext }: UniversityFormProps) => {
                     <FormLabel>University</FormLabel>
                     <Input
                         value={atKIT ? kitName : university}
+                        onChange={e => setUniversity(e.target.value)}
                         disabled={atKIT}
                     />
                 </FormControl>
@@ -56,6 +57,7 @@ const UniversityForm = ({ onNext }: UniversityFormProps) => {
                     <FormLabel>Country</FormLabel>
                     <Input
                         value={atKIT ? kitCountry : country}
+                        onChange={e => setCountry(e.target.value)}
                         disabled={atKIT}
                     />
                 </FormControl>

@@ -53,6 +53,7 @@ export const updateProfile = async (
                 skills: profile.skills,
                 role: profile.role,
                 bio: profile.bio,
+                keyQualification: profile.keyQualification
             },
             { returning: 'representation' }
         )
