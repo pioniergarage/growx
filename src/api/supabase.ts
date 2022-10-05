@@ -755,6 +755,7 @@ export interface paths {
                     bio?: parameters['rowFilter.profiles.bio'];
                     /** used to determine if the person want to use grow as key qualification */
                     keyQualification?: parameters['rowFilter.profiles.keyQualification'];
+                    universityCountry?: parameters['rowFilter.profiles.universityCountry'];
                     /** Filtering Columns */
                     select?: parameters['select'];
                     /** Ordering */
@@ -821,6 +822,7 @@ export interface paths {
                     bio?: parameters['rowFilter.profiles.bio'];
                     /** used to determine if the person want to use grow as key qualification */
                     keyQualification?: parameters['rowFilter.profiles.keyQualification'];
+                    universityCountry?: parameters['rowFilter.profiles.universityCountry'];
                 };
                 header: {
                     /** Preference */
@@ -851,6 +853,7 @@ export interface paths {
                     bio?: parameters['rowFilter.profiles.bio'];
                     /** used to determine if the person want to use grow as key qualification */
                     keyQualification?: parameters['rowFilter.profiles.keyQualification'];
+                    universityCountry?: parameters['rowFilter.profiles.universityCountry'];
                 };
                 body: {
                     /** profiles */
@@ -1277,6 +1280,11 @@ export interface definitions {
          * @default false
          */
         keyQualification: boolean;
+        /**
+         * Format: text
+         * @default
+         */
+        universityCountry?: string;
     };
     sponsors: {
         /**
@@ -1487,6 +1495,8 @@ export interface parameters {
      * @description used to determine if the person want to use grow as key qualification
      */
     'rowFilter.profiles.keyQualification': string;
+    /** Format: text */
+    'rowFilter.profiles.universityCountry': string;
     /** @description sponsors */
     'body.sponsors': definitions['sponsors'];
     /** Format: bigint */

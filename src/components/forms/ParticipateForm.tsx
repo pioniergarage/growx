@@ -1,11 +1,16 @@
 import rules from '@/components/forms/rules';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
+    Box,
     Button,
+    Checkbox,
+    Divider,
     FormControl,
     FormErrorMessage,
     FormLabel,
     GridItem,
     Input,
+    Link,
     SimpleGrid,
     VStack,
 } from '@chakra-ui/react';
@@ -19,6 +24,7 @@ export type ParticipateInfo = {
     email: string;
     gender: Gender;
     password: string;
+    keyQualification: boolean;
 };
 
 interface ParticipateFormProps {
@@ -39,6 +45,7 @@ const ParticipateForm: React.FC<ParticipateFormProps> = ({
             gender: 'OTHER',
             password: '',
             passwordRepeat: '',
+            keyQualification: false,
         },
         onSubmit: (values) => onSubmit(values),
         validate: (values) => {
@@ -144,6 +151,29 @@ const ParticipateForm: React.FC<ParticipateFormProps> = ({
                             {formik.errors.lastName}
                         </FormErrorMessage>
                     </FormControl>
+                    <GridItem colSpan={{ base: 1, md: 2 }}>
+                        <Divider />
+                        <Box paddingTop="10px" pl="10px">
+                            <Box flex="1" textAlign="left">
+                                For KIT students only:
+                            </Box>
+                            <FormControl>
+                                <Checkbox
+                                    onChange={formik.handleChange}
+                                    isChecked={formik.values.keyQualification}
+                                >
+                                    Binding registration as key and interdisciplinary qualifications. <br/> More info: &nbsp;
+                                    <Link
+                                        href="https://www.hoc.kit.edu/startupdiploma.php"
+                                        isExternal
+                                    >
+                                        HoC <ExternalLinkIcon mx="2px" />
+                                    </Link>
+                                    
+                                </Checkbox>
+                            </FormControl>
+                        </Box>
+                    </GridItem>
                 </SimpleGrid>
 
                 <Button
