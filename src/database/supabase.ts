@@ -1097,6 +1097,7 @@ export interface definitions {
          * This is a Foreign Key to `events.id`.<fk table='events' column='id'/>
          */
         event_id: number;
+        present: boolean;
     };
     teams: {
         /**
@@ -1240,6 +1241,7 @@ export interface definitions {
         studies?: string;
         /** Format: text */
         university?: string;
+        universityCountry?: string;
         /** Format: text */
         homeland?: string;
         /** Format: text */
@@ -1253,6 +1255,7 @@ export interface definitions {
         /** Format: json */
         skills: unknown;
         bio?: string;
+        keyQualification: boolean;
     };
     sponsors: {
         /**

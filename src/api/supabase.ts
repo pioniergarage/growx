@@ -235,6 +235,7 @@ export interface paths {
                     inserted_at?: parameters['rowFilter.event_registrations.inserted_at'];
                     user_id?: parameters['rowFilter.event_registrations.user_id'];
                     event_id?: parameters['rowFilter.event_registrations.event_id'];
+                    present?: parameters['rowFilter.event_registrations.present'];
                     /** Filtering Columns */
                     select?: parameters['select'];
                     /** Ordering */
@@ -288,6 +289,7 @@ export interface paths {
                     inserted_at?: parameters['rowFilter.event_registrations.inserted_at'];
                     user_id?: parameters['rowFilter.event_registrations.user_id'];
                     event_id?: parameters['rowFilter.event_registrations.event_id'];
+                    present?: parameters['rowFilter.event_registrations.present'];
                 };
                 header: {
                     /** Preference */
@@ -305,6 +307,7 @@ export interface paths {
                     inserted_at?: parameters['rowFilter.event_registrations.inserted_at'];
                     user_id?: parameters['rowFilter.event_registrations.user_id'];
                     event_id?: parameters['rowFilter.event_registrations.event_id'];
+                    present?: parameters['rowFilter.event_registrations.present'];
                 };
                 body: {
                     /** event_registrations */
@@ -750,6 +753,9 @@ export interface paths {
                     role?: parameters['rowFilter.profiles.role'];
                     skills?: parameters['rowFilter.profiles.skills'];
                     bio?: parameters['rowFilter.profiles.bio'];
+                    /** used to determine if the person want to use grow as key qualification */
+                    keyQualification?: parameters['rowFilter.profiles.keyQualification'];
+                    universityCountry?: parameters['rowFilter.profiles.universityCountry'];
                     /** Filtering Columns */
                     select?: parameters['select'];
                     /** Ordering */
@@ -814,6 +820,9 @@ export interface paths {
                     role?: parameters['rowFilter.profiles.role'];
                     skills?: parameters['rowFilter.profiles.skills'];
                     bio?: parameters['rowFilter.profiles.bio'];
+                    /** used to determine if the person want to use grow as key qualification */
+                    keyQualification?: parameters['rowFilter.profiles.keyQualification'];
+                    universityCountry?: parameters['rowFilter.profiles.universityCountry'];
                 };
                 header: {
                     /** Preference */
@@ -842,6 +851,9 @@ export interface paths {
                     role?: parameters['rowFilter.profiles.role'];
                     skills?: parameters['rowFilter.profiles.skills'];
                     bio?: parameters['rowFilter.profiles.bio'];
+                    /** used to determine if the person want to use grow as key qualification */
+                    keyQualification?: parameters['rowFilter.profiles.keyQualification'];
+                    universityCountry?: parameters['rowFilter.profiles.universityCountry'];
                 };
                 body: {
                     /** profiles */
@@ -1100,6 +1112,11 @@ export interface definitions {
          * This is a Foreign Key to `events.id`.<fk table='events' column='id'/>
          */
         event_id: number;
+        /**
+         * Format: boolean
+         * @default false
+         */
+        present: boolean;
     };
     teams: {
         /**
@@ -1257,6 +1274,17 @@ export interface definitions {
         skills: unknown;
         /** Format: text */
         bio?: string;
+        /**
+         * Format: boolean
+         * @description used to determine if the person want to use grow as key qualification
+         * @default false
+         */
+        keyQualification: boolean;
+        /**
+         * Format: text
+         * @default
+         */
+        universityCountry?: string;
     };
     sponsors: {
         /**
@@ -1372,6 +1400,8 @@ export interface parameters {
     'rowFilter.event_registrations.user_id': string;
     /** Format: bigint */
     'rowFilter.event_registrations.event_id': string;
+    /** Format: boolean */
+    'rowFilter.event_registrations.present': string;
     /** @description teams */
     'body.teams': definitions['teams'];
     /** Format: timestamp with time zone */
@@ -1460,6 +1490,13 @@ export interface parameters {
     'rowFilter.profiles.skills': string;
     /** Format: text */
     'rowFilter.profiles.bio': string;
+    /**
+     * Format: boolean
+     * @description used to determine if the person want to use grow as key qualification
+     */
+    'rowFilter.profiles.keyQualification': string;
+    /** Format: text */
+    'rowFilter.profiles.universityCountry': string;
     /** @description sponsors */
     'body.sponsors': definitions['sponsors'];
     /** Format: bigint */

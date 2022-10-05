@@ -59,6 +59,7 @@ const MentorSignUp: NextPageWithLayout = () => {
         <VStack mx="auto" alignItems="stretch">
             {step == 0 ? (
                 <NameAndPasswordForm
+                    signUpAs='mentor'
                     initialEmail={email as string}
                     onNext={(info) => {
                         setEmailAndPassword(info);
