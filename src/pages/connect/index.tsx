@@ -49,7 +49,7 @@ const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile }) => {
                         >
                             Upcoming Events
                         </Heading>
-                        <VStack gap={4}>
+                        <VStack gap={4} alignItems="stretch">
                             {upcomingEvents.map((event) => (
                                 <GrowEventCard key={event.id} event={event} />
                             ))}
