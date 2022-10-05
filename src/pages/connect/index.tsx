@@ -1,4 +1,7 @@
 import GrowEventCard from '@/components/events/GrowEventCard';
+import PageLink from '@/components/navigation/PageLink';
+import CreateTeamButton from '@/components/teams/CreateTeamButton';
+import TeamCard from '@/components/teams/TeamCard';
 import { Box, Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import {
     getUser,
@@ -7,6 +10,7 @@ import {
 } from '@supabase/auth-helpers-nextjs';
 import { definitions } from 'database/supabase';
 import { useGrowEvents } from 'hooks/event';
+import { useTeam, useTeamIdOfUser } from 'hooks/team';
 import { useMemo } from 'react';
 
 interface ConnectIndexProps {
@@ -28,7 +32,7 @@ const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile }) => {
 
     return (
         <Flex wrap="wrap">
-            <VStack flexGrow={1} alignItems="start" gap={4}>
+            <VStack flexGrow={1} alignItems="start" gap={6}>
                 <Heading size="md">
                     <Text as="span" color="gray.400">
                         Welcome back,
@@ -45,7 +49,7 @@ const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile }) => {
                         >
                             Upcoming Events
                         </Heading>
-                        <VStack gap={8}>
+                        <VStack gap={4}>
                             {upcomingEvents.map((event) => (
                                 <GrowEventCard key={event.id} event={event} />
                             ))}
@@ -53,9 +57,46 @@ const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile }) => {
                     </Box>
                 ) : undefined}
 
+                <YourTeam userId={profile.user_id} />
             </VStack>
         </Flex>
     );
+};
+
+const YourTeam = ({ userId }: { userId: string }) => {
+    const { teamId, isLoading } = useTeamIdOfUser(userId);
+    const { team } = useTeam(teamId);
+    if (isLoading) {
+        return <></>;
+    }
+    if (!isLoading && !teamId) {
+        return (
+            <Box>
+                <Heading size="sm" color="gray.400" fontSize={12}>
+                    Your Team
+                </Heading>
+                <Box>
+                    You have not joined a team yet. You can{' '}
+                    <PageLink href="/connect/teams" color="primary">
+                        browse
+                    </PageLink>{' '}
+                    existing teams or you can create a new one.{' '}
+                    <CreateTeamButton size="sm" ml={2} />
+                </Box>
+            </Box>
+        );
+    } else if (team) {
+        return (
+            <Box>
+                <Heading size="sm" color="gray.400" fontSize={12}>
+                    Your Team
+                </Heading>
+                <TeamCard {...team} />
+            </Box>
+        );
+    } else {
+        return <></>;
+    }
 };
 
 export default ConnectIndex;
