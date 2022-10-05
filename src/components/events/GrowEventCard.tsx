@@ -38,7 +38,7 @@ type GrowEventCardProps = {
  */
 const GrowEventCard: React.FC<GrowEventCardProps> = ({
     event,
-    registration,
+    registration
 }) => {
     const { registerUser, isLoading: isRegistering } = useRegisterUserToEvent();
     const { unregisterUser, isLoading: isUnregistering } =

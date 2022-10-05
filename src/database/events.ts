@@ -126,15 +126,17 @@ export const getRegistrationsOfUser = (user_id: string) =>
 
 export const getRegistrationsTo = (event_id: number) =>
     supabaseClient
-        .from<{ present: boolean, profiles: definitions['profiles'] }>('event_registrations')
+        .from<{ present: boolean; profiles: definitions['profiles'] }>(
+            'event_registrations'
+        )
         .select('present, profiles (*)')
         .match({ event_id })
         .then((response) =>
             handleResponse(response, 'Could not load registrations')
         )
-        .then((dtos) => dtos.map(({present, profiles}) => (
-            {
+        .then((dtos) =>
+            dtos.map(({ present, profiles }) => ({
                 present,
-                profile: mapProfileDto(profiles)
-            }
-        )));
+                profile: mapProfileDto(profiles),
+            }))
+        );
