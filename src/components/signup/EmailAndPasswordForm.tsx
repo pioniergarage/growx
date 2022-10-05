@@ -12,6 +12,7 @@ import {
 import { useFormik } from 'formik';
 import { useEffect } from 'react';
 import rules from '../forms/rules';
+import PageLink from '../navigation/PageLink';
 
 export type SignUpInfo = {
     email: string;
@@ -22,12 +23,14 @@ type EmailAndPasswordFormProps = {
     initialEmail?: string;
     onNext: (info: SignUpInfo) => void;
     isLoading?: boolean;
+    signUpAs?: string;
 };
 
 const EmailAndPasswordForm = ({
     initialEmail = '',
     onNext,
     isLoading = false,
+    signUpAs,
 }: EmailAndPasswordFormProps) => {
     const formik = useFormik<{
         email: string;
@@ -48,6 +51,8 @@ const EmailAndPasswordForm = ({
                 errors.passwordRepeat = 'Does not match';
             const emailError = rules.email(values.email);
             if (emailError !== true) errors.email = emailError;
+            const passwordError = rules.password(values.password);
+            if (passwordError !== true) errors.password = passwordError;
             return errors;
         },
         validateOnChange: false,
@@ -65,9 +70,11 @@ const EmailAndPasswordForm = ({
             <VStack gap={2} alignItems="center">
                 <Box textAlign="center">
                     <Heading size="md">Sign up</Heading>
-                    <Text color="gray.400" mb={4}>
-                        as mentor
-                    </Text>
+                    {signUpAs ? (
+                        <Text color="gray.400" mb={4}>
+                            as {signUpAs}
+                        </Text>
+                    ) : undefined}
                 </Box>
                 <FormControl
                     isInvalid={!!formik.errors.email}
@@ -125,6 +132,10 @@ const EmailAndPasswordForm = ({
                     Next
                 </Button>
             </VStack>
+
+            <PageLink href="/connect/login" color="primary" textAlign="center">
+                Already signed up? Click here to login.
+            </PageLink>
         </form>
     );
 };

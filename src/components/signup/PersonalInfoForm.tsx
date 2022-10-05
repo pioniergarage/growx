@@ -20,6 +20,7 @@ export type PersonalInfo = {
     lastName: string;
     gender: Gender;
     phone: string;
+    homeland: string;
 };
 
 type PersonalInfoFormProps = {
@@ -43,12 +44,14 @@ const PersonalInfoForm = ({
             lastName: initialLastName,
             gender: initialGender,
             phone: '',
+            homeland: ''
         },
         onSubmit: (values) => onNext(values),
         validate: (values) => {
             const errors: Record<string, string> = {};
             if (!values.firstName) errors.firstName = 'Required';
             if (!values.lastName) errors.lastName = 'Required';
+            if (!values.homeland) errors.homeland = 'Required';
             return errors;
         },
         validateOnChange: false,
@@ -133,6 +136,18 @@ const PersonalInfoForm = ({
                         onChange={formik.handleChange}
                         value={formik.values.phone}
                     />
+                </FormControl>
+                <FormControl isDisabled={isLoading} isInvalid={!!formik.errors.homeland}>
+                    <FormLabel>Homeland*</FormLabel>
+                    <Input
+                        name="homeland"
+                        id="homeland"
+                        onChange={formik.handleChange}
+                        value={formik.values.homeland}
+                    />
+                    <FormErrorMessage>
+                        {formik.errors.homeland}
+                    </FormErrorMessage>
                 </FormControl>
                 <Button
                     type="submit"

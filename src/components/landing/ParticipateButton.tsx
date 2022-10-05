@@ -2,7 +2,6 @@ import { Box } from '@chakra-ui/react';
 import { isSignUpEnabled } from 'utils/dates';
 import PageLink from '../navigation/PageLink';
 
-
 const ParticipateButton = () => {
     if (!isSignUpEnabled) {
         return (
@@ -23,7 +22,7 @@ const ParticipateButton = () => {
         );
     }
     return (
-        <PageLink href="/connect">
+        <PageLink href="/connect/signup">
             <Box
                 as="button"
                 bgGradient="linear(to-r, secondary, primary)"

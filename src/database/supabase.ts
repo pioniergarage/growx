@@ -1241,6 +1241,7 @@ export interface definitions {
         studies?: string;
         /** Format: text */
         university?: string;
+        universityCountry?: string;
         /** Format: text */
         homeland?: string;
         /** Format: text */
@@ -1254,6 +1255,7 @@ export interface definitions {
         /** Format: json */
         skills: unknown;
         bio?: string;
+        keyQualification: boolean;
     };
     sponsors: {
         /**
