@@ -9,7 +9,7 @@ import {
     withPageAuth,
 } from '@supabase/auth-helpers-nextjs';
 import { definitions } from 'database/supabase';
-import { useGrowEvents } from 'hooks/event';
+import { useGrowEvents, useRegistrationsOfUser } from 'hooks/event';
 import { useTeam, useTeamIdOfUser } from 'hooks/team';
 import { useMemo } from 'react';
 
@@ -29,6 +29,8 @@ const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile }) => {
             return [];
         }
     }, [events]);
+
+    const { registrations } = useRegistrationsOfUser(profile.user_id);
 
     return (
         <Flex wrap="wrap">
@@ -51,7 +53,14 @@ const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile }) => {
                         </Heading>
                         <VStack gap={4} alignItems="stretch">
                             {upcomingEvents.map((event) => (
-                                <GrowEventCard key={event.id} event={event} />
+                                <GrowEventCard
+                                    key={event.id}
+                                    event={event}
+                                    registration={registrations?.find(
+                                        (registration) =>
+                                            registration.eventId === event.id
+                                    )}
+                                />
                             ))}
                         </VStack>
                     </Box>
