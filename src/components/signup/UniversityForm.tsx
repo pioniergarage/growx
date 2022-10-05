@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
-const kitName = 'Karlsruhe Institute of Technology';
+export const kitName = 'Karlsruhe Institute of Technology';
 const kitCountry = 'Germany';
 
 type UniversityFormProps = {
