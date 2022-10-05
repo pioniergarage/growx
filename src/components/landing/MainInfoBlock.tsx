@@ -32,7 +32,7 @@ export default function MainInfoBlock() {
                 textAlign="center"
                 rowSpan={2}
             >
-                <AnimatedLogo fill="whiteAlpha.900" boxSize={300} />
+                <AnimatedLogo fill="whiteAlpha.900" boxSize={250} />
                 <Countdown />
             </GridItem>
             <GridItem className="md:order-1">

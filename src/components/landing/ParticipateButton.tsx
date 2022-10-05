@@ -13,7 +13,7 @@ const ParticipateButton = () => {
                 px={4}
                 py={3}
                 borderRadius={4}
-                minW={72}
+                minW="16rem"
                 fontWeight="black"
                 opacity={0.9}
             >
@@ -29,7 +29,7 @@ const ParticipateButton = () => {
                 px={4}
                 py={3}
                 borderRadius={4}
-                minW={72}
+                minW="16rem"
                 fontWeight="black"
                 opacity={0.9}
                 _hover={{ opacity: '0.7' }}

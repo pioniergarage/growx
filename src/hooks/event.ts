@@ -14,18 +14,36 @@ import { GrowEvent } from 'model';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export function useRegisterUserToEvent() {
+    const queryClient = useQueryClient();
     const mutation = useMutation(
-        async ({ user, event }: { user: User; event: GrowEvent }) => {
-            return registerUser(user.id, event.id);
+        async ({
+            user,
+            event,
+            present,
+        }: {
+            user: User;
+            event: GrowEvent;
+            present: boolean;
+        }) => {
+            return registerUser(user.id, event.id, present);
+        },
+        {
+            onSuccess: () =>
+                queryClient.invalidateQueries(['eventRegistrationsOfUser']),
         }
     );
     return { ...mutation, registerUser: mutation.mutateAsync };
 }
 
 export function useUnregisterUserFromEvent() {
+    const queryClient = useQueryClient();
     const mutation = useMutation(
         async ({ user, event }: { user: User; event: GrowEvent }) => {
             return unregisterUser(user.id, event.id);
+        },
+        {
+            onSuccess: () =>
+                queryClient.invalidateQueries(['eventRegistrationsOfUser']),
         }
     );
     return { ...mutation, unregisterUser: mutation.mutateAsync };
@@ -36,7 +54,7 @@ export function useRegistrationsToEvent(event: GrowEvent) {
         ['eventRegistrations', event.id],
         async () => await getRegistrationsTo(event.id)
     );
-    return { ...query, registeredUsers: query.data };
+    return { ...query, registrations: query.data };
 }
 
 export function useRegistrationsOfUser(userId?: string) {
@@ -50,7 +68,7 @@ export function useRegistrationsOfUser(userId?: string) {
         },
         { enabled: !!userId }
     );
-    return { ...query, eventIds: query.data };
+    return { ...query, registrations: query.data };
 }
 
 export function useGrowEvent(id: number) {

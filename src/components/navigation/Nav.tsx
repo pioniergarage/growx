@@ -18,7 +18,7 @@ const Logo: React.FC<LogoProps> = ({ children, href = '/', ...rest }) => {
     return (
         <ChakraLink as="button">
             <Link href={href}>
-                <Text color="white" fontWeight="black" fontSize={20} {...rest}>
+                <Text color="white" fontWeight="black" fontSize={{base: 16, md: 20}} {...rest}>
                     {children}
                 </Text>
             </Link>
@@ -64,7 +64,7 @@ const NavBarContainer: React.FC<PropsWithChildren> = ({ children }) => {
                 align="center"
                 justify="space-between"
                 wrap="wrap"
-                py={5}
+                py={3}
                 px={4}
                 maxW="container.xl"
             >

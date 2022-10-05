@@ -1097,6 +1097,7 @@ export interface definitions {
          * This is a Foreign Key to `events.id`.<fk table='events' column='id'/>
          */
         event_id: number;
+        present: boolean;
     };
     teams: {
         /**
