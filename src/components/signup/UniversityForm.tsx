@@ -3,15 +3,16 @@ import {
     Button,
     Checkbox,
     FormControl,
+    FormErrorMessage,
     FormLabel,
     Heading,
     Input,
     Link,
     VStack,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useFormik } from 'formik';
 
-const kitName = 'Karlsruhe Institute of Technology';
+export const kitName = 'Karlsruhe Institute of Technology';
 const kitCountry = 'Germany';
 
 type UniversityFormProps = {
@@ -23,67 +24,101 @@ type UniversityFormProps = {
 };
 
 const UniversityForm = ({ onNext }: UniversityFormProps) => {
-    const [atKIT, setAtKIT] = useState(false);
-    const [university, setUniversity] = useState('');
-    const [country, setCountry] = useState('');
-    const [isSQ, setSQ] = useState(false)
+    const formik = useFormik({
+        initialValues: {
+            atKIT: false,
+            university: '',
+            country: '',
+            isSQ: false,
+        },
+        onSubmit: ({ university, country, isSQ, atKIT }) => {
+            onNext({ university, country, isSQ: isSQ && atKIT });
+        },
+        validate: ({ university, country }) => {
+            const errors: Record<string, string> = {};
+            if (!university) errors.university = 'Required';
+            if (!country) errors.country = 'Required';
+            return errors;
+        },
+    });
 
     return (
-        <VStack alignItems="stretch" gap={2}>
-            <Heading size="sm">Where do you study?</Heading>
-            <VStack alignItems="stretch">
-                <Checkbox
-                    id="atKIT"
-                    isChecked={atKIT}
-                    onChange={(e) => {
-                        setAtKIT(e.target.checked);
-                        if (e.target.checked) {
-                            setUniversity(kitName);
-                            setCountry(kitCountry);
-                        } 
-                    }}
-                >
-                    {kitName}
-                </Checkbox>
-                <FormControl>
-                    <FormLabel>University</FormLabel>
-                    <Input
-                        value={atKIT ? kitName : university}
-                        onChange={e => setUniversity(e.target.value)}
-                        disabled={atKIT}
-                    />
-                </FormControl>
-                <FormControl>
-                    <FormLabel>Country</FormLabel>
-                    <Input
-                        value={atKIT ? kitCountry : country}
-                        onChange={e => setCountry(e.target.value)}
-                        disabled={atKIT}
-                    />
-                </FormControl>
-                {atKIT ? (
-                    <FormControl >
-                        <FormLabel mt={4}>KIT students only</FormLabel>
-                        <Checkbox
-                            onChange={e => setSQ(e.target.checked)}
-                            isChecked={isSQ}
-                        >
-                            Binding registration as key and interdisciplinary
-                            qualifications. <br /> More info: &nbsp;
-                            <Link
-                                href="https://www.hoc.kit.edu/startupdiploma.php"
-                                isExternal
-                            >
-                                HoC <ExternalLinkIcon mx="2px" />
-                            </Link>
-                        </Checkbox>
+        <form onSubmit={formik.handleSubmit}>
+            <VStack alignItems="stretch" gap={2}>
+                <Heading size="sm">Where do you study?</Heading>
+                <VStack alignItems="stretch">
+                    <Checkbox
+                        id="atKIT"
+                        isChecked={formik.values.atKIT}
+                        onChange={(e) => {
+                            formik.setFieldValue('atKIT', e.target.checked);
+                            if (e.target.checked) {
+                                formik.setFieldValue('university', kitName);
+                                formik.setFieldValue('country', kitCountry);
+                            }
+                        }}
+                    >
+                        {kitName}
+                    </Checkbox>
+                    <FormControl isInvalid={!!formik.errors.university}>
+                        <FormLabel>University</FormLabel>
+                        <Input
+                            value={formik.values.university}
+                            onChange={(e) =>
+                                formik.setFieldValue(
+                                    'university',
+                                    e.target.value
+                                )
+                            }
+                            disabled={formik.values.atKIT}
+                        />
+
+                        <FormErrorMessage>
+                            {formik.errors.university}
+                        </FormErrorMessage>
                     </FormControl>
-                ) : undefined}
+                    <FormControl isInvalid={!!formik.errors.country}>
+                        <FormLabel>Country</FormLabel>
+                        <Input
+                            value={formik.values.country}
+                            onChange={(e) =>
+                                formik.setFieldValue('country', e.target.value)
+                            }
+                            disabled={formik.values.atKIT}
+                        />
+
+                        <FormErrorMessage>
+                            {formik.errors.country}
+                        </FormErrorMessage>
+                    </FormControl>
+                    {formik.values.atKIT ? (
+                        <FormControl>
+                            <FormLabel mt={4}>KIT students only</FormLabel>
+                            <Checkbox
+                                onChange={(e) =>
+                                    formik.setFieldValue(
+                                        'isSQ',
+                                        e.target.checked
+                                    )
+                                }
+                                isChecked={formik.values.isSQ}
+                            >
+                                Binding registration as key and
+                                interdisciplinary qualifications. <br /> More
+                                info: &nbsp;
+                                <Link
+                                    href="https://www.hoc.kit.edu/startupdiploma.php"
+                                    isExternal
+                                >
+                                    HoC <ExternalLinkIcon mx="2px" />
+                                </Link>
+                            </Checkbox>
+                        </FormControl>
+                    ) : undefined}
+                </VStack>
+                <Button type="submit">Next</Button>
             </VStack>
-            <Button onClick={() => onNext({ university, country, isSQ: atKIT && isSQ })}>
-                Next
-            </Button>
-        </VStack>
+        </form>
     );
 };
 export default UniversityForm;

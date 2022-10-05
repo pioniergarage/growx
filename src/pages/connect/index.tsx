@@ -1,8 +1,23 @@
 import GrowEventCard from '@/components/events/GrowEventCard';
 import PageLink from '@/components/navigation/PageLink';
+import { kitName } from '@/components/signup/UniversityForm';
 import CreateTeamButton from '@/components/teams/CreateTeamButton';
 import TeamCard from '@/components/teams/TeamCard';
-import { Box, Flex, Heading, Text, VStack } from '@chakra-ui/react';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
+import {
+    Alert,
+    AlertIcon,
+    Box,
+    Flex,
+    FormControl,
+    FormLabel,
+    Heading,
+    HStack,
+    Link,
+    Switch,
+    Text,
+    VStack,
+} from '@chakra-ui/react';
 import {
     getUser,
     supabaseServerClient,
@@ -10,8 +25,10 @@ import {
 } from '@supabase/auth-helpers-nextjs';
 import { definitions } from 'database/supabase';
 import { useGrowEvents, useRegistrationsOfUser } from 'hooks/event';
-import { useTeam, useTeamIdOfUser } from 'hooks/team';
-import { useMemo } from 'react';
+import { useUpdateProfile } from 'hooks/profile';
+import { useTeam, useTeamIdOfUser, useTeamRequests } from 'hooks/team';
+import { Team } from 'model';
+import { useMemo, useState } from 'react';
 
 interface ConnectIndexProps {
     profile: definitions['profiles'];
@@ -24,7 +41,7 @@ const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile }) => {
             const now = new Date();
             return events
                 .filter((e) => e.date > now)
-                .slice(0, Math.min(events.length, 2));
+                .slice(0, Math.min(events.length, 1));
         } else {
             return [];
         }
@@ -49,7 +66,7 @@ const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile }) => {
                             color="gray.400"
                             fontSize={12}
                         >
-                            Upcoming Events
+                            Next Event
                         </Heading>
                         <VStack gap={4} alignItems="stretch">
                             {upcomingEvents.map((event) => (
@@ -67,6 +84,12 @@ const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile }) => {
                 ) : undefined}
 
                 <YourTeam userId={profile.user_id} />
+                {profile.university === kitName && !SQRegistrationOver ? (
+                    <SQInfo
+                        userId={profile.user_id}
+                        keyQualification={profile.keyQualification}
+                    />
+                ) : undefined}
             </VStack>
         </Flex>
     );
@@ -97,15 +120,79 @@ const YourTeam = ({ userId }: { userId: string }) => {
     } else if (team) {
         return (
             <Box>
-                <Heading size="sm" color="gray.400" fontSize={12}>
+                <Heading  mb={1} size="sm" color="gray.400" fontSize={12}>
                     Your Team
                 </Heading>
                 <TeamCard {...team} />
+                <TeamRequestInfo team={team} />
             </Box>
         );
     } else {
         return <></>;
     }
+};
+
+const TeamRequestInfo = ({ team }: { team: Team }) => {
+    const { profiles } = useTeamRequests(team.id);
+    if (!profiles || profiles.length === 0) {
+        return <></>;
+    } else {
+        return (
+            <Alert mt={2} status="info" py={2} px={3}>
+                <AlertIcon />
+                Somebody sent a request to join your team
+            </Alert>
+        );
+    }
+};
+
+const SQRegistrationEnd = new Date(2022, 10, 7); // month is zero indexed
+const SQRegistrationOver = new Date() > SQRegistrationEnd;
+const SQInfo = ({
+    userId,
+    keyQualification,
+}: {
+    userId: string;
+    keyQualification: boolean;
+}) => {
+    const { updateProfile } = useUpdateProfile();
+    const [updated, setUpdated] = useState(false);
+    async function setSQ(value: boolean) {
+        await updateProfile({ keyQualification: value, userId });
+        setUpdated(!updated);
+    }
+    return (
+        <Box>
+            <Heading mb={1} size="sm" color="gray.400" fontSize={12}>
+                Key and interdisciplinary qualification
+            </Heading>
+            <Box>
+                All KIT students have the opportunity to go through a special
+                training format, the successful completion of which is rewarded
+                with the &quot;Startup Diploma&quot; certificate. More info:
+                &nbsp;
+                <Link
+                    href="https://www.hoc.kit.edu/startupdiploma.php"
+                    isExternal
+                >
+                    HoC <ExternalLinkIcon mx="2px" />
+                </Link>
+                <FormControl as={HStack} mt={1}>
+                    <Switch
+                        onChange={(e) => setSQ(e.target.checked)}
+                        isChecked={
+                            (updated && !keyQualification) ||
+                            (keyQualification && !updated)
+                        }
+                    />
+                    <FormLabel>
+                        Binding registration as key and interdisciplinary
+                        qualifications
+                    </FormLabel>
+                </FormControl>
+            </Box>
+        </Box>
+    );
 };
 
 export default ConnectIndex;

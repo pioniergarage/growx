@@ -62,7 +62,7 @@ export default function MainInfoBlock() {
                                 </Text>
                             )}
                             <Text variant="info">
-                                It&apos;s free and without obligation!
+                                It&apos;s free!
                             </Text>
                         </Box>
                     </Box>
