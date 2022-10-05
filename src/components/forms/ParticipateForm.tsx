@@ -152,24 +152,6 @@ const ParticipateForm: React.FC<ParticipateFormProps> = ({
                         </FormErrorMessage>
                     </FormControl>
                     <GridItem colSpan={{ base: 1, md: 2 }}>
-                        {/* <Accordion allowToggle>
-                            <AccordionItem>
-                                <AccordionButton>
-                                    <Box flex="1" textAlign="left">
-                                        For KIT students only:
-                                    </Box>
-                                    <AccordionIcon />
-                                </AccordionButton>
-                                <AccordionPanel>
-                                    <FormControl>
-                                        <Checkbox>
-                                            Join definitly with 2 ects as key
-                                            qualification
-                                        </Checkbox>
-                                    </FormControl>
-                                </AccordionPanel>
-                            </AccordionItem>
-                        </Accordion> */}
                         <Divider />
                         <Box paddingTop="10px" pl="10px">
                             <Box flex="1" textAlign="left">
@@ -180,16 +162,14 @@ const ParticipateForm: React.FC<ParticipateFormProps> = ({
                                     onChange={formik.handleChange}
                                     isChecked={formik.values.keyQualification}
                                 >
-                                    Use Grow as key qualification <br />
-                                    (Gives 2 ects but makes the join binding,
-                                    more info: &nbsp;
+                                    Binding registration as key and interdisciplinary qualifications. <br/> More info: &nbsp;
                                     <Link
                                         href="https://www.hoc.kit.edu/startupdiploma.php"
                                         isExternal
                                     >
                                         HoC <ExternalLinkIcon mx="2px" />
                                     </Link>
-                                    )
+                                    
                                 </Checkbox>
                             </FormControl>
                         </Box>
