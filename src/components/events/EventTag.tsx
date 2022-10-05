@@ -5,9 +5,10 @@ import { IconType } from "react-icons";
 const EventTag = ({
     children,
     icon,
-}: PropsWithChildren & { icon: IconType }) => {
+    colorScheme
+}: PropsWithChildren & { icon: IconType, colorScheme?: string }) => {
     return (
-        <Tag size="sm">
+        <Tag size="sm" colorScheme={colorScheme}>
             <TagLeftIcon as={icon} />
             <TagLabel>{children}</TagLabel>
         </Tag>

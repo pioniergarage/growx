@@ -88,10 +88,14 @@ export const updateEvent = (
         )
         .then(mapEventDto);
 
-export const registerUser = (userId: string, eventId: number) =>
+export const registerUser = (
+    userId: string,
+    eventId: number,
+    present: boolean
+) =>
     supabaseClient
         .from<definitions['event_registrations']>('event_registrations')
-        .insert({ user_id: userId, event_id: eventId })
+        .insert({ user_id: userId, event_id: eventId, present })
         .then(({ error }) => {
             if (error) throw new Error(error.message);
         });
@@ -108,15 +112,17 @@ export const unregisterUser = async (userId: string, eventId: number) =>
 
 export const getRegistrationsOfUser = (user_id: string) =>
     supabaseClient
-        .from<Pick<definitions['event_registrations'], 'event_id'>>(
+        .from<Pick<definitions['event_registrations'], 'event_id' | 'present'>>(
             'event_registrations'
         )
-        .select('event_id')
+        .select('event_id, present')
         .match({ user_id })
         .then((response) =>
             handleResponse(response, 'Could not find registrations')
         )
-        .then((dtos) => dtos.map((e) => e.event_id));
+        .then((dtos) =>
+            dtos.map((e) => ({ eventId: e.event_id, present: e.present }))
+        );
 
 export const getRegistrationsTo = (event_id: number) =>
     supabaseClient

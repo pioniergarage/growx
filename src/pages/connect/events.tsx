@@ -11,7 +11,7 @@ import { useProfile } from 'hooks/profile';
 
 const EventsPage = ({ eventsRaw }: { eventsRaw: definitions['events'][] }) => {
     const { profile } = useProfile();
-    const { eventIds: registeredTo } = useRegistrationsOfUser(profile?.userId);
+    const { registrations } = useRegistrationsOfUser(profile?.userId);
     const events = eventsRaw.map(mapEventDto);
 
     return (
@@ -22,7 +22,9 @@ const EventsPage = ({ eventsRaw }: { eventsRaw: definitions['events'][] }) => {
                     <GrowEventCard
                         key={event.id}
                         event={event}
-                        registered={(registeredTo || []).includes(event.id)}
+                        registration={registrations?.find(
+                            (registration) => registration.eventId === event.id
+                        )}
                     />
                 ))}
             </VStack>
