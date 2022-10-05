@@ -120,7 +120,14 @@ const GrowConnectWrapper: React.FC = () => {
                                 isRound={true}
                                 as={IconButton}
                                 size="lg"
-                                icon={<UserAvatar {...profile} />}
+                                icon={
+                                    <UserAvatar
+                                        userId={profile.userId}
+                                        firstName={profile.firstName}
+                                        lastName={profile.lastName}
+                                        avatar={profile.avatar}
+                                    />
+                                }
                             />
                             <MenuList>
                                 <Link href="/connect/profile">
@@ -150,15 +157,20 @@ const GrowConnectWrapper: React.FC = () => {
     return (
         <>
             {isSignUpEnabled ? (
-                <Button>
-                    <Link href="/connect/signup">Participate</Link>
-                </Button>
+                <Link href="/connect/signup">
+                    <a>
+                        <Button>Participate</Button>
+                    </a>
+                </Link>
             ) : (
                 <Button disabled>Participate</Button>
             )}
-            <Button>
-                <Link href="/connect/login">Sign in</Link>
-            </Button>
+
+            <Link href="/connect/login">
+                <a>
+                    <Button>Sign in</Button>
+                </a>
+            </Link>
         </>
     );
 };

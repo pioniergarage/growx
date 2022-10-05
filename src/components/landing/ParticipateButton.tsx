@@ -22,7 +22,7 @@ const ParticipateButton = () => {
         );
     }
     return (
-        <PageLink href="/connect">
+        <PageLink href="/connect/signup">
             <Box
                 as="button"
                 bgGradient="linear(to-r, secondary, primary)"
