@@ -1,4 +1,5 @@
 import Faqs from '@/components/landing/FaqList';
+import GrowVideo from '@/components/landing/GrowVideo';
 import MainInfoBlock from '@/components/landing/MainInfoBlock';
 import MotivationBlock from '@/components/landing/MotivationBlock';
 import Timeline from '@/components/landing/ShortTimeline';
@@ -103,7 +104,11 @@ const Home: React.FC<HomeProps> = ({ sponsors, faqs, events: jsonEvents }) => {
                 <WaitingForBlock />
             </Section>
 
-            <Section divider id="faqs">
+            <Section>
+                <GrowVideo />
+            </Section>
+
+            <Section divider id="faqs" mt={24}>
                 <Faqs faqs={faqs} />
             </Section>
 
