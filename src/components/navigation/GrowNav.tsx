@@ -6,7 +6,7 @@ import { Logo, NavBarContainer } from './Nav';
 export default function GrowNav() {
     return (
         <NavBarContainer>
-            <Logo>GROW X</Logo>
+            <Logo />
             <HStack gap={{ base: 2, sm: 0, lg: 2 }}>
                 <Show above="md">
                     <Link href="/#faqs">
