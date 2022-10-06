@@ -3,26 +3,40 @@ import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import {
     ButtonProps,
     Flex,
-    LinkBox as ChakraLink,
-    Text,
-    TextProps,
+    HStack,
+    useBreakpointValue,
 } from '@chakra-ui/react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { PropsWithChildren } from 'react';
 
-interface LogoProps extends TextProps {
-    href?: string;
-}
-
-const Logo: React.FC<LogoProps> = ({ children, href = '/', ...rest }) => {
+const Logo = () => {
+    const size = useBreakpointValue({
+        base: {
+            width: 128 / 2,
+            height: 27 / 2,
+        },
+        sm: {
+            width: (128 * 2) / 3,
+            height: (27 * 2) / 3,
+        },
+        md: {
+            width: 128,
+            height: 27,
+        },
+    });
     return (
-        <ChakraLink as="button">
-            <Link href={href}>
-                <Text color="white" fontWeight="black" fontSize={{base: 16, md: 20}} {...rest}>
-                    {children}
-                </Text>
-            </Link>
-        </ChakraLink>
+        <Link href="/">
+            <HStack as="a">
+                <Image
+                    alt="Grow Logo"
+                    src="/images/GROW.png"
+                    layout="fixed"
+                    width={size?.width || 128 / 2}
+                    height={size?.height || 27 / 2}
+                />
+            </HStack>
+        </Link>
     );
 };
 
