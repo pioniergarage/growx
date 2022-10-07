@@ -10,6 +10,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
+import Image from 'next/image';
 import { useEffect } from 'react';
 import rules from '../forms/rules';
 import PageLink from '../navigation/PageLink';
@@ -69,6 +70,15 @@ const EmailAndPasswordForm = ({
         <form onSubmit={formik.handleSubmit}>
             <VStack gap={2} alignItems="center">
                 <Box textAlign="center">
+                    <Box mb={2}>
+                        <Image
+                            alt="Grow Logo"
+                            src="/images/GROW.png"
+                            layout="fixed"
+                            width={128}
+                            height={27}
+                        />
+                    </Box>
                     <Heading size="md">Sign up</Heading>
                     {signUpAs ? (
                         <Text color="gray.400" mb={4}>

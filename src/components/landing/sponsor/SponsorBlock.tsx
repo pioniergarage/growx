@@ -10,7 +10,7 @@ const SponsorBlock = ({ sponsors }: SponsorBlockProps) => {
     if (!sponsors) return null;
 
     return (
-        <SimpleGrid columns={{ base: 1, md: 2 }} gap={10} alignItems="center">
+        <SimpleGrid columns={{ base: 1, md: 2 }} gap={10} alignItems="start">
             <GridItem>
                 <Heading size="lg" color="whiteAlpha.600" mb={2}>
                     Flagship Sponsors

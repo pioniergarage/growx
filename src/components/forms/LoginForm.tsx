@@ -31,6 +31,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
             if (!values.password) errors.password = 'Required';
             return errors;
         },
+        validateOnChange: false,
     });
 
     return (

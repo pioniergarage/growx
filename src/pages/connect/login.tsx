@@ -1,25 +1,21 @@
 import LogInForm from '@/components/forms/LoginForm';
 import PageLink from '@/components/navigation/PageLink';
-import { Alert, AlertIcon, Heading, VStack } from '@chakra-ui/react';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { useUser } from '@supabase/auth-helpers-react';
+import { Alert, AlertIcon, VStack } from '@chakra-ui/react';
+import {
+    getUser,
+    supabaseClient,
+    withPageAuth,
+} from '@supabase/auth-helpers-nextjs';
 import LoginLayout from 'layouts/LoginLayout';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 
 const LoginPage: NextPageWithLayout = () => {
     const [loginError, setLoginError] = useState('');
     const [loading, setLoading] = useState(false);
-    const { user } = useUser();
     const router = useRouter();
-
-    useEffect(() => {
-        if (user) {
-            router.replace('/connect/');
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     async function handleLogin({
         email,
@@ -33,22 +29,20 @@ const LoginPage: NextPageWithLayout = () => {
         const { error } = await supabaseClient.auth.signIn({ email, password });
         if (error) {
             setLoginError(error.message);
+            setLoading(false);
         } else {
-            // wait 500ms
-            await new Promise<void>((resolve) => {
-                setTimeout(() => {
-                    resolve();
-                }, 500);
-            });
+            router.replace('/connect/');
         }
-        router.replace('/connect/');
-        setLoading(false);
     }
     return (
         <VStack gap={2} alignItems="stretch">
-            <Heading as="h1" size="xl" color="secondary">
-                GROW
-            </Heading>
+            <Image
+                alt="Grow Logo"
+                src="/images/GROW.png"
+                layout="fixed"
+                width={128}
+                height={27}
+            />
             <LogInForm onSubmit={handleLogin} loading={loading} />
             {loginError ? (
                 <Alert status="error" width="16rem">
@@ -65,3 +59,20 @@ const LoginPage: NextPageWithLayout = () => {
 };
 LoginPage.getLayout = (page) => <LoginLayout>{page}</LoginLayout>;
 export default LoginPage;
+
+export const getServerSideProps = withPageAuth({
+    authRequired: false,
+    getServerSideProps: async (context) => {
+        const { user } = await getUser(context);
+        if (user) {
+            return {
+                redirect: {
+                    permanent: false,
+                    destination: '/connect',
+                },
+            };
+        } else {
+            return { props: {} };
+        }
+    },
+});

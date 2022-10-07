@@ -4,7 +4,9 @@ import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
 import ProfileCard from '@/components/profile/ProfileCard';
 import {
     Box,
+    Button,
     Divider,
+    Flex,
     Heading,
     HStack,
     SimpleGrid,
@@ -19,23 +21,54 @@ import {
     useRegistrationsToEvent,
     useUpdateEvent,
 } from 'hooks/event';
-import { GrowEvent } from 'model';
+import { GrowEvent, Profile } from 'model';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { downloadCSV } from 'utils/csv';
 import { NextPageWithLayout } from 'utils/types';
 
 function Registrations(event: GrowEvent) {
     const { registrations } = useRegistrationsToEvent(event);
 
+    function downloadRegistrations(
+        registrations: {
+            present: boolean;
+            profile: Profile;
+        }[] = []
+    ) {
+        downloadCSV(
+            ['name', 'email', 'phone', 'online/person'],
+            registrations.map(({ present, profile }) => [
+                profile.firstName + ' ' + profile.lastName,
+                profile.email,
+                profile.phone || '',
+                present ? 'in person' : 'online',
+            ]),
+            `${event.title}-registrations.csv`
+        );
+    }
+
     return (
         <Box>
-            <Heading size="sm" mb={2}>
-                {registrations?.length || 0} Registrations
-            </Heading>
-            <SimpleGrid columns={2}>
+            <Flex justifyContent="space-between">
+                <Heading size="sm" mb={2}>
+                    {registrations?.length || 0} Registrations
+                </Heading>
+                <Button
+                    onClick={() => downloadRegistrations(registrations)}
+                    disabled={!registrations}
+                    size="sm"
+                    variant="link"
+                >
+                    Download as CSV
+                </Button>
+            </Flex>
+            <SimpleGrid columns={2} gap={2}>
                 {registrations?.map((registration) => (
                     <HStack key={registration.profile.userId}>
-                        <Box fontSize={10} width={12}>{registration.present ? "In Person" : "Online"}</Box>
+                        <Box fontSize={10} width={12}>
+                            {registration.present ? 'In Person' : 'Online'}
+                        </Box>
                         <ProfileCard
                             firstName={registration.profile.firstName}
                             lastName={registration.profile.lastName}
