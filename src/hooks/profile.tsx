@@ -32,6 +32,14 @@ export function useUpdateProfile() {
                     ['profile', updated.userId],
                     updated
                 );
+                const oldProfiles =
+                    queryClient.getQueryData<Profile[]>('profiles') || [];
+                const index = oldProfiles.findIndex(
+                    (p) => p.userId === updated.userId
+                );
+
+                oldProfiles.splice(index, 1, updated);
+                queryClient.setQueryData('profiles', oldProfiles);
             },
         }
     );

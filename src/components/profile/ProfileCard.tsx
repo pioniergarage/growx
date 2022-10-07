@@ -1,5 +1,5 @@
 import { EmailIcon, PhoneIcon } from '@chakra-ui/icons';
-import { Flex, Heading, HStack, SimpleGrid, Tag, Text } from '@chakra-ui/react';
+import { Flex, Heading, HStack, Tag, Text } from '@chakra-ui/react';
 import { Profile, Team } from 'model';
 import { FaLightbulb, FaUsers } from 'react-icons/fa';
 import UserAvatar, { UserAvatarProps } from '../avatar/UserAvatar';
