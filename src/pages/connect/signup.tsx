@@ -7,12 +7,15 @@ import PersonalInfoForm, {
 import StudentForm from '@/components/signup/StudentForm';
 import UniversityForm from '@/components/signup/UniversityForm';
 import { Alert, AlertIcon, Spinner, Text, VStack } from '@chakra-ui/react';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { useUser } from '@supabase/auth-helpers-react';
+import {
+    getUser,
+    supabaseClient,
+    withPageAuth,
+} from '@supabase/auth-helpers-nextjs';
 import { useUpdateProfile } from 'hooks/profile';
 import LoginLayout from 'layouts/LoginLayout';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 
 const SignUp: NextPageWithLayout = () => {
@@ -31,15 +34,8 @@ const SignUp: NextPageWithLayout = () => {
 
     const [signUpError, setSignUpError] = useState<string>('');
     const router = useRouter();
-    const { user } = useUser();
     const { updateProfile } = useUpdateProfile();
 
-    useEffect(() => {
-        if (user) {
-            router.replace('/connect/');
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
     async function signUp({ email, password }: SignUpInfo) {
         const { user, error } = await supabaseClient.auth.signUp({
             email,
@@ -69,7 +65,7 @@ const SignUp: NextPageWithLayout = () => {
             });
             router.replace('/connect');
         } catch (error) {
-            setStep(0)
+            setStep(0);
             setSignUpError(error as string);
         }
     }
@@ -137,3 +133,20 @@ const SignUp: NextPageWithLayout = () => {
 
 SignUp.getLayout = (page) => <LoginLayout>{page}</LoginLayout>;
 export default SignUp;
+
+export const getServerSideProps = withPageAuth({
+    authRequired: false,
+    getServerSideProps: async (context) => {
+        const { user } = await getUser(context);
+        if (user) {
+            return {
+                redirect: {
+                    permanent: false,
+                    destination: '/connect',
+                },
+            };
+        } else {
+            return { props: {} };
+        }
+    },
+});
