@@ -24,7 +24,7 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
                     <Heading size={size}>{name}</Heading>
                     {props.role ? <Tag>{props.role}</Tag> : undefined}
                 </HStack>
-                <SimpleGrid columns={2} columnGap={8} color="gray.400">
+                <Flex columnGap={4} color="gray.400" wrap="wrap">
                     <HStack>
                         <EmailIcon />
                         <Text>{props.email}</Text>
@@ -49,7 +49,7 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
                             <Text>{props.skills.join(', ')}</Text>
                         </HStack>
                     ) : undefined}
-                </SimpleGrid>
+                </Flex>
             </Flex>
         </HStack>
     );

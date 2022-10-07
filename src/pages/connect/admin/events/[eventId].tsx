@@ -32,10 +32,12 @@ function Registrations(event: GrowEvent) {
             <Heading size="sm" mb={2}>
                 {registrations?.length || 0} Registrations
             </Heading>
-            <SimpleGrid columns={2}>
+            <SimpleGrid columns={2} gap={2}>
                 {registrations?.map((registration) => (
                     <HStack key={registration.profile.userId}>
-                        <Box fontSize={10} width={12}>{registration.present ? "In Person" : "Online"}</Box>
+                        <Box fontSize={10} width={12}>
+                            {registration.present ? 'In Person' : 'Online'}
+                        </Box>
                         <ProfileCard
                             firstName={registration.profile.firstName}
                             lastName={registration.profile.lastName}
