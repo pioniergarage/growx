@@ -25,6 +25,7 @@ export default function Layout({ children }: PropsWithChildren) {
                     name="description"
                     content="GrowX - Founding Contest. Become an entrepreneur and advance your idea over 11 weeks. Get support, build your prototype and test your market."
                 />
+                <link rel="shortcut icon" href="/favicon.ico" />
             </Head>
 
             <UserProvider supabaseClient={supabaseClient}>
