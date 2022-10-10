@@ -2,8 +2,8 @@ import { Button } from '@chakra-ui/button';
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import {
     ButtonProps,
+    Center,
     Flex,
-    HStack,
     useBreakpointValue,
 } from '@chakra-ui/react';
 import Image from 'next/image';
@@ -26,8 +26,8 @@ const Logo = () => {
         },
     });
     return (
-        <Link href="/">
-            <HStack as="a">
+        <Link href="/" passHref>
+            <Center as="a">
                 <Image
                     alt="Grow Logo"
                     src="/images/GROW.png"
@@ -35,7 +35,7 @@ const Logo = () => {
                     width={size?.width || 128 / 2}
                     height={size?.height || 27 / 2}
                 />
-            </HStack>
+            </Center>
         </Link>
     );
 };
