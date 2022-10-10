@@ -93,6 +93,7 @@ const EventDetails: NextPageWithLayout = () => {
     useEffect(() => setEditingEvent(initialEvent), [initialEvent]);
     const { updateEvent, isLoading: updating } = useUpdateEvent();
     const { deleteEvent } = useDeleteEvent();
+    const [isEditing, setEditing] = useState(false);
 
     async function saveEvent(patch: Partial<GrowEvent>) {
         if (!initialEvent) return;
@@ -104,6 +105,7 @@ const EventDetails: NextPageWithLayout = () => {
                 duration: 4000,
                 isClosable: true,
             });
+            setEditing(false);
         } catch (error) {
             toast({
                 title: 'Could not save event',
@@ -139,21 +141,32 @@ const EventDetails: NextPageWithLayout = () => {
             />
             {initialEvent && editingEvent ? (
                 <>
-                    <VStack alignItems="start">
-                        <Heading size="sm">Preview</Heading>
+                    <Flex justifyContent="space-between">
                         <Box maxW="xl">
                             <TimelineEvent event={editingEvent} />
                         </Box>
-                    </VStack>
-                    <EventForm
-                        onSubmit={saveEvent}
-                        onChange={(updated) =>
-                            setEditingEvent({ id: initialEvent.id, ...updated })
-                        }
-                        initialValue={initialEvent}
-                        loading={updating}
-                        onDelete={handleDeleteEvent}
-                    />
+                        <Button
+                            onClick={() => setEditing(true)}
+                            isDisabled={isEditing}
+                        >
+                            Edit
+                        </Button>
+                    </Flex>
+                    {isEditing ? (
+                        <EventForm
+                            onSubmit={saveEvent}
+                            onChange={(updated) =>
+                                setEditingEvent({
+                                    id: initialEvent.id,
+                                    ...updated,
+                                })
+                            }
+                            initialValue={initialEvent}
+                            loading={updating}
+                            onDelete={handleDeleteEvent}
+                            onCancel={() => setEditing(false)}
+                        />
+                    ) : undefined}
                     <Divider />
                     <Registrations {...initialEvent} />
                 </>
