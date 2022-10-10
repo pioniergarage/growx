@@ -4,6 +4,7 @@ import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
     Box,
     Button,
+    Flex,
     Heading,
     MenuButton,
     Spinner,
@@ -20,6 +21,7 @@ import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useProfiles } from 'hooks/profile';
 import { Profile } from 'model';
 import { useState } from 'react';
+import { downloadCSV } from 'utils/csv';
 
 const ProfileList = (props: { profiles: Profile[] }) => {
     const [isMenuVisible, setMenuVisible] = useState<string | null>(null);
@@ -97,6 +99,38 @@ const ProfileList = (props: { profiles: Profile[] }) => {
 export default function ProfilesAdmin() {
     const { profiles, isLoading } = useProfiles();
 
+    function downloadProfiles(profiles: Profile[]) {
+        downloadCSV(
+            [
+                'Forename',
+                'Surename',
+                'Email',
+                'Phone',
+                'Gender',
+                'Country',
+                'Studies',
+                'Uni',
+                'Country of uni',
+                'SQ',
+            ],
+            profiles.map((p) =>
+                [
+                    p.firstName,
+                    p.lastName,
+                    p.email,
+                    p.phone,
+                    p.gender,
+                    p.homeland,
+                    p.studies,
+                    p.university,
+                    p.universityCountry,
+                    p.keyQualification,
+                ].map((a) => (a ? a : ''))
+            ),
+            `profiles.csv`
+        );
+    }
+
     return (
         <VStack alignItems="stretch">
             <AdminBreadcrumbs
@@ -107,7 +141,23 @@ export default function ProfilesAdmin() {
             ) : (
                 <VStack alignItems="stretch" gap={8}>
                     <Box>
-                        <Heading size="md">Participants</Heading>
+                        <Flex justifyContent="space-between" mb={1}>
+                            <Heading size="md">Participants</Heading>
+
+                            <Button
+                                onClick={() =>
+                                    downloadProfiles(
+                                        profiles.filter(
+                                            (p) => p.role === 'PARTICIPANT'
+                                        )
+                                    )
+                                }
+                                size="sm"
+                                variant="link"
+                            >
+                                Download
+                            </Button>
+                        </Flex>
                         <ProfileList
                             profiles={profiles.filter(
                                 (p) => p.role === 'PARTICIPANT'

@@ -41,7 +41,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
                     isInvalid={!!formik.errors.email}
                     isDisabled={props.loading}
                 >
-                    <FormLabel htmlFor="email">Email adress</FormLabel>
+                    <FormLabel htmlFor="email">Email address</FormLabel>
                     <Input
                         id="email"
                         type="email"

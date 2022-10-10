@@ -89,8 +89,9 @@ const EmailAndPasswordForm = ({
                 <FormControl
                     isInvalid={!!formik.errors.email}
                     isDisabled={isLoading}
+                    isRequired
                 >
-                    <FormLabel htmlFor="email">Email address*</FormLabel>
+                    <FormLabel htmlFor="email">Email address</FormLabel>
                     <Input
                         name="email"
                         id="email"
@@ -102,8 +103,9 @@ const EmailAndPasswordForm = ({
                 <FormControl
                     isInvalid={!!formik.errors.password}
                     isDisabled={isLoading}
+                    isRequired
                 >
-                    <FormLabel htmlFor="password">Password*</FormLabel>
+                    <FormLabel htmlFor="password">Password</FormLabel>
                     <Input
                         type="password"
                         name="password"

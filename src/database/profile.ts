@@ -1,5 +1,5 @@
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { Profile } from 'model';
+import { FurtherProfileInfo, Profile } from 'model';
 import { definitions } from './supabase';
 import { handleResponse, handleSingleResponse } from './utils';
 
@@ -69,3 +69,11 @@ export const getProfiles = async (): Promise<Profile[]> => {
         .then((response) => handleResponse(response, 'No profiles found'))
         .then((dtos) => dtos.map(mapProfileDto));
 };
+
+export const insertSignupInfo = async (
+    info: FurtherProfileInfo & { email: string }
+) =>
+    supabaseClient
+        .from<definitions['signup_info']>('signup_info')
+        .insert(info)
+        .single();

@@ -71,15 +71,19 @@ const Home: React.FC<HomeProps> = ({ sponsors, faqs, events: jsonEvents }) => {
                 <MainInfoBlock />
             </Section>
 
-            <Section divider>
+            <Section>
+                <GrowVideo />
+            </Section>
+
+            <Section mt="8rem">
                 <Timeline />
             </Section>
 
-            <Section divider>
+            <Section divider mt="8rem">
                 <MotivationBlock />
             </Section>
 
-            <Section id="timeline">
+            <Section id="timeline" mt="4rem">
                 <LongTimeline events={events} />
             </Section>
 
@@ -102,10 +106,6 @@ const Home: React.FC<HomeProps> = ({ sponsors, faqs, events: jsonEvents }) => {
                     />
                 </Box>
                 <WaitingForBlock />
-            </Section>
-
-            <Section>
-                <GrowVideo />
             </Section>
 
             <Section divider id="faqs" mt={24}>

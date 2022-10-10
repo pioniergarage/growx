@@ -1,6 +1,7 @@
 import NameAndPasswordForm, {
     SignUpInfo,
 } from '@/components/signup/EmailAndPasswordForm';
+import FurtherInfo from '@/components/signup/FurtherInfo';
 import PersonalInfoForm, {
     PersonalInfo,
 } from '@/components/signup/PersonalInfoForm';
@@ -12,7 +13,7 @@ import {
     supabaseClient,
     withPageAuth,
 } from '@supabase/auth-helpers-nextjs';
-import { useUpdateProfile } from 'hooks/profile';
+import { useInsertFurhterProfileInfo, useUpdateProfile } from 'hooks/profile';
 import LoginLayout from 'layouts/LoginLayout';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -35,6 +36,7 @@ const SignUp: NextPageWithLayout = () => {
     const [signUpError, setSignUpError] = useState<string>('');
     const router = useRouter();
     const { updateProfile } = useUpdateProfile();
+    const { insertFurtherProfileInfo } = useInsertFurhterProfileInfo();
 
     async function signUp({ email, password }: SignUpInfo) {
         const { user, error } = await supabaseClient.auth.signUp({
@@ -86,6 +88,16 @@ const SignUp: NextPageWithLayout = () => {
                     }}
                 />
             ) : step === 2 ? (
+                <FurtherInfo
+                    onNext={(info) => {
+                        setStep(step + 1);
+                        insertFurtherProfileInfo({
+                            ...info,
+                            email: emailAndPassword.email,
+                        });
+                    }}
+                />
+            ) : step === 3 ? (
                 <StudentForm
                     onNext={(isStudent) => {
                         if (isStudent) {
@@ -102,7 +114,7 @@ const SignUp: NextPageWithLayout = () => {
                         }
                     }}
                 />
-            ) : step === 3 ? (
+            ) : step === 4 ? (
                 <UniversityForm
                     onNext={({ university, country, isSQ }) => {
                         setStep(step + 1);
@@ -115,7 +127,7 @@ const SignUp: NextPageWithLayout = () => {
                         );
                     }}
                 />
-            ) : step === 4 && !signUpError ? (
+            ) : step === 5 && !signUpError ? (
                 <VStack>
                     <Text color="gray.400">Creating account</Text>
                     <Spinner />

@@ -2,8 +2,13 @@ import { useUser } from '@supabase/auth-helpers-react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { fetchUserAvatar, uploadUserAvatar } from 'database/avatar';
-import { fetchProfile, getProfiles, updateProfile } from 'database/profile';
-import { Profile } from 'model';
+import {
+    fetchProfile,
+    getProfiles,
+    insertSignupInfo,
+    updateProfile,
+} from 'database/profile';
+import { FurtherProfileInfo, Profile } from 'model';
 
 export function useProfile(userId?: string) {
     const { user } = useUser();
@@ -96,4 +101,11 @@ export function useProfiles() {
         },
     });
     return { ...query, profiles: query.data };
+}
+
+export function useInsertFurhterProfileInfo() {
+    const mutation = useMutation(
+        (data: FurtherProfileInfo & { email: string }) => insertSignupInfo(data)
+    );
+    return { ...mutation, insertFurtherProfileInfo: mutation.mutateAsync };
 }

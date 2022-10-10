@@ -1,11 +1,25 @@
-import { Center } from '@chakra-ui/react';
+import { Center, useBreakpointValue } from '@chakra-ui/react';
 
 const GrowVideo = () => {
+    const size = useBreakpointValue({
+        base: {
+            width: 840 / 2,
+            height: 473 / 2,
+        },
+        sm: {
+            width: (840 * 2) / 3,
+            height: (473 * 2) / 3,
+        },
+        md: {
+            width: 840,
+            height: 473,
+        },
+    });
     return (
         <Center>
             <iframe
-                width="840"
-                height="473"
+                width={size?.width}
+                height={size?.height}
                 src="https://www.youtube.com/embed/rZ6Xj9aCsZk"
                 title="YouTube video player"
                 frameBorder="0"

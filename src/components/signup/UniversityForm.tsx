@@ -2,12 +2,15 @@ import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     Button,
     Checkbox,
+    Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
     Heading,
     Input,
     Link,
+    Radio,
+    RadioGroup,
     VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
@@ -40,6 +43,7 @@ const UniversityForm = ({ onNext }: UniversityFormProps) => {
             if (!country) errors.country = 'Required';
             return errors;
         },
+        validateOnChange: false,
     });
 
     return (
@@ -47,20 +51,47 @@ const UniversityForm = ({ onNext }: UniversityFormProps) => {
             <VStack alignItems="stretch" gap={2}>
                 <Heading size="sm">Where do you study?</Heading>
                 <VStack alignItems="stretch">
-                    <Checkbox
-                        id="atKIT"
-                        isChecked={formik.values.atKIT}
-                        onChange={(e) => {
-                            formik.setFieldValue('atKIT', e.target.checked);
-                            if (e.target.checked) {
-                                formik.setFieldValue('university', kitName);
-                                formik.setFieldValue('country', kitCountry);
-                            }
-                        }}
+                    <RadioGroup>
+                        <Flex flexDir="column" gap={2}>
+                            <Radio
+                                id="atKIT"
+                                isChecked={formik.values.atKIT}
+                                onChange={(e) => {
+                                    if (e.target.checked) {
+                                        formik.setFieldValue(
+                                            'university',
+                                            kitName
+                                        );
+                                        formik.setFieldValue(
+                                            'country',
+                                            kitCountry
+                                        );
+                                    }
+                                    formik.setFieldValue(
+                                        'atKIT',
+                                        e.target.checked
+                                    );
+                                }}
+                            >
+                                {kitName}
+                            </Radio>
+                            <Radio
+                                isChecked={!formik.values.atKIT}
+                                onChange={(e) => {
+                                    formik.setFieldValue(
+                                        'atKIT',
+                                        !e.target.checked
+                                    );
+                                }}
+                            >
+                                Other
+                            </Radio>
+                        </Flex>
+                    </RadioGroup>
+                    <FormControl
+                        isInvalid={!!formik.errors.university}
+                        isRequired
                     >
-                        {kitName}
-                    </Checkbox>
-                    <FormControl isInvalid={!!formik.errors.university}>
                         <FormLabel>University</FormLabel>
                         <Input
                             value={formik.values.university}
@@ -77,7 +108,7 @@ const UniversityForm = ({ onNext }: UniversityFormProps) => {
                             {formik.errors.university}
                         </FormErrorMessage>
                     </FormControl>
-                    <FormControl isInvalid={!!formik.errors.country}>
+                    <FormControl isInvalid={!!formik.errors.country} isRequired>
                         <FormLabel>Country</FormLabel>
                         <Input
                             value={formik.values.country}

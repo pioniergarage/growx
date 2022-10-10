@@ -235,6 +235,7 @@ export interface paths {
                     inserted_at?: parameters['rowFilter.event_registrations.inserted_at'];
                     user_id?: parameters['rowFilter.event_registrations.user_id'];
                     event_id?: parameters['rowFilter.event_registrations.event_id'];
+                    present?: parameters['rowFilter.event_registrations.present'];
                     /** Filtering Columns */
                     select?: parameters['select'];
                     /** Ordering */
@@ -288,6 +289,7 @@ export interface paths {
                     inserted_at?: parameters['rowFilter.event_registrations.inserted_at'];
                     user_id?: parameters['rowFilter.event_registrations.user_id'];
                     event_id?: parameters['rowFilter.event_registrations.event_id'];
+                    present?: parameters['rowFilter.event_registrations.present'];
                 };
                 header: {
                     /** Preference */
@@ -305,6 +307,7 @@ export interface paths {
                     inserted_at?: parameters['rowFilter.event_registrations.inserted_at'];
                     user_id?: parameters['rowFilter.event_registrations.user_id'];
                     event_id?: parameters['rowFilter.event_registrations.event_id'];
+                    present?: parameters['rowFilter.event_registrations.present'];
                 };
                 body: {
                     /** event_registrations */
@@ -417,6 +420,108 @@ export interface paths {
                 body: {
                     /** teams */
                     teams?: definitions['teams'];
+                };
+                header: {
+                    /** Preference */
+                    Prefer?: parameters['preferReturn'];
+                };
+            };
+            responses: {
+                /** No Content */
+                204: never;
+            };
+        };
+    };
+    '/signup_info': {
+        get: {
+            parameters: {
+                query: {
+                    created_at?: parameters['rowFilter.signup_info.created_at'];
+                    lookingForTeam?: parameters['rowFilter.signup_info.lookingForTeam'];
+                    idea?: parameters['rowFilter.signup_info.idea'];
+                    expectations?: parameters['rowFilter.signup_info.expectations'];
+                    source?: parameters['rowFilter.signup_info.source'];
+                    email?: parameters['rowFilter.signup_info.email'];
+                    /** Filtering Columns */
+                    select?: parameters['select'];
+                    /** Ordering */
+                    order?: parameters['order'];
+                    /** Limiting and Pagination */
+                    offset?: parameters['offset'];
+                    /** Limiting and Pagination */
+                    limit?: parameters['limit'];
+                };
+                header: {
+                    /** Limiting and Pagination */
+                    Range?: parameters['range'];
+                    /** Limiting and Pagination */
+                    'Range-Unit'?: parameters['rangeUnit'];
+                    /** Preference */
+                    Prefer?: parameters['preferCount'];
+                };
+            };
+            responses: {
+                /** OK */
+                200: {
+                    schema: definitions['signup_info'][];
+                };
+                /** Partial Content */
+                206: unknown;
+            };
+        };
+        post: {
+            parameters: {
+                body: {
+                    /** signup_info */
+                    signup_info?: definitions['signup_info'];
+                };
+                query: {
+                    /** Filtering Columns */
+                    select?: parameters['select'];
+                };
+                header: {
+                    /** Preference */
+                    Prefer?: parameters['preferReturn'];
+                };
+            };
+            responses: {
+                /** Created */
+                201: unknown;
+            };
+        };
+        delete: {
+            parameters: {
+                query: {
+                    created_at?: parameters['rowFilter.signup_info.created_at'];
+                    lookingForTeam?: parameters['rowFilter.signup_info.lookingForTeam'];
+                    idea?: parameters['rowFilter.signup_info.idea'];
+                    expectations?: parameters['rowFilter.signup_info.expectations'];
+                    source?: parameters['rowFilter.signup_info.source'];
+                    email?: parameters['rowFilter.signup_info.email'];
+                };
+                header: {
+                    /** Preference */
+                    Prefer?: parameters['preferReturn'];
+                };
+            };
+            responses: {
+                /** No Content */
+                204: never;
+            };
+        };
+        patch: {
+            parameters: {
+                query: {
+                    created_at?: parameters['rowFilter.signup_info.created_at'];
+                    lookingForTeam?: parameters['rowFilter.signup_info.lookingForTeam'];
+                    idea?: parameters['rowFilter.signup_info.idea'];
+                    expectations?: parameters['rowFilter.signup_info.expectations'];
+                    source?: parameters['rowFilter.signup_info.source'];
+                    email?: parameters['rowFilter.signup_info.email'];
+                };
+                body: {
+                    /** signup_info */
+                    signup_info?: definitions['signup_info'];
                 };
                 header: {
                     /** Preference */
@@ -749,6 +854,10 @@ export interface paths {
                     avatar?: parameters['rowFilter.profiles.avatar'];
                     role?: parameters['rowFilter.profiles.role'];
                     skills?: parameters['rowFilter.profiles.skills'];
+                    bio?: parameters['rowFilter.profiles.bio'];
+                    /** used to determine if the person want to use grow as key qualification */
+                    keyQualification?: parameters['rowFilter.profiles.keyQualification'];
+                    universityCountry?: parameters['rowFilter.profiles.universityCountry'];
                     /** Filtering Columns */
                     select?: parameters['select'];
                     /** Ordering */
@@ -812,6 +921,10 @@ export interface paths {
                     avatar?: parameters['rowFilter.profiles.avatar'];
                     role?: parameters['rowFilter.profiles.role'];
                     skills?: parameters['rowFilter.profiles.skills'];
+                    bio?: parameters['rowFilter.profiles.bio'];
+                    /** used to determine if the person want to use grow as key qualification */
+                    keyQualification?: parameters['rowFilter.profiles.keyQualification'];
+                    universityCountry?: parameters['rowFilter.profiles.universityCountry'];
                 };
                 header: {
                     /** Preference */
@@ -839,6 +952,10 @@ export interface paths {
                     avatar?: parameters['rowFilter.profiles.avatar'];
                     role?: parameters['rowFilter.profiles.role'];
                     skills?: parameters['rowFilter.profiles.skills'];
+                    bio?: parameters['rowFilter.profiles.bio'];
+                    /** used to determine if the person want to use grow as key qualification */
+                    keyQualification?: parameters['rowFilter.profiles.keyQualification'];
+                    universityCountry?: parameters['rowFilter.profiles.universityCountry'];
                 };
                 body: {
                     /** profiles */
@@ -1097,6 +1214,10 @@ export interface definitions {
          * This is a Foreign Key to `events.id`.<fk table='events' column='id'/>
          */
         event_id: number;
+        /**
+         * Format: boolean
+         * @default false
+         */
         present: boolean;
     };
     teams: {
@@ -1135,6 +1256,37 @@ export interface definitions {
         archived: boolean;
         /** Format: json */
         requestSupport: unknown;
+    };
+    signup_info: {
+        /**
+         * Format: timestamp with time zone
+         * @default now()
+         */
+        created_at?: string;
+        /** Format: boolean */
+        lookingForTeam?: boolean;
+        /**
+         * Format: text
+         * @default
+         */
+        idea: string;
+        /**
+         * Format: text
+         * @default
+         */
+        expectations: string;
+        /**
+         * Format: text
+         * @default
+         */
+        source: string;
+        /**
+         * Format: text
+         * @description Note:
+         * This is a Primary Key.<pk/>
+         * @default
+         */
+        email: string;
     };
     team_requests: {
         /**
@@ -1241,7 +1393,6 @@ export interface definitions {
         studies?: string;
         /** Format: text */
         university?: string;
-        universityCountry?: string;
         /** Format: text */
         homeland?: string;
         /** Format: text */
@@ -1254,8 +1405,19 @@ export interface definitions {
         role: 'PARTICIPANT' | 'BUDDY' | 'MENTOR' | 'EXPERT' | 'ORGA';
         /** Format: json */
         skills: unknown;
+        /** Format: text */
         bio?: string;
+        /**
+         * Format: boolean
+         * @description used to determine if the person want to use grow as key qualification
+         * @default false
+         */
         keyQualification: boolean;
+        /**
+         * Format: text
+         * @default
+         */
+        universityCountry?: string;
     };
     sponsors: {
         /**
@@ -1371,6 +1533,8 @@ export interface parameters {
     'rowFilter.event_registrations.user_id': string;
     /** Format: bigint */
     'rowFilter.event_registrations.event_id': string;
+    /** Format: boolean */
+    'rowFilter.event_registrations.present': string;
     /** @description teams */
     'body.teams': definitions['teams'];
     /** Format: timestamp with time zone */
@@ -1389,6 +1553,20 @@ export interface parameters {
     'rowFilter.teams.archived': string;
     /** Format: json */
     'rowFilter.teams.requestSupport': string;
+    /** @description signup_info */
+    'body.signup_info': definitions['signup_info'];
+    /** Format: timestamp with time zone */
+    'rowFilter.signup_info.created_at': string;
+    /** Format: boolean */
+    'rowFilter.signup_info.lookingForTeam': string;
+    /** Format: text */
+    'rowFilter.signup_info.idea': string;
+    /** Format: text */
+    'rowFilter.signup_info.expectations': string;
+    /** Format: text */
+    'rowFilter.signup_info.source': string;
+    /** Format: text */
+    'rowFilter.signup_info.email': string;
     /** @description team_requests */
     'body.team_requests': definitions['team_requests'];
     /** Format: timestamp with time zone */
@@ -1457,6 +1635,15 @@ export interface parameters {
     'rowFilter.profiles.role': string;
     /** Format: json */
     'rowFilter.profiles.skills': string;
+    /** Format: text */
+    'rowFilter.profiles.bio': string;
+    /**
+     * Format: boolean
+     * @description used to determine if the person want to use grow as key qualification
+     */
+    'rowFilter.profiles.keyQualification': string;
+    /** Format: text */
+    'rowFilter.profiles.universityCountry': string;
     /** @description sponsors */
     'body.sponsors': definitions['sponsors'];
     /** Format: bigint */
