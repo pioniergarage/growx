@@ -32,7 +32,7 @@ export default function MainInfoBlock() {
                 textAlign="center"
                 rowSpan={2}
             >
-                <AnimatedLogo fill="whiteAlpha.900" boxSize={250} />
+                <AnimatedLogo boxSize={250} />
                 <Countdown />
             </GridItem>
             <GridItem className="md:order-1">
@@ -42,7 +42,7 @@ export default function MainInfoBlock() {
                         bgGradient="linear(to-l, pink.100, purple.300)"
                         size={{ base: '2xl', md: '3xl' }}
                     >
-                        <Text lineHeight={1.2}>
+                        <Text lineHeight={1.1}>
                             Germany&apos;s Largest Student Founding Contest
                         </Text>
                     </Heading>
@@ -61,9 +61,6 @@ export default function MainInfoBlock() {
                                     {signUpStart.toLocaleDateString()}
                                 </Text>
                             )}
-                            <Text variant="info">
-                                It&apos;s free!
-                            </Text>
                         </Box>
                     </Box>
                 </VStack>

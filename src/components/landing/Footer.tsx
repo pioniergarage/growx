@@ -14,7 +14,7 @@ export default function Footer() {
             w="100%"
         >
             <HStack>
-                <NextLink href="/#faq">
+                <NextLink href="/#faqs">
                     <Link>FAQ</Link>
                 </NextLink>
                 <Link href="mailto:grow@pioniergarage.de">Contact</Link>

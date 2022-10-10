@@ -10,8 +10,6 @@ import {
 import Link from 'next/link';
 import { FaCogs } from 'react-icons/fa';
 
-
-
 const NavAdminMenu = () => {
     const variant = useBreakpointValue({
         base: IconButton,
@@ -23,7 +21,7 @@ const NavAdminMenu = () => {
                 as={variant}
                 variant="ghost"
                 icon={<FaCogs />}
-                rightIcon={variant === Button ? <FaCogs /> : undefined}
+                leftIcon={variant === Button ? <FaCogs /> : undefined}
             >
                 Admin
             </MenuButton>

@@ -15,14 +15,7 @@ import {
 } from 'hooks/event';
 import { EventType, GrowEvent } from 'model';
 import { useMemo } from 'react';
-import {
-    FaBuilding,
-    FaChromecast,
-    FaCloud,
-    FaExclamation,
-    FaMapMarkerAlt,
-} from 'react-icons/fa';
-import EventTag from './EventTag';
+import EventTagList from './EventTagList';
 import SignUpDialog from './SignUpDialog';
 
 type GrowEventCardProps = {
@@ -38,7 +31,7 @@ type GrowEventCardProps = {
  */
 const GrowEventCard: React.FC<GrowEventCardProps> = ({
     event,
-    registration
+    registration,
 }) => {
     const { registerUser, isLoading: isRegistering } = useRegisterUserToEvent();
     const { unregisterUser, isLoading: isUnregistering } =
@@ -105,38 +98,18 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
                 <Heading size="md">{event.title}</Heading>
             </Flex>
             <Text color="gray.400">{event.description}</Text>
-            <Flex
-                mt={1}
-                flexWrap="wrap"
-                gap={2}
-                flexDir={{ base: 'column', sm: 'row' }}
-                alignItems="start"
-            >
-                {event.location ? (
-                    <EventTag icon={FaMapMarkerAlt}>{event.location}</EventTag>
-                ) : undefined}
-                {event.type === EventType.Hybrid ? (
-                    <EventTag icon={FaChromecast}>Hybrid</EventTag>
-                ) : event.type === EventType.Online ? (
-                    <EventTag icon={FaCloud}>Online</EventTag>
-                ) : event.type === EventType.Offline ? (
-                    <EventTag icon={FaBuilding}>Offline</EventTag>
-                ) : undefined}
-                {event.mandatory ? (
-                    <EventTag icon={FaExclamation} colorScheme="red">
-                        Mandatory
-                    </EventTag>
-                ) : undefined}
-            </Flex>
 
             {!over ? (
-                <EventRegistration
-                    registration={registration}
-                    onDeregister={deregister}
-                    isLoading={isRegistering || isUnregistering}
-                    eventType={event.type || EventType.Online}
-                    onRegister={register}
-                />
+                <>
+                    <EventTagList event={event} />
+                    <EventRegistration
+                        registration={registration}
+                        onDeregister={deregister}
+                        isLoading={isRegistering || isUnregistering}
+                        eventType={event.type || EventType.Online}
+                        onRegister={register}
+                    />
+                </>
             ) : undefined}
         </Flex>
     );
@@ -213,8 +186,8 @@ const EventRegistration = ({
                     <SignUpDialog
                         isOpen={isOpen}
                         onSubmit={(present) => {
-                            onClose()
-                            onRegister(present)
+                            onClose();
+                            onRegister(present);
                         }}
                         onCancel={onClose}
                     />
