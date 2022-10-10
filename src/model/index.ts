@@ -57,7 +57,6 @@ export type Team = {
 export const availableSkills = [
     'AgriTech',
     'Blockchain',
-    'Finance',
     'IT Security',
     'Data',
     'Cloud',
