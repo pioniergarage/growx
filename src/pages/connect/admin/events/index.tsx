@@ -38,7 +38,6 @@ export default function EventManagement() {
                         <Tr>
                             <Th>Date</Th>
                             <Th>Title</Th>
-                            <Th>Description</Th>
                             <Th>Location</Th>
                             <Th>Type</Th>
                             <Th>Mandatory</Th>
@@ -61,14 +60,25 @@ export default function EventManagement() {
                                               {event.title}
                                           </PageLink>
                                       </Td>
-                                      <Td>{event.description}</Td>
                                       <Td>{event.location}</Td>
                                       <Td>{event.type}</Td>
                                       <Td>
-                                        <CheckIcon visibility={event.mandatory ? 'visible' : 'hidden'} />
+                                          <CheckIcon
+                                              visibility={
+                                                  event.mandatory
+                                                      ? 'visible'
+                                                      : 'hidden'
+                                              }
+                                          />
                                       </Td>
                                       <Td>
-                                        <CheckIcon visibility={event.sq_mandatory ? 'visible' : 'hidden'} />
+                                          <CheckIcon
+                                              visibility={
+                                                  event.sq_mandatory
+                                                      ? 'visible'
+                                                      : 'hidden'
+                                              }
+                                          />
                                       </Td>
                                   </Tr>
                               ))
