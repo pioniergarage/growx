@@ -44,7 +44,7 @@ const PersonalInfoForm = ({
             lastName: initialLastName,
             gender: initialGender,
             phone: '',
-            homeland: ''
+            homeland: '',
         },
         onSubmit: (values) => onNext(values),
         validate: (values) => {
@@ -69,8 +69,9 @@ const PersonalInfoForm = ({
                 <FormControl
                     isInvalid={!!formik.errors.firstName}
                     isDisabled={isLoading}
+                    isRequired
                 >
-                    <FormLabel htmlFor="firstName">First name*</FormLabel>
+                    <FormLabel htmlFor="firstName">First name</FormLabel>
                     <Input
                         name="firstName"
                         id="firstName"
@@ -84,8 +85,9 @@ const PersonalInfoForm = ({
                 <FormControl
                     isInvalid={!!formik.errors.lastName}
                     isDisabled={isLoading}
+                    isRequired
                 >
-                    <FormLabel htmlFor="lastName">Last name*</FormLabel>
+                    <FormLabel htmlFor="lastName">Last name</FormLabel>
                     <Input
                         type="lastName"
                         name="lastName"
@@ -99,7 +101,7 @@ const PersonalInfoForm = ({
                 </FormControl>
                 <FormControl as="fieldset" isDisabled={isLoading}>
                     <FormLabel as="legend">Gender</FormLabel>
-                    <RadioGroup defaultValue={'OTHER'}>
+                    <RadioGroup>
                         <HStack spacing="24px">
                             <Radio
                                 value="MALE"
@@ -137,8 +139,12 @@ const PersonalInfoForm = ({
                         value={formik.values.phone}
                     />
                 </FormControl>
-                <FormControl isDisabled={isLoading} isInvalid={!!formik.errors.homeland}>
-                    <FormLabel>Homeland*</FormLabel>
+                <FormControl
+                    isDisabled={isLoading}
+                    isInvalid={!!formik.errors.homeland}
+                    isRequired
+                >
+                    <FormLabel>Country</FormLabel>
                     <Input
                         name="homeland"
                         id="homeland"

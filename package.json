@@ -8,7 +8,7 @@
         "start": "next start",
         "lint": "next lint --fix",
         "prettier": "prettier --write src/**/*.{ts,tsx}",
-        "generate": "openapi-typescript https://gzffqettxggcszrafysw.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6ZmZxZXR0eGdnY3N6cmFmeXN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTc4MTIzMTUsImV4cCI6MTk3MzM4ODMxNX0.O9EMy96zVbWg5YBPhVBRZFUnRi1oDPuaAD9UtOIotlY --output src/api/supabase.ts"
+        "generate": "openapi-typescript https://gzffqettxggcszrafysw.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6ZmZxZXR0eGdnY3N6cmFmeXN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTc4MTIzMTUsImV4cCI6MTk3MzM4ODMxNX0.O9EMy96zVbWg5YBPhVBRZFUnRi1oDPuaAD9UtOIotlY --output src/database/supabase.ts"
     },
     "dependencies": {
         "@chakra-ui/icons": "^2.0.4",

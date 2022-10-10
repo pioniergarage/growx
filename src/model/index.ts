@@ -94,3 +94,10 @@ export type FAQ = {
     question: string;
     answer: string;
 };
+
+export type FurtherProfileInfo = {
+    lookingForTeam: boolean;
+    expectations: string;
+    idea: string;
+    source: string;
+};
