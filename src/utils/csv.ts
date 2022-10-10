@@ -1,4 +1,4 @@
-type CSVData = string | number;
+type CSVData = string | number | boolean;
 
 function createCSV(header: string[], data: CSVData[][], separator = ',') {
     return (
