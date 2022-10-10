@@ -1,6 +1,6 @@
 import LogInForm from '@/components/forms/LoginForm';
 import PageLink from '@/components/navigation/PageLink';
-import { Alert, AlertIcon, VStack } from '@chakra-ui/react';
+import { Alert, AlertIcon, Flex, VStack } from '@chakra-ui/react';
 import {
     getUser,
     supabaseClient,
@@ -50,10 +50,22 @@ const LoginPage: NextPageWithLayout = () => {
                     {loginError}
                 </Alert>
             ) : undefined}
-            <PageLink color="primary" textAlign="center" href="/connect/signup">
-                Don&apos;t have an account yet? <br />
-                Click here to sign up.
-            </PageLink>
+            <Flex flexDir="column">
+                <PageLink
+                    color="primary"
+                    textAlign="center"
+                    href="/connect/signup"
+                >
+                    Don&apos;t have an account yet? Click here to sign up.
+                </PageLink>
+                <PageLink
+                    color="primary"
+                    textAlign="center"
+                    href="/connect/forgotpassword"
+                >
+                    Forgot your password?
+                </PageLink>
+            </Flex>
         </VStack>
     );
 };
