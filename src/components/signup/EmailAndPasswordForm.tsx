@@ -68,7 +68,7 @@ const EmailAndPasswordForm = ({
 
     return (
         <form onSubmit={formik.handleSubmit}>
-            <VStack gap={2} alignItems="center">
+            <VStack  alignItems="center">
                 <Box textAlign="center">
                     <Box mb={2}>
                         <Image
@@ -79,7 +79,7 @@ const EmailAndPasswordForm = ({
                             height={27}
                         />
                     </Box>
-                    <Heading size="md">Sign up</Heading>
+                    <Heading size="md" lineHeight={0.8}>Sign up</Heading>
                     {signUpAs ? (
                         <Text color="gray.400" mb={4}>
                             as {signUpAs}

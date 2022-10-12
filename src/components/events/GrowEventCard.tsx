@@ -13,6 +13,7 @@ import {
     useRegisterUserToEvent,
     useUnregisterUserFromEvent,
 } from 'hooks/event';
+import { useProfile } from 'hooks/profile';
 import { EventType, GrowEvent } from 'model';
 import { useMemo } from 'react';
 import EventTagList from './EventTagList';
@@ -37,6 +38,7 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
     const { unregisterUser, isLoading: isUnregistering } =
         useUnregisterUserFromEvent();
     const { user } = useUser();
+    const { profile } = useProfile();
     const toast = useToast();
     const { day, month, time, over } = useMemo(() => {
         const day = String(event.date.getDate()).padStart(2, '0');
@@ -101,7 +103,10 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
 
             {!over ? (
                 <>
-                    <EventTagList event={event} />
+                    <EventTagList
+                        event={event}
+                        isSQTagVisible={profile?.keyQualification}
+                    />
                     <EventRegistration
                         registration={registration}
                         onDeregister={deregister}

@@ -5,15 +5,16 @@ import {
     FaChromecast,
     FaCloud,
     FaExclamation,
-    FaMapMarkerAlt,
+    FaMapMarkerAlt
 } from 'react-icons/fa';
 import EventTag from './EventTag';
 
 type EventTagListProps = FlexProps & {
     event: Pick<GrowEvent, 'location' | 'mandatory' | 'sq_mandatory' | 'type'>;
+    isSQTagVisible?: boolean;
 };
 
-const EventTagList = ({ event, ...flexProps }: EventTagListProps) => {
+const EventTagList = ({ event, isSQTagVisible, ...flexProps }: EventTagListProps) => {
     return (
         <Flex
             mt={1}
@@ -33,7 +34,7 @@ const EventTagList = ({ event, ...flexProps }: EventTagListProps) => {
             ) : event.type === EventType.Offline ? (
                 <EventTag icon={FaBuilding}>Offline</EventTag>
             ) : undefined}
-            {event.sq_mandatory ? (
+            {event.sq_mandatory && isSQTagVisible ? (
                 <EventTag icon={FaExclamation}>Mandatory for SQ</EventTag>
             ) : undefined}
             {event.mandatory ? (
