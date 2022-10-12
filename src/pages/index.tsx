@@ -71,11 +71,11 @@ const Home: React.FC<HomeProps> = ({ sponsors, faqs, events: jsonEvents }) => {
                 <MainInfoBlock />
             </Section>
 
-            <Section>
+            <Section my="4rem">
                 <GrowVideo />
             </Section>
 
-            <Section mt="8rem">
+            <Section>
                 <Timeline />
             </Section>
 
