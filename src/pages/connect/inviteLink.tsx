@@ -7,6 +7,8 @@ import {
     Heading,
     HStack,
     Input,
+    Radio,
+    RadioGroup,
     Text,
     VStack,
 } from '@chakra-ui/react';
@@ -24,25 +26,48 @@ const InviteLinkCreator: NextPageWithLayout = () => {
     const [email, setEmail] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [forRole, setForRole] = useState('mentor');
 
     const link = useMemo(() => {
-        const url = new URL('https://grow.pioniergarage.de/connect/mentor');
+        const url = new URL('https://grow.pioniergarage.de/connect/' + forRole);
 
         url.searchParams.append('firstName', firstName);
         url.searchParams.append('lastName', lastName);
         url.searchParams.append('email', email);
 
         return url.href;
-    }, [email, firstName, lastName]);
+    }, [email, firstName, lastName, forRole]);
 
     return (
         <VStack gap={2} alignItems="center">
             <Box textAlign="center">
                 <Heading size="md">Create Invite Link</Heading>
                 <Text color="gray.400" mb={4}>
-                    for mentors
+                    for {forRole}s
                 </Text>
             </Box>
+            <RadioGroup as={HStack}>
+                <Radio
+                    isChecked={forRole === 'mentor'}
+                    onChange={(e) => {
+                        if (e.target.checked) {
+                            setForRole('mentor');
+                        }
+                    }}
+                >
+                    Mentor
+                </Radio>
+                <Radio
+                    isChecked={forRole === 'buddy'}
+                    onChange={(e) => {
+                        if (e.target.checked) {
+                            setForRole('buddy');
+                        }
+                    }}
+                >
+                    Buddy
+                </Radio>
+            </RadioGroup>
             <FormControl>
                 <FormLabel htmlFor="email">Email address</FormLabel>
                 <Input
@@ -71,13 +96,16 @@ const InviteLinkCreator: NextPageWithLayout = () => {
                 />
             </FormControl>
             <Divider />
-            <HStack borderRadius={4} border="1px" borderColor="whiteAlpha.200" p={2}>
+            <HStack
+                borderRadius={4}
+                border="1px"
+                borderColor="whiteAlpha.200"
+                p={2}
+            >
                 <Box color="whiteAlpha.600" as="span">
                     {link}
                 </Box>
-                <Button onClick={() => copyToClipboard(link)}>
-                    Copy
-                </Button>
+                <Button onClick={() => copyToClipboard(link)}>Copy</Button>
             </HStack>
         </VStack>
     );
