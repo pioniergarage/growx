@@ -1,5 +1,13 @@
 import AnimatedLogo from '@/components/landing/AnimatedLogo';
-import { Box, Grid, GridItem, Heading, Text, VStack } from '@chakra-ui/react';
+import {
+    Box,
+    Grid,
+    GridItem,
+    Heading,
+    Show,
+    Text,
+    VStack,
+} from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import { isSignUpEnabled, signUpStart } from 'utils/dates';
 import ParticipateButton from './ParticipateButton';
@@ -26,31 +34,37 @@ export default function MainInfoBlock() {
             mt={8}
             gap={6}
         >
-            <GridItem
-                placeSelf="center"
-                className="md:order-2"
-                textAlign="center"
-                rowSpan={2}
-            >
-                <AnimatedLogo boxSize={250} />
-                <Countdown />
-            </GridItem>
+            <Show above="md">
+                <GridItem
+                    placeSelf="center"
+                    className="md:order-2"
+                    textAlign="center"
+                    rowSpan={2}
+                >
+                    <AnimatedLogo boxSize={250} />
+                    <Countdown />
+                </GridItem>
+            </Show>
             <GridItem className="md:order-1">
                 <VStack spacing={4} align={{ base: 'center', md: 'start' }}>
                     <Heading
-                        bgClip="text"
-                        bgGradient="linear(to-l, pink.100, purple.300)"
-                        size={{ base: '2xl', md: '3xl' }}
+                        className="neon-text-1"
+                        lineHeight={1.0}
+                        fontWeight="400"
+                        fontSize={{ base: '7rem', md: '10rem' }}
                     >
-                        <Text lineHeight={1.1}>
-                            Germany&apos;s Largest Student Founding Contest
-                        </Text>
+                        Let it Grow
                     </Heading>
-                    <Text>
-                        Become an entrepreneur and advance your idea over 11
-                        weeks. Get support, build your prototype and test your
-                        market.
-                    </Text>
+                    <Box>
+                        <Heading as="h2" size="md" fontWeight="600">
+                            Germany&apos;s Largest Student Founding Contest
+                        </Heading>
+                        <Text fontWeight="500" lineHeight={1.6}>
+                            Become an entrepreneur and advance your idea over 11
+                            weeks. Get support, build your prototype and test
+                            your market.
+                        </Text>
+                    </Box>
 
                     <Box>
                         <ParticipateButton />
