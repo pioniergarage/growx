@@ -45,7 +45,7 @@ const TeamLogo: React.FC<TeamLogoProps> = ({
                     />
                 ) : (
                     <Center w={size} h={size} bgColor="whiteAlpha.200">
-                        <FaUsers size={50} />
+                        <FaUsers size={25} />
                     </Center>
                 )}
             </Skeleton>

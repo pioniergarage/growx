@@ -26,7 +26,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
             size="md"
             name={firstName + ' ' + lastName}
             src={avatarUrl || undefined}
-            bg="primary-bg"
+            bg="gray.500"
             {...rest}
         />
     );
