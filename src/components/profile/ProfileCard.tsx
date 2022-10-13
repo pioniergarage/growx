@@ -6,18 +6,18 @@ import UserAvatar, { UserAvatarProps } from '../avatar/UserAvatar';
 import PageLink from '../navigation/PageLink';
 
 type ProfileCardProps = UserAvatarProps &
-    Pick<Profile, 'email' | 'phone'> & {
+    Partial<Pick<Profile, 'email' | 'phone'>> & {
         team?: Team;
         skills?: Profile['skills'];
         role?: Profile['role'];
-        size?: 'lg' | 'md';
+        size?: 'lg' | 'md' | 'sm';
     };
 
 const ProfileCard: React.FC<ProfileCardProps> = (props) => {
     const name = props.firstName + ' ' + props.lastName;
     const size = props.size || 'md';
     return (
-        <HStack gap={2}>
+        <HStack gap={1}>
             <UserAvatar size={size} {...props} />
             <Flex flexDir="column">
                 <HStack>
@@ -25,10 +25,12 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
                     {props.role ? <Tag>{props.role}</Tag> : undefined}
                 </HStack>
                 <Flex columnGap={4} color="gray.400" wrap="wrap">
-                    <HStack>
-                        <EmailIcon />
-                        <Text>{props.email}</Text>
-                    </HStack>
+                    {props.email ? (
+                        <HStack>
+                            <EmailIcon />
+                            <Text>{props.email}</Text>
+                        </HStack>
+                    ) : undefined}
                     {props.phone ? (
                         <HStack>
                             <PhoneIcon />

@@ -35,6 +35,9 @@ const NavAdminMenu = () => {
                 <Link href="/connect/admin/events">
                     <MenuItem>Events</MenuItem>
                 </Link>
+                <Link href="/connect/admin/teams">
+                    <MenuItem>Teams</MenuItem>
+                </Link>
             </MenuList>
         </Menu>
     );
