@@ -2,7 +2,7 @@ import { SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { Profile } from 'model';
 import ProfileCard from '../profile/ProfileCard';
 
-interface MemberListProps {
+type MemberListProps = {
     members: Profile[];
 }
 

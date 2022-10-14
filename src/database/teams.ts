@@ -103,6 +103,7 @@ export async function declineRequestToJoinTeam(joiningUserId: string) {
             if (error) throw new Error(error.message);
         });
 }
+
 export async function getRequestsToTeam(team_id: number): Promise<Profile[]> {
     return supabaseClient
         .from<{ profiles: definitions['profiles'] }>('team_requests')

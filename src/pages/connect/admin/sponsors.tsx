@@ -13,6 +13,7 @@ import {
     Tr,
     VStack,
 } from '@chakra-ui/react';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useDeleteSponsor, useSponsors, useUpsertSponsor } from 'hooks/sponsor';
 import { Sponsor } from 'model';
 import { useState } from 'react';
@@ -122,3 +123,7 @@ export default function SponsorAdmin() {
         </VStack>
     );
 }
+
+export const getServerSideProps = withPageAuth({
+    redirectTo: '/connect/login',
+});

@@ -121,10 +121,14 @@ const TeamRequests: React.FC<TeamRequestsProps> = ({ team }) => {
         setLoadingIds(loadingIds.filter((i) => i != profile.userId));
     }
 
+    if (requests.length === 0) {
+        return <></>;
+    }
+
     return (
         <VStack alignItems="stretch">
             <Text fontSize="sm" color="gray.500" mb={2}>
-                {requests.length === 0 ? 'No requests' : 'Requests'}
+                Requests
             </Text>
             <VStack gap={2} alignItems="stretch">
                 {requests.map((member) => (
