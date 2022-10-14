@@ -20,7 +20,7 @@ import {
     uploadTeamLogo,
     withdrawRequest,
 } from 'database/teams';
-import { Profile, Team } from 'model';
+import { MentorAssignments, Profile, Team } from 'model';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export function useTeamIdOfUser(userId?: string) {
@@ -238,7 +238,10 @@ export function useUnassignMentor() {
         ({ teamId }: { teamId: Team['id'] }) => unassignMentor(teamId),
         {
             onSuccess: (deleted) => {
-                const newData = queryClient.getQueriesData('mentorAssignments');
+                const newData =
+                    queryClient.getQueryData<MentorAssignments>(
+                        'mentorAssignments'
+                    ) ?? {};
                 delete newData[deleted.team];
                 queryClient.setQueryData('mentorAssignments', newData);
             },
