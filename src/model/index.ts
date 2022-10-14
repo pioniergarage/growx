@@ -18,6 +18,8 @@ export type Profile = {
     keyQualification: boolean;
 };
 
+export type PublicMentorProfile = Pick<Profile, 'userId' | 'firstName' | 'lastName' | 'avatar' | 'bio'>
+
 export type Sponsor = {
     name: string;
     logo: string;

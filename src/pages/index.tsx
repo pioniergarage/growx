@@ -1,6 +1,7 @@
 import Faqs from '@/components/landing/FaqList';
 import GrowVideo from '@/components/landing/GrowVideo';
 import MainInfoBlock from '@/components/landing/MainInfoBlock';
+import MentorList from '@/components/landing/MentorList';
 import MotivationBlock from '@/components/landing/MotivationBlock';
 import Timeline from '@/components/landing/ShortTimeline';
 import SponsorBlock from '@/components/landing/sponsor/SponsorBlock';
@@ -9,8 +10,9 @@ import WaitingForBlock from '@/components/landing/WaitingForBlock';
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
 import { getFAQs } from 'database';
 import { getEvents } from 'database/events';
+import { getPublicMentors } from 'database/profile';
 import { getSponsors } from 'database/sponsors';
-import { FAQ, GrowEvent, Sponsor } from 'model';
+import { FAQ, GrowEvent, PublicMentorProfile, Sponsor } from 'model';
 import { PropsWithChildren } from 'react';
 
 export async function getServerSideProps() {
@@ -20,31 +22,23 @@ export async function getServerSideProps() {
         ...e,
         date: e.date.toISOString(),
     }));
-    return { props: { sponsors, faqs, events } };
-}
-
-function Section({
-    children,
-    divider = false,
-    ...rest
-}: PropsWithChildren & { divider?: boolean } & BoxProps) {
-    return (
-        <Box as="section" my={8} {...rest}>
-            <Box mx="auto" maxW="container.xl">
-                {children}
-                {divider && <Divider my={8} />}
-            </Box>
-        </Box>
-    );
+    const mentors = await getPublicMentors();
+    return { props: { sponsors, faqs, events, mentors } };
 }
 
 interface HomeProps {
     sponsors: Sponsor[];
     faqs: FAQ[];
     events: (Omit<GrowEvent, 'date'> & { date: string })[];
+    mentors: PublicMentorProfile[];
 }
 
-const Home: React.FC<HomeProps> = ({ sponsors, faqs, events: jsonEvents }) => {
+const Home: React.FC<HomeProps> = ({
+    sponsors,
+    faqs,
+    events: jsonEvents,
+    mentors,
+}) => {
     const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
     return (
         <>
@@ -108,6 +102,10 @@ const Home: React.FC<HomeProps> = ({ sponsors, faqs, events: jsonEvents }) => {
                 <WaitingForBlock />
             </Section>
 
+            <Section>
+                <MentorList mentors={mentors} />
+            </Section>
+
             <Section divider id="faqs" mt={24}>
                 <Faqs faqs={faqs} />
             </Section>
@@ -118,5 +116,20 @@ const Home: React.FC<HomeProps> = ({ sponsors, faqs, events: jsonEvents }) => {
         </>
     );
 };
+
+function Section({
+    children,
+    divider = false,
+    ...rest
+}: PropsWithChildren & { divider?: boolean } & BoxProps) {
+    return (
+        <Box as="section" my={8} {...rest}>
+            <Box mx="auto" maxW="container.xl">
+                {children}
+                {divider && <Divider my={8} />}
+            </Box>
+        </Box>
+    );
+}
 
 export default Home;
