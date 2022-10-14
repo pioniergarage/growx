@@ -18,7 +18,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
 }) => {
     const { avatarUrl, isLoading } = useAvatarUrl({ userId, avatar });
     if (isLoading) {
-        return <SkeletonCircle size="12" />;
+        return <SkeletonCircle size={rest.size == 'sm' ? '10' : '12'} />;
     }
     return (
         <Avatar

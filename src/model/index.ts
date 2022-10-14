@@ -52,7 +52,10 @@ export type Team = {
     logo?: string;
     archived: boolean;
     requestSupport: string[];
+    mentor?: string;
 };
+
+export type MentorAssignments = Record<number, Profile>;
 
 export const availableSkills = [
     'AgriTech',

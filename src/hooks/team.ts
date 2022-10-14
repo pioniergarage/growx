@@ -1,4 +1,9 @@
 import {
+    assignMentor,
+    getMentorAssignments,
+    unassignMentor,
+} from 'database/assignments';
+import {
     acceptRequestToJoinTeam,
     createTeam,
     declineRequestToJoinTeam,
@@ -15,7 +20,7 @@ import {
     uploadTeamLogo,
     withdrawRequest,
 } from 'database/teams';
-import { Team } from 'model';
+import { Profile, Team } from 'model';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export function useTeamIdOfUser(userId?: string) {
@@ -191,6 +196,7 @@ export function useUpdateTeam() {
     });
     return { ...mutation, updateTeam: mutation.mutateAsync };
 }
+
 export function useLeaveTeam() {
     const queryClient = useQueryClient();
     const mutation = useMutation((userId: string) => leaveTeam(userId), {
@@ -200,4 +206,43 @@ export function useLeaveTeam() {
         },
     });
     return { ...mutation, leaveTeam: mutation.mutateAsync };
+}
+
+export function useMentorAssignments() {
+    const query = useQuery('mentorAssignments', () => getMentorAssignments());
+    return { ...query, mentorAssignments: query.data };
+}
+
+export function useAssignMentor() {
+    const queryClient = useQueryClient();
+    const mutation = useMutation(
+        ({
+            teamId,
+            mentorId,
+        }: {
+            teamId: Team['id'];
+            mentorId: Profile['userId'];
+        }) => assignMentor(teamId, mentorId),
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries('mentorAssignments');
+            },
+        }
+    );
+    return { ...mutation, assignMentor: mutation.mutateAsync };
+}
+
+export function useUnassignMentor() {
+    const queryClient = useQueryClient();
+    const mutation = useMutation(
+        ({ teamId }: { teamId: Team['id'] }) => unassignMentor(teamId),
+        {
+            onSuccess: (deleted) => {
+                const newData = queryClient.getQueriesData('mentorAssignments');
+                delete newData[deleted.team];
+                queryClient.setQueryData('mentorAssignments', newData);
+            },
+        }
+    );
+    return { ...mutation, unassignMentor: mutation.mutateAsync };
 }
