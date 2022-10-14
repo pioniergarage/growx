@@ -11,14 +11,15 @@ import {
     useTeamMembers,
     useUnassignMentor,
 } from 'hooks/team';
-import { Team } from 'model';
-import { useMemo } from 'react';
+import { Profile, Team } from 'model';
+import { useMemo, useState } from 'react';
 
 const TeamRow = ({ team }: { team: Team }) => {
     const { members } = useTeamMembers(team.id);
     const { mentorAssignments, isLoading } = useMentorAssignments();
     const { assignMentor } = useAssignMentor();
     const { unassignMentor } = useUnassignMentor();
+    const [mentorOnHover, setMentorOnHover] = useState<Profile>();
     return (
         <Grid
             gridTemplateColumns="1fr 10rem 4rem"
@@ -32,10 +33,18 @@ const TeamRow = ({ team }: { team: Team }) => {
             <Flex fontWeight="semibold" alignItems="center" gap={2}>
                 <TeamLogo {...team} size={10} />
                 <Flex flexDir="column">
-                    {team.name}
+                    {team.name} {mentorOnHover?.lastName}
                     <Flex gap={1}>
                         {team.requestSupport.map((subject) => (
-                            <Tag key={subject} size="sm">
+                            <Tag
+                                key={subject}
+                                size="sm"
+                                colorScheme={
+                                    mentorOnHover?.skills.includes(subject)
+                                        ? 'green'
+                                        : undefined
+                                }
+                            >
                                 {subject}
                             </Tag>
                         ))}
@@ -68,6 +77,7 @@ const TeamRow = ({ team }: { team: Team }) => {
                     unassignMentor({ teamId: team.id });
                 }}
                 isLoading={isLoading}
+                onHover={setMentorOnHover}
             />
         </Grid>
     );

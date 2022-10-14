@@ -127,6 +127,16 @@ const MentorSelect = (props: MentorSelectProps) => {
                                             props.onSelect(mentor);
                                         }
                                     }}
+                                    onMouseEnter={() => {
+                                        if (props.onHover) {
+                                            props.onHover(mentor);
+                                        }
+                                    }}
+                                    onMouseLeave={() => {
+                                        if (props.onHover) {
+                                            props.onHover();
+                                        }
+                                    }}
                                 >
                                     <UserAvatar
                                         size="sm"
