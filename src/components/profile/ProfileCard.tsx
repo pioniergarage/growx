@@ -6,7 +6,7 @@ import UserAvatar, { UserAvatarProps } from '../avatar/UserAvatar';
 import PageLink from '../navigation/PageLink';
 
 type ProfileCardProps = UserAvatarProps &
-    Partial<Pick<Profile, 'email' | 'phone'>> & {
+    Partial<Pick<Profile, 'email' | 'phone' | 'bio'>> & {
         team?: Team;
         skills?: Profile['skills'];
         role?: Profile['role'];
@@ -24,33 +24,40 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
                     <Heading size={size}>{name}</Heading>
                     {props.role ? <Tag>{props.role}</Tag> : undefined}
                 </HStack>
-                <Flex columnGap={4} color="gray.400" wrap="wrap">
-                    {props.email ? (
-                        <HStack>
-                            <EmailIcon />
-                            <Text>{props.email}</Text>
-                        </HStack>
+                <Flex flexDir="column">
+                    {props.bio ? (
+                        <Text lineHeight={1.2}>{props.bio}</Text>
                     ) : undefined}
-                    {props.phone ? (
-                        <HStack>
-                            <PhoneIcon />
-                            <Text>{props.phone}</Text>
-                        </HStack>
-                    ) : undefined}
-                    {props.team ? (
-                        <HStack>
-                            <FaUsers />
-                            <PageLink href={'/connect/teams/' + props.team.id}>
-                                {props.team.name}
-                            </PageLink>
-                        </HStack>
-                    ) : undefined}
-                    {props.skills ? (
-                        <HStack>
-                            <FaLightbulb />
-                            <Text>{props.skills.join(', ')}</Text>
-                        </HStack>
-                    ) : undefined}
+                    <Flex columnGap={4} color="gray.400" wrap="wrap">
+                        {props.email ? (
+                            <HStack>
+                                <EmailIcon />
+                                <Text>{props.email}</Text>
+                            </HStack>
+                        ) : undefined}
+                        {props.phone ? (
+                            <HStack>
+                                <PhoneIcon />
+                                <Text>{props.phone}</Text>
+                            </HStack>
+                        ) : undefined}
+                        {props.team ? (
+                            <HStack>
+                                <FaUsers />
+                                <PageLink
+                                    href={'/connect/teams/' + props.team.id}
+                                >
+                                    {props.team.name}
+                                </PageLink>
+                            </HStack>
+                        ) : undefined}
+                        {props.skills ? (
+                            <HStack>
+                                <FaLightbulb />
+                                <Text>{props.skills.join(', ')}</Text>
+                            </HStack>
+                        ) : undefined}
+                    </Flex>
                 </Flex>
             </Flex>
         </HStack>

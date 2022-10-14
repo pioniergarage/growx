@@ -119,14 +119,14 @@ export default function GrowNav() {
                         >
                             Events
                         </GrowConnectNavButton>
+                        <GrowConnectNavButton
+                            href="/connect/teams"
+                            icon={<FaUsers />}
+                            aria-label="Teams"
+                        >
+                            Teams
+                        </GrowConnectNavButton>
                         <Show above="sm">
-                            <GrowConnectNavButton
-                                href="/connect/teams"
-                                icon={<FaUsers />}
-                                aria-label="Teams"
-                            >
-                                Teams
-                            </GrowConnectNavButton>
                             {profile.role === 'ORGA' ? (
                                 <NavAdminMenu />
                             ) : undefined}

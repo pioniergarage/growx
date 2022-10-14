@@ -76,14 +76,16 @@ export const getPublicMentors = async (): Promise<PublicMentorProfile[]> => {
         .select('user_id, first_name, last_name, avatar, bio')
         .match({ role: 'MENTOR' })
         .then((response) => handleResponse(response, 'No mentors found'))
-        .then((dtos) => dtos.map(({ user_id, first_name, last_name, bio, avatar }) => ({
-            userId: user_id,
-            firstName: first_name,
-            lastName: last_name,
-            bio: bio ?? '',
-            avatar
-        })));
-}
+        .then((dtos) =>
+            dtos.map(({ user_id, first_name, last_name, bio, avatar }) => ({
+                userId: user_id,
+                firstName: first_name,
+                lastName: last_name,
+                bio: bio ?? '',
+                avatar,
+            }))
+        );
+};
 
 export const insertSignupInfo = async (
     info: FurtherProfileInfo & { email: string }

@@ -2,7 +2,17 @@ import UserAvatar from '@/components/avatar/UserAvatar';
 import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
 import MentorSelect from '@/components/teams/MentorSelect';
 import TeamLogo from '@/components/teams/TeamLogo';
-import { Box, Flex, Grid, Spinner, Tag, VStack } from '@chakra-ui/react';
+import {
+    Box,
+    Button,
+    Flex,
+    Grid,
+    LinkBox,
+    LinkOverlay,
+    Spinner,
+    Tag,
+    VStack,
+} from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import {
     useAllTeams,
@@ -12,6 +22,7 @@ import {
     useUnassignMentor,
 } from 'hooks/team';
 import { Profile, Team } from 'model';
+import Link from 'next/link';
 import { useMemo, useState } from 'react';
 
 const TeamRow = ({ team }: { team: Team }) => {
@@ -30,10 +41,28 @@ const TeamRow = ({ team }: { team: Team }) => {
             justifyItems="start"
             alignItems="center"
         >
-            <Flex fontWeight="semibold" alignItems="center" gap={2}>
+            <Flex
+                as={LinkBox}
+                fontWeight="semibold"
+                alignItems="center"
+                gap={2}
+            >
                 <TeamLogo {...team} size={10} />
                 <Flex flexDir="column">
-                    {team.name} {mentorOnHover?.lastName}
+                    <Flex gap={2}>
+                        <Link
+                            href={'/connect/teams/' + team.id}
+                            passHref
+                            prefetch={false}
+                        >
+                            <LinkOverlay>{team.name}</LinkOverlay>
+                        </Link>
+                        {team.archived ? (
+                            <Tag size="sm" colorScheme="orange">
+                                Archived
+                            </Tag>
+                        ) : undefined}
+                    </Flex>
                     <Flex gap={1}>
                         {team.requestSupport.map((subject) => (
                             <Tag
@@ -84,12 +113,23 @@ const TeamRow = ({ team }: { team: Team }) => {
 };
 
 const TeamTable = (props: { teams: Team[] }) => {
-    const activeTeams = useMemo(
-        () => props.teams.filter((t) => !t.archived),
-        [props.teams]
+    const [showArchivedTeams, setShowArchivedTeams] = useState(false);
+    const filteredTeams = useMemo(
+        () =>
+            showArchivedTeams
+                ? props.teams
+                : props.teams.filter((t) => !t.archived),
+        [props.teams, showArchivedTeams]
     );
     return (
         <Flex alignItems="stretch" flexDir="column">
+            <Button
+                alignSelf="start"
+                size="sm"
+                onClick={() => setShowArchivedTeams(!showArchivedTeams)}
+            >
+                Toggle Archived Teams
+            </Button>
             <Grid
                 gridTemplateColumns="1fr 10rem 4rem"
                 color="gray.400"
@@ -97,11 +137,11 @@ const TeamTable = (props: { teams: Team[] }) => {
                 py={3}
                 fontSize={14}
             >
-                <Box>{activeTeams.length} Teams</Box>
+                <Box>{filteredTeams.length} Teams</Box>
                 <Box>Members</Box>
                 <Box>Mentor</Box>
             </Grid>
-            {activeTeams.map((team) => (
+            {filteredTeams.map((team) => (
                 <TeamRow key={team.id} team={team} />
             ))}
         </Flex>

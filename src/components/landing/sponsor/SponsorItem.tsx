@@ -8,11 +8,7 @@ type SponsorItemProps = {
 const SponsorItem = (props: SponsorItemProps) => {
     return (
         <Link href={props.href} isExternal>
-            <Image
-                className="max-h-16 brightness-75"
-                src={props.logo}
-                alt={props.name}
-            />
+            <Image className="max-h-16" src={props.logo} alt={props.name} />
         </Link>
     );
 };

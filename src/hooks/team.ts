@@ -1,6 +1,7 @@
 import {
     assignMentor,
     getMentorAssignments,
+    getTeamMentor,
     unassignMentor,
 } from 'database/assignments';
 import {
@@ -211,6 +212,11 @@ export function useLeaveTeam() {
 export function useMentorAssignments() {
     const query = useQuery('mentorAssignments', () => getMentorAssignments());
     return { ...query, mentorAssignments: query.data };
+}
+
+export function useTeamMentor(teamId: number) {
+    const query = useQuery('teamMentor', () => getTeamMentor(teamId));
+    return { ...query, mentor: query.data };
 }
 
 export function useAssignMentor() {

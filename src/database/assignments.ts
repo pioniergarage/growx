@@ -21,6 +21,18 @@ export async function getMentorAssignments(): Promise<MentorAssignments> {
         );
 }
 
+export async function getTeamMentor(teamId: number): Promise<Profile> {
+    return supabaseClient
+        .from<{ mentor: definitions['profiles']; team: number }>(
+            'mentor_assignment'
+        )
+        .select('mentor (*), team')
+        .match({ team: teamId })
+        .single()
+        .then((r) => handleSingleResponse(r, 'assignments not found'))
+        .then((dto) => mapProfileDto(dto.mentor));
+}
+
 export async function assignMentor(
     teamId: Team['id'],
     mentorId: Profile['userId']
