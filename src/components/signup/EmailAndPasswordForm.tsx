@@ -1,11 +1,14 @@
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     Box,
     Button,
+    Checkbox,
     FormControl,
     FormErrorMessage,
     FormLabel,
     Heading,
     Input,
+    Link,
     Text,
     VStack,
 } from '@chakra-ui/react';
@@ -37,11 +40,13 @@ const EmailAndPasswordForm = ({
         email: string;
         password: string;
         passwordRepeat: string;
+        agreement: boolean;
     }>({
         initialValues: {
             email: initialEmail,
             password: '',
             passwordRepeat: '',
+            agreement: false,
         },
         onSubmit: (values) => onNext(values),
         validate: (values) => {
@@ -54,6 +59,7 @@ const EmailAndPasswordForm = ({
             if (emailError !== true) errors.email = emailError;
             const passwordError = rules.password(values.password);
             if (passwordError !== true) errors.password = passwordError;
+            if (!values.agreement) errors.agreement = 'Required';
             return errors;
         },
         validateOnChange: false,
@@ -68,7 +74,7 @@ const EmailAndPasswordForm = ({
 
     return (
         <form onSubmit={formik.handleSubmit}>
-            <VStack  alignItems="center">
+            <VStack alignItems="center">
                 <Box textAlign="center">
                     <Box mb={2}>
                         <Image
@@ -79,7 +85,9 @@ const EmailAndPasswordForm = ({
                             height={27}
                         />
                     </Box>
-                    <Heading size="md" lineHeight={0.8}>Sign up</Heading>
+                    <Heading size="md" lineHeight={0.8}>
+                        Sign up
+                    </Heading>
                     {signUpAs ? (
                         <Text color="gray.400" mb={4}>
                             as {signUpAs}
@@ -120,6 +128,7 @@ const EmailAndPasswordForm = ({
                 <FormControl
                     isInvalid={!!formik.errors.passwordRepeat}
                     isDisabled={isLoading}
+                    isRequired
                 >
                     <FormLabel htmlFor="passwordRepeat">
                         Repeat Password
@@ -133,6 +142,22 @@ const EmailAndPasswordForm = ({
                     />
                     <FormErrorMessage>
                         {formik.errors.passwordRepeat}
+                    </FormErrorMessage>
+                </FormControl>
+                <FormControl isRequired isInvalid={!!formik.errors.agreement}>
+                    <Checkbox lineHeight={1.2}>
+                        I agree to the&nbsp;
+                        <Link
+                            href="https://pioniergarage.de/datenschutzerklaerung"
+                            isExternal
+                        >
+                            Pioniergarage Terms <ExternalLinkIcon mx="2px" />
+                        </Link>{' '}
+                        and that photos and videos of me may be published on the
+                        internet
+                    </Checkbox>
+                    <FormErrorMessage>
+                        {formik.errors.agreement}
                     </FormErrorMessage>
                 </FormControl>
                 <Button
