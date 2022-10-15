@@ -6,6 +6,7 @@ import TeamDetailsSkeleton from '@/components/teams/TeamDetailsSkeleton';
 import TeamForm from '@/components/teams/TeamForm';
 import TeamLogoControl from '@/components/teams/TeamLogoControl';
 import TeamRequests from '@/components/teams/TeamRequests';
+import YourMentor from '@/components/teams/YourMentor';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
     Box,
@@ -186,6 +187,7 @@ const TeamDetails: React.FC<TeamDetails> = ({ team: serverSideTeam }) => {
                         <MemberList members={members || []} />
                         {team && isUsersTeam && user ? (
                             <>
+                                <YourMentor team={team} />
                                 <TeamRequests team={team} />
                                 <LeaveTeamButton
                                     userId={user?.id}
@@ -195,7 +197,11 @@ const TeamDetails: React.FC<TeamDetails> = ({ team: serverSideTeam }) => {
                         ) : undefined}
                     </>
                 ) : team ? (
-                    <TeamForm onSave={onSaveTeam} team={team} />
+                    <TeamForm
+                        onSave={onSaveTeam}
+                        team={team}
+                        onCancel={() => setEditing(false)}
+                    />
                 ) : undefined}
             </TeamDetailsSkeleton>
         </VStack>

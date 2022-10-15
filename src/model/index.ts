@@ -18,6 +18,11 @@ export type Profile = {
     keyQualification: boolean;
 };
 
+export type PublicMentorProfile = Pick<
+    Profile,
+    'userId' | 'firstName' | 'lastName' | 'avatar' | 'bio'
+>;
+
 export type Sponsor = {
     name: string;
     logo: string;
@@ -52,7 +57,10 @@ export type Team = {
     logo?: string;
     archived: boolean;
     requestSupport: string[];
+    mentor?: string;
 };
+
+export type MentorAssignments = Record<number, Profile>;
 
 export const availableSkills = [
     'AgriTech',

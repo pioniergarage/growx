@@ -534,6 +534,99 @@ export interface paths {
             };
         };
     };
+    '/mentor_assignment': {
+        get: {
+            parameters: {
+                query: {
+                    created_at?: parameters['rowFilter.mentor_assignment.created_at'];
+                    mentor?: parameters['rowFilter.mentor_assignment.mentor'];
+                    team?: parameters['rowFilter.mentor_assignment.team'];
+                    /** Filtering Columns */
+                    select?: parameters['select'];
+                    /** Ordering */
+                    order?: parameters['order'];
+                    /** Limiting and Pagination */
+                    offset?: parameters['offset'];
+                    /** Limiting and Pagination */
+                    limit?: parameters['limit'];
+                };
+                header: {
+                    /** Limiting and Pagination */
+                    Range?: parameters['range'];
+                    /** Limiting and Pagination */
+                    'Range-Unit'?: parameters['rangeUnit'];
+                    /** Preference */
+                    Prefer?: parameters['preferCount'];
+                };
+            };
+            responses: {
+                /** OK */
+                200: {
+                    schema: definitions['mentor_assignment'][];
+                };
+                /** Partial Content */
+                206: unknown;
+            };
+        };
+        post: {
+            parameters: {
+                body: {
+                    /** mentor_assignment */
+                    mentor_assignment?: definitions['mentor_assignment'];
+                };
+                query: {
+                    /** Filtering Columns */
+                    select?: parameters['select'];
+                };
+                header: {
+                    /** Preference */
+                    Prefer?: parameters['preferReturn'];
+                };
+            };
+            responses: {
+                /** Created */
+                201: unknown;
+            };
+        };
+        delete: {
+            parameters: {
+                query: {
+                    created_at?: parameters['rowFilter.mentor_assignment.created_at'];
+                    mentor?: parameters['rowFilter.mentor_assignment.mentor'];
+                    team?: parameters['rowFilter.mentor_assignment.team'];
+                };
+                header: {
+                    /** Preference */
+                    Prefer?: parameters['preferReturn'];
+                };
+            };
+            responses: {
+                /** No Content */
+                204: never;
+            };
+        };
+        patch: {
+            parameters: {
+                query: {
+                    created_at?: parameters['rowFilter.mentor_assignment.created_at'];
+                    mentor?: parameters['rowFilter.mentor_assignment.mentor'];
+                    team?: parameters['rowFilter.mentor_assignment.team'];
+                };
+                body: {
+                    /** mentor_assignment */
+                    mentor_assignment?: definitions['mentor_assignment'];
+                };
+                header: {
+                    /** Preference */
+                    Prefer?: parameters['preferReturn'];
+                };
+            };
+            responses: {
+                /** No Content */
+                204: never;
+            };
+        };
+    };
     '/team_requests': {
         get: {
             parameters: {
@@ -1263,8 +1356,11 @@ export interface definitions {
          * @default now()
          */
         created_at?: string;
-        /** Format: boolean */
-        lookingForTeam?: boolean;
+        /**
+         * Format: boolean
+         * @default false
+         */
+        lookingForTeam: boolean;
         /**
          * Format: text
          * @default
@@ -1287,6 +1383,27 @@ export interface definitions {
          * @default
          */
         email: string;
+    };
+    mentor_assignment: {
+        /**
+         * Format: timestamp with time zone
+         * @default now()
+         */
+        created_at?: string;
+        /**
+         * Format: uuid
+         * @description Note:
+         * This is a Primary Key.<pk/>
+         * This is a Foreign Key to `profiles.user_id`.<fk table='profiles' column='user_id'/>
+         */
+        mentor: string;
+        /**
+         * Format: bigint
+         * @description Note:
+         * This is a Primary Key.<pk/>
+         * This is a Foreign Key to `teams.id`.<fk table='teams' column='id'/>
+         */
+        team: number;
     };
     team_requests: {
         /**
@@ -1567,6 +1684,14 @@ export interface parameters {
     'rowFilter.signup_info.source': string;
     /** Format: text */
     'rowFilter.signup_info.email': string;
+    /** @description mentor_assignment */
+    'body.mentor_assignment': definitions['mentor_assignment'];
+    /** Format: timestamp with time zone */
+    'rowFilter.mentor_assignment.created_at': string;
+    /** Format: uuid */
+    'rowFilter.mentor_assignment.mentor': string;
+    /** Format: bigint */
+    'rowFilter.mentor_assignment.team': string;
     /** @description team_requests */
     'body.team_requests': definitions['team_requests'];
     /** Format: timestamp with time zone */

@@ -1,5 +1,5 @@
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { FurtherProfileInfo, Profile } from 'model';
+import { FurtherProfileInfo, Profile, PublicMentorProfile } from 'model';
 import { definitions } from './supabase';
 import { handleResponse, handleSingleResponse } from './utils';
 
@@ -68,6 +68,23 @@ export const getProfiles = async (): Promise<Profile[]> => {
         .select('*')
         .then((response) => handleResponse(response, 'No profiles found'))
         .then((dtos) => dtos.map(mapProfileDto));
+};
+
+export const getPublicMentors = async (): Promise<PublicMentorProfile[]> => {
+    return supabaseClient
+        .from<definitions['profiles']>('profiles')
+        .select('user_id, first_name, last_name, avatar, bio')
+        .match({ role: 'MENTOR' })
+        .then((response) => handleResponse(response, 'No mentors found'))
+        .then((dtos) =>
+            dtos.map(({ user_id, first_name, last_name, bio, avatar }) => ({
+                userId: user_id,
+                firstName: first_name,
+                lastName: last_name,
+                bio: bio ?? '',
+                avatar,
+            }))
+        );
 };
 
 export const insertSignupInfo = async (

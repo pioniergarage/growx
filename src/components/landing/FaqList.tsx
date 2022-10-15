@@ -19,7 +19,7 @@ const FaqList: React.FC<FaqListProps> = ({ faqs }) => {
     return (
         <VStack alignItems={{ base: 'center', md: 'stretch' }}>
             <Heading size="lg">FAQs</Heading>
-            <Accordion>
+            <Accordion allowToggle>
                 {faqs.map((faq, i) => (
                     <AccordionItem key={i}>
                         <AccordionButton>
