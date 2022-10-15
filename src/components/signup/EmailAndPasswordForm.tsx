@@ -3,6 +3,7 @@ import {
     Box,
     Button,
     Checkbox,
+    Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
@@ -40,13 +41,15 @@ const EmailAndPasswordForm = ({
         email: string;
         password: string;
         passwordRepeat: string;
-        agreement: boolean;
+        agreeTerms: boolean;
+        agreePublishing: boolean;
     }>({
         initialValues: {
             email: initialEmail,
             password: '',
             passwordRepeat: '',
-            agreement: false,
+            agreeTerms: false,
+            agreePublishing: false,
         },
         onSubmit: (values) => onNext(values),
         validate: (values) => {
@@ -59,7 +62,8 @@ const EmailAndPasswordForm = ({
             if (emailError !== true) errors.email = emailError;
             const passwordError = rules.password(values.password);
             if (passwordError !== true) errors.password = passwordError;
-            if (!values.agreement) errors.agreement = 'Required';
+            if (!values.agreeTerms) errors.agreeTerms = 'Required';
+            if (!values.agreePublishing) errors.agreePublishing = 'Required';
             return errors;
         },
         validateOnChange: false,
@@ -74,7 +78,7 @@ const EmailAndPasswordForm = ({
 
     return (
         <form onSubmit={formik.handleSubmit}>
-            <VStack alignItems="center">
+            <VStack alignItems="stretch">
                 <Box textAlign="center">
                     <Box mb={2}>
                         <Image
@@ -144,22 +148,49 @@ const EmailAndPasswordForm = ({
                         {formik.errors.passwordRepeat}
                     </FormErrorMessage>
                 </FormControl>
-                <FormControl isRequired isInvalid={!!formik.errors.agreement}>
-                    <Checkbox lineHeight={1.2}>
-                        I agree to the&nbsp;
-                        <Link
-                            href="https://pioniergarage.de/datenschutzerklaerung"
-                            isExternal
+
+                <Flex flexDir="column">
+                    <FormControl isInvalid={!!formik.errors.agreeTerms}>
+                        <Checkbox
+                            isRequired
+                            lineHeight={1.2}
+                            isChecked={formik.values.agreeTerms}
+                            onChange={(e) =>
+                                formik.setFieldValue(
+                                    'agreeTerms',
+                                    e.target.checked
+                                )
+                            }
                         >
-                            Pioniergarage Terms <ExternalLinkIcon mx="2px" />
-                        </Link>{' '}
-                        and that photos and videos of me may be published on the
-                        internet
-                    </Checkbox>
-                    <FormErrorMessage>
-                        {formik.errors.agreement}
-                    </FormErrorMessage>
-                </FormControl>
+                            I agree to the&nbsp;
+                            <Link
+                                href="https://pioniergarage.de/datenschutzerklaerung"
+                                isExternal
+                            >
+                                Pioniergarage Terms
+                                <ExternalLinkIcon mx="2px" />
+                            </Link>
+                        </Checkbox>
+                    </FormControl>
+
+                    <FormControl isInvalid={!!formik.errors.agreePublishing}>
+                        <Checkbox
+                            isRequired
+                            lineHeight={1.2}
+                            isChecked={formik.values.agreePublishing}
+                            onChange={(e) =>
+                                formik.setFieldValue(
+                                    'agreePublishing',
+                                    e.target.checked
+                                )
+                            }
+                        >
+                            I agree that photos and videos of me may be
+                            published on the internet
+                        </Checkbox>
+                    </FormControl>
+                </Flex>
+
                 <Button
                     type="submit"
                     variant="solid"
