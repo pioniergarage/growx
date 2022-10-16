@@ -1,7 +1,7 @@
 import FileSelect from '@/components/FileSelect';
 import { HStack, IconButton, VStack } from '@chakra-ui/react';
-import { useRemoveTeamLogo, useUploadTeamLogo } from 'hooks/team';
 import { Team } from 'model';
+import { useRemoveTeamLogo, useUploadTeamLogo } from 'modules/teams/hooks';
 import { FaCloudUploadAlt, FaTrash } from 'react-icons/fa';
 import TeamLogo from './TeamLogo';
 

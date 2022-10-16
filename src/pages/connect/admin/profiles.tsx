@@ -17,9 +17,9 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { useProfiles } from 'hooks/profile';
 import { Profile } from 'model';
 import ChangeRoleMenu from 'modules/profile/components/ChangeRole';
+import { useProfiles } from 'modules/profile/hooks';
 import { useState } from 'react';
 import { downloadCSV } from 'utils/csv';
 

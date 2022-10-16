@@ -11,10 +11,10 @@ import {
     withPageAuth,
 } from '@supabase/auth-helpers-nextjs';
 import { definitions } from 'database/supabase';
-import { useRegistrationsOfUser } from 'hooks/event';
-import { useProfile } from 'hooks/profile';
 import { mapEventDto } from 'modules/events/api';
 import GrowEventCard from 'modules/events/components/GrowEventCard';
+import { useRegistrationsOfUser } from 'modules/events/hooks';
+import { useProfile } from 'modules/profile/hooks';
 
 const EventsPage = ({ eventsRaw }: { eventsRaw: definitions['events'][] }) => {
     const { profile } = useProfile();

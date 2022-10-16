@@ -4,8 +4,11 @@ import {
     supabaseClient,
     withPageAuth,
 } from '@supabase/auth-helpers-nextjs';
-import { useInsertFurhterProfileInfo, useUpdateProfile } from 'hooks/profile';
 import LoginLayout from 'layouts/LoginLayout';
+import {
+    useInsertFurhterProfileInfo,
+    useUpdateProfile,
+} from 'modules/profile/hooks';
 import EmailAndPasswordForm, {
     SignUpInfo,
 } from 'modules/signup/components/EmailAndPasswordForm';

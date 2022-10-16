@@ -1,7 +1,7 @@
-import { useToast, Button, ButtonProps } from "@chakra-ui/react";
-import { useProfile } from "hooks/profile";
-import { useCreateTeam } from "hooks/team";
-import { useRouter } from "next/router";
+import { Button, ButtonProps, useToast } from '@chakra-ui/react';
+import { useProfile } from 'modules/profile/hooks';
+import { useCreateTeam } from 'modules/teams/hooks';
+import { useRouter } from 'next/router';
 
 const CreateTeamButton = (props: ButtonProps) => {
     const router = useRouter();

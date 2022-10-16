@@ -11,7 +11,7 @@ import {
     useBreakpointValue,
 } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { useProfile } from 'hooks/profile';
+import { useProfile } from 'modules/profile/hooks';
 import Link, { LinkProps } from 'next/link';
 import { useRouter } from 'next/router';
 import { PropsWithChildren } from 'react';
@@ -24,9 +24,9 @@ import {
 } from 'react-icons/fa';
 import { useQueryClient } from 'react-query';
 import { isSignUpEnabled } from 'utils/dates';
-import UserAvatar from '../modules/avatar/components/UserAvatar';
 import { Logo, NavBarContainer } from '../components/navigation/Nav';
 import NavAdminMenu from '../components/navigation/NavAdminMenu';
+import UserAvatar from '../modules/avatar/components/UserAvatar';
 
 const GrowConnectNavButton: React.FC<
     PropsWithChildren & LinkProps & Pick<IconButtonProps, 'aria-label' | 'icon'>

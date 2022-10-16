@@ -1,7 +1,7 @@
 import { Text, VStack } from '@chakra-ui/react';
-import { useTeamMentor } from 'hooks/team';
 import { Team } from 'model';
 import ProfileCard from 'modules/profile/components/ProfileCard';
+import { useTeamMentor } from 'modules/teams/hooks';
 
 type YourMentorProps = {
     team: Team;

@@ -19,9 +19,9 @@ import {
     SkeletonCircle,
     Text,
 } from '@chakra-ui/react';
-import { useProfiles } from 'hooks/profile';
 import { Profile } from 'model';
 import UserAvatar from 'modules/avatar/components/UserAvatar';
+import { useProfiles } from 'modules/profile/hooks';
 import { useMemo, useState } from 'react';
 
 type MentorSelectProps = {

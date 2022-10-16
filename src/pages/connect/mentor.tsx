@@ -1,7 +1,7 @@
 import { Alert, AlertIcon, Spinner, Text, VStack } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { useUpdateProfile } from 'hooks/profile';
 import LoginLayout from 'layouts/LoginLayout';
+import { useUpdateProfile } from 'modules/profile/hooks';
 import DetailInformation from 'modules/signup/components/DetailInformationForm';
 import EmailAndPasswordForm, {
     SignUpInfo,

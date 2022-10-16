@@ -20,14 +20,14 @@ import {
     withPageAuth,
 } from '@supabase/auth-helpers-nextjs';
 import { definitions } from 'database/supabase';
-import { useGrowEvents, useRegistrationsOfUser } from 'hooks/event';
-import { useUpdateProfile } from 'hooks/profile';
-import { useTeam, useTeamIdOfUser, useTeamRequests } from 'hooks/team';
 import { Team } from 'model';
 import GrowEventCard from 'modules/events/components/GrowEventCard';
+import { useGrowEvents, useRegistrationsOfUser } from 'modules/events/hooks';
+import { useUpdateProfile } from 'modules/profile/hooks';
 import { kitName } from 'modules/signup/components/UniversityForm';
 import CreateTeamButton from 'modules/teams/components/CreateTeamButton';
 import TeamCard from 'modules/teams/components/TeamCard';
+import { useTeam, useTeamIdOfUser, useTeamRequests } from 'modules/teams/hooks';
 import { useMemo, useState } from 'react';
 
 interface ConnectIndexProps {

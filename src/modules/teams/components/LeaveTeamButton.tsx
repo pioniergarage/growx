@@ -11,7 +11,7 @@ import {
     useToast,
 } from '@chakra-ui/react';
 import { FocusableElement } from '@chakra-ui/utils';
-import { useLeaveTeam } from 'hooks/team';
+import { useLeaveTeam } from 'modules/teams/hooks';
 import React from 'react';
 
 interface LeaveTeamButtonProps extends ButtonProps {

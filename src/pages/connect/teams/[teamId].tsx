@@ -12,15 +12,6 @@ import {
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
-import {
-    useCurrentRequest,
-    useRequestToJoinTeam,
-    useTeam,
-    useTeamIdOfUser,
-    useTeamMembers,
-    useUpdateTeam,
-    useWithdrawRequest,
-} from 'hooks/team';
 import { Team } from 'model';
 import { getTeam } from 'modules/teams/api';
 import LeaveTeamButton from 'modules/teams/components/LeaveTeamButton';
@@ -33,6 +24,15 @@ import TeamForm from 'modules/teams/components/TeamForm';
 import TeamLogoControl from 'modules/teams/components/TeamLogoControl';
 import TeamRequests from 'modules/teams/components/TeamRequests';
 import YourMentor from 'modules/teams/components/YourMentor';
+import {
+    useCurrentRequest,
+    useRequestToJoinTeam,
+    useTeam,
+    useTeamIdOfUser,
+    useTeamMembers,
+    useUpdateTeam,
+    useWithdrawRequest,
+} from 'modules/teams/hooks';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState } from 'react';

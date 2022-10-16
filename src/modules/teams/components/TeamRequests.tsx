@@ -9,13 +9,13 @@ import {
     useToast,
     VStack,
 } from '@chakra-ui/react';
+import { Profile, Team } from 'model';
+import UserAvatar from 'modules/avatar/components/UserAvatar';
 import {
     useAcceptRequest,
     useDeclineRequest,
     useTeamRequests,
-} from 'hooks/team';
-import { Profile, Team } from 'model';
-import UserAvatar from 'modules/avatar/components/UserAvatar';
+} from 'modules/teams/hooks';
 import Link from 'next/link';
 import { useState } from 'react';
 
