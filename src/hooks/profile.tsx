@@ -1,14 +1,14 @@
 import { useUser } from '@supabase/auth-helpers-react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
-import { fetchUserAvatar, uploadUserAvatar } from 'database/avatar';
+import { FurtherProfileInfo, Profile } from 'model';
+import { fetchUserAvatar, uploadUserAvatar } from 'modules/avatar/api';
 import {
     fetchProfile,
     getProfiles,
     insertSignupInfo,
     updateProfile,
-} from 'database/profile';
-import { FurtherProfileInfo, Profile } from 'model';
+} from 'modules/profile/api';
 
 export function useProfile(userId?: string) {
     const { user } = useUser();

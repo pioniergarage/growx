@@ -1,7 +1,7 @@
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { FAQ } from 'model';
-import { definitions } from './supabase';
-import { handleResponse } from './utils';
+import { definitions } from '../../database/supabase';
+import { handleResponse } from '../../database/utils';
 
 export const getFAQs = () =>
     supabaseClient

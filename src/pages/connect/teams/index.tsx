@@ -8,9 +8,9 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { getTeams } from 'database/teams';
 import { useAllTeams } from 'hooks/team';
 import { Team } from 'model';
+import { getTeams } from 'modules/teams/api';
 import TeamCard from 'modules/teams/components/TeamCard';
 import Link from 'next/link';
 

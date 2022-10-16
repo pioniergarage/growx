@@ -1,5 +1,5 @@
-import { deleteSponsor, getSponsors, upsertSponsor } from 'database/sponsors';
 import { Sponsor } from 'model';
+import { deleteSponsor, getSponsors, upsertSponsor } from 'modules/sponsor/api';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export function useSponsors() {
@@ -32,9 +32,9 @@ export function useUpsertSponsor() {
                     'sponsors',
                     sponsors
                         ? [
-                              ...sponsors.filter((s) => s.id != upserted.id),
-                              upserted,
-                          ]
+                            ...sponsors.filter((s) => s.id != upserted.id),
+                            upserted,
+                        ]
                         : [upserted]
                 );
             },

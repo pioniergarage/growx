@@ -1,13 +1,13 @@
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Profile, Team } from 'model';
 import resizeImage from 'utils/resize';
-import { mapProfileDto } from './profile';
-import { definitions } from './supabase';
+import { mapProfileDto } from '../profile/api';
+import { definitions } from '../../database/supabase';
 import {
     handleMaybeSingleResponse,
     handleResponse,
     handleSingleResponse,
-} from './utils';
+} from '../../database/utils';
 
 const mapTeamDto = (teamDto: definitions['teams']): Team => ({
     ...teamDto,

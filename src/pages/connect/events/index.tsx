@@ -10,10 +10,10 @@ import {
     supabaseServerClient,
     withPageAuth,
 } from '@supabase/auth-helpers-nextjs';
-import { mapEventDto } from 'database/events';
 import { definitions } from 'database/supabase';
 import { useRegistrationsOfUser } from 'hooks/event';
 import { useProfile } from 'hooks/profile';
+import { mapEventDto } from 'modules/events/api';
 import GrowEventCard from 'modules/events/components/GrowEventCard';
 
 const EventsPage = ({ eventsRaw }: { eventsRaw: definitions['events'][] }) => {

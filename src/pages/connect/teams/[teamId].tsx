@@ -12,7 +12,6 @@ import {
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
-import { getTeam } from 'database/teams';
 import {
     useCurrentRequest,
     useRequestToJoinTeam,
@@ -23,6 +22,7 @@ import {
     useWithdrawRequest,
 } from 'hooks/team';
 import { Team } from 'model';
+import { getTeam } from 'modules/teams/api';
 import LeaveTeamButton from 'modules/teams/components/LeaveTeamButton';
 import MemberList from 'modules/teams/components/MemberList';
 import RequestButton from 'modules/teams/components/RequestButton';

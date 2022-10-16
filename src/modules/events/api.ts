@@ -1,9 +1,9 @@
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { GrowEvent } from 'model';
-import { EventType } from './../model/index';
-import { mapProfileDto } from './profile';
-import { definitions } from './supabase';
-import { handleResponse, handleSingleResponse } from './utils';
+import { definitions } from '../../database/supabase';
+import { handleResponse, handleSingleResponse } from '../../database/utils';
+import { EventType } from '../../model/index';
+import { mapProfileDto } from '../profile/api';
 
 export const mapEventDto: (dto: definitions['events']) => GrowEvent = (
     dto
@@ -40,17 +40,17 @@ export const getEvent = (eventId: number) =>
 export const insertEvent: (
     event: Omit<Partial<GrowEvent>, 'tags' | 'types' | 'date'>
 ) => Promise<GrowEvent> = async (event) =>
-    await supabaseClient
-        .from<definitions['events']>('events')
-        .insert(
-            { ...event, date: new Date().toISOString() },
-            { returning: 'representation' }
-        )
-        .single()
-        .then((response) =>
-            handleSingleResponse(response, 'Something went wrong')
-        )
-        .then(mapEventDto);
+        await supabaseClient
+            .from<definitions['events']>('events')
+            .insert(
+                { ...event, date: new Date().toISOString() },
+                { returning: 'representation' }
+            )
+            .single()
+            .then((response) =>
+                handleSingleResponse(response, 'Something went wrong')
+            )
+            .then(mapEventDto);
 
 export const deleteEvent = (eventId: number) =>
     supabaseClient

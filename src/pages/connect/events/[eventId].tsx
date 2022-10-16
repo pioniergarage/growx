@@ -3,8 +3,8 @@ import {
     supabaseServerClient,
     withPageAuth,
 } from '@supabase/auth-helpers-nextjs';
-import { mapEventDto } from 'database/events';
 import { definitions } from 'database/supabase';
+import { mapEventDto } from 'modules/events/api';
 import EventTagList from 'modules/events/components/EventTagList';
 
 const GrowEvent = ({ eventRaw }: { eventRaw: definitions['events'] }) => {

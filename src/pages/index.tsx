@@ -1,9 +1,7 @@
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
-import { getFAQs } from 'database';
-import { getEvents } from 'database/events';
-import { getPublicMentors } from 'database/profile';
-import { getSponsors } from 'database/sponsors';
 import { FAQ, GrowEvent, PublicMentorProfile, Sponsor } from 'model';
+import { getEvents } from 'modules/events/api';
+import { getFAQs } from 'modules/faq/api';
 import Faqs from 'modules/landing/FaqList';
 import GrowVideo from 'modules/landing/GrowVideo';
 import MainInfoBlock from 'modules/landing/MainInfoBlock';
@@ -13,6 +11,8 @@ import Timeline from 'modules/landing/ShortTimeline';
 import SponsorBlock from 'modules/landing/sponsor/SponsorBlock';
 import LongTimeline from 'modules/landing/Timeline';
 import WaitingForBlock from 'modules/landing/WaitingForBlock';
+import { getPublicMentors } from 'modules/profile/api';
+import { getSponsors } from 'modules/sponsor/api';
 import { PropsWithChildren } from 'react';
 
 export async function getServerSideProps() {

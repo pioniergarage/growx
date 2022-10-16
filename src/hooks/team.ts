@@ -1,9 +1,10 @@
+import { MentorAssignments, Profile, Team } from 'model';
 import {
     assignMentor,
     getMentorAssignments,
     getTeamMentor,
-    unassignMentor,
-} from 'database/assignments';
+    unassignMentor
+} from 'modules/mentor/api';
 import {
     acceptRequestToJoinTeam,
     createTeam,
@@ -19,9 +20,8 @@ import {
     requestToJoinTeam,
     updateTeam,
     uploadTeamLogo,
-    withdrawRequest,
-} from 'database/teams';
-import { MentorAssignments, Profile, Team } from 'model';
+    withdrawRequest
+} from 'modules/teams/api';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export function useTeamIdOfUser(userId?: string) {

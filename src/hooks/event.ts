@@ -1,4 +1,5 @@
 import { User } from '@supabase/supabase-js';
+import { GrowEvent } from 'model';
 import {
     deleteEvent,
     getEvent,
@@ -8,9 +9,8 @@ import {
     insertEvent,
     registerUser,
     unregisterUser,
-    updateEvent,
-} from 'database/events';
-import { GrowEvent } from 'model';
+    updateEvent
+} from 'modules/events/api';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export function useRegisterUserToEvent() {
