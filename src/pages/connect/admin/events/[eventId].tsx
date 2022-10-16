@@ -1,7 +1,4 @@
-import EventForm from '@/components/events/EventForm';
-import TimelineEvent from '@/components/events/TimelineEvent';
 import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
-import ProfileCard from '@/components/profile/ProfileCard';
 import {
     Box,
     Button,
@@ -15,13 +12,18 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+
+import EventForm from 'modules/events/components/EventForm';
+import TimelineEvent from 'modules/events/components/TimelineEvent';
 import {
     useDeleteEvent,
     useGrowEvent,
     useRegistrationsToEvent,
     useUpdateEvent,
-} from 'hooks/event';
-import { GrowEvent, Profile } from 'model';
+} from 'modules/events/hooks';
+import { GrowEvent } from 'modules/events/types';
+import ProfileCard from 'modules/profile/components/ProfileCard';
+import { Profile } from 'modules/profile/types';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { downloadCSV } from 'utils/csv';

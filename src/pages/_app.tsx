@@ -1,11 +1,13 @@
-import '../styles/globals.css';
 import '@fontsource/open-sans/400.css';
 import '@fontsource/open-sans/500.css';
+import '@fontsource/open-sans/600.css';
 import '@fontsource/open-sans/800.css';
+import '../../fonts/neoneon.css';
+import '../styles/globals.css';
 
-import type { AppProps } from 'next/app';
-import Layout from 'layouts/Layout';
 import { ChakraProvider } from '@chakra-ui/react';
+import Layout from 'layouts/Layout';
+import type { AppProps } from 'next/app';
 import theme from 'styles/theme';
 import { NextPageWithLayout } from 'utils/types';
 

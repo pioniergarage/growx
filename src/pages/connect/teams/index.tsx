@@ -1,4 +1,3 @@
-import TeamCard from '@/components/teams/TeamCard';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
     Breadcrumb,
@@ -9,13 +8,13 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { getTeams } from 'database/teams';
-import { useAllTeams } from 'hooks/team';
-import { Team } from 'model';
+
+import TeamCard from 'modules/teams/components/TeamCard';
+import { useAllTeams } from 'modules/teams/hooks';
 import Link from 'next/link';
 
-const TeamsPage = ({ teams: serversideTeams = [] }: { teams: Team[] }) => {
-    const { teams } = useAllTeams(serversideTeams);
+const TeamsPage = () => {
+    const { teams } = useAllTeams();
     return (
         <VStack alignItems="stretch" gap={4}>
             <Breadcrumb
@@ -30,7 +29,7 @@ const TeamsPage = ({ teams: serversideTeams = [] }: { teams: Team[] }) => {
                 </BreadcrumbItem>
             </Breadcrumb>
             <SimpleGrid gap={4} columns={{ base: 1, md: 2 }}>
-                {(teams || serversideTeams)
+                {(teams ?? [])
                     .filter((t) => !t.archived)
                     .map((team) => (
                         <TeamCard key={team.id} {...team} />
@@ -42,10 +41,6 @@ const TeamsPage = ({ teams: serversideTeams = [] }: { teams: Team[] }) => {
 
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
-    getServerSideProps: async () => {
-        const teams = await getTeams();
-        return { props: { teams } };
-    },
 });
 
 export default TeamsPage;

@@ -1,12 +1,3 @@
-import LeaveTeamButton from '@/components/teams/LeaveTeamButton';
-import MemberList from '@/components/teams/MemberList';
-import RequestButton from '@/components/teams/RequestButton';
-import SupportRequestInfo from '@/components/teams/SupportRequestInfo';
-import TeamDetailsSkeleton from '@/components/teams/TeamDetailsSkeleton';
-import TeamForm from '@/components/teams/TeamForm';
-import TeamLogoControl from '@/components/teams/TeamLogoControl';
-import TeamRequests from '@/components/teams/TeamRequests';
-import YourMentor from '@/components/teams/YourMentor';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
     Box,
@@ -21,7 +12,17 @@ import {
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
-import { getTeam } from 'database/teams';
+import { getTeam } from 'modules/teams/api';
+import LeaveTeamButton from 'modules/teams/components/LeaveTeamButton';
+import MemberList from 'modules/teams/components/MemberList';
+import RequestButton from 'modules/teams/components/RequestButton';
+import SupportRequestInfo from 'modules/teams/components/SupportRequestInfo';
+import TeamDescription from 'modules/teams/components/TeamDescriptions';
+import TeamDetailsSkeleton from 'modules/teams/components/TeamDetailsSkeleton';
+import TeamForm from 'modules/teams/components/TeamForm';
+import TeamLogoControl from 'modules/teams/components/TeamLogoControl';
+import TeamRequests from 'modules/teams/components/TeamRequests';
+import YourMentor from 'modules/teams/components/YourMentor';
 import {
     useCurrentRequest,
     useRequestToJoinTeam,
@@ -30,13 +31,12 @@ import {
     useTeamMembers,
     useUpdateTeam,
     useWithdrawRequest,
-} from 'hooks/team';
-import { Team } from 'model';
+} from 'modules/teams/hooks';
+import { Team } from 'modules/teams/types';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState } from 'react';
-import TeamDescription from '../../../components/teams/TeamDescriptions';
-const TeamLogo = dynamic(() => import('@/components/teams/TeamLogo'), {
+const TeamLogo = dynamic(() => import('modules/teams/components/TeamLogo'), {
     ssr: false,
 });
 
@@ -50,7 +50,8 @@ const TeamDetails: React.FC<TeamDetails> = ({ team: serverSideTeam }) => {
     const { team, isLoading } = useTeam(serverSideTeam.id, serverSideTeam);
     const { members } = useTeamMembers(teamId);
 
-    const { user } = useUser();
+    const user = useUser();
+
     const { request: teamRequested, isLoading: teamRequestedLoading } =
         useCurrentRequest(user?.id);
     const { teamId: teamIdOfUser, isLoading: teamIdOfUserLoading } =
@@ -210,8 +211,11 @@ const TeamDetails: React.FC<TeamDetails> = ({ team: serverSideTeam }) => {
 
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
-    getServerSideProps: async (context) => {
-        const team = await getTeam(parseInt(context.query.teamId as string));
+    getServerSideProps: async (context, supabase) => {
+        const team = await getTeam(
+            supabase,
+            parseInt(context.query.teamId as string)
+        );
         return { props: { team } };
     },
 });

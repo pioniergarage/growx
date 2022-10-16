@@ -1,18 +1,16 @@
-import LogInForm from '@/components/forms/LoginForm';
 import PageLink from '@/components/navigation/PageLink';
 import { Alert, AlertIcon, Flex, VStack } from '@chakra-ui/react';
-import {
-    getUser,
-    supabaseClient,
-    withPageAuth,
-} from '@supabase/auth-helpers-nextjs';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import LoginLayout from 'layouts/LoginLayout';
+import LogInForm from 'modules/signup/components/LoginForm';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 
 const LoginPage: NextPageWithLayout = () => {
+    const supabaseClient = useSupabaseClient();
     const [loginError, setLoginError] = useState('');
     const [loading, setLoading] = useState(false);
     const router = useRouter();
@@ -26,7 +24,10 @@ const LoginPage: NextPageWithLayout = () => {
     }) {
         setLoading(true);
         setLoginError('');
-        const { error } = await supabaseClient.auth.signIn({ email, password });
+        const { error } = await supabaseClient.auth.signInWithPassword({
+            email,
+            password,
+        });
         if (error) {
             setLoginError(error.message);
             setLoading(false);
@@ -74,9 +75,13 @@ export default LoginPage;
 
 export const getServerSideProps = withPageAuth({
     authRequired: false,
-    getServerSideProps: async (context) => {
-        const { user } = await getUser(context);
-        if (user) {
+    getServerSideProps: async (context, supabase) => {
+        const { data, error } = await supabase.auth.getSession();
+        if (error) {
+            throw error;
+        }
+
+        if (data.session) {
             return {
                 redirect: {
                     permanent: false,

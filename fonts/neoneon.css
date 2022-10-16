@@ -1,0 +1,17 @@
+@font-face {
+    font-family: 'Neoneon';
+    src: url('Neoneon.otf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+    --neon-text-color: rgb(179, 252, 255);
+}
+
+.neon-text-1 {
+    text-shadow: -0.2rem -0.2rem 1rem rgba(255, 255, 255, 0.651),
+        0.2rem 0.2rem 1rem rgba(255, 255, 255, 0.555),
+        0 0 3rem var(--neon-text-color), 0 0 6rem var(--neon-text-color);
+    font-family: 'Neoneon' !important;
+}

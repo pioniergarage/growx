@@ -1,25 +1,26 @@
-import NameAndPasswordForm, {
+import { Alert, AlertIcon, Spinner, Text, VStack } from '@chakra-ui/react';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import LoginLayout from 'layouts/LoginLayout';
+import {
+    useInsertFurhterProfileInfo,
+    useUpdateProfile,
+} from 'modules/profile/hooks';
+import EmailAndPasswordForm, {
     SignUpInfo,
-} from '@/components/signup/EmailAndPasswordForm';
-import FurtherInfo from '@/components/signup/FurtherInfo';
+} from 'modules/signup/components/EmailAndPasswordForm';
+import FurtherInfo from 'modules/signup/components/FurtherInfo';
 import PersonalInfoForm, {
     PersonalInfo,
-} from '@/components/signup/PersonalInfoForm';
-import StudentForm from '@/components/signup/StudentForm';
-import UniversityForm from '@/components/signup/UniversityForm';
-import { Alert, AlertIcon, Spinner, Text, VStack } from '@chakra-ui/react';
-import {
-    getUser,
-    supabaseClient,
-    withPageAuth,
-} from '@supabase/auth-helpers-nextjs';
-import { useInsertFurhterProfileInfo, useUpdateProfile } from 'hooks/profile';
-import LoginLayout from 'layouts/LoginLayout';
+} from 'modules/signup/components/PersonalInfoForm';
+import StudentForm from 'modules/signup/components/StudentForm';
+import UniversityForm from 'modules/signup/components/UniversityForm';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 
 const SignUp: NextPageWithLayout = () => {
+    const supabaseClient = useSupabaseClient();
     const [step, setStep] = useState(0);
     const [emailAndPassword, setEmailAndPassword] = useState<SignUpInfo>({
         email: '',
@@ -39,13 +40,13 @@ const SignUp: NextPageWithLayout = () => {
     const { insertFurtherProfileInfo } = useInsertFurhterProfileInfo();
 
     async function signUp({ email, password }: SignUpInfo) {
-        const { user, error } = await supabaseClient.auth.signUp({
+        const { data, error } = await supabaseClient.auth.signUp({
             email,
             password,
         });
         if (error) throw error.message;
-        if (!user) throw 'Could not create user';
-        return user;
+        if (!data.user) throw 'Could not create user';
+        return data.user;
     }
 
     async function createAccount(
@@ -74,7 +75,7 @@ const SignUp: NextPageWithLayout = () => {
     return (
         <VStack maxW="container.sm" mx="auto" alignItems="stretch">
             {step === 0 ? (
-                <NameAndPasswordForm
+                <EmailAndPasswordForm
                     onNext={(info) => {
                         setEmailAndPassword(info);
                         setStep(step + 1);
@@ -148,9 +149,15 @@ export default SignUp;
 
 export const getServerSideProps = withPageAuth({
     authRequired: false,
-    getServerSideProps: async (context) => {
-        const { user } = await getUser(context);
-        if (user) {
+    getServerSideProps: async (context, supabase) => {
+        console.log('Hello from server side props');
+
+        const { data, error } = await supabase.auth.getSession();
+        if (error) {
+            throw error;
+        }
+
+        if (data.session) {
             return {
                 redirect: {
                     permanent: false,

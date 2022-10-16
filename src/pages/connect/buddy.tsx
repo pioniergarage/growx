@@ -1,19 +1,20 @@
-import DetailInformation from '@/components/signup/DetailInformationForm';
+import { Alert, AlertIcon, Spinner, Text, VStack } from '@chakra-ui/react';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import LoginLayout from 'layouts/LoginLayout';
+import { useUpdateProfile } from 'modules/profile/hooks';
+import DetailInformation from 'modules/signup/components/DetailInformationForm';
 import NameAndPasswordForm, {
     SignUpInfo,
-} from '@/components/signup/EmailAndPasswordForm';
+} from 'modules/signup/components/EmailAndPasswordForm';
 import PersonalInfoForm, {
     PersonalInfo,
-} from '@/components/signup/PersonalInfoForm';
-import { Alert, AlertIcon, Spinner, Text, VStack } from '@chakra-ui/react';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { useUpdateProfile } from 'hooks/profile';
-import LoginLayout from 'layouts/LoginLayout';
+} from 'modules/signup/components/PersonalInfoForm';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 
 const BuddySignup: NextPageWithLayout = () => {
+    const supabaseClient = useSupabaseClient();
     const [emailAndPassword, setEmailAndPassword] = useState<SignUpInfo>({
         email: '',
         password: '',
@@ -34,10 +35,10 @@ const BuddySignup: NextPageWithLayout = () => {
                 email: emailAndPassword.email,
                 password: emailAndPassword.password,
             })
-            .then(({ user, error }) => {
+            .then(({ data, error }) => {
                 if (error) throw error.message;
-                if (!user) throw 'Could not create user';
-                return user;
+                if (!data.user) throw 'Could not create user';
+                return data.user;
             })
             .then((user) => {
                 updateProfile({

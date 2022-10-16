@@ -7,13 +7,14 @@ import {
     Input,
     VStack,
 } from '@chakra-ui/react';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import LoginLayout from 'layouts/LoginLayout';
 import Image from 'next/image';
 import { FormEventHandler, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 
 const ForgotPassword: NextPageWithLayout = () => {
+    const supabaseClient = useSupabaseClient();
     const [email, setEmail] = useState('');
     const [reset, setReset] = useState(false);
     const [isLoading, setLoading] = useState(false);
@@ -24,7 +25,7 @@ const ForgotPassword: NextPageWithLayout = () => {
             return;
         }
         setLoading(true);
-        await supabaseClient.auth.api.resetPasswordForEmail(email, {
+        await supabaseClient.auth.resetPasswordForEmail(email, {
             redirectTo: '/connect/resetpassword',
         });
         setReset(true);
