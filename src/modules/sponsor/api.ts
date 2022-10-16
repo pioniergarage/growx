@@ -1,33 +1,34 @@
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { SupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from 'database/DatabaseDefition';
 
-import { definitions } from '../../database/supabase';
 import { handleResponse, handleSingleResponse } from '../../database/utils';
 import { Sponsor } from './types';
 
-export const getSponsors = () =>
-    supabaseClient
-        .from<definitions['sponsors']>('sponsors')
+export const getSponsors = async (supabaseClient: SupabaseClient<Database>) =>
+    await supabaseClient
+        .from('sponsors')
         .select('*')
-        .then((response) => handleResponse(response, 'Could not load sponsors'))
-        .then((dtos) => dtos.map((sponsor) => sponsor as Sponsor));
+        .then(handleResponse)
 
-export const upsertSponsor = (sponsor: Sponsor) =>
-    supabaseClient
-        .from<definitions['sponsors']>('sponsors')
-        .upsert(sponsor, { returning: 'representation' })
+export const upsertSponsor = async (supabaseClient: SupabaseClient<Database>, sponsor: Sponsor) =>
+    await supabaseClient
+        .from('sponsors')
+        .upsert(sponsor)
         .match({ id: sponsor.id })
+        .select()
         .single()
-        .then((response) => handleSingleResponse(response));
+        .then(handleSingleResponse);
 
-export const deleteSponsor = async (id: number) =>
-    supabaseClient
-        .from<definitions['sponsors']>('sponsors')
-        .delete({ returning: 'representation' })
+export const deleteSponsor = async (supabaseClient: SupabaseClient<Database>, id: number) =>
+    await supabaseClient
+        .from('sponsors')
+        .delete()
         .match({ id })
+        .select()
         .single()
-        .then((response) => handleSingleResponse(response));
+        .then(handleSingleResponse);
 
-export const uploadLogo = async (name: string, image: Blob) => {
+export const uploadLogo = async (supabaseClient: SupabaseClient<Database>, name: string, image: Blob) => {
     await supabaseClient.storage
         .from('sponsors')
         .upload(name, image, { upsert: true })
@@ -36,11 +37,11 @@ export const uploadLogo = async (name: string, image: Blob) => {
                 throw new Error(error?.message || 'Something went wrong');
             }
         });
-    const { publicURL, error } = supabaseClient.storage
+    const { data: { publicUrl } } = supabaseClient.storage
         .from('sponsors')
         .getPublicUrl(name);
-    if (error || !publicURL) {
-        throw new Error(error?.message || 'Something went wrong');
+    if (!publicUrl) {
+        throw new Error('Something went wrong');
     }
-    return publicURL;
+    return publicUrl;
 };

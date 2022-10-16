@@ -1,6 +1,6 @@
 import { Avatar, AvatarProps, SkeletonCircle } from '@chakra-ui/react';
-import { useAvatarUrl } from 'modules/profile/hooks';
 import { Profile } from 'modules/profile/types';
+import { useAvatarUrl } from '../hooks';
 
 export interface UserAvatarProps extends AvatarProps {
     userId?: Profile['userId'];

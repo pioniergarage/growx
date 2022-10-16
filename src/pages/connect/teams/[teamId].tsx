@@ -50,7 +50,8 @@ const TeamDetails: React.FC<TeamDetails> = ({ team: serverSideTeam }) => {
     const { team, isLoading } = useTeam(serverSideTeam.id, serverSideTeam);
     const { members } = useTeamMembers(teamId);
 
-    const { user } = useUser();
+    const user = useUser();
+
     const { request: teamRequested, isLoading: teamRequestedLoading } =
         useCurrentRequest(user?.id);
     const { teamId: teamIdOfUser, isLoading: teamIdOfUserLoading } =
@@ -210,8 +211,11 @@ const TeamDetails: React.FC<TeamDetails> = ({ team: serverSideTeam }) => {
 
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
-    getServerSideProps: async (context) => {
-        const team = await getTeam(parseInt(context.query.teamId as string));
+    getServerSideProps: async (context, supabase) => {
+        const team = await getTeam(
+            supabase,
+            parseInt(context.query.teamId as string)
+        );
         return { props: { team } };
     },
 });

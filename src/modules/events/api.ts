@@ -1,10 +1,10 @@
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { definitions } from '../../database/supabase';
+import { SupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from 'database/DatabaseDefition';
 import { handleResponse, handleSingleResponse } from '../../database/utils';
 import { mapProfileDto } from '../profile/api';
-import { GrowEvent, EventType } from './types';
+import { EventType, GrowEvent } from './types';
 
-export const mapEventDto: (dto: definitions['events']) => GrowEvent = (
+export const mapEventDto: (dto: Database['public']['Tables']['events']['Row']) => GrowEvent = (
     dto
 ) => ({
     date: new Date(dto.date),
@@ -17,57 +17,53 @@ export const mapEventDto: (dto: definitions['events']) => GrowEvent = (
     type: dto.type as EventType,
 });
 
-export const getEvents = () =>
+export const getEvents = (supabaseClient: SupabaseClient<Database>) =>
     supabaseClient
-        .from<definitions['events']>('events')
+        .from('events')
         .select('*')
         .order('date')
-        .then((response) => handleResponse(response, 'Events not found'))
+        .then(handleResponse)
         .then((dtos) => dtos.map(mapEventDto));
 
-export const getEvent = (eventId: number) =>
+export const getEvent = (supabaseClient: SupabaseClient<Database>, eventId: number) =>
     supabaseClient
-        .from<definitions['events']>('events')
+        .from('events')
         .select('*')
         .match({ id: eventId })
         .single()
-        .then((response) =>
-            handleSingleResponse(response, `Event ${eventId} not found`)
-        )
+        .then(handleSingleResponse)
         .then(mapEventDto);
 
-export const insertEvent: (
-    event: Omit<Partial<GrowEvent>, 'tags' | 'types' | 'date'>
-) => Promise<GrowEvent> = async (event) =>
-        await supabaseClient
-            .from<definitions['events']>('events')
-            .insert(
-                { ...event, date: new Date().toISOString() },
-                { returning: 'representation' }
-            )
-            .single()
-            .then((response) =>
-                handleSingleResponse(response, 'Something went wrong')
-            )
-            .then(mapEventDto);
-
-export const deleteEvent = (eventId: number) =>
+export const insertEvent = (supabaseClient: SupabaseClient<Database>, event: Partial<GrowEvent>) =>
     supabaseClient
-        .from<definitions['events']>('events')
-        .delete({ returning: 'minimal' })
+        .from('events')
+        .insert(
+            {
+                location: event.location ?? ''
+            }
+        )
+        .select()
+        .single()
+        .then(handleSingleResponse)
+        .then(mapEventDto);
+
+export const deleteEvent = (supabaseClient: SupabaseClient<Database>, eventId: number) =>
+    supabaseClient
+        .from('events')
+        .delete()
         .match({ id: eventId })
         .single()
         .then(({ error }) => {
             if (error) {
-                throw new Error(error.message);
+                throw error;
             }
         });
 
-export const updateEvent = (
+export const updateEvent = (supabaseClient: SupabaseClient<Database>,
     growEvent: Partial<GrowEvent> & Pick<GrowEvent, 'id'>
 ) =>
     supabaseClient
-        .from<definitions['events']>('events')
+        .from('events')
         .update(
             {
                 title: growEvent.title,
@@ -78,64 +74,55 @@ export const updateEvent = (
                 sq_mandatory: growEvent.sq_mandatory,
                 type: growEvent.type,
             },
-            { returning: 'representation' }
         )
         .match({ id: growEvent.id })
+        .select()
         .single()
-        .then((response) =>
-            handleSingleResponse(response, 'Could not update event')
-        )
+        .then(handleSingleResponse)
         .then(mapEventDto);
 
-export const registerUser = (
+export const registerUser = (supabaseClient: SupabaseClient<Database>,
     userId: string,
     eventId: number,
     present: boolean
 ) =>
     supabaseClient
-        .from<definitions['event_registrations']>('event_registrations')
+        .from('event_registrations')
         .insert({ user_id: userId, event_id: eventId, present })
         .then(({ error }) => {
-            if (error) throw new Error(error.message);
+            if (error) throw error;
         });
 
-export const unregisterUser = async (userId: string, eventId: number) =>
-    await supabaseClient
-        .from<definitions['event_registrations']>('event_registrations')
-        .delete({ returning: 'minimal' })
-        .match({ event_id: eventId, user_id: userId })
-        .single()
-        .then(({ error }) => {
-            if (error) throw new Error(error.message);
-        });
-
-export const getRegistrationsOfUser = (user_id: string) =>
+export const unregisterUser = (supabaseClient: SupabaseClient<Database>, userId: string, eventId: number) =>
     supabaseClient
-        .from<Pick<definitions['event_registrations'], 'event_id' | 'present'>>(
-            'event_registrations'
-        )
+        .from('event_registrations')
+        .delete()
+        .match({ event_id: eventId, user_id: userId })
+        .then(({ error }) => {
+            if (error) throw error;
+        });
+
+export const getRegistrationsOfUser = (supabaseClient: SupabaseClient<Database>, user_id: string) =>
+    supabaseClient
+        .from('event_registrations')
         .select('event_id, present')
         .match({ user_id })
-        .then((response) =>
-            handleResponse(response, 'Could not find registrations')
-        )
+        .then(handleResponse)
         .then((dtos) =>
             dtos.map((e) => ({ eventId: e.event_id, present: e.present }))
         );
 
-export const getRegistrationsTo = (event_id: number) =>
+export const getRegistrationsTo = (supabaseClient: SupabaseClient<Database>, event_id: number) =>
     supabaseClient
-        .from<{ present: boolean; profiles: definitions['profiles'] }>(
+        .from(
             'event_registrations'
         )
         .select('present, profiles (*)')
         .match({ event_id })
-        .then((response) =>
-            handleResponse(response, 'Could not load registrations')
-        )
+        .then(handleResponse)
         .then((dtos) =>
             dtos.map(({ present, profiles }) => ({
                 present,
-                profile: mapProfileDto(profiles),
+                profile: mapProfileDto(profiles as Database['public']['Tables']['profiles']['Row']),
             }))
         );

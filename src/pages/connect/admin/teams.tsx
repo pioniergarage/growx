@@ -13,16 +13,15 @@ import {
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 
 import UserAvatar from 'modules/avatar/components/UserAvatar';
+import {
+    useAssignMentor,
+    useMentorAssignments,
+    useUnassignMentor,
+} from 'modules/mentor/hooks';
 import { Profile } from 'modules/profile/types';
 import MentorSelect from 'modules/teams/components/MentorSelect';
 import TeamLogo from 'modules/teams/components/TeamLogo';
-import {
-    useAllTeams,
-    useAssignMentor,
-    useMentorAssignments,
-    useTeamMembers,
-    useUnassignMentor,
-} from 'modules/teams/hooks';
+import { useAllTeams, useTeamMembers } from 'modules/teams/hooks';
 import { Team } from 'modules/teams/types';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';

@@ -1,17 +1,18 @@
-import { useUser } from '@supabase/auth-helpers-react';
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
-import { fetchUserAvatar, uploadUserAvatar } from 'modules/avatar/api';
+import { Database } from 'database/DatabaseDefition';
 import {
     fetchProfile,
     getProfiles,
     insertSignupInfo,
     updateProfile,
 } from 'modules/profile/api';
-import { Profile, FurtherProfileInfo } from './types';
+import { FurtherProfileInfo, Profile } from './types';
 
 export function useProfile(userId?: string) {
-    const { user } = useUser();
+    const supabaseClient = useSupabaseClient<Database>();
+    const user = useUser();
     const userId2 = userId || user?.id;
     const result = useQuery(
         ['profile', userId2],
@@ -19,7 +20,7 @@ export function useProfile(userId?: string) {
             if (!userId2) {
                 throw new Error('user id not available. Cannot fetch Profile');
             }
-            return fetchProfile(userId2);
+            return fetchProfile(supabaseClient, userId2);
         },
         { enabled: !!userId2 }
     );
@@ -27,10 +28,11 @@ export function useProfile(userId?: string) {
 }
 
 export function useUpdateProfile() {
+    const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
     const mutation = useMutation(
         (profile: Partial<Profile> & Pick<Profile, 'userId'>) =>
-            updateProfile(profile),
+            updateProfile(supabaseClient, profile),
         {
             onSuccess: (updated) => {
                 queryClient.setQueryData<Profile | undefined>(
@@ -51,61 +53,31 @@ export function useUpdateProfile() {
     return { ...mutation, updateProfile: mutation.mutateAsync };
 }
 
-export function useAvatarUrl({
-    userId,
-    avatar,
-}: {
-    userId?: Profile['userId'];
-    avatar: Profile['avatar'];
-}) {
-    const result = useQuery(
-        ['avatar', userId],
-        async () => {
-            if (!avatar) {
-                return null;
-            }
-            const blob = await fetchUserAvatar(avatar);
-            return URL.createObjectURL(blob);
-        },
-        { enabled: !!userId }
-    );
-    return { ...result, avatarUrl: result.data };
-}
-
-export function useUploadAvatar() {
+export function useProfiles() {
+    const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
-    const { updateProfile } = useUpdateProfile();
-    const mutation = useMutation(
-        ({ profile, file }: { profile: Profile; file: File }) =>
-            uploadUserAvatar(profile, file),
+    const query = useQuery(
+        'profiles',
+        async () => getProfiles(supabaseClient),
         {
-            onSuccess: async (filename, { profile, file }) => {
-                updateProfile({ ...profile, avatar: filename });
-                queryClient.setQueryData(
-                    ['avatar', profile.userId],
-                    URL.createObjectURL(file)
+            onSuccess: (profiles) => {
+                profiles.forEach((profile) =>
+                    queryClient.setQueryData(
+                        ['profile', profile.userId],
+                        profile
+                    )
                 );
             },
         }
     );
-    return { ...mutation, uploadUserAvatar: mutation.mutateAsync };
-}
-
-export function useProfiles() {
-    const queryClient = useQueryClient();
-    const query = useQuery('profiles', getProfiles, {
-        onSuccess: (profiles) => {
-            profiles.forEach((profile) =>
-                queryClient.setQueryData(['profile', profile.userId], profile)
-            );
-        },
-    });
     return { ...query, profiles: query.data };
 }
 
 export function useInsertFurhterProfileInfo() {
+    const supabaseClient = useSupabaseClient<Database>();
     const mutation = useMutation(
-        (data: FurtherProfileInfo & { email: string }) => insertSignupInfo(data)
+        (data: FurtherProfileInfo & { email: string }) =>
+            insertSignupInfo(supabaseClient, data)
     );
     return { ...mutation, insertFurtherProfileInfo: mutation.mutateAsync };
 }

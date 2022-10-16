@@ -1,4 +1,3 @@
-import rules from 'utils/rules';
 import {
     Alert,
     AlertIcon,
@@ -9,15 +8,17 @@ import {
     Input,
     VStack,
 } from '@chakra-ui/react';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useFormik } from 'formik';
 import LoginLayout from 'layouts/LoginLayout';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import rules from 'utils/rules';
 import { NextPageWithLayout } from 'utils/types';
 
 const ResetPassword: NextPageWithLayout = () => {
+    const supabaseClient = useSupabaseClient();
     const [error, setError] = useState('');
     const router = useRouter();
     const [isLoading, setLoading] = useState(false);
@@ -29,7 +30,7 @@ const ResetPassword: NextPageWithLayout = () => {
         },
         onSubmit: async ({ password }) => {
             setLoading(true);
-            const { error } = await supabaseClient.auth.update({
+            const { error } = await supabaseClient.auth.updateUser({
                 password,
             });
             if (error) {

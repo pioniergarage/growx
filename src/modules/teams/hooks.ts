@@ -1,12 +1,5 @@
-
-import {
-    assignMentor,
-    getMentorAssignments,
-    getTeamMentor,
-    unassignMentor
-} from 'modules/mentor/api';
-import { MentorAssignments } from 'modules/mentor/types';
-import { Profile } from 'modules/profile/types';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { Database } from 'database/DatabaseDefition';
 import {
     acceptRequestToJoinTeam,
     createTeam,
@@ -28,13 +21,14 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Team } from './types';
 
 export function useTeamIdOfUser(userId?: string) {
+    const supabaseClient = useSupabaseClient<Database>()
     const result = useQuery(
         'currentTeamId',
         async () => {
             if (!userId) {
                 throw new Error('Cannot get team of undefined user');
             }
-            const teamId = await getTeamIdOfUser(userId);
+            const teamId = await getTeamIdOfUser(supabaseClient, userId);
             return teamId;
         },
         {
@@ -45,8 +39,9 @@ export function useTeamIdOfUser(userId?: string) {
 }
 
 export function useAllTeams(initialData?: Team[]) {
+    const supabaseClient = useSupabaseClient<Database>()
     const queryClient = useQueryClient();
-    const query = useQuery<Team[], string>('teams', getTeams, {
+    const query = useQuery<Team[], string>('teams', () => getTeams(supabaseClient,), {
         initialData: initialData,
         onSuccess: (teams) =>
             teams.forEach((team) => {
@@ -57,13 +52,14 @@ export function useAllTeams(initialData?: Team[]) {
 }
 
 export function useTeam(teamId?: number | null, initialData?: Team) {
+    const supabaseClient = useSupabaseClient<Database>()
     const query = useQuery(
         ['team', teamId],
         () => {
             if (!teamId) {
                 throw new Error('Cannot fetch undefined team');
             }
-            return getTeam(teamId);
+            return getTeam(supabaseClient, teamId);
         },
         { enabled: !!teamId, initialData }
     );
@@ -71,27 +67,30 @@ export function useTeam(teamId?: number | null, initialData?: Team) {
 }
 
 export function useTeamMembers(teamId: number) {
-    const query = useQuery(['members', teamId], () => getTeamMembers(teamId));
+    const supabaseClient = useSupabaseClient<Database>()
+    const query = useQuery(['members', teamId], () => getTeamMembers(supabaseClient, teamId));
     return { ...query, members: query.data };
 }
 
 export function useTeamRequests(teamId: number) {
+    const supabaseClient = useSupabaseClient<Database>()
     const query = useQuery(
         ['teamRequests', teamId],
-        () => getRequestsToTeam(teamId),
+        () => getRequestsToTeam(supabaseClient, teamId),
         { initialData: [] }
     );
     return { ...query, profiles: query.data };
 }
 
 export function useCurrentRequest(userId?: string) {
+    const supabaseClient = useSupabaseClient<Database>()
     const query = useQuery(
         'currentTeamRequest',
         () => {
             if (!userId) {
                 throw new Error('Cannot get request of undefined userId');
             }
-            return getTeamRequestedToJoin(userId);
+            return getTeamRequestedToJoin(supabaseClient, userId);
         },
         { enabled: !!userId }
     );
@@ -99,9 +98,10 @@ export function useCurrentRequest(userId?: string) {
 }
 
 export function useAcceptRequest() {
+    const supabaseClient = useSupabaseClient<Database>()
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        (joiningUserId: string) => acceptRequestToJoinTeam(joiningUserId),
+        (joiningUserId: string) => acceptRequestToJoinTeam(supabaseClient, joiningUserId),
         {
             onSuccess: () => {
                 queryClient.invalidateQueries('members');
@@ -113,9 +113,10 @@ export function useAcceptRequest() {
 }
 
 export function useDeclineRequest() {
+    const supabaseClient = useSupabaseClient<Database>()
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        (joiningUserId: string) => declineRequestToJoinTeam(joiningUserId),
+        (joiningUserId: string) => declineRequestToJoinTeam(supabaseClient, joiningUserId),
         {
             onSuccess: () => {
                 queryClient.invalidateQueries('teamRequests');
@@ -126,10 +127,11 @@ export function useDeclineRequest() {
 }
 
 export function useUploadTeamLogo() {
+    const supabaseClient = useSupabaseClient<Database>()
     const { updateTeam } = useUpdateTeam();
     const mutation = useMutation(
         ({ team, file }: { team: Team; file: File }) =>
-            uploadTeamLogo(team, file),
+            uploadTeamLogo(supabaseClient, team, file),
         {
             onSuccess: (publicUrl, { team }) => {
                 updateTeam({ ...team, logo: publicUrl });
@@ -140,9 +142,10 @@ export function useUploadTeamLogo() {
 }
 
 export function useRemoveTeamLogo() {
+    const supabaseClient = useSupabaseClient<Database>()
     const { updateTeam } = useUpdateTeam();
     const mutation = useMutation(
-        ({ team }: { team: Team }) => removeTeamLogo(team),
+        ({ team }: { team: Team }) => removeTeamLogo(supabaseClient, team),
         {
             onSuccess: (_, { team }) => {
                 updateTeam({ ...team, logo: '' });
@@ -153,10 +156,11 @@ export function useRemoveTeamLogo() {
 }
 
 export function useRequestToJoinTeam() {
+    const supabaseClient = useSupabaseClient<Database>()
     const queryClient = useQueryClient();
     const mutation = useMutation(
         ({ userId, teamId }: { userId: string; teamId: number }) =>
-            requestToJoinTeam(userId, teamId),
+            requestToJoinTeam(supabaseClient, userId, teamId),
         {
             onSuccess: (_, { teamId }) => {
                 queryClient.invalidateQueries(['teamRequests', teamId]);
@@ -168,9 +172,10 @@ export function useRequestToJoinTeam() {
 }
 
 export function useWithdrawRequest() {
+    const supabaseClient = useSupabaseClient<Database>()
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        ({ userId }: { userId: string }) => withdrawRequest(userId),
+        ({ userId }: { userId: string }) => withdrawRequest(supabaseClient, userId),
         {
             onSuccess: () => {
                 queryClient.invalidateQueries(['teamRequests', undefined]);
@@ -182,8 +187,9 @@ export function useWithdrawRequest() {
 }
 
 export function useCreateTeam() {
+    const supabaseClient = useSupabaseClient<Database>()
     const queryClient = useQueryClient();
-    const mutation = useMutation((team: Partial<Team>) => createTeam(team), {
+    const mutation = useMutation((team: Partial<Team>) => createTeam(supabaseClient, team), {
         onSuccess: (created) => {
             queryClient.setQueryData(['team', created.id], created);
         },
@@ -192,8 +198,9 @@ export function useCreateTeam() {
 }
 
 export function useUpdateTeam() {
+    const supabaseClient = useSupabaseClient<Database>()
     const queryClient = useQueryClient();
-    const mutation = useMutation((team: Partial<Team>) => updateTeam(team), {
+    const mutation = useMutation((team: Partial<Team>) => updateTeam(supabaseClient, team), {
         onSuccess: (created) => {
             queryClient.setQueryData(['team', created.id], created);
         },
@@ -202,59 +209,13 @@ export function useUpdateTeam() {
 }
 
 export function useLeaveTeam() {
+    const supabaseClient = useSupabaseClient<Database>()
     const queryClient = useQueryClient();
-    const mutation = useMutation((userId: string) => leaveTeam(userId), {
+    const mutation = useMutation((userId: string) => leaveTeam(supabaseClient, userId), {
         onSuccess: () => {
             queryClient.invalidateQueries(['members']);
             queryClient.invalidateQueries('currentTeamId');
         },
     });
     return { ...mutation, leaveTeam: mutation.mutateAsync };
-}
-
-export function useMentorAssignments() {
-    const query = useQuery('mentorAssignments', () => getMentorAssignments());
-    return { ...query, mentorAssignments: query.data };
-}
-
-export function useTeamMentor(teamId: number) {
-    const query = useQuery('teamMentor', () => getTeamMentor(teamId));
-    return { ...query, mentor: query.data };
-}
-
-export function useAssignMentor() {
-    const queryClient = useQueryClient();
-    const mutation = useMutation(
-        ({
-            teamId,
-            mentorId,
-        }: {
-            teamId: Team['id'];
-            mentorId: Profile['userId'];
-        }) => assignMentor(teamId, mentorId),
-        {
-            onSuccess: () => {
-                queryClient.invalidateQueries('mentorAssignments');
-            },
-        }
-    );
-    return { ...mutation, assignMentor: mutation.mutateAsync };
-}
-
-export function useUnassignMentor() {
-    const queryClient = useQueryClient();
-    const mutation = useMutation(
-        ({ teamId }: { teamId: Team['id'] }) => unassignMentor(teamId),
-        {
-            onSuccess: (deleted) => {
-                const newData =
-                    queryClient.getQueryData<MentorAssignments>(
-                        'mentorAssignments'
-                    ) ?? {};
-                delete newData[deleted.team];
-                queryClient.setQueryData('mentorAssignments', newData);
-            },
-        }
-    );
-    return { ...mutation, unassignMentor: mutation.mutateAsync };
 }

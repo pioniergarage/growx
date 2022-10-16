@@ -16,6 +16,7 @@ import {
     ModalOverlay,
     Select,
 } from '@chakra-ui/react';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
 import { uploadLogo } from 'modules/sponsor/api';
 import { useEffect, useState } from 'react';
@@ -37,6 +38,7 @@ const SponsorModal: React.FC<SponsorModalProps> = ({
     onDelete,
     initialValue,
 }) => {
+    const supabaseClient = useSupabaseClient();
     const [sponsor, setSponsor] = useState(initialValue);
     useEffect(() => setSponsor(initialValue), [initialValue]);
 
@@ -45,7 +47,7 @@ const SponsorModal: React.FC<SponsorModalProps> = ({
             return;
         }
 
-        const url = await uploadLogo(files[0].name, files[0]);
+        const url = await uploadLogo(supabaseClient, files[0].name, files[0]);
         setSponsor({ ...sponsor, logo: url });
     };
 

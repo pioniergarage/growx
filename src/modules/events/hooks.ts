@@ -1,4 +1,6 @@
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { User } from '@supabase/supabase-js';
+import { Database } from 'database/DatabaseDefition';
 
 import {
     deleteEvent,
@@ -16,6 +18,7 @@ import { GrowEvent } from './types';
 
 export function useRegisterUserToEvent() {
     const queryClient = useQueryClient();
+    const supabaseClient = useSupabaseClient<Database>();
     const mutation = useMutation(
         async ({
             user,
@@ -26,7 +29,7 @@ export function useRegisterUserToEvent() {
             event: GrowEvent;
             present: boolean;
         }) => {
-            return registerUser(user.id, event.id, present);
+            return registerUser(supabaseClient, user.id, event.id, present);
         },
         {
             onSuccess: () =>
@@ -38,9 +41,10 @@ export function useRegisterUserToEvent() {
 
 export function useUnregisterUserFromEvent() {
     const queryClient = useQueryClient();
+    const supabaseClient = useSupabaseClient<Database>();
     const mutation = useMutation(
         async ({ user, event }: { user: User; event: GrowEvent }) => {
-            return unregisterUser(user.id, event.id);
+            return unregisterUser(supabaseClient, user.id, event.id);
         },
         {
             onSuccess: () =>
@@ -51,21 +55,23 @@ export function useUnregisterUserFromEvent() {
 }
 
 export function useRegistrationsToEvent(event: GrowEvent) {
+    const supabaseClient = useSupabaseClient<Database>();
     const query = useQuery(
         ['eventRegistrations', event.id],
-        async () => await getRegistrationsTo(event.id)
+        async () => await getRegistrationsTo(supabaseClient, event.id)
     );
     return { ...query, registrations: query.data };
 }
 
 export function useRegistrationsOfUser(userId?: string) {
+    const supabaseClient = useSupabaseClient<Database>();
     const query = useQuery(
         ['eventRegistrationsOfUser', userId],
         async () => {
             if (!userId) {
                 throw new Error('Cannot fetch registrations of undefined user');
             }
-            return await getRegistrationsOfUser(userId);
+            return await getRegistrationsOfUser(supabaseClient, userId);
         },
         { enabled: !!userId }
     );
@@ -73,18 +79,20 @@ export function useRegistrationsOfUser(userId?: string) {
 }
 
 export function useGrowEvent(id: number) {
+    const supabaseClient = useSupabaseClient<Database>();
     const { data, ...rest } = useQuery(
         ['event', id],
-        async () => await getEvent(id)
+        async () => await getEvent(supabaseClient, id)
     );
     return { event: data, ...rest };
 }
 
 export function useGrowEvents() {
+    const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
     const { data, ...rest } = useQuery(
         'events',
-        async () => await getEvents(),
+        async () => await getEvents(supabaseClient),
         {
             onSuccess: (events) =>
                 events.forEach((event) =>
@@ -96,10 +104,11 @@ export function useGrowEvents() {
 }
 
 export function useUpdateEvent() {
+    const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
     const mutation = useMutation(
         async (patch: Partial<GrowEvent> & Pick<GrowEvent, 'id'>) =>
-            await updateEvent(patch),
+            await updateEvent(supabaseClient, patch),
         {
             onSuccess: (updated) => {
                 queryClient.setQueryData(['event', updated.id], updated);
@@ -110,9 +119,10 @@ export function useUpdateEvent() {
 }
 
 export function useDeleteEvent() {
+    const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        async (eventId: number) => await deleteEvent(eventId),
+        async (eventId: number) => await deleteEvent(supabaseClient, eventId),
         {
             onSuccess: (_, eventId) => {
                 queryClient.setQueryData(['event', eventId], undefined);
@@ -124,7 +134,8 @@ export function useDeleteEvent() {
 
 export function useInsertEvent() {
     const queryClient = useQueryClient();
-    const mutation = useMutation(insertEvent, {
+    const supabaseClient = useSupabaseClient<Database>();
+    const mutation = useMutation(async (event: Partial<GrowEvent>) => await insertEvent(supabaseClient, event), {
         onSuccess: (created) => {
             queryClient.setQueryData(['event', created.id], created);
             const oldEvents: GrowEvent[] = queryClient.getQueryData(

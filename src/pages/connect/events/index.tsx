@@ -6,26 +6,21 @@ import {
     SkeletonText,
     VStack,
 } from '@chakra-ui/react';
-import {
-    supabaseServerClient,
-    withPageAuth,
-} from '@supabase/auth-helpers-nextjs';
-import { definitions } from 'database/supabase';
-import { mapEventDto } from 'modules/events/api';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import GrowEventCard from 'modules/events/components/GrowEventCard';
-import { useRegistrationsOfUser } from 'modules/events/hooks';
+import { useGrowEvents, useRegistrationsOfUser } from 'modules/events/hooks';
 import { useProfile } from 'modules/profile/hooks';
 
-const EventsPage = ({ eventsRaw }: { eventsRaw: definitions['events'][] }) => {
+const EventsPage = () => {
+    const { events } = useGrowEvents();
     const { profile } = useProfile();
     const { registrations } = useRegistrationsOfUser(profile?.userId);
-    const events = eventsRaw.map(mapEventDto);
 
     return (
         <Box>
             <Heading mb={6}>Events</Heading>
             <VStack alignItems="stretch" gap={10}>
-                {registrations === undefined ? (
+                {registrations === undefined || events === undefined ? (
                     <>
                         <EventSkeleton />
                         <EventSkeleton />
@@ -65,14 +60,4 @@ export default EventsPage;
 
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
-    getServerSideProps: async (context) => {
-        const { data, error } = await supabaseServerClient(context)
-            .from<definitions['events']>('events')
-            .select('*')
-            .order('date');
-        if (error) {
-            throw new Error(error.message);
-        }
-        return { props: { eventsRaw: data } };
-    },
 });

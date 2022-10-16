@@ -1,5 +1,5 @@
 import { Alert, AlertIcon, Spinner, Text, VStack } from '@chakra-ui/react';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import LoginLayout from 'layouts/LoginLayout';
 import { useUpdateProfile } from 'modules/profile/hooks';
 import DetailInformation from 'modules/signup/components/DetailInformationForm';
@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 
 const MentorSignUp: NextPageWithLayout = () => {
+    const supabaseClient = useSupabaseClient();
     const [emailAndPassword, setEmailAndPassword] = useState<SignUpInfo>({
         email: '',
         password: '',
@@ -34,10 +35,10 @@ const MentorSignUp: NextPageWithLayout = () => {
                 email: emailAndPassword.email,
                 password: emailAndPassword.password,
             })
-            .then(({ user, error }) => {
+            .then(({ data, error }) => {
                 if (error) throw error.message;
-                if (!user) throw 'Could not create user';
-                return user;
+                if (!data.user) throw 'Could not create user';
+                return data.user;
             })
             .then((user) => {
                 updateProfile({

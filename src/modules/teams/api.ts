@@ -1,8 +1,9 @@
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+
+import { SupabaseClient } from '@supabase/supabase-js';
+import { Database } from 'database/DatabaseDefition';
 import { Profile } from 'modules/profile/types';
 
 import resizeImage from 'utils/resize';
-import { definitions } from '../../database/supabase';
 import {
     handleMaybeSingleResponse,
     handleResponse,
@@ -11,80 +12,81 @@ import {
 import { mapProfileDto } from '../profile/api';
 import { Team } from './types';
 
-const mapTeamDto = (teamDto: definitions['teams']): Team => ({
+const mapTeamDto = (teamDto: Database['public']['Tables']['teams']['Row']): Team => ({
     ...teamDto,
     tags: teamDto.tags as string[],
     requestSupport: teamDto.requestSupport as string[],
+    logo: teamDto.logo || undefined
 });
 
-export async function createTeam(team: Partial<Team>) {
+export async function createTeam(supabaseClient: SupabaseClient<Database>, team: Partial<Team>) {
     return supabaseClient
-        .from<definitions['teams']>('teams')
-        .insert(team, { returning: 'representation' })
+        .from('teams')
+        .insert(team)
+        .select()
         .single()
-        .then((response) => handleSingleResponse(response));
+        .then(handleSingleResponse);
 }
 
-export async function getTeams() {
+export async function getTeams(supabaseClient: SupabaseClient<Database>,) {
     return supabaseClient
-        .from<definitions['teams']>('teams')
+        .from('teams')
         .select('*')
-        .then((r) => handleResponse(r, 'Could not load teams'))
+        .then(handleResponse)
         .then((dtos) => dtos.map(mapTeamDto));
 }
 
-export async function getTeam(id: number) {
+export async function getTeam(supabaseClient: SupabaseClient<Database>, id: number) {
     return supabaseClient
-        .from<definitions['teams']>('teams')
+        .from('teams')
         .select('*')
         .match({ id })
         .single()
-        .then((r) => handleSingleResponse(r, 'Team not found'))
+        .then(handleSingleResponse)
         .then(mapTeamDto);
 }
 
-export async function updateTeam(team: Partial<Team>) {
+export async function updateTeam(supabaseClient: SupabaseClient<Database>, team: Partial<Team>) {
     return supabaseClient
-        .from<definitions['teams']>('teams')
-        .update(team, { returning: 'representation' })
+        .from('teams')
+        .update(team)
         .eq('id', team.id)
+        .select()
         .single()
-        .then((r) => handleSingleResponse(r))
+        .then(handleSingleResponse)
         .then(mapTeamDto);
 }
 
-export async function leaveTeam(user_id: string) {
+export async function leaveTeam(supabaseClient: SupabaseClient<Database>, user_id: string) {
     return supabaseClient
-        .from<definitions['team_members']>('team_members')
+        .from('team_members')
         .delete()
         .eq('user_id', user_id)
-        .single()
         .then(({ error }) => {
             if (error) throw new Error(error.message);
         });
 }
 
-export async function requestToJoinTeam(userId: string, teamId: number) {
+export async function requestToJoinTeam(supabaseClient: SupabaseClient<Database>, userId: string, teamId: number) {
     return supabaseClient
-        .from<definitions['team_requests']>('team_requests')
+        .from('team_requests')
         .insert({ user_id: userId, team_id: teamId })
         .then(({ error }) => {
             if (error) throw new Error(error.message);
         });
 }
 
-export async function withdrawRequest(userId: string) {
+export async function withdrawRequest(supabaseClient: SupabaseClient<Database>, userId: string) {
     return supabaseClient
-        .from<definitions['team_requests']>('team_requests')
-        .delete({ returning: 'minimal' })
+        .from('team_requests')
+        .delete()
         .match({ user_id: userId })
-        .single()
         .then(({ error }) => {
             if (error) throw new Error(error.message);
         });
 }
 
-export async function acceptRequestToJoinTeam(joiningUserId: string) {
+export async function acceptRequestToJoinTeam(supabaseClient: SupabaseClient<Database>, joiningUserId: string) {
     // team id is determined by rpc functionthen(r => handleResponse(r))
     return supabaseClient
         .rpc('accept_request', {
@@ -95,39 +97,38 @@ export async function acceptRequestToJoinTeam(joiningUserId: string) {
         });
 }
 
-export async function declineRequestToJoinTeam(joiningUserId: string) {
+export async function declineRequestToJoinTeam(supabaseClient: SupabaseClient<Database>, joiningUserId: string) {
     return supabaseClient
-        .from<definitions['team_requests']>('team_requests')
-        .delete({ returning: 'minimal' })
+        .from('team_requests')
+        .delete()
         .match({ user_id: joiningUserId })
-        .single()
         .then(({ error }) => {
             if (error) throw new Error(error.message);
         });
 }
 
-export async function getRequestsToTeam(team_id: number): Promise<Profile[]> {
+export async function getRequestsToTeam(supabaseClient: SupabaseClient<Database>, team_id: number): Promise<Profile[]> {
     return supabaseClient
-        .from<{ profiles: definitions['profiles'] }>('team_requests')
+        .from('team_requests')
         .select('profiles (*)')
         .match({ team_id })
-        .then((r) => handleResponse(r, 'Requests not found'))
-        .then((dtos) => dtos.map((p) => p.profiles).map(mapProfileDto));
+        .then(handleResponse)
+        .then((dtos) => dtos.map((p) => p.profiles as Database['public']['Tables']['profiles']['Row']).map(mapProfileDto));
 }
 
-export async function getTeamRequestedToJoin(user_id: string) {
+export async function getTeamRequestedToJoin(supabaseClient: SupabaseClient<Database>, user_id: string) {
     return supabaseClient
-        .from<{ teams: definitions['teams'] }>('team_requests')
+        .from('team_requests')
         .select('teams (*)')
         .match({ user_id })
         .maybeSingle()
-        .then((r) => handleMaybeSingleResponse(r))
-        .then((dto) => (dto ? mapTeamDto(dto.teams) : null));
+        .then(handleMaybeSingleResponse)
+        .then((dto) => (dto ? mapTeamDto(dto.teams as Database['public']['Tables']['teams']['Row']) : null));
 }
 
-export async function getTeamIdOfUser(user_id: string) {
+export async function getTeamIdOfUser(supabaseClient: SupabaseClient<Database>, user_id: string) {
     const teamResponse = await supabaseClient
-        .from<definitions['team_members']>('team_members')
+        .from('team_members')
         .select('*')
         .match({ user_id });
     if (teamResponse.error) throw new Error(teamResponse.error.message);
@@ -135,16 +136,16 @@ export async function getTeamIdOfUser(user_id: string) {
     return teamResponse.data[0].team_id;
 }
 
-export async function getTeamMembers(teamId: number): Promise<Profile[]> {
+export async function getTeamMembers(supabaseClient: SupabaseClient<Database>, teamId: number): Promise<Profile[]> {
     return supabaseClient
-        .from<{ profiles: definitions['profiles'][] }>('team_members')
+        .from('team_members')
         .select('profiles (*)')
         .match({ team_id: teamId })
-        .then((r) => handleResponse(r))
-        .then((dtos) => dtos.flatMap((d) => d.profiles).map(mapProfileDto));
+        .then(handleResponse)
+        .then((dtos) => dtos.flatMap((d) => d.profiles as Database['public']['Tables']['profiles']['Row']).map(mapProfileDto));
 }
 
-export const uploadTeamLogo = async (team: Team, logo: File) => {
+export const uploadTeamLogo = async (supabaseClient: SupabaseClient<Database>, team: Team, logo: File) => {
     const fileName = `${team.id}.jpg`;
     const filePath = `${fileName}`;
     const resizedImage = await resizeImage(logo, 200, 200);
@@ -152,16 +153,16 @@ export const uploadTeamLogo = async (team: Team, logo: File) => {
         .from('logos')
         .upload(filePath, resizedImage, { upsert: true });
     if (response.error) throw new Error(response.error.message);
-    const { publicURL, error } = supabaseClient.storage
+    const { data: { publicUrl } } = supabaseClient.storage
         .from('logos')
         .getPublicUrl(filePath);
 
-    if (error || !publicURL) {
-        throw new Error(error?.message || 'Could not find logo');
+    if (!publicUrl) {
+        throw new Error('Could not find logo');
     }
-    return publicURL;
+    return publicUrl;
 };
 
-export const removeTeamLogo = (team: Team) => {
-    return updateTeam({ ...team, logo: '' });
+export const removeTeamLogo = (supabaseClient: SupabaseClient<Database>, team: Team) => {
+    return updateTeam(supabaseClient, { ...team, logo: '' });
 };

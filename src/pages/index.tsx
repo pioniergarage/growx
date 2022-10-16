@@ -1,4 +1,5 @@
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 
 import { getEvents } from 'modules/events/api';
 import { GrowEvent } from 'modules/events/types';
@@ -19,17 +20,24 @@ import { getSponsors } from 'modules/sponsor/api';
 import { Sponsor } from 'modules/sponsor/types';
 import { PropsWithChildren } from 'react';
 
-export async function getServerSideProps() {
-    const sponsors = await getSponsors();
-    const faqs = await getFAQs();
-    const events = (await getEvents()).map((e) => ({
-        ...e,
-        date: e.date.toISOString(),
-    }));
-    const mentors = await getPublicMentors();
-    return { props: { sponsors, faqs, events, mentors } };
-}
-
+export const getServerSideProps = withPageAuth({
+    authRequired: false,
+    async getServerSideProps(ctx, supabase) {
+        try {
+            const sponsors = await getSponsors(supabase);
+            const faqs = await getFAQs(supabase);
+            const events = (await getEvents(supabase)).map((e) => ({
+                ...e,
+                date: e.date.toISOString(),
+            }));
+            const mentors = await getPublicMentors(supabase);
+            return { props: { sponsors, faqs, events, mentors } };
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
+});
 interface HomeProps {
     sponsors: Sponsor[];
     faqs: FAQ[];
@@ -38,10 +46,10 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({
-    sponsors,
-    faqs,
-    events: jsonEvents,
-    mentors,
+    sponsors = [],
+    faqs = [],
+    events: jsonEvents = [],
+    mentors = [],
 }) => {
     const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
     return (

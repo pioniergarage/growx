@@ -1,8 +1,9 @@
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { SupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from 'database/DatabaseDefition';
 import { Profile } from 'modules/profile/types';
 import resizeImage from 'utils/resize';
 
-export const fetchUserAvatar = (avatar: string) =>
+export const fetchUserAvatar = (supabaseClient: SupabaseClient<Database>, avatar: string) =>
     supabaseClient.storage
         .from('avatars')
         .download(avatar)
@@ -13,7 +14,7 @@ export const fetchUserAvatar = (avatar: string) =>
             return data;
         });
 
-export const uploadUserAvatar = async (profile: Profile, avatar: File) => {
+export const uploadUserAvatar = async (supabaseClient: SupabaseClient<Database>, profile: Profile, avatar: File) => {
     const fileName = `${profile.userId}.jpg`;
     const filePath = `${fileName}`;
     const resizedImage = await resizeImage(avatar, 200, 200);

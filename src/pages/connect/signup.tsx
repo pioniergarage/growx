@@ -1,9 +1,6 @@
 import { Alert, AlertIcon, Spinner, Text, VStack } from '@chakra-ui/react';
-import {
-    getUser,
-    supabaseClient,
-    withPageAuth,
-} from '@supabase/auth-helpers-nextjs';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import LoginLayout from 'layouts/LoginLayout';
 import {
     useInsertFurhterProfileInfo,
@@ -23,6 +20,7 @@ import { useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 
 const SignUp: NextPageWithLayout = () => {
+    const supabaseClient = useSupabaseClient();
     const [step, setStep] = useState(0);
     const [emailAndPassword, setEmailAndPassword] = useState<SignUpInfo>({
         email: '',
@@ -42,13 +40,13 @@ const SignUp: NextPageWithLayout = () => {
     const { insertFurtherProfileInfo } = useInsertFurhterProfileInfo();
 
     async function signUp({ email, password }: SignUpInfo) {
-        const { user, error } = await supabaseClient.auth.signUp({
+        const { data, error } = await supabaseClient.auth.signUp({
             email,
             password,
         });
         if (error) throw error.message;
-        if (!user) throw 'Could not create user';
-        return user;
+        if (!data.user) throw 'Could not create user';
+        return data.user;
     }
 
     async function createAccount(
@@ -151,9 +149,15 @@ export default SignUp;
 
 export const getServerSideProps = withPageAuth({
     authRequired: false,
-    getServerSideProps: async (context) => {
-        const { user } = await getUser(context);
-        if (user) {
+    getServerSideProps: async (context, supabase) => {
+        console.log('Hello from server side props');
+
+        const { data, error } = await supabase.auth.getSession();
+        if (error) {
+            throw error;
+        }
+
+        if (data.session) {
             return {
                 redirect: {
                     permanent: false,

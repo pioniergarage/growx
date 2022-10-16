@@ -16,7 +16,7 @@ import {
 } from 'modules/events/hooks';
 import { useProfile } from 'modules/profile/hooks';
 import { useMemo } from 'react';
-import { GrowEvent, EventType } from '../types';
+import { EventType, GrowEvent } from '../types';
 import EventTagList from './EventTagList';
 import SignUpDialog from './SignUpDialog';
 
@@ -38,7 +38,7 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
     const { registerUser, isLoading: isRegistering } = useRegisterUserToEvent();
     const { unregisterUser, isLoading: isUnregistering } =
         useUnregisterUserFromEvent();
-    const { user } = useUser();
+    const user = useUser();
     const { profile } = useProfile();
     const toast = useToast();
     const { day, month, time, over } = useMemo(() => {

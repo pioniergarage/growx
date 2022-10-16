@@ -1,45 +1,44 @@
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { PublicMentorProfile } from 'modules/mentor/types';
+import { SupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from 'database/DatabaseDefition';
 
-import { definitions } from '../../database/supabase';
 import { handleResponse, handleSingleResponse } from '../../database/utils';
-import { Profile, FurtherProfileInfo } from './types';
+import { FurtherProfileInfo, Profile } from './types';
 
-export const mapProfileDto: (dto: definitions['profiles']) => Profile = (
+export const mapProfileDto: (dto: Database['public']['Tables']['profiles']['Row']) => Profile = (
     dto
 ) => ({
     userId: dto.user_id,
     firstName: dto.first_name,
     lastName: dto.last_name,
-    phone: dto.phone,
-    homeland: dto.homeland,
+    phone: dto.phone || undefined,
+    homeland: dto.homeland || undefined,
     email: dto.email,
-    studies: dto.studies,
-    university: dto.university,
-    universityCountry: dto.universityCountry,
-    gender: dto.gender,
+    studies: dto.studies || undefined,
+    university: dto.university || undefined,
+    universityCountry: dto.universityCountry || undefined,
+    gender: dto.gender || undefined,
     role: dto.role,
-    avatar: dto.avatar,
+    avatar: dto.avatar || undefined,
     skills: dto.skills as string[],
     bio: dto.bio || '',
     keyQualification: dto.keyQualification,
 });
 
-export async function fetchProfile(user_id: string): Promise<Profile> {
+export async function fetchProfile(supabaseClient: SupabaseClient<Database>, user_id: string): Promise<Profile> {
     return supabaseClient
-        .from<definitions['profiles']>('profiles')
+        .from('profiles')
         .select('*')
         .eq('user_id', user_id)
         .single()
-        .then((response) => handleSingleResponse(response, 'Profile not found'))
+        .then(handleSingleResponse)
         .then(mapProfileDto);
 }
 
-export const updateProfile = async (
+export const updateProfile = async (supabaseClient: SupabaseClient<Database>,
     profile: Partial<Profile> & Pick<Profile, 'userId'>
 ) =>
     supabaseClient
-        .from<definitions['profiles']>('profiles')
+        .from('profiles')
         .update(
             {
                 first_name: profile.firstName,
@@ -56,28 +55,29 @@ export const updateProfile = async (
                 role: profile.role,
                 bio: profile.bio,
                 keyQualification: profile.keyQualification,
-            },
-            { returning: 'representation' }
+            }
         )
         .match({ user_id: profile.userId })
+        .select()
         .single()
-        .then((response) => handleSingleResponse(response, 'Profile not found'))
+        .then(handleSingleResponse)
         .then(mapProfileDto);
 
-export const getProfiles = async (): Promise<Profile[]> => {
+export const getProfiles = async (supabaseClient: SupabaseClient<Database>): Promise<Profile[]> => {
     return supabaseClient
-        .from<definitions['profiles']>('profiles')
+        .from('profiles')
         .select('*')
-        .then((response) => handleResponse(response, 'No profiles found'))
+        .then(handleResponse)
         .then((dtos) => dtos.map(mapProfileDto));
 };
 
-export const getPublicMentors = async (): Promise<PublicMentorProfile[]> => {
+export const getPublicMentors = async (supabaseClient: SupabaseClient<Database>) => {
     return supabaseClient
-        .from<definitions['profiles']>('profiles')
+        .from('profiles')
         .select('user_id, first_name, last_name, avatar, bio')
         .match({ role: 'MENTOR' })
-        .then((response) => handleResponse(response, 'No mentors found'))
+        .select()
+        .then(handleResponse)
         .then((dtos) =>
             dtos.map(({ user_id, first_name, last_name, bio, avatar }) => ({
                 userId: user_id,
@@ -89,10 +89,11 @@ export const getPublicMentors = async (): Promise<PublicMentorProfile[]> => {
         );
 };
 
-export const insertSignupInfo = async (
+export const insertSignupInfo = async (supabaseClient: SupabaseClient<Database>,
     info: FurtherProfileInfo & { email: string }
 ) =>
     supabaseClient
-        .from<definitions['signup_info']>('signup_info')
+        .from('signup_info')
         .insert(info)
+        .select()
         .single();

@@ -1,13 +1,14 @@
 import { Heading, Text, VStack } from '@chakra-ui/react';
-import {
-    supabaseServerClient,
-    withPageAuth,
-} from '@supabase/auth-helpers-nextjs';
-import { definitions } from 'database/supabase';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { Database } from 'database/DatabaseDefition';
 import { mapEventDto } from 'modules/events/api';
 import EventTagList from 'modules/events/components/EventTagList';
 
-const GrowEvent = ({ eventRaw }: { eventRaw: definitions['events'] }) => {
+const GrowEvent = ({
+    eventRaw,
+}: {
+    eventRaw: Database['public']['Tables']['events']['Row'];
+}) => {
     const event = mapEventDto(eventRaw);
     return (
         <VStack alignItems="start">
@@ -19,9 +20,9 @@ const GrowEvent = ({ eventRaw }: { eventRaw: definitions['events'] }) => {
 };
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
-    getServerSideProps: async (context) => {
-        const { data: eventRaw, error } = await supabaseServerClient(context)
-            .from<definitions['events']>('events')
+    getServerSideProps: async (context, supabase) => {
+        const { data: eventRaw, error } = await supabase
+            .from('events')
             .select('*')
             .match({ id: context.query.eventId })
             .single();

@@ -10,7 +10,7 @@ import {
     Show,
     useBreakpointValue,
 } from '@chakra-ui/react';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useProfile } from 'modules/profile/hooks';
 import Link, { LinkProps } from 'next/link';
 import { useRouter } from 'next/router';
@@ -62,6 +62,7 @@ const GrowConnectNavButton: React.FC<
 };
 
 export default function GrowNav() {
+    const supabaseClient = useSupabaseClient();
     const { profile } = useProfile();
     const router = useRouter();
     const queryClient = useQueryClient();

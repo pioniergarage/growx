@@ -12,13 +12,10 @@ import {
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 
 import UserAvatar from 'modules/avatar/components/UserAvatar';
+import { useUploadAvatar } from 'modules/avatar/hooks';
 import ProfileForm from 'modules/profile/components/ProfileForm';
 import UsersProfileView from 'modules/profile/components/UsersProfileView';
-import {
-    useProfile,
-    useUpdateProfile,
-    useUploadAvatar,
-} from 'modules/profile/hooks';
+import { useProfile, useUpdateProfile } from 'modules/profile/hooks';
 import { Profile } from 'modules/profile/types';
 import { useMemo, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';

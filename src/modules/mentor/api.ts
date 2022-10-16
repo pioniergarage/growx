@@ -1,63 +1,65 @@
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+
+import { SupabaseClient } from '@supabase/supabase-js';
+import { Database } from 'database/DatabaseDefition';
 import { Profile } from 'modules/profile/types';
 import { Team } from 'modules/teams/types';
 
-import { definitions } from '../../database/supabase';
 import { handleResponse, handleSingleResponse } from '../../database/utils';
 import { mapProfileDto } from '../profile/api';
 import { MentorAssignments } from './types';
 
-export async function getMentorAssignments(): Promise<MentorAssignments> {
+export async function getMentorAssignments(supabaseClient: SupabaseClient<Database>): Promise<MentorAssignments> {
     return supabaseClient
-        .from<{ mentor: definitions['profiles']; team: number }>(
+        .from(
             'mentor_assignment'
         )
         .select('mentor (*), team')
-        .then((r) => handleResponse(r, 'assignments not found'))
+        .then(handleResponse)
         .then((dtos) =>
             Object.assign(
                 {},
                 ...dtos.map((dto) => ({
-                    [dto.team]: mapProfileDto(dto.mentor),
+                    [dto.team]: mapProfileDto(dto.mentor as Database['public']['Tables']['profiles']['Row']),
                 }))
             )
         );
 }
 
-export async function getTeamMentor(teamId: number): Promise<Profile> {
+export async function getTeamMentor(supabaseClient: SupabaseClient<Database>, teamId: number): Promise<Profile> {
     return supabaseClient
-        .from<{ mentor: definitions['profiles']; team: number }>(
+        .from(
             'mentor_assignment'
         )
         .select('mentor (*), team')
         .match({ team: teamId })
         .single()
-        .then((r) => handleSingleResponse(r, 'assignments not found'))
-        .then((dto) => mapProfileDto(dto.mentor));
+        .then(handleSingleResponse)
+        .then((dto) => mapProfileDto(dto.mentor as Database['public']['Tables']['profiles']['Row']));
 }
 
-export async function assignMentor(
+export async function assignMentor(supabaseClient: SupabaseClient<Database>,
     teamId: Team['id'],
     mentorId: Profile['userId']
 ): Promise<{ mentor: Profile['userId']; team: Team['id'] }> {
     return supabaseClient
         .from('mentor_assignment')
         .upsert(
-            { mentor: mentorId, team: teamId },
-            { returning: 'representation' }
+            { mentor: mentorId, team: teamId }
         )
         .match({ mentor: mentorId, team: teamId })
+        .select()
         .single()
-        .then((r) => handleSingleResponse(r));
+        .then(handleSingleResponse);
 }
 
-export async function unassignMentor(
+export async function unassignMentor(supabaseClient: SupabaseClient<Database>,
     teamId: Team['id']
 ): Promise<{ mentor: Profile['userId']; team: Team['id'] }> {
     return supabaseClient
         .from('mentor_assignment')
-        .delete({ returning: 'representation' })
+        .delete()
         .match({ team: teamId })
+        .select()
         .single()
-        .then((r) => handleSingleResponse(r));
+        .then(handleSingleResponse);
 }

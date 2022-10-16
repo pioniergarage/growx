@@ -14,16 +14,12 @@ import {
     Text,
     VStack,
 } from '@chakra-ui/react';
-import {
-    getUser,
-    supabaseServerClient,
-    withPageAuth,
-} from '@supabase/auth-helpers-nextjs';
-import { definitions } from 'database/supabase';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { useUser } from '@supabase/auth-helpers-react';
 
 import GrowEventCard from 'modules/events/components/GrowEventCard';
 import { useGrowEvents, useRegistrationsOfUser } from 'modules/events/hooks';
-import { useUpdateProfile } from 'modules/profile/hooks';
+import { useProfile, useUpdateProfile } from 'modules/profile/hooks';
 import { kitName } from 'modules/signup/components/UniversityForm';
 import CreateTeamButton from 'modules/teams/components/CreateTeamButton';
 import TeamCard from 'modules/teams/components/TeamCard';
@@ -31,11 +27,9 @@ import { useTeam, useTeamIdOfUser, useTeamRequests } from 'modules/teams/hooks';
 import { Team } from 'modules/teams/types';
 import { useMemo, useState } from 'react';
 
-interface ConnectIndexProps {
-    profile: definitions['profiles'];
-}
-
-const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile }) => {
+const ConnectIndex: React.FC = () => {
+    const user = useUser();
+    const { profile } = useProfile(user?.id);
     const { events } = useGrowEvents();
     const upcomingEvents = useMemo(() => {
         if (events) {
@@ -48,7 +42,11 @@ const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile }) => {
         }
     }, [events]);
 
-    const { registrations } = useRegistrationsOfUser(profile.user_id);
+    const { registrations } = useRegistrationsOfUser(user?.id);
+
+    if (!profile) {
+        return <></>;
+    }
 
     return (
         <Flex wrap="wrap">
@@ -56,8 +54,9 @@ const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile }) => {
                 <Heading size="md">
                     <Text as="span" color="gray.400">
                         Welcome back,
-                    </Text>{' '}
-                    {profile.first_name}
+                    </Text>
+                    &nbsp;
+                    {profile.firstName}
                 </Heading>
                 {upcomingEvents.length > 0 ? (
                     <Box>
@@ -84,10 +83,10 @@ const ConnectIndex: React.FC<ConnectIndexProps> = ({ profile }) => {
                     </Box>
                 ) : undefined}
 
-                <YourTeam userId={profile.user_id} />
+                <YourTeam userId={profile.userId} />
                 {profile.university === kitName && !SQRegistrationOver ? (
                     <SQInfo
-                        userId={profile.user_id}
+                        userId={profile.userId}
                         keyQualification={profile.keyQualification}
                     />
                 ) : undefined}
@@ -200,18 +199,4 @@ export default ConnectIndex;
 
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
-    getServerSideProps: async (context) => {
-        const client = supabaseServerClient(context);
-        const { user } = await getUser(context);
-        const { data: profile, error } = await client
-            .from<definitions['profiles']>('profiles')
-            .select('*')
-            .match({ user_id: user.id })
-            .single();
-        if (error) {
-            throw new Error(error.message);
-        }
-
-        return { props: { profile } };
-    },
 });

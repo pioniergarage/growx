@@ -1,12 +1,12 @@
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { SupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from 'database/DatabaseDefition';
 
-import { definitions } from '../../database/supabase';
 import { handleResponse } from '../../database/utils';
 import { FAQ } from './types';
 
-export const getFAQs = () =>
+export const getFAQs = (supabaseClient: SupabaseClient<Database>) =>
     supabaseClient
-        .from<definitions['faqs']>('faqs')
+        .from('faqs')
         .select('*')
         .then(handleResponse)
         .then((dtos) => dtos.map((f) => f as FAQ));
