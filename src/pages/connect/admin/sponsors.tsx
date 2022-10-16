@@ -14,12 +14,13 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { Sponsor } from 'model';
+
 import {
     useDeleteSponsor,
     useSponsors,
     useUpsertSponsor,
 } from 'modules/sponsor/hooks';
+import { Sponsor } from 'modules/sponsor/types';
 import { useState } from 'react';
 import { FaPen } from 'react-icons/fa';
 import SponsorModal from '../../../modules/sponsor/components/SponsorModal';

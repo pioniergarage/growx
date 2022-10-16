@@ -6,9 +6,10 @@ import {
     LinkBox,
     LinkOverlay,
 } from '@chakra-ui/react';
-import { Team } from 'model';
+
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { Team } from '../types';
 
 const TeamLogo = dynamic(() => import('./TeamLogo'), {
     ssr: false,

@@ -1,7 +1,8 @@
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { Sponsor } from 'model';
+
 import { definitions } from '../../database/supabase';
 import { handleResponse, handleSingleResponse } from '../../database/utils';
+import { Sponsor } from './types';
 
 export const getSponsors = () =>
     supabaseClient

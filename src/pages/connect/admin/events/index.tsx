@@ -13,9 +13,10 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { GrowEvent } from 'model';
+
 import CreateEventModal from 'modules/events/components/CreateEventModal';
 import { useGrowEvents, useInsertEvent } from 'modules/events/hooks';
+import { GrowEvent } from 'modules/events/types';
 import { useState } from 'react';
 
 export default function EventManagement() {

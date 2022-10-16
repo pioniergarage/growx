@@ -1,9 +1,8 @@
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { GrowEvent } from 'model';
 import { definitions } from '../../database/supabase';
 import { handleResponse, handleSingleResponse } from '../../database/utils';
-import { EventType } from '../../model/index';
 import { mapProfileDto } from '../profile/api';
+import { GrowEvent, EventType } from './types';
 
 export const mapEventDto: (dto: definitions['events']) => GrowEvent = (
     dto

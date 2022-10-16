@@ -9,13 +9,14 @@ import {
     useToast,
 } from '@chakra-ui/react';
 import { useUser } from '@supabase/auth-helpers-react';
-import { EventType, GrowEvent } from 'model';
+
 import {
     useRegisterUserToEvent,
     useUnregisterUserFromEvent,
 } from 'modules/events/hooks';
 import { useProfile } from 'modules/profile/hooks';
 import { useMemo } from 'react';
+import { GrowEvent, EventType } from '../types';
 import EventTagList from './EventTagList';
 import SignUpDialog from './SignUpDialog';
 

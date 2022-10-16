@@ -1,5 +1,5 @@
 import { Button, ButtonProps } from '@chakra-ui/react';
-import { Team } from 'model';
+import { Team } from '../types';
 
 interface RequestButtonProps extends ButtonProps {
     team: Team;

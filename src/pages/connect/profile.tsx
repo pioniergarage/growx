@@ -10,7 +10,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { Profile } from 'model';
+
 import UserAvatar from 'modules/avatar/components/UserAvatar';
 import ProfileForm from 'modules/profile/components/ProfileForm';
 import UsersProfileView from 'modules/profile/components/UsersProfileView';
@@ -19,6 +19,7 @@ import {
     useUpdateProfile,
     useUploadAvatar,
 } from 'modules/profile/hooks';
+import { Profile } from 'modules/profile/types';
 import { useMemo, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 

@@ -1,5 +1,6 @@
 import { GridItem, Heading, SimpleGrid } from '@chakra-ui/react';
-import { Sponsor } from 'model';
+import { Sponsor } from 'modules/sponsor/types';
+
 import SponsorItem from './SponsorItem';
 
 type SponsorBlockProps = {

@@ -1,12 +1,13 @@
 import { Flex, FlexProps } from '@chakra-ui/react';
-import { EventType, GrowEvent } from 'model';
+
 import {
     FaBuilding,
     FaChromecast,
     FaCloud,
     FaExclamation,
-    FaMapMarkerAlt
+    FaMapMarkerAlt,
 } from 'react-icons/fa';
+import { GrowEvent, EventType } from '../types';
 import EventTag from './EventTag';
 
 type EventTagListProps = FlexProps & {
@@ -14,7 +15,11 @@ type EventTagListProps = FlexProps & {
     isSQTagVisible?: boolean;
 };
 
-const EventTagList = ({ event, isSQTagVisible, ...flexProps }: EventTagListProps) => {
+const EventTagList = ({
+    event,
+    isSQTagVisible,
+    ...flexProps
+}: EventTagListProps) => {
     return (
         <Flex
             mt={1}

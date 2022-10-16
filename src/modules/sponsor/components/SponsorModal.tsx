@@ -16,10 +16,11 @@ import {
     ModalOverlay,
     Select,
 } from '@chakra-ui/react';
-import { Sponsor } from 'model';
+
 import { uploadLogo } from 'modules/sponsor/api';
 import { useEffect, useState } from 'react';
 import FileSelect from '../../../components/FileSelect';
+import { Sponsor } from '../types';
 
 interface SponsorModalProps {
     isOpen: boolean;

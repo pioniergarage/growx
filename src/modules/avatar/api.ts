@@ -1,5 +1,5 @@
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { Profile } from 'model';
+import { Profile } from 'modules/profile/types';
 import resizeImage from 'utils/resize';
 
 export const fetchUserAvatar = (avatar: string) =>

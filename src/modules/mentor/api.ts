@@ -1,8 +1,11 @@
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { MentorAssignments, Profile, Team } from 'model';
+import { Profile } from 'modules/profile/types';
+import { Team } from 'modules/teams/types';
+
 import { definitions } from '../../database/supabase';
 import { handleResponse, handleSingleResponse } from '../../database/utils';
 import { mapProfileDto } from '../profile/api';
+import { MentorAssignments } from './types';
 
 export async function getMentorAssignments(): Promise<MentorAssignments> {
     return supabaseClient

@@ -1,5 +1,5 @@
 import { Box, Text } from '@chakra-ui/react';
-import { Team } from 'model';
+import { Team } from '../types';
 
 interface SupportRequestInfoProps {
     team?: Team;

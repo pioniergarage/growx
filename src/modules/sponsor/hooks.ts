@@ -1,6 +1,7 @@
-import { Sponsor } from 'model';
+
 import { deleteSponsor, getSponsors, upsertSponsor } from 'modules/sponsor/api';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { Sponsor } from './types';
 
 export function useSponsors() {
     const result = useQuery('sponsors', async () => await getSponsors());

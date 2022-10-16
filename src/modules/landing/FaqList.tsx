@@ -9,7 +9,7 @@ import {
     Text,
     VStack,
 } from '@chakra-ui/react';
-import { FAQ } from 'model';
+import { FAQ } from 'modules/faq/types';
 
 interface FaqListProps {
     faqs: FAQ[];

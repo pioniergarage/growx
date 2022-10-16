@@ -14,8 +14,9 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { availableSkills, Profile } from 'model';
+
 import { useState } from 'react';
+import { Profile, availableSkills } from '../types';
 interface ProflieFormProps {
     onSave: (profile: Profile) => void;
     loading: boolean;

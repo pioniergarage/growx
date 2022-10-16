@@ -15,8 +15,9 @@ import {
     ModalOverlay,
     Select,
 } from '@chakra-ui/react';
-import { EventType, GrowEvent } from 'model';
+
 import { useState } from 'react';
+import { EventType, GrowEvent } from '../types';
 
 interface EventModalProps {
     isOpen: boolean;

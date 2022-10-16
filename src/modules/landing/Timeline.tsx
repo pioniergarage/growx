@@ -1,6 +1,7 @@
 import { Heading, VStack } from '@chakra-ui/react';
-import { GrowEvent } from 'model';
+
 import TimelineEvent from 'modules/events/components/TimelineEvent';
+import { GrowEvent } from 'modules/events/types';
 
 interface LongTimelineProps {
     events: GrowEvent[];

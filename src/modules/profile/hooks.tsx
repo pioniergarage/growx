@@ -1,7 +1,6 @@
 import { useUser } from '@supabase/auth-helpers-react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
-import { FurtherProfileInfo, Profile } from 'model';
 import { fetchUserAvatar, uploadUserAvatar } from 'modules/avatar/api';
 import {
     fetchProfile,
@@ -9,6 +8,7 @@ import {
     insertSignupInfo,
     updateProfile,
 } from 'modules/profile/api';
+import { Profile, FurtherProfileInfo } from './types';
 
 export function useProfile(userId?: string) {
     const { user } = useUser();

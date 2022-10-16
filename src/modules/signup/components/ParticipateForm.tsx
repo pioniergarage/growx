@@ -1,4 +1,3 @@
-import rules from 'utils/rules';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     Box,
@@ -15,8 +14,10 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { Gender } from 'model';
+import rules from 'utils/rules';
+
 import { useState } from 'react';
+import { Gender } from 'modules/profile/types';
 
 export type ParticipateInfo = {
     firstName: string;

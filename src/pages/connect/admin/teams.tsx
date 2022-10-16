@@ -11,8 +11,9 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { Profile, Team } from 'model';
+
 import UserAvatar from 'modules/avatar/components/UserAvatar';
+import { Profile } from 'modules/profile/types';
 import MentorSelect from 'modules/teams/components/MentorSelect';
 import TeamLogo from 'modules/teams/components/TeamLogo';
 import {
@@ -22,6 +23,7 @@ import {
     useTeamMembers,
     useUnassignMentor,
 } from 'modules/teams/hooks';
+import { Team } from 'modules/teams/types';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 

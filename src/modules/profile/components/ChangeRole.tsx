@@ -10,9 +10,10 @@ import {
     MenuItem,
     MenuList,
 } from '@chakra-ui/react';
-import { Profile, UserRole } from 'model';
+
 import { useUpdateProfile } from 'modules/profile/hooks';
 import { PropsWithChildren, useRef, useState } from 'react';
+import { Profile, UserRole } from '../types';
 
 const RoleChangeDialog = ({
     profile,

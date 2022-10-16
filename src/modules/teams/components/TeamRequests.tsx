@@ -9,8 +9,9 @@ import {
     useToast,
     VStack,
 } from '@chakra-ui/react';
-import { Profile, Team } from 'model';
+
 import UserAvatar from 'modules/avatar/components/UserAvatar';
+import { Profile } from 'modules/profile/types';
 import {
     useAcceptRequest,
     useDeclineRequest,
@@ -18,6 +19,7 @@ import {
 } from 'modules/teams/hooks';
 import Link from 'next/link';
 import { useState } from 'react';
+import { Team } from '../types';
 
 interface RequestItemProps {
     profile: Profile;

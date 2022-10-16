@@ -1,5 +1,5 @@
 import { Box, Grid } from '@chakra-ui/react';
-import { Profile } from 'model';
+import { Profile } from '../types';
 
 const ProfilePropertyRow = ({
     name,

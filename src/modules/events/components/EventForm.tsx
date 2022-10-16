@@ -20,8 +20,9 @@ import {
 } from '@chakra-ui/react';
 import { FocusableElement } from '@chakra-ui/utils';
 import { useFormik } from 'formik';
-import { EventType, GrowEvent } from 'model';
+
 import { useRef } from 'react';
+import { EventType, GrowEvent } from '../types';
 
 type EventFormProps = {
     onSubmit: (value: Omit<GrowEvent, 'id'>) => void | Promise<unknown>;

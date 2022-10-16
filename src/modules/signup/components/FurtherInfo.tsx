@@ -13,7 +13,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { FurtherProfileInfo } from 'model';
+import { FurtherProfileInfo } from 'modules/profile/types';
 
 type FurtherInfoProps = {
     onNext: (info: FurtherProfileInfo) => void;

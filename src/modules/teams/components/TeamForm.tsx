@@ -15,8 +15,10 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { availableSkills, Team } from 'model';
+import { availableSkills } from 'modules/profile/types';
+
 import { useState } from 'react';
+import { Team } from '../types';
 
 interface TeamFormProps {
     onSave: (profile: Team) => void;

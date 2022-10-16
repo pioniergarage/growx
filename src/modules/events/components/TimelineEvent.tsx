@@ -1,5 +1,5 @@
 import { Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react';
-import { EventType, GrowEvent } from 'model';
+
 import { useMemo } from 'react';
 import {
     FaBuilding,
@@ -8,6 +8,7 @@ import {
     FaExclamation,
     FaMapMarkerAlt,
 } from 'react-icons/fa';
+import { GrowEvent, EventType } from '../types';
 import EventTag from './EventTag';
 
 interface TimelineEventProps {

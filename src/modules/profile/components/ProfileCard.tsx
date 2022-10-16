@@ -1,11 +1,13 @@
 import PageLink from '@/components/navigation/PageLink';
 import { EmailIcon, PhoneIcon } from '@chakra-ui/icons';
 import { Flex, Heading, HStack, Tag, Text } from '@chakra-ui/react';
-import { Profile, Team } from 'model';
+
 import UserAvatar, {
     UserAvatarProps,
 } from 'modules/avatar/components/UserAvatar';
+import { Team } from 'modules/teams/types';
 import { FaLightbulb, FaUsers } from 'react-icons/fa';
+import { Profile } from '../types';
 
 type ProfileCardProps = UserAvatarProps &
     Partial<Pick<Profile, 'email' | 'phone' | 'bio'>> & {

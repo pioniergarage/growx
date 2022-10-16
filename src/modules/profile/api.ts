@@ -1,7 +1,9 @@
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { FurtherProfileInfo, Profile, PublicMentorProfile } from 'model';
+import { PublicMentorProfile } from 'modules/mentor/types';
+
 import { definitions } from '../../database/supabase';
 import { handleResponse, handleSingleResponse } from '../../database/utils';
+import { Profile, FurtherProfileInfo } from './types';
 
 export const mapProfileDto: (dto: definitions['profiles']) => Profile = (
     dto

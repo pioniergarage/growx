@@ -8,7 +8,8 @@ import {
     Textarea,
     VStack,
 } from '@chakra-ui/react';
-import { availableSkills } from 'model';
+import { availableSkills } from 'modules/profile/types';
+
 import { useState } from 'react';
 import TagSelect from '../../../components/TagSelect';
 

@@ -12,7 +12,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { GrowEvent, Profile } from 'model';
+
 import EventForm from 'modules/events/components/EventForm';
 import TimelineEvent from 'modules/events/components/TimelineEvent';
 import {
@@ -21,7 +21,9 @@ import {
     useRegistrationsToEvent,
     useUpdateEvent,
 } from 'modules/events/hooks';
+import { GrowEvent } from 'modules/events/types';
 import ProfileCard from 'modules/profile/components/ProfileCard';
+import { Profile } from 'modules/profile/types';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { downloadCSV } from 'utils/csv';

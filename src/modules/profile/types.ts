@@ -18,49 +18,7 @@ export type Profile = {
     keyQualification: boolean;
 };
 
-export type PublicMentorProfile = Pick<
-    Profile,
-    'userId' | 'firstName' | 'lastName' | 'avatar' | 'bio'
->;
-
-export type Sponsor = {
-    name: string;
-    logo: string;
-    link: string;
-    type: 'BRONZE' | 'SILVER' | 'GOLD' | 'FLAGSHIP';
-    id: number;
-};
-
 export type UserRole = 'PARTICIPANT' | 'BUDDY' | 'MENTOR' | 'EXPERT' | 'ORGA';
-export enum EventType {
-    Online = 'Online',
-    Offline = 'Offline',
-    Hybrid = 'Hybrid',
-}
-
-export type GrowEvent = {
-    date: Date;
-    id: number;
-    title: string;
-    description?: string;
-    mandatory?: boolean;
-    location?: string;
-    sq_mandatory?: boolean;
-    type?: EventType;
-};
-
-export type Team = {
-    id: number;
-    name: string;
-    description: string;
-    tags: string[];
-    logo?: string;
-    archived: boolean;
-    requestSupport: string[];
-    mentor?: string;
-};
-
-export type MentorAssignments = Record<number, Profile>;
 
 export const availableSkills = [
     'AgriTech',
@@ -97,10 +55,6 @@ export const availableSkills = [
     'Legal',
 ].sort();
 
-export type FAQ = {
-    question: string;
-    answer: string;
-};
 
 export type FurtherProfileInfo = {
     lookingForTeam: boolean;

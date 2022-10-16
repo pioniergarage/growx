@@ -8,10 +8,11 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { Team } from 'model';
+
 import { getTeams } from 'modules/teams/api';
 import TeamCard from 'modules/teams/components/TeamCard';
 import { useAllTeams } from 'modules/teams/hooks';
+import { Team } from 'modules/teams/types';
 import Link from 'next/link';
 
 const TeamsPage = ({ teams: serversideTeams = [] }: { teams: Team[] }) => {

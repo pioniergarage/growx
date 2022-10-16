@@ -13,7 +13,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { Gender } from 'model';
+import { Gender } from 'modules/profile/types';
 
 export type PersonalInfo = {
     firstName: string;
