@@ -1,8 +1,4 @@
-import GrowEventCard from '@/components/events/GrowEventCard';
 import PageLink from '@/components/navigation/PageLink';
-import { kitName } from '@/components/signup/UniversityForm';
-import CreateTeamButton from '@/components/teams/CreateTeamButton';
-import TeamCard from '@/components/teams/TeamCard';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     Alert,
@@ -28,6 +24,10 @@ import { useGrowEvents, useRegistrationsOfUser } from 'hooks/event';
 import { useUpdateProfile } from 'hooks/profile';
 import { useTeam, useTeamIdOfUser, useTeamRequests } from 'hooks/team';
 import { Team } from 'model';
+import GrowEventCard from 'modules/events/components/GrowEventCard';
+import { kitName } from 'modules/signup/components/UniversityForm';
+import CreateTeamButton from 'modules/teams/components/CreateTeamButton';
+import TeamCard from 'modules/teams/components/TeamCard';
 import { useMemo, useState } from 'react';
 
 interface ConnectIndexProps {
@@ -120,7 +120,7 @@ const YourTeam = ({ userId }: { userId: string }) => {
     } else if (team) {
         return (
             <Box>
-                <Heading  mb={1} size="sm" color="gray.400" fontSize={12}>
+                <Heading mb={1} size="sm" color="gray.400" fontSize={12}>
                     Your Team
                 </Heading>
                 <TeamCard {...team} />

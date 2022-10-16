@@ -15,9 +15,9 @@ import {
     useTeamRequests,
 } from 'hooks/team';
 import { Profile, Team } from 'model';
+import UserAvatar from 'modules/avatar/components/UserAvatar';
 import Link from 'next/link';
 import { useState } from 'react';
-import UserAvatar from '../avatar/UserAvatar';
 
 interface RequestItemProps {
     profile: Profile;

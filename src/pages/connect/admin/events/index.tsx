@@ -1,4 +1,3 @@
-import CreateEventModal from '@/components/events/CreateEventModal';
 import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
 import PageLink from '@/components/navigation/PageLink';
 import { CheckIcon } from '@chakra-ui/icons';
@@ -16,6 +15,7 @@ import {
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useGrowEvents, useInsertEvent } from 'hooks/event';
 import { GrowEvent } from 'model';
+import CreateEventModal from 'modules/events/components/CreateEventModal';
 import { useState } from 'react';
 
 export default function EventManagement() {

@@ -1,7 +1,4 @@
-import UserAvatar from '@/components/avatar/UserAvatar';
 import FileSelect from '@/components/FileSelect';
-import ProfileForm from '@/components/profile/ProfileForm';
-import ProfileView from '@/components/profile/UsersProfileView';
 import {
     Box,
     Button,
@@ -15,6 +12,9 @@ import {
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useProfile, useUpdateProfile, useUploadAvatar } from 'hooks/profile';
 import { Profile } from 'model';
+import UserAvatar from 'modules/avatar/components/UserAvatar';
+import ProfileForm from 'modules/profile/components/ProfileForm';
+import UsersProfileView from 'modules/profile/components/UsersProfileView';
 import { useMemo, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 
@@ -116,7 +116,7 @@ function ProfileDetailsControl() {
             {!isEditing || !profile ? (
                 profile ? (
                     <>
-                        <ProfileView profile={profile} />
+                        <UsersProfileView profile={profile} />
                         <Button
                             onClick={() => setEditing(true)}
                             width={20}

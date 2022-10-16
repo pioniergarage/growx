@@ -1,4 +1,3 @@
-import TeamCard from '@/components/teams/TeamCard';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
     Breadcrumb,
@@ -12,6 +11,7 @@ import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { getTeams } from 'database/teams';
 import { useAllTeams } from 'hooks/team';
 import { Team } from 'model';
+import TeamCard from 'modules/teams/components/TeamCard';
 import Link from 'next/link';
 
 const TeamsPage = ({ teams: serversideTeams = [] }: { teams: Team[] }) => {

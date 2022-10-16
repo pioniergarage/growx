@@ -1,4 +1,3 @@
-import LogInForm from '@/components/forms/LoginForm';
 import PageLink from '@/components/navigation/PageLink';
 import { Alert, AlertIcon, Flex, VStack } from '@chakra-ui/react';
 import {
@@ -7,6 +6,7 @@ import {
     withPageAuth,
 } from '@supabase/auth-helpers-nextjs';
 import LoginLayout from 'layouts/LoginLayout';
+import LogInForm from 'modules/signup/components/LoginForm';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';

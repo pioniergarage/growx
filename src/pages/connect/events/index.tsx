@@ -1,4 +1,3 @@
-import GrowEventCard from '@/components/events/GrowEventCard';
 import {
     Box,
     Flex,
@@ -15,12 +14,11 @@ import { mapEventDto } from 'database/events';
 import { definitions } from 'database/supabase';
 import { useRegistrationsOfUser } from 'hooks/event';
 import { useProfile } from 'hooks/profile';
+import GrowEventCard from 'modules/events/components/GrowEventCard';
 
 const EventsPage = ({ eventsRaw }: { eventsRaw: definitions['events'][] }) => {
     const { profile } = useProfile();
-    const { registrations } = useRegistrationsOfUser(
-        profile?.userId
-    );
+    const { registrations } = useRegistrationsOfUser(profile?.userId);
     const events = eventsRaw.map(mapEventDto);
 
     return (
@@ -78,4 +76,3 @@ export const getServerSideProps = withPageAuth({
         return { props: { eventsRaw: data } };
     },
 });
-

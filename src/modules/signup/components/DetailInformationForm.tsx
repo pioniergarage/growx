@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { availableSkills } from 'model';
 import { useState } from 'react';
-import TagSelect from '../TagSelect';
+import TagSelect from '../../../components/TagSelect';
 
 type DetailInformationFormProps = {
     onContinue: (skills: string[], bio: string) => void;
@@ -18,7 +18,7 @@ type DetailInformationFormProps = {
 
 const DetailInformation = ({ onContinue }: DetailInformationFormProps) => {
     const [skills, setSkills] = useState<string[]>(['Social Entrepreneurship']);
-    const [bio, setBio] = useState('')
+    const [bio, setBio] = useState('');
     return (
         <form
             onSubmit={(e) => {
@@ -29,9 +29,7 @@ const DetailInformation = ({ onContinue }: DetailInformationFormProps) => {
             <VStack alignItems="center" gap={2}>
                 <Box textAlign="center">
                     <Heading size="md">Some more information about you</Heading>
-                    <Text color="gray.400">
-                        You can adjust these later
-                    </Text>
+                    <Text color="gray.400">You can adjust these later</Text>
                 </Box>
                 <FormControl>
                     <FormLabel>Your skills</FormLabel>
@@ -50,13 +48,12 @@ const DetailInformation = ({ onContinue }: DetailInformationFormProps) => {
                 </FormControl>
                 <FormControl>
                     <FormLabel>Describe yourself</FormLabel>
-                    <Textarea onBlur={(e) => setBio(e.target.value)} placeholder="Tell others something about your current job, for example what company you work for"/>
+                    <Textarea
+                        onBlur={(e) => setBio(e.target.value)}
+                        placeholder="Tell others something about your current job, for example what company you work for"
+                    />
                 </FormControl>
-                <Button
-                    type="submit"
-                    variant="solid"
-                    width="100%"
-                >
+                <Button type="submit" variant="solid" width="100%">
                     Continue
                 </Button>
             </VStack>

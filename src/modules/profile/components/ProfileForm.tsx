@@ -1,3 +1,4 @@
+import TagSelect from '@/components/TagSelect';
 import {
     Button,
     FormControl,
@@ -15,8 +16,6 @@ import {
 import { useFormik } from 'formik';
 import { availableSkills, Profile } from 'model';
 import { useState } from 'react';
-import TagSelect from '../TagSelect';
-
 interface ProflieFormProps {
     onSave: (profile: Profile) => void;
     loading: boolean;

@@ -1,4 +1,4 @@
-import AnimatedLogo from '@/components/landing/AnimatedLogo';
+import AnimatedLogo from './AnimatedLogo';
 import { Box, Grid, GridItem, Heading, Text, VStack } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import { isSignUpEnabled, signUpStart } from 'utils/dates';

@@ -1,7 +1,4 @@
-import EventForm from '@/components/events/EventForm';
-import TimelineEvent from '@/components/events/TimelineEvent';
 import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
-import ProfileCard from '@/components/profile/ProfileCard';
 import {
     Box,
     Button,
@@ -22,6 +19,9 @@ import {
     useUpdateEvent,
 } from 'hooks/event';
 import { GrowEvent, Profile } from 'model';
+import EventForm from 'modules/events/components/EventForm';
+import TimelineEvent from 'modules/events/components/TimelineEvent';
+import ProfileCard from 'modules/profile/components/ProfileCard';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { downloadCSV } from 'utils/csv';

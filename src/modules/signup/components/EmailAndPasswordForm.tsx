@@ -1,3 +1,4 @@
+import PageLink from '@/components/navigation/PageLink';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     Box,
@@ -16,8 +17,7 @@ import {
 import { useFormik } from 'formik';
 import Image from 'next/image';
 import { useEffect } from 'react';
-import rules from '../forms/rules';
-import PageLink from '../navigation/PageLink';
+import rules from 'utils/rules';
 
 export type SignUpInfo = {
     email: string;

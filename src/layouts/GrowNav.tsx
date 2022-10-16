@@ -24,9 +24,9 @@ import {
 } from 'react-icons/fa';
 import { useQueryClient } from 'react-query';
 import { isSignUpEnabled } from 'utils/dates';
-import UserAvatar from '../avatar/UserAvatar';
-import { Logo, NavBarContainer } from './Nav';
-import NavAdminMenu from './NavAdminMenu';
+import UserAvatar from '../modules/avatar/components/UserAvatar';
+import { Logo, NavBarContainer } from '../components/navigation/Nav';
+import NavAdminMenu from '../components/navigation/NavAdminMenu';
 
 const GrowConnectNavButton: React.FC<
     PropsWithChildren & LinkProps & Pick<IconButtonProps, 'aria-label' | 'icon'>

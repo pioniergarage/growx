@@ -1,12 +1,3 @@
-import LeaveTeamButton from '@/components/teams/LeaveTeamButton';
-import MemberList from '@/components/teams/MemberList';
-import RequestButton from '@/components/teams/RequestButton';
-import SupportRequestInfo from '@/components/teams/SupportRequestInfo';
-import TeamDetailsSkeleton from '@/components/teams/TeamDetailsSkeleton';
-import TeamForm from '@/components/teams/TeamForm';
-import TeamLogoControl from '@/components/teams/TeamLogoControl';
-import TeamRequests from '@/components/teams/TeamRequests';
-import YourMentor from '@/components/teams/YourMentor';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
     Box,
@@ -32,11 +23,20 @@ import {
     useWithdrawRequest,
 } from 'hooks/team';
 import { Team } from 'model';
+import LeaveTeamButton from 'modules/teams/components/LeaveTeamButton';
+import MemberList from 'modules/teams/components/MemberList';
+import RequestButton from 'modules/teams/components/RequestButton';
+import SupportRequestInfo from 'modules/teams/components/SupportRequestInfo';
+import TeamDescription from 'modules/teams/components/TeamDescriptions';
+import TeamDetailsSkeleton from 'modules/teams/components/TeamDetailsSkeleton';
+import TeamForm from 'modules/teams/components/TeamForm';
+import TeamLogoControl from 'modules/teams/components/TeamLogoControl';
+import TeamRequests from 'modules/teams/components/TeamRequests';
+import YourMentor from 'modules/teams/components/YourMentor';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState } from 'react';
-import TeamDescription from '../../../components/teams/TeamDescriptions';
-const TeamLogo = dynamic(() => import('@/components/teams/TeamLogo'), {
+const TeamLogo = dynamic(() => import('modules/teams/components/TeamLogo'), {
     ssr: false,
 });
 

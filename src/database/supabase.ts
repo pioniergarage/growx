@@ -4,1785 +4,1784 @@
  */
 
 export interface paths {
-    '/': {
-        get: {
-            responses: {
-                /** OK */
-                200: unknown;
-            };
-        };
+  "/": {
+    get: {
+      responses: {
+        /** OK */
+        200: unknown;
+      };
     };
-    '/events': {
-        get: {
-            parameters: {
-                query: {
-                    id?: parameters['rowFilter.events.id'];
-                    inserted_at?: parameters['rowFilter.events.inserted_at'];
-                    updated_at?: parameters['rowFilter.events.updated_at'];
-                    title?: parameters['rowFilter.events.title'];
-                    date?: parameters['rowFilter.events.date'];
-                    description?: parameters['rowFilter.events.description'];
-                    mandatory?: parameters['rowFilter.events.mandatory'];
-                    /** The location of the Event */
-                    location?: parameters['rowFilter.events.location'];
-                    /** Obligatory for participants who want to have the Schlüsselqualifikation points */
-                    sq_mandatory?: parameters['rowFilter.events.sq_mandatory'];
-                    type?: parameters['rowFilter.events.type'];
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                    /** Ordering */
-                    order?: parameters['order'];
-                    /** Limiting and Pagination */
-                    offset?: parameters['offset'];
-                    /** Limiting and Pagination */
-                    limit?: parameters['limit'];
-                };
-                header: {
-                    /** Limiting and Pagination */
-                    Range?: parameters['range'];
-                    /** Limiting and Pagination */
-                    'Range-Unit'?: parameters['rangeUnit'];
-                    /** Preference */
-                    Prefer?: parameters['preferCount'];
-                };
-            };
-            responses: {
-                /** OK */
-                200: {
-                    schema: definitions['events'][];
-                };
-                /** Partial Content */
-                206: unknown;
-            };
+  };
+  "/events": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.events.id"];
+          inserted_at?: parameters["rowFilter.events.inserted_at"];
+          updated_at?: parameters["rowFilter.events.updated_at"];
+          title?: parameters["rowFilter.events.title"];
+          date?: parameters["rowFilter.events.date"];
+          description?: parameters["rowFilter.events.description"];
+          mandatory?: parameters["rowFilter.events.mandatory"];
+          /** The location of the Event */
+          location?: parameters["rowFilter.events.location"];
+          /** Obligatory for participants who want to have the Schlüsselqualifikation points */
+          sq_mandatory?: parameters["rowFilter.events.sq_mandatory"];
+          type?: parameters["rowFilter.events.type"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
         };
-        post: {
-            parameters: {
-                body: {
-                    /** events */
-                    events?: definitions['events'];
-                };
-                query: {
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** Created */
-                201: unknown;
-            };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
         };
-        delete: {
-            parameters: {
-                query: {
-                    id?: parameters['rowFilter.events.id'];
-                    inserted_at?: parameters['rowFilter.events.inserted_at'];
-                    updated_at?: parameters['rowFilter.events.updated_at'];
-                    title?: parameters['rowFilter.events.title'];
-                    date?: parameters['rowFilter.events.date'];
-                    description?: parameters['rowFilter.events.description'];
-                    mandatory?: parameters['rowFilter.events.mandatory'];
-                    /** The location of the Event */
-                    location?: parameters['rowFilter.events.location'];
-                    /** Obligatory for participants who want to have the Schlüsselqualifikation points */
-                    sq_mandatory?: parameters['rowFilter.events.sq_mandatory'];
-                    type?: parameters['rowFilter.events.type'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["events"][];
         };
-        patch: {
-            parameters: {
-                query: {
-                    id?: parameters['rowFilter.events.id'];
-                    inserted_at?: parameters['rowFilter.events.inserted_at'];
-                    updated_at?: parameters['rowFilter.events.updated_at'];
-                    title?: parameters['rowFilter.events.title'];
-                    date?: parameters['rowFilter.events.date'];
-                    description?: parameters['rowFilter.events.description'];
-                    mandatory?: parameters['rowFilter.events.mandatory'];
-                    /** The location of the Event */
-                    location?: parameters['rowFilter.events.location'];
-                    /** Obligatory for participants who want to have the Schlüsselqualifikation points */
-                    sq_mandatory?: parameters['rowFilter.events.sq_mandatory'];
-                    type?: parameters['rowFilter.events.type'];
-                };
-                body: {
-                    /** events */
-                    events?: definitions['events'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
-        };
+        /** Partial Content */
+        206: unknown;
+      };
     };
-    '/faqs': {
-        get: {
-            parameters: {
-                query: {
-                    id?: parameters['rowFilter.faqs.id'];
-                    created_at?: parameters['rowFilter.faqs.created_at'];
-                    question?: parameters['rowFilter.faqs.question'];
-                    answer?: parameters['rowFilter.faqs.answer'];
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                    /** Ordering */
-                    order?: parameters['order'];
-                    /** Limiting and Pagination */
-                    offset?: parameters['offset'];
-                    /** Limiting and Pagination */
-                    limit?: parameters['limit'];
-                };
-                header: {
-                    /** Limiting and Pagination */
-                    Range?: parameters['range'];
-                    /** Limiting and Pagination */
-                    'Range-Unit'?: parameters['rangeUnit'];
-                    /** Preference */
-                    Prefer?: parameters['preferCount'];
-                };
-            };
-            responses: {
-                /** OK */
-                200: {
-                    schema: definitions['faqs'][];
-                };
-                /** Partial Content */
-                206: unknown;
-            };
+    post: {
+      parameters: {
+        body: {
+          /** events */
+          events?: definitions["events"];
         };
-        post: {
-            parameters: {
-                body: {
-                    /** faqs */
-                    faqs?: definitions['faqs'];
-                };
-                query: {
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** Created */
-                201: unknown;
-            };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
         };
-        delete: {
-            parameters: {
-                query: {
-                    id?: parameters['rowFilter.faqs.id'];
-                    created_at?: parameters['rowFilter.faqs.created_at'];
-                    question?: parameters['rowFilter.faqs.question'];
-                    answer?: parameters['rowFilter.faqs.answer'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
         };
-        patch: {
-            parameters: {
-                query: {
-                    id?: parameters['rowFilter.faqs.id'];
-                    created_at?: parameters['rowFilter.faqs.created_at'];
-                    question?: parameters['rowFilter.faqs.question'];
-                    answer?: parameters['rowFilter.faqs.answer'];
-                };
-                body: {
-                    /** faqs */
-                    faqs?: definitions['faqs'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
-        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
     };
-    '/event_registrations': {
-        get: {
-            parameters: {
-                query: {
-                    inserted_at?: parameters['rowFilter.event_registrations.inserted_at'];
-                    user_id?: parameters['rowFilter.event_registrations.user_id'];
-                    event_id?: parameters['rowFilter.event_registrations.event_id'];
-                    present?: parameters['rowFilter.event_registrations.present'];
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                    /** Ordering */
-                    order?: parameters['order'];
-                    /** Limiting and Pagination */
-                    offset?: parameters['offset'];
-                    /** Limiting and Pagination */
-                    limit?: parameters['limit'];
-                };
-                header: {
-                    /** Limiting and Pagination */
-                    Range?: parameters['range'];
-                    /** Limiting and Pagination */
-                    'Range-Unit'?: parameters['rangeUnit'];
-                    /** Preference */
-                    Prefer?: parameters['preferCount'];
-                };
-            };
-            responses: {
-                /** OK */
-                200: {
-                    schema: definitions['event_registrations'][];
-                };
-                /** Partial Content */
-                206: unknown;
-            };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.events.id"];
+          inserted_at?: parameters["rowFilter.events.inserted_at"];
+          updated_at?: parameters["rowFilter.events.updated_at"];
+          title?: parameters["rowFilter.events.title"];
+          date?: parameters["rowFilter.events.date"];
+          description?: parameters["rowFilter.events.description"];
+          mandatory?: parameters["rowFilter.events.mandatory"];
+          /** The location of the Event */
+          location?: parameters["rowFilter.events.location"];
+          /** Obligatory for participants who want to have the Schlüsselqualifikation points */
+          sq_mandatory?: parameters["rowFilter.events.sq_mandatory"];
+          type?: parameters["rowFilter.events.type"];
         };
-        post: {
-            parameters: {
-                body: {
-                    /** event_registrations */
-                    event_registrations?: definitions['event_registrations'];
-                };
-                query: {
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** Created */
-                201: unknown;
-            };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
         };
-        delete: {
-            parameters: {
-                query: {
-                    inserted_at?: parameters['rowFilter.event_registrations.inserted_at'];
-                    user_id?: parameters['rowFilter.event_registrations.user_id'];
-                    event_id?: parameters['rowFilter.event_registrations.event_id'];
-                    present?: parameters['rowFilter.event_registrations.present'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
-        };
-        patch: {
-            parameters: {
-                query: {
-                    inserted_at?: parameters['rowFilter.event_registrations.inserted_at'];
-                    user_id?: parameters['rowFilter.event_registrations.user_id'];
-                    event_id?: parameters['rowFilter.event_registrations.event_id'];
-                    present?: parameters['rowFilter.event_registrations.present'];
-                };
-                body: {
-                    /** event_registrations */
-                    event_registrations?: definitions['event_registrations'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
-        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
     };
-    '/teams': {
-        get: {
-            parameters: {
-                query: {
-                    inserted_at?: parameters['rowFilter.teams.inserted_at'];
-                    id?: parameters['rowFilter.teams.id'];
-                    name?: parameters['rowFilter.teams.name'];
-                    description?: parameters['rowFilter.teams.description'];
-                    tags?: parameters['rowFilter.teams.tags'];
-                    logo?: parameters['rowFilter.teams.logo'];
-                    archived?: parameters['rowFilter.teams.archived'];
-                    requestSupport?: parameters['rowFilter.teams.requestSupport'];
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                    /** Ordering */
-                    order?: parameters['order'];
-                    /** Limiting and Pagination */
-                    offset?: parameters['offset'];
-                    /** Limiting and Pagination */
-                    limit?: parameters['limit'];
-                };
-                header: {
-                    /** Limiting and Pagination */
-                    Range?: parameters['range'];
-                    /** Limiting and Pagination */
-                    'Range-Unit'?: parameters['rangeUnit'];
-                    /** Preference */
-                    Prefer?: parameters['preferCount'];
-                };
-            };
-            responses: {
-                /** OK */
-                200: {
-                    schema: definitions['teams'][];
-                };
-                /** Partial Content */
-                206: unknown;
-            };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.events.id"];
+          inserted_at?: parameters["rowFilter.events.inserted_at"];
+          updated_at?: parameters["rowFilter.events.updated_at"];
+          title?: parameters["rowFilter.events.title"];
+          date?: parameters["rowFilter.events.date"];
+          description?: parameters["rowFilter.events.description"];
+          mandatory?: parameters["rowFilter.events.mandatory"];
+          /** The location of the Event */
+          location?: parameters["rowFilter.events.location"];
+          /** Obligatory for participants who want to have the Schlüsselqualifikation points */
+          sq_mandatory?: parameters["rowFilter.events.sq_mandatory"];
+          type?: parameters["rowFilter.events.type"];
         };
-        post: {
-            parameters: {
-                body: {
-                    /** teams */
-                    teams?: definitions['teams'];
-                };
-                query: {
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** Created */
-                201: unknown;
-            };
+        body: {
+          /** events */
+          events?: definitions["events"];
         };
-        delete: {
-            parameters: {
-                query: {
-                    inserted_at?: parameters['rowFilter.teams.inserted_at'];
-                    id?: parameters['rowFilter.teams.id'];
-                    name?: parameters['rowFilter.teams.name'];
-                    description?: parameters['rowFilter.teams.description'];
-                    tags?: parameters['rowFilter.teams.tags'];
-                    logo?: parameters['rowFilter.teams.logo'];
-                    archived?: parameters['rowFilter.teams.archived'];
-                    requestSupport?: parameters['rowFilter.teams.requestSupport'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
         };
-        patch: {
-            parameters: {
-                query: {
-                    inserted_at?: parameters['rowFilter.teams.inserted_at'];
-                    id?: parameters['rowFilter.teams.id'];
-                    name?: parameters['rowFilter.teams.name'];
-                    description?: parameters['rowFilter.teams.description'];
-                    tags?: parameters['rowFilter.teams.tags'];
-                    logo?: parameters['rowFilter.teams.logo'];
-                    archived?: parameters['rowFilter.teams.archived'];
-                    requestSupport?: parameters['rowFilter.teams.requestSupport'];
-                };
-                body: {
-                    /** teams */
-                    teams?: definitions['teams'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
-        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
     };
-    '/signup_info': {
-        get: {
-            parameters: {
-                query: {
-                    created_at?: parameters['rowFilter.signup_info.created_at'];
-                    lookingForTeam?: parameters['rowFilter.signup_info.lookingForTeam'];
-                    idea?: parameters['rowFilter.signup_info.idea'];
-                    expectations?: parameters['rowFilter.signup_info.expectations'];
-                    source?: parameters['rowFilter.signup_info.source'];
-                    email?: parameters['rowFilter.signup_info.email'];
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                    /** Ordering */
-                    order?: parameters['order'];
-                    /** Limiting and Pagination */
-                    offset?: parameters['offset'];
-                    /** Limiting and Pagination */
-                    limit?: parameters['limit'];
-                };
-                header: {
-                    /** Limiting and Pagination */
-                    Range?: parameters['range'];
-                    /** Limiting and Pagination */
-                    'Range-Unit'?: parameters['rangeUnit'];
-                    /** Preference */
-                    Prefer?: parameters['preferCount'];
-                };
-            };
-            responses: {
-                /** OK */
-                200: {
-                    schema: definitions['signup_info'][];
-                };
-                /** Partial Content */
-                206: unknown;
-            };
+  };
+  "/faqs": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.faqs.id"];
+          created_at?: parameters["rowFilter.faqs.created_at"];
+          question?: parameters["rowFilter.faqs.question"];
+          answer?: parameters["rowFilter.faqs.answer"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
         };
-        post: {
-            parameters: {
-                body: {
-                    /** signup_info */
-                    signup_info?: definitions['signup_info'];
-                };
-                query: {
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** Created */
-                201: unknown;
-            };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
         };
-        delete: {
-            parameters: {
-                query: {
-                    created_at?: parameters['rowFilter.signup_info.created_at'];
-                    lookingForTeam?: parameters['rowFilter.signup_info.lookingForTeam'];
-                    idea?: parameters['rowFilter.signup_info.idea'];
-                    expectations?: parameters['rowFilter.signup_info.expectations'];
-                    source?: parameters['rowFilter.signup_info.source'];
-                    email?: parameters['rowFilter.signup_info.email'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["faqs"][];
         };
-        patch: {
-            parameters: {
-                query: {
-                    created_at?: parameters['rowFilter.signup_info.created_at'];
-                    lookingForTeam?: parameters['rowFilter.signup_info.lookingForTeam'];
-                    idea?: parameters['rowFilter.signup_info.idea'];
-                    expectations?: parameters['rowFilter.signup_info.expectations'];
-                    source?: parameters['rowFilter.signup_info.source'];
-                    email?: parameters['rowFilter.signup_info.email'];
-                };
-                body: {
-                    /** signup_info */
-                    signup_info?: definitions['signup_info'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
-        };
+        /** Partial Content */
+        206: unknown;
+      };
     };
-    '/mentor_assignment': {
-        get: {
-            parameters: {
-                query: {
-                    created_at?: parameters['rowFilter.mentor_assignment.created_at'];
-                    mentor?: parameters['rowFilter.mentor_assignment.mentor'];
-                    team?: parameters['rowFilter.mentor_assignment.team'];
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                    /** Ordering */
-                    order?: parameters['order'];
-                    /** Limiting and Pagination */
-                    offset?: parameters['offset'];
-                    /** Limiting and Pagination */
-                    limit?: parameters['limit'];
-                };
-                header: {
-                    /** Limiting and Pagination */
-                    Range?: parameters['range'];
-                    /** Limiting and Pagination */
-                    'Range-Unit'?: parameters['rangeUnit'];
-                    /** Preference */
-                    Prefer?: parameters['preferCount'];
-                };
-            };
-            responses: {
-                /** OK */
-                200: {
-                    schema: definitions['mentor_assignment'][];
-                };
-                /** Partial Content */
-                206: unknown;
-            };
+    post: {
+      parameters: {
+        body: {
+          /** faqs */
+          faqs?: definitions["faqs"];
         };
-        post: {
-            parameters: {
-                body: {
-                    /** mentor_assignment */
-                    mentor_assignment?: definitions['mentor_assignment'];
-                };
-                query: {
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** Created */
-                201: unknown;
-            };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
         };
-        delete: {
-            parameters: {
-                query: {
-                    created_at?: parameters['rowFilter.mentor_assignment.created_at'];
-                    mentor?: parameters['rowFilter.mentor_assignment.mentor'];
-                    team?: parameters['rowFilter.mentor_assignment.team'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
         };
-        patch: {
-            parameters: {
-                query: {
-                    created_at?: parameters['rowFilter.mentor_assignment.created_at'];
-                    mentor?: parameters['rowFilter.mentor_assignment.mentor'];
-                    team?: parameters['rowFilter.mentor_assignment.team'];
-                };
-                body: {
-                    /** mentor_assignment */
-                    mentor_assignment?: definitions['mentor_assignment'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
-        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
     };
-    '/team_requests': {
-        get: {
-            parameters: {
-                query: {
-                    inserted_at?: parameters['rowFilter.team_requests.inserted_at'];
-                    user_id?: parameters['rowFilter.team_requests.user_id'];
-                    team_id?: parameters['rowFilter.team_requests.team_id'];
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                    /** Ordering */
-                    order?: parameters['order'];
-                    /** Limiting and Pagination */
-                    offset?: parameters['offset'];
-                    /** Limiting and Pagination */
-                    limit?: parameters['limit'];
-                };
-                header: {
-                    /** Limiting and Pagination */
-                    Range?: parameters['range'];
-                    /** Limiting and Pagination */
-                    'Range-Unit'?: parameters['rangeUnit'];
-                    /** Preference */
-                    Prefer?: parameters['preferCount'];
-                };
-            };
-            responses: {
-                /** OK */
-                200: {
-                    schema: definitions['team_requests'][];
-                };
-                /** Partial Content */
-                206: unknown;
-            };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.faqs.id"];
+          created_at?: parameters["rowFilter.faqs.created_at"];
+          question?: parameters["rowFilter.faqs.question"];
+          answer?: parameters["rowFilter.faqs.answer"];
         };
-        post: {
-            parameters: {
-                body: {
-                    /** team_requests */
-                    team_requests?: definitions['team_requests'];
-                };
-                query: {
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** Created */
-                201: unknown;
-            };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
         };
-        delete: {
-            parameters: {
-                query: {
-                    inserted_at?: parameters['rowFilter.team_requests.inserted_at'];
-                    user_id?: parameters['rowFilter.team_requests.user_id'];
-                    team_id?: parameters['rowFilter.team_requests.team_id'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
-        };
-        patch: {
-            parameters: {
-                query: {
-                    inserted_at?: parameters['rowFilter.team_requests.inserted_at'];
-                    user_id?: parameters['rowFilter.team_requests.user_id'];
-                    team_id?: parameters['rowFilter.team_requests.team_id'];
-                };
-                body: {
-                    /** team_requests */
-                    team_requests?: definitions['team_requests'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
-        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
     };
-    '/team_members': {
-        get: {
-            parameters: {
-                query: {
-                    inserted_at?: parameters['rowFilter.team_members.inserted_at'];
-                    user_id?: parameters['rowFilter.team_members.user_id'];
-                    team_id?: parameters['rowFilter.team_members.team_id'];
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                    /** Ordering */
-                    order?: parameters['order'];
-                    /** Limiting and Pagination */
-                    offset?: parameters['offset'];
-                    /** Limiting and Pagination */
-                    limit?: parameters['limit'];
-                };
-                header: {
-                    /** Limiting and Pagination */
-                    Range?: parameters['range'];
-                    /** Limiting and Pagination */
-                    'Range-Unit'?: parameters['rangeUnit'];
-                    /** Preference */
-                    Prefer?: parameters['preferCount'];
-                };
-            };
-            responses: {
-                /** OK */
-                200: {
-                    schema: definitions['team_members'][];
-                };
-                /** Partial Content */
-                206: unknown;
-            };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.faqs.id"];
+          created_at?: parameters["rowFilter.faqs.created_at"];
+          question?: parameters["rowFilter.faqs.question"];
+          answer?: parameters["rowFilter.faqs.answer"];
         };
-        post: {
-            parameters: {
-                body: {
-                    /** team_members */
-                    team_members?: definitions['team_members'];
-                };
-                query: {
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** Created */
-                201: unknown;
-            };
+        body: {
+          /** faqs */
+          faqs?: definitions["faqs"];
         };
-        delete: {
-            parameters: {
-                query: {
-                    inserted_at?: parameters['rowFilter.team_members.inserted_at'];
-                    user_id?: parameters['rowFilter.team_members.user_id'];
-                    team_id?: parameters['rowFilter.team_members.team_id'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
         };
-        patch: {
-            parameters: {
-                query: {
-                    inserted_at?: parameters['rowFilter.team_members.inserted_at'];
-                    user_id?: parameters['rowFilter.team_members.user_id'];
-                    team_id?: parameters['rowFilter.team_members.team_id'];
-                };
-                body: {
-                    /** team_members */
-                    team_members?: definitions['team_members'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
-        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
     };
-    '/event_backup19_08_2022': {
-        get: {
-            parameters: {
-                query: {
-                    id?: parameters['rowFilter.event_backup19_08_2022.id'];
-                    inserted_at?: parameters['rowFilter.event_backup19_08_2022.inserted_at'];
-                    updated_at?: parameters['rowFilter.event_backup19_08_2022.updated_at'];
-                    title?: parameters['rowFilter.event_backup19_08_2022.title'];
-                    date?: parameters['rowFilter.event_backup19_08_2022.date'];
-                    description?: parameters['rowFilter.event_backup19_08_2022.description'];
-                    online?: parameters['rowFilter.event_backup19_08_2022.online'];
-                    mandatory?: parameters['rowFilter.event_backup19_08_2022.mandatory'];
-                    type_id?: parameters['rowFilter.event_backup19_08_2022.type_id'];
-                    location?: parameters['rowFilter.event_backup19_08_2022.location'];
-                    sq_mandatory?: parameters['rowFilter.event_backup19_08_2022.sq_mandatory'];
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                    /** Ordering */
-                    order?: parameters['order'];
-                    /** Limiting and Pagination */
-                    offset?: parameters['offset'];
-                    /** Limiting and Pagination */
-                    limit?: parameters['limit'];
-                };
-                header: {
-                    /** Limiting and Pagination */
-                    Range?: parameters['range'];
-                    /** Limiting and Pagination */
-                    'Range-Unit'?: parameters['rangeUnit'];
-                    /** Preference */
-                    Prefer?: parameters['preferCount'];
-                };
-            };
-            responses: {
-                /** OK */
-                200: {
-                    schema: definitions['event_backup19_08_2022'][];
-                };
-                /** Partial Content */
-                206: unknown;
-            };
+  };
+  "/event_registrations": {
+    get: {
+      parameters: {
+        query: {
+          inserted_at?: parameters["rowFilter.event_registrations.inserted_at"];
+          user_id?: parameters["rowFilter.event_registrations.user_id"];
+          event_id?: parameters["rowFilter.event_registrations.event_id"];
+          present?: parameters["rowFilter.event_registrations.present"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
         };
-        post: {
-            parameters: {
-                body: {
-                    /** event_backup19_08_2022 */
-                    event_backup19_08_2022?: definitions['event_backup19_08_2022'];
-                };
-                query: {
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** Created */
-                201: unknown;
-            };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
         };
-        delete: {
-            parameters: {
-                query: {
-                    id?: parameters['rowFilter.event_backup19_08_2022.id'];
-                    inserted_at?: parameters['rowFilter.event_backup19_08_2022.inserted_at'];
-                    updated_at?: parameters['rowFilter.event_backup19_08_2022.updated_at'];
-                    title?: parameters['rowFilter.event_backup19_08_2022.title'];
-                    date?: parameters['rowFilter.event_backup19_08_2022.date'];
-                    description?: parameters['rowFilter.event_backup19_08_2022.description'];
-                    online?: parameters['rowFilter.event_backup19_08_2022.online'];
-                    mandatory?: parameters['rowFilter.event_backup19_08_2022.mandatory'];
-                    type_id?: parameters['rowFilter.event_backup19_08_2022.type_id'];
-                    location?: parameters['rowFilter.event_backup19_08_2022.location'];
-                    sq_mandatory?: parameters['rowFilter.event_backup19_08_2022.sq_mandatory'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["event_registrations"][];
         };
-        patch: {
-            parameters: {
-                query: {
-                    id?: parameters['rowFilter.event_backup19_08_2022.id'];
-                    inserted_at?: parameters['rowFilter.event_backup19_08_2022.inserted_at'];
-                    updated_at?: parameters['rowFilter.event_backup19_08_2022.updated_at'];
-                    title?: parameters['rowFilter.event_backup19_08_2022.title'];
-                    date?: parameters['rowFilter.event_backup19_08_2022.date'];
-                    description?: parameters['rowFilter.event_backup19_08_2022.description'];
-                    online?: parameters['rowFilter.event_backup19_08_2022.online'];
-                    mandatory?: parameters['rowFilter.event_backup19_08_2022.mandatory'];
-                    type_id?: parameters['rowFilter.event_backup19_08_2022.type_id'];
-                    location?: parameters['rowFilter.event_backup19_08_2022.location'];
-                    sq_mandatory?: parameters['rowFilter.event_backup19_08_2022.sq_mandatory'];
-                };
-                body: {
-                    /** event_backup19_08_2022 */
-                    event_backup19_08_2022?: definitions['event_backup19_08_2022'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
-        };
+        /** Partial Content */
+        206: unknown;
+      };
     };
-    '/profiles': {
-        get: {
-            parameters: {
-                query: {
-                    user_id?: parameters['rowFilter.profiles.user_id'];
-                    inserted_at?: parameters['rowFilter.profiles.inserted_at'];
-                    first_name?: parameters['rowFilter.profiles.first_name'];
-                    last_name?: parameters['rowFilter.profiles.last_name'];
-                    email?: parameters['rowFilter.profiles.email'];
-                    gender?: parameters['rowFilter.profiles.gender'];
-                    phone?: parameters['rowFilter.profiles.phone'];
-                    studies?: parameters['rowFilter.profiles.studies'];
-                    university?: parameters['rowFilter.profiles.university'];
-                    homeland?: parameters['rowFilter.profiles.homeland'];
-                    avatar?: parameters['rowFilter.profiles.avatar'];
-                    role?: parameters['rowFilter.profiles.role'];
-                    skills?: parameters['rowFilter.profiles.skills'];
-                    bio?: parameters['rowFilter.profiles.bio'];
-                    /** used to determine if the person want to use grow as key qualification */
-                    keyQualification?: parameters['rowFilter.profiles.keyQualification'];
-                    universityCountry?: parameters['rowFilter.profiles.universityCountry'];
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                    /** Ordering */
-                    order?: parameters['order'];
-                    /** Limiting and Pagination */
-                    offset?: parameters['offset'];
-                    /** Limiting and Pagination */
-                    limit?: parameters['limit'];
-                };
-                header: {
-                    /** Limiting and Pagination */
-                    Range?: parameters['range'];
-                    /** Limiting and Pagination */
-                    'Range-Unit'?: parameters['rangeUnit'];
-                    /** Preference */
-                    Prefer?: parameters['preferCount'];
-                };
-            };
-            responses: {
-                /** OK */
-                200: {
-                    schema: definitions['profiles'][];
-                };
-                /** Partial Content */
-                206: unknown;
-            };
+    post: {
+      parameters: {
+        body: {
+          /** event_registrations */
+          event_registrations?: definitions["event_registrations"];
         };
-        post: {
-            parameters: {
-                body: {
-                    /** profiles */
-                    profiles?: definitions['profiles'];
-                };
-                query: {
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** Created */
-                201: unknown;
-            };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
         };
-        delete: {
-            parameters: {
-                query: {
-                    user_id?: parameters['rowFilter.profiles.user_id'];
-                    inserted_at?: parameters['rowFilter.profiles.inserted_at'];
-                    first_name?: parameters['rowFilter.profiles.first_name'];
-                    last_name?: parameters['rowFilter.profiles.last_name'];
-                    email?: parameters['rowFilter.profiles.email'];
-                    gender?: parameters['rowFilter.profiles.gender'];
-                    phone?: parameters['rowFilter.profiles.phone'];
-                    studies?: parameters['rowFilter.profiles.studies'];
-                    university?: parameters['rowFilter.profiles.university'];
-                    homeland?: parameters['rowFilter.profiles.homeland'];
-                    avatar?: parameters['rowFilter.profiles.avatar'];
-                    role?: parameters['rowFilter.profiles.role'];
-                    skills?: parameters['rowFilter.profiles.skills'];
-                    bio?: parameters['rowFilter.profiles.bio'];
-                    /** used to determine if the person want to use grow as key qualification */
-                    keyQualification?: parameters['rowFilter.profiles.keyQualification'];
-                    universityCountry?: parameters['rowFilter.profiles.universityCountry'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
         };
-        patch: {
-            parameters: {
-                query: {
-                    user_id?: parameters['rowFilter.profiles.user_id'];
-                    inserted_at?: parameters['rowFilter.profiles.inserted_at'];
-                    first_name?: parameters['rowFilter.profiles.first_name'];
-                    last_name?: parameters['rowFilter.profiles.last_name'];
-                    email?: parameters['rowFilter.profiles.email'];
-                    gender?: parameters['rowFilter.profiles.gender'];
-                    phone?: parameters['rowFilter.profiles.phone'];
-                    studies?: parameters['rowFilter.profiles.studies'];
-                    university?: parameters['rowFilter.profiles.university'];
-                    homeland?: parameters['rowFilter.profiles.homeland'];
-                    avatar?: parameters['rowFilter.profiles.avatar'];
-                    role?: parameters['rowFilter.profiles.role'];
-                    skills?: parameters['rowFilter.profiles.skills'];
-                    bio?: parameters['rowFilter.profiles.bio'];
-                    /** used to determine if the person want to use grow as key qualification */
-                    keyQualification?: parameters['rowFilter.profiles.keyQualification'];
-                    universityCountry?: parameters['rowFilter.profiles.universityCountry'];
-                };
-                body: {
-                    /** profiles */
-                    profiles?: definitions['profiles'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
-        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
     };
-    '/sponsors': {
-        get: {
-            parameters: {
-                query: {
-                    id?: parameters['rowFilter.sponsors.id'];
-                    created_at?: parameters['rowFilter.sponsors.created_at'];
-                    name?: parameters['rowFilter.sponsors.name'];
-                    logo?: parameters['rowFilter.sponsors.logo'];
-                    link?: parameters['rowFilter.sponsors.link'];
-                    type?: parameters['rowFilter.sponsors.type'];
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                    /** Ordering */
-                    order?: parameters['order'];
-                    /** Limiting and Pagination */
-                    offset?: parameters['offset'];
-                    /** Limiting and Pagination */
-                    limit?: parameters['limit'];
-                };
-                header: {
-                    /** Limiting and Pagination */
-                    Range?: parameters['range'];
-                    /** Limiting and Pagination */
-                    'Range-Unit'?: parameters['rangeUnit'];
-                    /** Preference */
-                    Prefer?: parameters['preferCount'];
-                };
-            };
-            responses: {
-                /** OK */
-                200: {
-                    schema: definitions['sponsors'][];
-                };
-                /** Partial Content */
-                206: unknown;
-            };
+    delete: {
+      parameters: {
+        query: {
+          inserted_at?: parameters["rowFilter.event_registrations.inserted_at"];
+          user_id?: parameters["rowFilter.event_registrations.user_id"];
+          event_id?: parameters["rowFilter.event_registrations.event_id"];
+          present?: parameters["rowFilter.event_registrations.present"];
         };
-        post: {
-            parameters: {
-                body: {
-                    /** sponsors */
-                    sponsors?: definitions['sponsors'];
-                };
-                query: {
-                    /** Filtering Columns */
-                    select?: parameters['select'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** Created */
-                201: unknown;
-            };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
         };
-        delete: {
-            parameters: {
-                query: {
-                    id?: parameters['rowFilter.sponsors.id'];
-                    created_at?: parameters['rowFilter.sponsors.created_at'];
-                    name?: parameters['rowFilter.sponsors.name'];
-                    logo?: parameters['rowFilter.sponsors.logo'];
-                    link?: parameters['rowFilter.sponsors.link'];
-                    type?: parameters['rowFilter.sponsors.type'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
-        };
-        patch: {
-            parameters: {
-                query: {
-                    id?: parameters['rowFilter.sponsors.id'];
-                    created_at?: parameters['rowFilter.sponsors.created_at'];
-                    name?: parameters['rowFilter.sponsors.name'];
-                    logo?: parameters['rowFilter.sponsors.logo'];
-                    link?: parameters['rowFilter.sponsors.link'];
-                    type?: parameters['rowFilter.sponsors.type'];
-                };
-                body: {
-                    /** sponsors */
-                    sponsors?: definitions['sponsors'];
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferReturn'];
-                };
-            };
-            responses: {
-                /** No Content */
-                204: never;
-            };
-        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
     };
-    '/rpc/isadmin': {
-        post: {
-            parameters: {
-                body: {
-                    args: {
-                        /** Format: uuid */
-                        user_id: string;
-                    };
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferParams'];
-                };
-            };
-            responses: {
-                /** OK */
-                200: unknown;
-            };
+    patch: {
+      parameters: {
+        query: {
+          inserted_at?: parameters["rowFilter.event_registrations.inserted_at"];
+          user_id?: parameters["rowFilter.event_registrations.user_id"];
+          event_id?: parameters["rowFilter.event_registrations.event_id"];
+          present?: parameters["rowFilter.event_registrations.present"];
         };
-    };
-    '/rpc/accept_request': {
-        post: {
-            parameters: {
-                body: {
-                    args: {
-                        /** Format: uuid */
-                        requesting_user_id: string;
-                    };
-                };
-                header: {
-                    /** Preference */
-                    Prefer?: parameters['preferParams'];
-                };
-            };
-            responses: {
-                /** OK */
-                200: unknown;
-            };
+        body: {
+          /** event_registrations */
+          event_registrations?: definitions["event_registrations"];
         };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
     };
+  };
+  "/teams": {
+    get: {
+      parameters: {
+        query: {
+          inserted_at?: parameters["rowFilter.teams.inserted_at"];
+          id?: parameters["rowFilter.teams.id"];
+          name?: parameters["rowFilter.teams.name"];
+          description?: parameters["rowFilter.teams.description"];
+          tags?: parameters["rowFilter.teams.tags"];
+          logo?: parameters["rowFilter.teams.logo"];
+          archived?: parameters["rowFilter.teams.archived"];
+          requestSupport?: parameters["rowFilter.teams.requestSupport"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["teams"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** teams */
+          teams?: definitions["teams"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          inserted_at?: parameters["rowFilter.teams.inserted_at"];
+          id?: parameters["rowFilter.teams.id"];
+          name?: parameters["rowFilter.teams.name"];
+          description?: parameters["rowFilter.teams.description"];
+          tags?: parameters["rowFilter.teams.tags"];
+          logo?: parameters["rowFilter.teams.logo"];
+          archived?: parameters["rowFilter.teams.archived"];
+          requestSupport?: parameters["rowFilter.teams.requestSupport"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          inserted_at?: parameters["rowFilter.teams.inserted_at"];
+          id?: parameters["rowFilter.teams.id"];
+          name?: parameters["rowFilter.teams.name"];
+          description?: parameters["rowFilter.teams.description"];
+          tags?: parameters["rowFilter.teams.tags"];
+          logo?: parameters["rowFilter.teams.logo"];
+          archived?: parameters["rowFilter.teams.archived"];
+          requestSupport?: parameters["rowFilter.teams.requestSupport"];
+        };
+        body: {
+          /** teams */
+          teams?: definitions["teams"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/signup_info": {
+    get: {
+      parameters: {
+        query: {
+          created_at?: parameters["rowFilter.signup_info.created_at"];
+          lookingForTeam?: parameters["rowFilter.signup_info.lookingForTeam"];
+          idea?: parameters["rowFilter.signup_info.idea"];
+          expectations?: parameters["rowFilter.signup_info.expectations"];
+          source?: parameters["rowFilter.signup_info.source"];
+          email?: parameters["rowFilter.signup_info.email"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["signup_info"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** signup_info */
+          signup_info?: definitions["signup_info"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          created_at?: parameters["rowFilter.signup_info.created_at"];
+          lookingForTeam?: parameters["rowFilter.signup_info.lookingForTeam"];
+          idea?: parameters["rowFilter.signup_info.idea"];
+          expectations?: parameters["rowFilter.signup_info.expectations"];
+          source?: parameters["rowFilter.signup_info.source"];
+          email?: parameters["rowFilter.signup_info.email"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          created_at?: parameters["rowFilter.signup_info.created_at"];
+          lookingForTeam?: parameters["rowFilter.signup_info.lookingForTeam"];
+          idea?: parameters["rowFilter.signup_info.idea"];
+          expectations?: parameters["rowFilter.signup_info.expectations"];
+          source?: parameters["rowFilter.signup_info.source"];
+          email?: parameters["rowFilter.signup_info.email"];
+        };
+        body: {
+          /** signup_info */
+          signup_info?: definitions["signup_info"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/mentor_assignment": {
+    get: {
+      parameters: {
+        query: {
+          created_at?: parameters["rowFilter.mentor_assignment.created_at"];
+          mentor?: parameters["rowFilter.mentor_assignment.mentor"];
+          team?: parameters["rowFilter.mentor_assignment.team"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["mentor_assignment"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** mentor_assignment */
+          mentor_assignment?: definitions["mentor_assignment"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          created_at?: parameters["rowFilter.mentor_assignment.created_at"];
+          mentor?: parameters["rowFilter.mentor_assignment.mentor"];
+          team?: parameters["rowFilter.mentor_assignment.team"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          created_at?: parameters["rowFilter.mentor_assignment.created_at"];
+          mentor?: parameters["rowFilter.mentor_assignment.mentor"];
+          team?: parameters["rowFilter.mentor_assignment.team"];
+        };
+        body: {
+          /** mentor_assignment */
+          mentor_assignment?: definitions["mentor_assignment"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/team_requests": {
+    get: {
+      parameters: {
+        query: {
+          inserted_at?: parameters["rowFilter.team_requests.inserted_at"];
+          user_id?: parameters["rowFilter.team_requests.user_id"];
+          team_id?: parameters["rowFilter.team_requests.team_id"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["team_requests"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** team_requests */
+          team_requests?: definitions["team_requests"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          inserted_at?: parameters["rowFilter.team_requests.inserted_at"];
+          user_id?: parameters["rowFilter.team_requests.user_id"];
+          team_id?: parameters["rowFilter.team_requests.team_id"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          inserted_at?: parameters["rowFilter.team_requests.inserted_at"];
+          user_id?: parameters["rowFilter.team_requests.user_id"];
+          team_id?: parameters["rowFilter.team_requests.team_id"];
+        };
+        body: {
+          /** team_requests */
+          team_requests?: definitions["team_requests"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/team_members": {
+    get: {
+      parameters: {
+        query: {
+          inserted_at?: parameters["rowFilter.team_members.inserted_at"];
+          user_id?: parameters["rowFilter.team_members.user_id"];
+          team_id?: parameters["rowFilter.team_members.team_id"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["team_members"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** team_members */
+          team_members?: definitions["team_members"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          inserted_at?: parameters["rowFilter.team_members.inserted_at"];
+          user_id?: parameters["rowFilter.team_members.user_id"];
+          team_id?: parameters["rowFilter.team_members.team_id"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          inserted_at?: parameters["rowFilter.team_members.inserted_at"];
+          user_id?: parameters["rowFilter.team_members.user_id"];
+          team_id?: parameters["rowFilter.team_members.team_id"];
+        };
+        body: {
+          /** team_members */
+          team_members?: definitions["team_members"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/event_backup19_08_2022": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.event_backup19_08_2022.id"];
+          inserted_at?: parameters["rowFilter.event_backup19_08_2022.inserted_at"];
+          updated_at?: parameters["rowFilter.event_backup19_08_2022.updated_at"];
+          title?: parameters["rowFilter.event_backup19_08_2022.title"];
+          date?: parameters["rowFilter.event_backup19_08_2022.date"];
+          description?: parameters["rowFilter.event_backup19_08_2022.description"];
+          online?: parameters["rowFilter.event_backup19_08_2022.online"];
+          mandatory?: parameters["rowFilter.event_backup19_08_2022.mandatory"];
+          type_id?: parameters["rowFilter.event_backup19_08_2022.type_id"];
+          location?: parameters["rowFilter.event_backup19_08_2022.location"];
+          sq_mandatory?: parameters["rowFilter.event_backup19_08_2022.sq_mandatory"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["event_backup19_08_2022"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** event_backup19_08_2022 */
+          event_backup19_08_2022?: definitions["event_backup19_08_2022"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.event_backup19_08_2022.id"];
+          inserted_at?: parameters["rowFilter.event_backup19_08_2022.inserted_at"];
+          updated_at?: parameters["rowFilter.event_backup19_08_2022.updated_at"];
+          title?: parameters["rowFilter.event_backup19_08_2022.title"];
+          date?: parameters["rowFilter.event_backup19_08_2022.date"];
+          description?: parameters["rowFilter.event_backup19_08_2022.description"];
+          online?: parameters["rowFilter.event_backup19_08_2022.online"];
+          mandatory?: parameters["rowFilter.event_backup19_08_2022.mandatory"];
+          type_id?: parameters["rowFilter.event_backup19_08_2022.type_id"];
+          location?: parameters["rowFilter.event_backup19_08_2022.location"];
+          sq_mandatory?: parameters["rowFilter.event_backup19_08_2022.sq_mandatory"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.event_backup19_08_2022.id"];
+          inserted_at?: parameters["rowFilter.event_backup19_08_2022.inserted_at"];
+          updated_at?: parameters["rowFilter.event_backup19_08_2022.updated_at"];
+          title?: parameters["rowFilter.event_backup19_08_2022.title"];
+          date?: parameters["rowFilter.event_backup19_08_2022.date"];
+          description?: parameters["rowFilter.event_backup19_08_2022.description"];
+          online?: parameters["rowFilter.event_backup19_08_2022.online"];
+          mandatory?: parameters["rowFilter.event_backup19_08_2022.mandatory"];
+          type_id?: parameters["rowFilter.event_backup19_08_2022.type_id"];
+          location?: parameters["rowFilter.event_backup19_08_2022.location"];
+          sq_mandatory?: parameters["rowFilter.event_backup19_08_2022.sq_mandatory"];
+        };
+        body: {
+          /** event_backup19_08_2022 */
+          event_backup19_08_2022?: definitions["event_backup19_08_2022"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/profiles": {
+    get: {
+      parameters: {
+        query: {
+          user_id?: parameters["rowFilter.profiles.user_id"];
+          inserted_at?: parameters["rowFilter.profiles.inserted_at"];
+          first_name?: parameters["rowFilter.profiles.first_name"];
+          last_name?: parameters["rowFilter.profiles.last_name"];
+          email?: parameters["rowFilter.profiles.email"];
+          gender?: parameters["rowFilter.profiles.gender"];
+          phone?: parameters["rowFilter.profiles.phone"];
+          studies?: parameters["rowFilter.profiles.studies"];
+          university?: parameters["rowFilter.profiles.university"];
+          homeland?: parameters["rowFilter.profiles.homeland"];
+          avatar?: parameters["rowFilter.profiles.avatar"];
+          role?: parameters["rowFilter.profiles.role"];
+          skills?: parameters["rowFilter.profiles.skills"];
+          bio?: parameters["rowFilter.profiles.bio"];
+          /** used to determine if the person want to use grow as key qualification */
+          keyQualification?: parameters["rowFilter.profiles.keyQualification"];
+          universityCountry?: parameters["rowFilter.profiles.universityCountry"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["profiles"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** profiles */
+          profiles?: definitions["profiles"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          user_id?: parameters["rowFilter.profiles.user_id"];
+          inserted_at?: parameters["rowFilter.profiles.inserted_at"];
+          first_name?: parameters["rowFilter.profiles.first_name"];
+          last_name?: parameters["rowFilter.profiles.last_name"];
+          email?: parameters["rowFilter.profiles.email"];
+          gender?: parameters["rowFilter.profiles.gender"];
+          phone?: parameters["rowFilter.profiles.phone"];
+          studies?: parameters["rowFilter.profiles.studies"];
+          university?: parameters["rowFilter.profiles.university"];
+          homeland?: parameters["rowFilter.profiles.homeland"];
+          avatar?: parameters["rowFilter.profiles.avatar"];
+          role?: parameters["rowFilter.profiles.role"];
+          skills?: parameters["rowFilter.profiles.skills"];
+          bio?: parameters["rowFilter.profiles.bio"];
+          /** used to determine if the person want to use grow as key qualification */
+          keyQualification?: parameters["rowFilter.profiles.keyQualification"];
+          universityCountry?: parameters["rowFilter.profiles.universityCountry"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          user_id?: parameters["rowFilter.profiles.user_id"];
+          inserted_at?: parameters["rowFilter.profiles.inserted_at"];
+          first_name?: parameters["rowFilter.profiles.first_name"];
+          last_name?: parameters["rowFilter.profiles.last_name"];
+          email?: parameters["rowFilter.profiles.email"];
+          gender?: parameters["rowFilter.profiles.gender"];
+          phone?: parameters["rowFilter.profiles.phone"];
+          studies?: parameters["rowFilter.profiles.studies"];
+          university?: parameters["rowFilter.profiles.university"];
+          homeland?: parameters["rowFilter.profiles.homeland"];
+          avatar?: parameters["rowFilter.profiles.avatar"];
+          role?: parameters["rowFilter.profiles.role"];
+          skills?: parameters["rowFilter.profiles.skills"];
+          bio?: parameters["rowFilter.profiles.bio"];
+          /** used to determine if the person want to use grow as key qualification */
+          keyQualification?: parameters["rowFilter.profiles.keyQualification"];
+          universityCountry?: parameters["rowFilter.profiles.universityCountry"];
+        };
+        body: {
+          /** profiles */
+          profiles?: definitions["profiles"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/sponsors": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.sponsors.id"];
+          created_at?: parameters["rowFilter.sponsors.created_at"];
+          name?: parameters["rowFilter.sponsors.name"];
+          logo?: parameters["rowFilter.sponsors.logo"];
+          link?: parameters["rowFilter.sponsors.link"];
+          type?: parameters["rowFilter.sponsors.type"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["sponsors"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** sponsors */
+          sponsors?: definitions["sponsors"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.sponsors.id"];
+          created_at?: parameters["rowFilter.sponsors.created_at"];
+          name?: parameters["rowFilter.sponsors.name"];
+          logo?: parameters["rowFilter.sponsors.logo"];
+          link?: parameters["rowFilter.sponsors.link"];
+          type?: parameters["rowFilter.sponsors.type"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.sponsors.id"];
+          created_at?: parameters["rowFilter.sponsors.created_at"];
+          name?: parameters["rowFilter.sponsors.name"];
+          logo?: parameters["rowFilter.sponsors.logo"];
+          link?: parameters["rowFilter.sponsors.link"];
+          type?: parameters["rowFilter.sponsors.type"];
+        };
+        body: {
+          /** sponsors */
+          sponsors?: definitions["sponsors"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/rpc/isadmin": {
+    post: {
+      parameters: {
+        body: {
+          args: {
+            /** Format: uuid */
+            user_id: string;
+          };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
+  "/rpc/accept_request": {
+    post: {
+      parameters: {
+        body: {
+          args: {
+            /** Format: uuid */
+            requesting_user_id: string;
+          };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
 }
 
 export interface definitions {
-    events: {
-        /**
-         * Format: bigint
-         * @description Note:
-         * This is a Primary Key.<pk/>
-         */
-        id: number;
-        /**
-         * Format: timestamp with time zone
-         * @default timezone('utc'::text, now())
-         */
-        inserted_at: string;
-        /**
-         * Format: timestamp with time zone
-         * @default timezone('utc'::text, now())
-         */
-        updated_at: string;
-        /**
-         * Format: text
-         * @default
-         */
-        title: string;
-        /**
-         * Format: timestamp without time zone
-         * @default now()
-         */
-        date: string;
-        /**
-         * Format: text
-         * @default
-         */
-        description: string;
-        /**
-         * Format: boolean
-         * @default false
-         */
-        mandatory: boolean;
-        /**
-         * Format: text
-         * @description The location of the Event
-         */
-        location: string;
-        /**
-         * Format: boolean
-         * @description Obligatory for participants who want to have the Schlüsselqualifikation points
-         * @default false
-         */
-        sq_mandatory: boolean;
-        /**
-         * Format: public.enum_event_type
-         * @enum {string}
-         */
-        type?: 'Online' | 'Offline' | 'Hybrid';
-    };
-    faqs: {
-        /**
-         * Format: bigint
-         * @description Note:
-         * This is a Primary Key.<pk/>
-         */
-        id: number;
-        /**
-         * Format: timestamp with time zone
-         * @default now()
-         */
-        created_at?: string;
-        /**
-         * Format: text
-         * @default
-         */
-        question?: string;
-        /**
-         * Format: text
-         * @default
-         */
-        answer?: string;
-    };
-    event_registrations: {
-        /**
-         * Format: timestamp with time zone
-         * @default timezone('utc'::text, now())
-         */
-        inserted_at: string;
-        /**
-         * Format: uuid
-         * @description Note:
-         * This is a Primary Key.<pk/>
-         * This is a Foreign Key to `profiles.user_id`.<fk table='profiles' column='user_id'/>
-         */
-        user_id: string;
-        /**
-         * Format: bigint
-         * @description Note:
-         * This is a Primary Key.<pk/>
-         * This is a Foreign Key to `events.id`.<fk table='events' column='id'/>
-         */
-        event_id: number;
-        /**
-         * Format: boolean
-         * @default false
-         */
-        present: boolean;
-    };
-    teams: {
-        /**
-         * Format: timestamp with time zone
-         * @default timezone('utc'::text, now())
-         */
-        inserted_at: string;
-        /**
-         * Format: bigint
-         * @description Note:
-         * This is a Primary Key.<pk/>
-         */
-        id: number;
-        /**
-         * Format: text
-         * @default
-         */
-        name: string;
-        /**
-         * Format: text
-         * @default
-         */
-        description: string;
-        /** Format: json */
-        tags: unknown;
-        /**
-         * Format: text
-         * @default
-         */
-        logo?: string;
-        /**
-         * Format: boolean
-         * @default false
-         */
-        archived: boolean;
-        /** Format: json */
-        requestSupport: unknown;
-    };
-    signup_info: {
-        /**
-         * Format: timestamp with time zone
-         * @default now()
-         */
-        created_at?: string;
-        /**
-         * Format: boolean
-         * @default false
-         */
-        lookingForTeam: boolean;
-        /**
-         * Format: text
-         * @default
-         */
-        idea: string;
-        /**
-         * Format: text
-         * @default
-         */
-        expectations: string;
-        /**
-         * Format: text
-         * @default
-         */
-        source: string;
-        /**
-         * Format: text
-         * @description Note:
-         * This is a Primary Key.<pk/>
-         * @default
-         */
-        email: string;
-    };
-    mentor_assignment: {
-        /**
-         * Format: timestamp with time zone
-         * @default now()
-         */
-        created_at?: string;
-        /**
-         * Format: uuid
-         * @description Note:
-         * This is a Primary Key.<pk/>
-         * This is a Foreign Key to `profiles.user_id`.<fk table='profiles' column='user_id'/>
-         */
-        mentor: string;
-        /**
-         * Format: bigint
-         * @description Note:
-         * This is a Primary Key.<pk/>
-         * This is a Foreign Key to `teams.id`.<fk table='teams' column='id'/>
-         */
-        team: number;
-    };
-    team_requests: {
-        /**
-         * Format: timestamp with time zone
-         * @default timezone('utc'::text, now())
-         */
-        inserted_at: string;
-        /**
-         * Format: uuid
-         * @description Note:
-         * This is a Primary Key.<pk/>
-         * This is a Foreign Key to `profiles.user_id`.<fk table='profiles' column='user_id'/>
-         */
-        user_id: string;
-        /**
-         * Format: bigint
-         * @description Note:
-         * This is a Primary Key.<pk/>
-         * This is a Foreign Key to `teams.id`.<fk table='teams' column='id'/>
-         */
-        team_id: number;
-    };
-    team_members: {
-        /**
-         * Format: timestamp with time zone
-         * @default timezone('utc'::text, now())
-         */
-        inserted_at: string;
-        /**
-         * Format: uuid
-         * @description Note:
-         * This is a Primary Key.<pk/>
-         * This is a Foreign Key to `profiles.user_id`.<fk table='profiles' column='user_id'/>
-         */
-        user_id: string;
-        /**
-         * Format: bigint
-         * @description Note:
-         * This is a Primary Key.<pk/>
-         * This is a Foreign Key to `teams.id`.<fk table='teams' column='id'/>
-         */
-        team_id: number;
-    };
-    event_backup19_08_2022: {
-        /** Format: bigint */
-        id?: number;
-        /** Format: timestamp with time zone */
-        inserted_at?: string;
-        /** Format: timestamp with time zone */
-        updated_at?: string;
-        /** Format: text */
-        title?: string;
-        /** Format: timestamp without time zone */
-        date?: string;
-        /** Format: text */
-        description?: string;
-        /** Format: boolean */
-        online?: boolean;
-        /** Format: boolean */
-        mandatory?: boolean;
-        /** Format: bigint */
-        type_id?: number;
-        /** Format: text */
-        location?: string;
-        /** Format: boolean */
-        sq_mandatory?: boolean;
-    };
-    profiles: {
-        /**
-         * Format: uuid
-         * @description Note:
-         * This is a Primary Key.<pk/>
-         */
-        user_id: string;
-        /**
-         * Format: timestamp with time zone
-         * @default timezone('utc'::text, now())
-         */
-        inserted_at: string;
-        /**
-         * Format: text
-         * @default
-         */
-        first_name: string;
-        /**
-         * Format: text
-         * @default
-         */
-        last_name: string;
-        /**
-         * Format: text
-         * @default
-         */
-        email: string;
-        /**
-         * Format: public.gender
-         * @default OTHER
-         * @enum {string}
-         */
-        gender?: 'MALE' | 'FEMALE' | 'OTHER';
-        /** Format: text */
-        phone?: string;
-        /** Format: text */
-        studies?: string;
-        /** Format: text */
-        university?: string;
-        /** Format: text */
-        homeland?: string;
-        /** Format: text */
-        avatar?: string;
-        /**
-         * Format: public.user_role
-         * @default PARTICIPANT
-         * @enum {string}
-         */
-        role: 'PARTICIPANT' | 'BUDDY' | 'MENTOR' | 'EXPERT' | 'ORGA';
-        /** Format: json */
-        skills: unknown;
-        /** Format: text */
-        bio?: string;
-        /**
-         * Format: boolean
-         * @description used to determine if the person want to use grow as key qualification
-         * @default false
-         */
-        keyQualification: boolean;
-        /**
-         * Format: text
-         * @default
-         */
-        universityCountry?: string;
-    };
-    sponsors: {
-        /**
-         * Format: bigint
-         * @description Note:
-         * This is a Primary Key.<pk/>
-         */
-        id: number;
-        /**
-         * Format: timestamp with time zone
-         * @default now()
-         */
-        created_at?: string;
-        /**
-         * Format: text
-         * @default
-         */
-        name: string;
-        /**
-         * Format: text
-         * @default
-         */
-        logo: string;
-        /**
-         * Format: text
-         * @default
-         */
-        link: string;
-        /**
-         * Format: public.sponsor_type
-         * @enum {string}
-         */
-        type: 'GOLD' | 'SILVER' | 'BRONZE' | 'FLAGSHIP';
-    };
-}
-
-export interface parameters {
+  events: {
     /**
-     * @description Preference
-     * @enum {string}
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
      */
-    preferParams: 'params=single-object';
+    id: number;
     /**
-     * @description Preference
-     * @enum {string}
+     * Format: timestamp with time zone
+     * @default timezone('utc'::text, now())
      */
-    preferReturn: 'return=representation' | 'return=minimal' | 'return=none';
+    inserted_at: string;
     /**
-     * @description Preference
-     * @enum {string}
+     * Format: timestamp with time zone
+     * @default timezone('utc'::text, now())
      */
-    preferCount: 'count=none';
-    /** @description Filtering Columns */
-    select: string;
-    /** @description On Conflict */
-    on_conflict: string;
-    /** @description Ordering */
-    order: string;
-    /** @description Limiting and Pagination */
-    range: string;
+    updated_at: string;
     /**
-     * @description Limiting and Pagination
-     * @default items
+     * Format: text
+     * @default
      */
-    rangeUnit: string;
-    /** @description Limiting and Pagination */
-    offset: string;
-    /** @description Limiting and Pagination */
-    limit: string;
-    /** @description events */
-    'body.events': definitions['events'];
-    /** Format: bigint */
-    'rowFilter.events.id': string;
-    /** Format: timestamp with time zone */
-    'rowFilter.events.inserted_at': string;
-    /** Format: timestamp with time zone */
-    'rowFilter.events.updated_at': string;
-    /** Format: text */
-    'rowFilter.events.title': string;
-    /** Format: timestamp without time zone */
-    'rowFilter.events.date': string;
-    /** Format: text */
-    'rowFilter.events.description': string;
-    /** Format: boolean */
-    'rowFilter.events.mandatory': string;
+    title: string;
+    /**
+     * Format: timestamp without time zone
+     * @default now()
+     */
+    date: string;
+    /**
+     * Format: text
+     * @default
+     */
+    description: string;
+    /**
+     * Format: boolean
+     * @default false
+     */
+    mandatory: boolean;
     /**
      * Format: text
      * @description The location of the Event
      */
-    'rowFilter.events.location': string;
+    location: string;
     /**
      * Format: boolean
      * @description Obligatory for participants who want to have the Schlüsselqualifikation points
+     * @default false
      */
-    'rowFilter.events.sq_mandatory': string;
-    /** Format: public.enum_event_type */
-    'rowFilter.events.type': string;
-    /** @description faqs */
-    'body.faqs': definitions['faqs'];
-    /** Format: bigint */
-    'rowFilter.faqs.id': string;
-    /** Format: timestamp with time zone */
-    'rowFilter.faqs.created_at': string;
-    /** Format: text */
-    'rowFilter.faqs.question': string;
-    /** Format: text */
-    'rowFilter.faqs.answer': string;
-    /** @description event_registrations */
-    'body.event_registrations': definitions['event_registrations'];
-    /** Format: timestamp with time zone */
-    'rowFilter.event_registrations.inserted_at': string;
-    /** Format: uuid */
-    'rowFilter.event_registrations.user_id': string;
-    /** Format: bigint */
-    'rowFilter.event_registrations.event_id': string;
-    /** Format: boolean */
-    'rowFilter.event_registrations.present': string;
-    /** @description teams */
-    'body.teams': definitions['teams'];
-    /** Format: timestamp with time zone */
-    'rowFilter.teams.inserted_at': string;
-    /** Format: bigint */
-    'rowFilter.teams.id': string;
-    /** Format: text */
-    'rowFilter.teams.name': string;
-    /** Format: text */
-    'rowFilter.teams.description': string;
+    sq_mandatory: boolean;
+    /**
+     * Format: public.enum_event_type
+     * @enum {string}
+     */
+    type?: "Online" | "Offline" | "Hybrid";
+  };
+  faqs: {
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /**
+     * Format: text
+     * @default
+     */
+    question?: string;
+    /**
+     * Format: text
+     * @default
+     */
+    answer?: string;
+  };
+  event_registrations: {
+    /**
+     * Format: timestamp with time zone
+     * @default timezone('utc'::text, now())
+     */
+    inserted_at: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * This is a Foreign Key to `profiles.user_id`.<fk table='profiles' column='user_id'/>
+     */
+    user_id: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * This is a Foreign Key to `events.id`.<fk table='events' column='id'/>
+     */
+    event_id: number;
+    /**
+     * Format: boolean
+     * @default false
+     */
+    present: boolean;
+  };
+  teams: {
+    /**
+     * Format: timestamp with time zone
+     * @default timezone('utc'::text, now())
+     */
+    inserted_at: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /**
+     * Format: text
+     * @default
+     */
+    name: string;
+    /**
+     * Format: text
+     * @default
+     */
+    description: string;
     /** Format: json */
-    'rowFilter.teams.tags': string;
-    /** Format: text */
-    'rowFilter.teams.logo': string;
-    /** Format: boolean */
-    'rowFilter.teams.archived': string;
+    tags: unknown;
+    /**
+     * Format: text
+     * @default
+     */
+    logo?: string;
+    /**
+     * Format: boolean
+     * @default false
+     */
+    archived: boolean;
     /** Format: json */
-    'rowFilter.teams.requestSupport': string;
-    /** @description signup_info */
-    'body.signup_info': definitions['signup_info'];
-    /** Format: timestamp with time zone */
-    'rowFilter.signup_info.created_at': string;
-    /** Format: boolean */
-    'rowFilter.signup_info.lookingForTeam': string;
-    /** Format: text */
-    'rowFilter.signup_info.idea': string;
-    /** Format: text */
-    'rowFilter.signup_info.expectations': string;
-    /** Format: text */
-    'rowFilter.signup_info.source': string;
-    /** Format: text */
-    'rowFilter.signup_info.email': string;
-    /** @description mentor_assignment */
-    'body.mentor_assignment': definitions['mentor_assignment'];
-    /** Format: timestamp with time zone */
-    'rowFilter.mentor_assignment.created_at': string;
-    /** Format: uuid */
-    'rowFilter.mentor_assignment.mentor': string;
+    requestSupport: unknown;
+  };
+  signup_info: {
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /**
+     * Format: boolean
+     * @default false
+     */
+    lookingForTeam: boolean;
+    /**
+     * Format: text
+     * @default
+     */
+    idea: string;
+    /**
+     * Format: text
+     * @default
+     */
+    expectations: string;
+    /**
+     * Format: text
+     * @default
+     */
+    source: string;
+    /**
+     * Format: text
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * @default
+     */
+    email: string;
+  };
+  mentor_assignment: {
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `profiles.user_id`.<fk table='profiles' column='user_id'/>
+     */
+    mentor: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * This is a Foreign Key to `teams.id`.<fk table='teams' column='id'/>
+     */
+    team: number;
+  };
+  team_requests: {
+    /**
+     * Format: timestamp with time zone
+     * @default timezone('utc'::text, now())
+     */
+    inserted_at: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * This is a Foreign Key to `profiles.user_id`.<fk table='profiles' column='user_id'/>
+     */
+    user_id: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * This is a Foreign Key to `teams.id`.<fk table='teams' column='id'/>
+     */
+    team_id: number;
+  };
+  team_members: {
+    /**
+     * Format: timestamp with time zone
+     * @default timezone('utc'::text, now())
+     */
+    inserted_at: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * This is a Foreign Key to `profiles.user_id`.<fk table='profiles' column='user_id'/>
+     */
+    user_id: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * This is a Foreign Key to `teams.id`.<fk table='teams' column='id'/>
+     */
+    team_id: number;
+  };
+  event_backup19_08_2022: {
     /** Format: bigint */
-    'rowFilter.mentor_assignment.team': string;
-    /** @description team_requests */
-    'body.team_requests': definitions['team_requests'];
+    id?: number;
     /** Format: timestamp with time zone */
-    'rowFilter.team_requests.inserted_at': string;
-    /** Format: uuid */
-    'rowFilter.team_requests.user_id': string;
-    /** Format: bigint */
-    'rowFilter.team_requests.team_id': string;
-    /** @description team_members */
-    'body.team_members': definitions['team_members'];
+    inserted_at?: string;
     /** Format: timestamp with time zone */
-    'rowFilter.team_members.inserted_at': string;
-    /** Format: uuid */
-    'rowFilter.team_members.user_id': string;
-    /** Format: bigint */
-    'rowFilter.team_members.team_id': string;
-    /** @description event_backup19_08_2022 */
-    'body.event_backup19_08_2022': definitions['event_backup19_08_2022'];
-    /** Format: bigint */
-    'rowFilter.event_backup19_08_2022.id': string;
-    /** Format: timestamp with time zone */
-    'rowFilter.event_backup19_08_2022.inserted_at': string;
-    /** Format: timestamp with time zone */
-    'rowFilter.event_backup19_08_2022.updated_at': string;
+    updated_at?: string;
     /** Format: text */
-    'rowFilter.event_backup19_08_2022.title': string;
+    title?: string;
     /** Format: timestamp without time zone */
-    'rowFilter.event_backup19_08_2022.date': string;
+    date?: string;
     /** Format: text */
-    'rowFilter.event_backup19_08_2022.description': string;
+    description?: string;
     /** Format: boolean */
-    'rowFilter.event_backup19_08_2022.online': string;
+    online?: boolean;
     /** Format: boolean */
-    'rowFilter.event_backup19_08_2022.mandatory': string;
+    mandatory?: boolean;
     /** Format: bigint */
-    'rowFilter.event_backup19_08_2022.type_id': string;
+    type_id?: number;
     /** Format: text */
-    'rowFilter.event_backup19_08_2022.location': string;
+    location?: string;
     /** Format: boolean */
-    'rowFilter.event_backup19_08_2022.sq_mandatory': string;
-    /** @description profiles */
-    'body.profiles': definitions['profiles'];
-    /** Format: uuid */
-    'rowFilter.profiles.user_id': string;
-    /** Format: timestamp with time zone */
-    'rowFilter.profiles.inserted_at': string;
+    sq_mandatory?: boolean;
+  };
+  profiles: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    user_id: string;
+    /**
+     * Format: timestamp with time zone
+     * @default timezone('utc'::text, now())
+     */
+    inserted_at: string;
+    /**
+     * Format: text
+     * @default
+     */
+    first_name: string;
+    /**
+     * Format: text
+     * @default
+     */
+    last_name: string;
+    /**
+     * Format: text
+     * @default
+     */
+    email: string;
+    /**
+     * Format: public.gender
+     * @default OTHER
+     * @enum {string}
+     */
+    gender?: "MALE" | "FEMALE" | "OTHER";
     /** Format: text */
-    'rowFilter.profiles.first_name': string;
+    phone?: string;
     /** Format: text */
-    'rowFilter.profiles.last_name': string;
+    studies?: string;
     /** Format: text */
-    'rowFilter.profiles.email': string;
-    /** Format: public.gender */
-    'rowFilter.profiles.gender': string;
+    university?: string;
     /** Format: text */
-    'rowFilter.profiles.phone': string;
+    homeland?: string;
     /** Format: text */
-    'rowFilter.profiles.studies': string;
-    /** Format: text */
-    'rowFilter.profiles.university': string;
-    /** Format: text */
-    'rowFilter.profiles.homeland': string;
-    /** Format: text */
-    'rowFilter.profiles.avatar': string;
-    /** Format: public.user_role */
-    'rowFilter.profiles.role': string;
+    avatar?: string;
+    /**
+     * Format: public.user_role
+     * @default PARTICIPANT
+     * @enum {string}
+     */
+    role: "PARTICIPANT" | "BUDDY" | "MENTOR" | "EXPERT" | "ORGA";
     /** Format: json */
-    'rowFilter.profiles.skills': string;
+    skills: unknown;
     /** Format: text */
-    'rowFilter.profiles.bio': string;
+    bio?: string;
     /**
      * Format: boolean
      * @description used to determine if the person want to use grow as key qualification
+     * @default false
      */
-    'rowFilter.profiles.keyQualification': string;
-    /** Format: text */
-    'rowFilter.profiles.universityCountry': string;
-    /** @description sponsors */
-    'body.sponsors': definitions['sponsors'];
-    /** Format: bigint */
-    'rowFilter.sponsors.id': string;
-    /** Format: timestamp with time zone */
-    'rowFilter.sponsors.created_at': string;
-    /** Format: text */
-    'rowFilter.sponsors.name': string;
-    /** Format: text */
-    'rowFilter.sponsors.logo': string;
-    /** Format: text */
-    'rowFilter.sponsors.link': string;
-    /** Format: public.sponsor_type */
-    'rowFilter.sponsors.type': string;
+    keyQualification: boolean;
+    /**
+     * Format: text
+     * @default
+     */
+    universityCountry?: string;
+  };
+  sponsors: {
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /**
+     * Format: text
+     * @default
+     */
+    name: string;
+    /**
+     * Format: text
+     * @default
+     */
+    logo: string;
+    /**
+     * Format: text
+     * @default
+     */
+    link: string;
+    /**
+     * Format: public.sponsor_type
+     * @enum {string}
+     */
+    type: "GOLD" | "SILVER" | "BRONZE" | "FLAGSHIP";
+  };
+}
+
+export interface parameters {
+  /**
+   * @description Preference
+   * @enum {string}
+   */
+  preferParams: "params=single-object";
+  /**
+   * @description Preference
+   * @enum {string}
+   */
+  preferReturn: "return=representation" | "return=minimal" | "return=none";
+  /**
+   * @description Preference
+   * @enum {string}
+   */
+  preferCount: "count=none";
+  /** @description Filtering Columns */
+  select: string;
+  /** @description On Conflict */
+  on_conflict: string;
+  /** @description Ordering */
+  order: string;
+  /** @description Limiting and Pagination */
+  range: string;
+  /**
+   * @description Limiting and Pagination
+   * @default items
+   */
+  rangeUnit: string;
+  /** @description Limiting and Pagination */
+  offset: string;
+  /** @description Limiting and Pagination */
+  limit: string;
+  /** @description events */
+  "body.events": definitions["events"];
+  /** Format: bigint */
+  "rowFilter.events.id": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.events.inserted_at": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.events.updated_at": string;
+  /** Format: text */
+  "rowFilter.events.title": string;
+  /** Format: timestamp without time zone */
+  "rowFilter.events.date": string;
+  /** Format: text */
+  "rowFilter.events.description": string;
+  /** Format: boolean */
+  "rowFilter.events.mandatory": string;
+  /**
+   * Format: text
+   * @description The location of the Event
+   */
+  "rowFilter.events.location": string;
+  /**
+   * Format: boolean
+   * @description Obligatory for participants who want to have the Schlüsselqualifikation points
+   */
+  "rowFilter.events.sq_mandatory": string;
+  /** Format: public.enum_event_type */
+  "rowFilter.events.type": string;
+  /** @description faqs */
+  "body.faqs": definitions["faqs"];
+  /** Format: bigint */
+  "rowFilter.faqs.id": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.faqs.created_at": string;
+  /** Format: text */
+  "rowFilter.faqs.question": string;
+  /** Format: text */
+  "rowFilter.faqs.answer": string;
+  /** @description event_registrations */
+  "body.event_registrations": definitions["event_registrations"];
+  /** Format: timestamp with time zone */
+  "rowFilter.event_registrations.inserted_at": string;
+  /** Format: uuid */
+  "rowFilter.event_registrations.user_id": string;
+  /** Format: bigint */
+  "rowFilter.event_registrations.event_id": string;
+  /** Format: boolean */
+  "rowFilter.event_registrations.present": string;
+  /** @description teams */
+  "body.teams": definitions["teams"];
+  /** Format: timestamp with time zone */
+  "rowFilter.teams.inserted_at": string;
+  /** Format: bigint */
+  "rowFilter.teams.id": string;
+  /** Format: text */
+  "rowFilter.teams.name": string;
+  /** Format: text */
+  "rowFilter.teams.description": string;
+  /** Format: json */
+  "rowFilter.teams.tags": string;
+  /** Format: text */
+  "rowFilter.teams.logo": string;
+  /** Format: boolean */
+  "rowFilter.teams.archived": string;
+  /** Format: json */
+  "rowFilter.teams.requestSupport": string;
+  /** @description signup_info */
+  "body.signup_info": definitions["signup_info"];
+  /** Format: timestamp with time zone */
+  "rowFilter.signup_info.created_at": string;
+  /** Format: boolean */
+  "rowFilter.signup_info.lookingForTeam": string;
+  /** Format: text */
+  "rowFilter.signup_info.idea": string;
+  /** Format: text */
+  "rowFilter.signup_info.expectations": string;
+  /** Format: text */
+  "rowFilter.signup_info.source": string;
+  /** Format: text */
+  "rowFilter.signup_info.email": string;
+  /** @description mentor_assignment */
+  "body.mentor_assignment": definitions["mentor_assignment"];
+  /** Format: timestamp with time zone */
+  "rowFilter.mentor_assignment.created_at": string;
+  /** Format: uuid */
+  "rowFilter.mentor_assignment.mentor": string;
+  /** Format: bigint */
+  "rowFilter.mentor_assignment.team": string;
+  /** @description team_requests */
+  "body.team_requests": definitions["team_requests"];
+  /** Format: timestamp with time zone */
+  "rowFilter.team_requests.inserted_at": string;
+  /** Format: uuid */
+  "rowFilter.team_requests.user_id": string;
+  /** Format: bigint */
+  "rowFilter.team_requests.team_id": string;
+  /** @description team_members */
+  "body.team_members": definitions["team_members"];
+  /** Format: timestamp with time zone */
+  "rowFilter.team_members.inserted_at": string;
+  /** Format: uuid */
+  "rowFilter.team_members.user_id": string;
+  /** Format: bigint */
+  "rowFilter.team_members.team_id": string;
+  /** @description event_backup19_08_2022 */
+  "body.event_backup19_08_2022": definitions["event_backup19_08_2022"];
+  /** Format: bigint */
+  "rowFilter.event_backup19_08_2022.id": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.event_backup19_08_2022.inserted_at": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.event_backup19_08_2022.updated_at": string;
+  /** Format: text */
+  "rowFilter.event_backup19_08_2022.title": string;
+  /** Format: timestamp without time zone */
+  "rowFilter.event_backup19_08_2022.date": string;
+  /** Format: text */
+  "rowFilter.event_backup19_08_2022.description": string;
+  /** Format: boolean */
+  "rowFilter.event_backup19_08_2022.online": string;
+  /** Format: boolean */
+  "rowFilter.event_backup19_08_2022.mandatory": string;
+  /** Format: bigint */
+  "rowFilter.event_backup19_08_2022.type_id": string;
+  /** Format: text */
+  "rowFilter.event_backup19_08_2022.location": string;
+  /** Format: boolean */
+  "rowFilter.event_backup19_08_2022.sq_mandatory": string;
+  /** @description profiles */
+  "body.profiles": definitions["profiles"];
+  /** Format: uuid */
+  "rowFilter.profiles.user_id": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.profiles.inserted_at": string;
+  /** Format: text */
+  "rowFilter.profiles.first_name": string;
+  /** Format: text */
+  "rowFilter.profiles.last_name": string;
+  /** Format: text */
+  "rowFilter.profiles.email": string;
+  /** Format: public.gender */
+  "rowFilter.profiles.gender": string;
+  /** Format: text */
+  "rowFilter.profiles.phone": string;
+  /** Format: text */
+  "rowFilter.profiles.studies": string;
+  /** Format: text */
+  "rowFilter.profiles.university": string;
+  /** Format: text */
+  "rowFilter.profiles.homeland": string;
+  /** Format: text */
+  "rowFilter.profiles.avatar": string;
+  /** Format: public.user_role */
+  "rowFilter.profiles.role": string;
+  /** Format: json */
+  "rowFilter.profiles.skills": string;
+  /** Format: text */
+  "rowFilter.profiles.bio": string;
+  /**
+   * Format: boolean
+   * @description used to determine if the person want to use grow as key qualification
+   */
+  "rowFilter.profiles.keyQualification": string;
+  /** Format: text */
+  "rowFilter.profiles.universityCountry": string;
+  /** @description sponsors */
+  "body.sponsors": definitions["sponsors"];
+  /** Format: bigint */
+  "rowFilter.sponsors.id": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.sponsors.created_at": string;
+  /** Format: text */
+  "rowFilter.sponsors.name": string;
+  /** Format: text */
+  "rowFilter.sponsors.logo": string;
+  /** Format: text */
+  "rowFilter.sponsors.link": string;
+  /** Format: public.sponsor_type */
+  "rowFilter.sponsors.type": string;
 }
 
 export interface operations {}

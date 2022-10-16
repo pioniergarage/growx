@@ -19,7 +19,7 @@ import {
 import { uploadLogo } from 'database/sponsors';
 import { Sponsor } from 'model';
 import { useEffect, useState } from 'react';
-import FileSelect from '../FileSelect';
+import FileSelect from '../../../components/FileSelect';
 
 interface SponsorModalProps {
     isOpen: boolean;
@@ -127,10 +127,10 @@ const SponsorModal: React.FC<SponsorModalProps> = ({
                     <Button onClick={() => onSave(sponsor)} mr={3}>
                         Save
                     </Button>
-                    <Button onClick={onDelete}  mr={3} colorScheme="red">Delete</Button>
-                    <Button onClick={onClose}>
-                        Cancel
+                    <Button onClick={onDelete} mr={3} colorScheme="red">
+                        Delete
                     </Button>
+                    <Button onClick={onClose}>Cancel</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>

@@ -1,5 +1,4 @@
 import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
-import ChangeRoleMenu from '@/components/profile/ChangeRole';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
     Box,
@@ -20,6 +19,7 @@ import {
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useProfiles } from 'hooks/profile';
 import { Profile } from 'model';
+import ChangeRoleMenu from 'modules/profile/components/ChangeRole';
 import { useState } from 'react';
 import { downloadCSV } from 'utils/csv';
 

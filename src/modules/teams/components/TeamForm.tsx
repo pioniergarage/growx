@@ -1,3 +1,4 @@
+import TagSelect from '@/components/TagSelect';
 import {
     Button,
     Flex,
@@ -16,7 +17,6 @@ import {
 import { useFormik } from 'formik';
 import { availableSkills, Team } from 'model';
 import { useState } from 'react';
-import TagSelect from '../TagSelect';
 
 interface TeamFormProps {
     onSave: (profile: Team) => void;

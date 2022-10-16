@@ -1,4 +1,4 @@
-import rules from '@/components/forms/rules';
+import rules from 'utils/rules';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     Box,
@@ -162,14 +162,15 @@ const ParticipateForm: React.FC<ParticipateFormProps> = ({
                                     onChange={formik.handleChange}
                                     isChecked={formik.values.keyQualification}
                                 >
-                                    Binding registration as key and interdisciplinary qualifications. <br/> More info: &nbsp;
+                                    Binding registration as key and
+                                    interdisciplinary qualifications. <br />{' '}
+                                    More info: &nbsp;
                                     <Link
                                         href="https://www.hoc.kit.edu/startupdiploma.php"
                                         isExternal
                                     >
                                         HoC <ExternalLinkIcon mx="2px" />
                                     </Link>
-                                    
                                 </Checkbox>
                             </FormControl>
                         </Box>

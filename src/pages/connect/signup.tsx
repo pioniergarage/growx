@@ -1,12 +1,3 @@
-import NameAndPasswordForm, {
-    SignUpInfo,
-} from '@/components/signup/EmailAndPasswordForm';
-import FurtherInfo from '@/components/signup/FurtherInfo';
-import PersonalInfoForm, {
-    PersonalInfo,
-} from '@/components/signup/PersonalInfoForm';
-import StudentForm from '@/components/signup/StudentForm';
-import UniversityForm from '@/components/signup/UniversityForm';
 import { Alert, AlertIcon, Spinner, Text, VStack } from '@chakra-ui/react';
 import {
     getUser,
@@ -15,6 +6,15 @@ import {
 } from '@supabase/auth-helpers-nextjs';
 import { useInsertFurhterProfileInfo, useUpdateProfile } from 'hooks/profile';
 import LoginLayout from 'layouts/LoginLayout';
+import EmailAndPasswordForm, {
+    SignUpInfo,
+} from 'modules/signup/components/EmailAndPasswordForm';
+import FurtherInfo from 'modules/signup/components/FurtherInfo';
+import PersonalInfoForm, {
+    PersonalInfo,
+} from 'modules/signup/components/PersonalInfoForm';
+import StudentForm from 'modules/signup/components/StudentForm';
+import UniversityForm from 'modules/signup/components/UniversityForm';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
@@ -74,7 +74,7 @@ const SignUp: NextPageWithLayout = () => {
     return (
         <VStack maxW="container.sm" mx="auto" alignItems="stretch">
             {step === 0 ? (
-                <NameAndPasswordForm
+                <EmailAndPasswordForm
                     onNext={(info) => {
                         setEmailAndPassword(info);
                         setStep(step + 1);

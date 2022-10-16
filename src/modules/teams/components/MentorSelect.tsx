@@ -21,8 +21,8 @@ import {
 } from '@chakra-ui/react';
 import { useProfiles } from 'hooks/profile';
 import { Profile } from 'model';
+import UserAvatar from 'modules/avatar/components/UserAvatar';
 import { useMemo, useState } from 'react';
-import UserAvatar from '../avatar/UserAvatar';
 
 type MentorSelectProps = {
     mentor?: Profile;

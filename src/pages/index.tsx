@@ -1,18 +1,18 @@
-import Faqs from '@/components/landing/FaqList';
-import GrowVideo from '@/components/landing/GrowVideo';
-import MainInfoBlock from '@/components/landing/MainInfoBlock';
-import MentorList from '@/components/landing/MentorList';
-import MotivationBlock from '@/components/landing/MotivationBlock';
-import Timeline from '@/components/landing/ShortTimeline';
-import SponsorBlock from '@/components/landing/sponsor/SponsorBlock';
-import LongTimeline from '@/components/landing/Timeline';
-import WaitingForBlock from '@/components/landing/WaitingForBlock';
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
 import { getFAQs } from 'database';
 import { getEvents } from 'database/events';
 import { getPublicMentors } from 'database/profile';
 import { getSponsors } from 'database/sponsors';
 import { FAQ, GrowEvent, PublicMentorProfile, Sponsor } from 'model';
+import Faqs from 'modules/landing/FaqList';
+import GrowVideo from 'modules/landing/GrowVideo';
+import MainInfoBlock from 'modules/landing/MainInfoBlock';
+import MentorList from 'modules/landing/MentorList';
+import MotivationBlock from 'modules/landing/MotivationBlock';
+import Timeline from 'modules/landing/ShortTimeline';
+import SponsorBlock from 'modules/landing/sponsor/SponsorBlock';
+import LongTimeline from 'modules/landing/Timeline';
+import WaitingForBlock from 'modules/landing/WaitingForBlock';
 import { PropsWithChildren } from 'react';
 
 export async function getServerSideProps() {

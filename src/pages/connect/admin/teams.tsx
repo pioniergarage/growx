@@ -1,7 +1,4 @@
-import UserAvatar from '@/components/avatar/UserAvatar';
 import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
-import MentorSelect from '@/components/teams/MentorSelect';
-import TeamLogo from '@/components/teams/TeamLogo';
 import {
     Box,
     Button,
@@ -22,6 +19,9 @@ import {
     useUnassignMentor,
 } from 'hooks/team';
 import { Profile, Team } from 'model';
+import UserAvatar from 'modules/avatar/components/UserAvatar';
+import MentorSelect from 'modules/teams/components/MentorSelect';
+import TeamLogo from 'modules/teams/components/TeamLogo';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 

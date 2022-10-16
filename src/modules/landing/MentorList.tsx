@@ -1,6 +1,6 @@
 import { Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import { PublicMentorProfile } from 'model';
-import UserAvatar from '../avatar/UserAvatar';
+import UserAvatar from '../../modules/avatar/components/UserAvatar';
 
 type MentorListProps = {
     mentors: PublicMentorProfile[];

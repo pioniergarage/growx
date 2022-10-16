@@ -18,7 +18,7 @@ import { useDeleteSponsor, useSponsors, useUpsertSponsor } from 'hooks/sponsor';
 import { Sponsor } from 'model';
 import { useState } from 'react';
 import { FaPen } from 'react-icons/fa';
-import SponsorModal from '../../../components/sponsor/SponsorModal';
+import SponsorModal from '../../../modules/sponsor/components/SponsorModal';
 
 export default function SponsorAdmin() {
     const { sponsors } = useSponsors();
