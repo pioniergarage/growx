@@ -1,8 +1,8 @@
-import Footer from '@/components/landing/Footer';
-import GrowNav from '@/components/navigation/GrowNav';
 import { Box } from '@chakra-ui/react';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { UserProvider } from '@supabase/auth-helpers-react';
+import GrowNav from 'layouts/GrowNav';
+import Footer from 'modules/landing/Footer';
 import Head from 'next/head';
 import { PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';

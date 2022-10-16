@@ -1,16 +1,22 @@
-import Faqs from '@/components/landing/FaqList';
-import GrowVideo from '@/components/landing/GrowVideo';
-import MainInfoBlock from '@/components/landing/MainInfoBlock';
-import MotivationBlock from '@/components/landing/MotivationBlock';
-import Timeline from '@/components/landing/ShortTimeline';
-import SponsorBlock from '@/components/landing/sponsor/SponsorBlock';
-import LongTimeline from '@/components/landing/Timeline';
-import WaitingForBlock from '@/components/landing/WaitingForBlock';
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
-import { getFAQs } from 'database';
-import { getEvents } from 'database/events';
-import { getSponsors } from 'database/sponsors';
-import { FAQ, GrowEvent, Sponsor } from 'model';
+
+import { getEvents } from 'modules/events/api';
+import { GrowEvent } from 'modules/events/types';
+import { getFAQs } from 'modules/faq/api';
+import { FAQ } from 'modules/faq/types';
+import Faqs from 'modules/landing/FaqList';
+import GrowVideo from 'modules/landing/GrowVideo';
+import MainInfoBlock from 'modules/landing/MainInfoBlock';
+import MentorList from 'modules/landing/MentorList';
+import MotivationBlock from 'modules/landing/MotivationBlock';
+import Timeline from 'modules/landing/ShortTimeline';
+import SponsorBlock from 'modules/landing/sponsor/SponsorBlock';
+import LongTimeline from 'modules/landing/Timeline';
+import WaitingForBlock from 'modules/landing/WaitingForBlock';
+import { PublicMentorProfile } from 'modules/mentor/types';
+import { getPublicMentors } from 'modules/profile/api';
+import { getSponsors } from 'modules/sponsor/api';
+import { Sponsor } from 'modules/sponsor/types';
 import { PropsWithChildren } from 'react';
 
 export async function getServerSideProps() {
@@ -20,31 +26,23 @@ export async function getServerSideProps() {
         ...e,
         date: e.date.toISOString(),
     }));
-    return { props: { sponsors, faqs, events } };
-}
-
-function Section({
-    children,
-    divider = false,
-    ...rest
-}: PropsWithChildren & { divider?: boolean } & BoxProps) {
-    return (
-        <Box as="section" my={8} {...rest}>
-            <Box mx="auto" maxW="container.xl">
-                {children}
-                {divider && <Divider my={8} />}
-            </Box>
-        </Box>
-    );
+    const mentors = await getPublicMentors();
+    return { props: { sponsors, faqs, events, mentors } };
 }
 
 interface HomeProps {
     sponsors: Sponsor[];
     faqs: FAQ[];
     events: (Omit<GrowEvent, 'date'> & { date: string })[];
+    mentors: PublicMentorProfile[];
 }
 
-const Home: React.FC<HomeProps> = ({ sponsors, faqs, events: jsonEvents }) => {
+const Home: React.FC<HomeProps> = ({
+    sponsors,
+    faqs,
+    events: jsonEvents,
+    mentors,
+}) => {
     const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
     return (
         <>
@@ -71,11 +69,11 @@ const Home: React.FC<HomeProps> = ({ sponsors, faqs, events: jsonEvents }) => {
                 <MainInfoBlock />
             </Section>
 
-            <Section>
+            <Section my="4rem">
                 <GrowVideo />
             </Section>
 
-            <Section mt="8rem">
+            <Section>
                 <Timeline />
             </Section>
 
@@ -108,6 +106,10 @@ const Home: React.FC<HomeProps> = ({ sponsors, faqs, events: jsonEvents }) => {
                 <WaitingForBlock />
             </Section>
 
+            <Section>
+                <MentorList mentors={mentors} />
+            </Section>
+
             <Section divider id="faqs" mt={24}>
                 <Faqs faqs={faqs} />
             </Section>
@@ -118,5 +120,20 @@ const Home: React.FC<HomeProps> = ({ sponsors, faqs, events: jsonEvents }) => {
         </>
     );
 };
+
+function Section({
+    children,
+    divider = false,
+    ...rest
+}: PropsWithChildren & { divider?: boolean } & BoxProps) {
+    return (
+        <Box as="section" my={8} {...rest}>
+            <Box mx="auto" maxW="container.xl">
+                {children}
+                {divider && <Divider my={8} />}
+            </Box>
+        </Box>
+    );
+}
 
 export default Home;

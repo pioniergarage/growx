@@ -1,4 +1,3 @@
-import GrowEventCard from '@/components/events/GrowEventCard';
 import {
     Box,
     Flex,
@@ -11,16 +10,15 @@ import {
     supabaseServerClient,
     withPageAuth,
 } from '@supabase/auth-helpers-nextjs';
-import { mapEventDto } from 'database/events';
 import { definitions } from 'database/supabase';
-import { useRegistrationsOfUser } from 'hooks/event';
-import { useProfile } from 'hooks/profile';
+import { mapEventDto } from 'modules/events/api';
+import GrowEventCard from 'modules/events/components/GrowEventCard';
+import { useRegistrationsOfUser } from 'modules/events/hooks';
+import { useProfile } from 'modules/profile/hooks';
 
 const EventsPage = ({ eventsRaw }: { eventsRaw: definitions['events'][] }) => {
     const { profile } = useProfile();
-    const { registrations } = useRegistrationsOfUser(
-        profile?.userId
-    );
+    const { registrations } = useRegistrationsOfUser(profile?.userId);
     const events = eventsRaw.map(mapEventDto);
 
     return (
@@ -78,4 +76,3 @@ export const getServerSideProps = withPageAuth({
         return { props: { eventsRaw: data } };
     },
 });
-

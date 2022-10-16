@@ -1,4 +1,4 @@
-import rules from '@/components/forms/rules';
+import rules from 'utils/rules';
 import {
     Alert,
     AlertIcon,
