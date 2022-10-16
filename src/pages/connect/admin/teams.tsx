@@ -1,7 +1,4 @@
-import UserAvatar from '@/components/avatar/UserAvatar';
 import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
-import MentorSelect from '@/components/teams/MentorSelect';
-import TeamLogo from '@/components/teams/TeamLogo';
 import {
     Box,
     Button,
@@ -14,14 +11,19 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+
+import UserAvatar from 'modules/avatar/components/UserAvatar';
+import { Profile } from 'modules/profile/types';
+import MentorSelect from 'modules/teams/components/MentorSelect';
+import TeamLogo from 'modules/teams/components/TeamLogo';
 import {
     useAllTeams,
     useAssignMentor,
     useMentorAssignments,
     useTeamMembers,
     useUnassignMentor,
-} from 'hooks/team';
-import { Profile, Team } from 'model';
+} from 'modules/teams/hooks';
+import { Team } from 'modules/teams/types';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 

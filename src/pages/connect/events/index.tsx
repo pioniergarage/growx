@@ -15,9 +15,9 @@ import {
     SkeletonText,
     VStack,
 } from '@chakra-ui/react';
-import { useGrowEvents, useRegistrationsOfUser } from 'hooks/event';
-import { useProfile } from 'hooks/profile';
-import { EventType, GrowEvent } from 'model';
+import { useGrowEvents, useRegistrationsOfUser } from 'modules/events/hooks';
+import { EventType, GrowEvent } from 'modules/events/types';
+import { useProfile } from 'modules/profile/hooks';
 import { useMemo } from 'react';
 import {
     FaBuilding,

@@ -1393,7 +1393,6 @@ export interface definitions {
         /**
          * Format: uuid
          * @description Note:
-         * This is a Primary Key.<pk/>
          * This is a Foreign Key to `profiles.user_id`.<fk table='profiles' column='user_id'/>
          */
         mentor: string;

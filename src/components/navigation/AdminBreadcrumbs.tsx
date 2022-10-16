@@ -1,5 +1,10 @@
 import { ChevronRightIcon } from '@chakra-ui/icons';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Text } from '@chakra-ui/react';
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    Text,
+} from '@chakra-ui/react';
 import PageLink from './PageLink';
 
 const AdminBreadcrumbs = ({ route }: { route: string[][] }) => {
@@ -13,7 +18,9 @@ const AdminBreadcrumbs = ({ route }: { route: string[][] }) => {
             </BreadcrumbItem>
             {route.map((item) => (
                 <BreadcrumbItem key={`breadcrum-${item[0]}`}>
-                    <BreadcrumbLink href={item[1]} as={PageLink}>{item[0]}</BreadcrumbLink>
+                    <BreadcrumbLink href={item[1]} as={PageLink}>
+                        {item[0]}
+                    </BreadcrumbLink>
                 </BreadcrumbItem>
             ))}
         </Breadcrumb>
