@@ -1,24 +1,14 @@
-export type Gender = 'MALE' | 'FEMALE' | 'OTHER';
+import { Database } from "database/DatabaseDefition";
 
-export type Profile = {
-    userId: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone?: string;
-    studies?: string;
-    university?: string;
-    universityCountry?: string;
-    homeland?: string;
-    gender?: Gender;
-    role: UserRole;
-    avatar?: string;
-    skills: string[];
-    bio: string;
-    keyQualification: boolean;
-};
+export type Gender = Database["public"]["Enums"]["gender"]
 
-export type UserRole = 'PARTICIPANT' | 'BUDDY' | 'MENTOR' | 'EXPERT' | 'ORGA';
+export type Profile = Database["public"]["Tables"]["profile"]["Row"]
+
+export type ContactInformation = Database["public"]["Tables"]["contact_information"]["Row"]
+
+export type UserRole = Database["public"]["Enums"]["user_role"]
+
+export type FurtherProfileInfo = Database["public"]["Tables"]["signup_info"]["Row"]
 
 export const availableSkills = [
     'AgriTech',
@@ -55,10 +45,3 @@ export const availableSkills = [
     'Legal',
 ].sort();
 
-
-export type FurtherProfileInfo = {
-    lookingForTeam: boolean;
-    expectations: string;
-    idea: string;
-    source: string;
-};

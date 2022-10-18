@@ -1,12 +1,12 @@
-
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { deleteSponsor, getSponsors, upsertSponsor } from 'modules/sponsor/api';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import QUERY_KEYS from 'utils/queryKeys';
+import sponsorApi from './api';
 import { Sponsor } from './types';
 
 export function useSponsors() {
     const supabaseClient = useSupabaseClient()
-    const result = useQuery('sponsors', async () => await getSponsors(supabaseClient));
+    const result = useQuery(QUERY_KEYS.sponsors(), async () => await sponsorApi.getSponsors(supabaseClient));
     return { ...result, sponsors: result.data };
 }
 
@@ -14,10 +14,10 @@ export function useDeleteSponsor() {
     const supabaseClient = useSupabaseClient()
     const { sponsors } = useSponsors();
     const queryClient = useQueryClient();
-    const mutation = useMutation((id: number) => deleteSponsor(supabaseClient, id), {
+    const mutation = useMutation((id: number) => sponsorApi.deleteSponsor(supabaseClient, id), {
         onSuccess: (deleted) => {
             queryClient.setQueryData(
-                'sponsors',
+                QUERY_KEYS.sponsors(),
                 sponsors?.filter((s) => s.id !== deleted.id)
             );
         },
@@ -30,11 +30,11 @@ export function useUpsertSponsor() {
     const { sponsors } = useSponsors();
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        async (sponsor: Sponsor) => await upsertSponsor(supabaseClient, sponsor),
+        async (sponsor: Sponsor) => await sponsorApi.upsertSponsor(supabaseClient, sponsor),
         {
             onSuccess: (upserted) => {
                 queryClient.setQueryData(
-                    'sponsors',
+                    QUERY_KEYS.sponsors(),
                     sponsors
                         ? [
                             ...sponsors.filter((s) => s.id != upserted.id),

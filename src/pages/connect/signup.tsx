@@ -10,34 +10,28 @@ import EmailAndPasswordForm, {
     SignUpInfo,
 } from 'modules/signup/components/EmailAndPasswordForm';
 import FurtherInfo from 'modules/signup/components/FurtherInfo';
-import PersonalInfoForm, {
-    PersonalInfo,
-} from 'modules/signup/components/PersonalInfoForm';
 import StudentForm from 'modules/signup/components/StudentForm';
 import UniversityForm from 'modules/signup/components/UniversityForm';
+import { PersonalInfo, StudentInformation } from 'modules/signup/types';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 
 const SignUp: NextPageWithLayout = () => {
     const supabaseClient = useSupabaseClient();
+    const router = useRouter();
+
+    const { updateProfile } = useUpdateProfile();
+    const { insertFurtherProfileInfo } = useInsertFurhterProfileInfo();
+
     const [step, setStep] = useState(0);
+    const [signUpError, setSignUpError] = useState<string>('');
+
     const [emailAndPassword, setEmailAndPassword] = useState<SignUpInfo>({
         email: '',
         password: '',
     });
-    const [personalInfo, setPersonalInfo] = useState<PersonalInfo>({
-        firstName: '',
-        lastName: '',
-        gender: 'MALE',
-        phone: '',
-        homeland: '',
-    });
-
-    const [signUpError, setSignUpError] = useState<string>('');
-    const router = useRouter();
-    const { updateProfile } = useUpdateProfile();
-    const { insertFurtherProfileInfo } = useInsertFurhterProfileInfo();
+    const [personalInfo, setPersonalInfo] = useState<PersonalInfo>();
 
     async function signUp({ email, password }: SignUpInfo) {
         const { data, error } = await supabaseClient.auth.signUp({
@@ -52,9 +46,7 @@ const SignUp: NextPageWithLayout = () => {
     async function createAccount(
         emailAndPassword: SignUpInfo,
         personalInfo: PersonalInfo,
-        isSQ: boolean,
-        university?: string,
-        universityCountry?: string
+        studentInfo?: StudentInformation
     ) {
         try {
             const user = await signUp(emailAndPassword);

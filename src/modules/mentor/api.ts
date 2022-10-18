@@ -1,12 +1,16 @@
 
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Database } from 'database/DatabaseDefition';
+import { handleResponse } from 'database/utils';
+import { getProfilesOfType } from 'modules/profile/api';
 import { Profile } from 'modules/profile/types';
 import { Team } from 'modules/teams/types';
 
-import { handleResponse, handleSingleResponse } from '../../database/utils';
-import { mapProfileDto } from '../profile/api';
 import { MentorAssignments } from './types';
+
+export const getMentors = async (supabaseClient: SupabaseClient<Database>): Promise<Profile[]> => {
+    return await getProfilesOfType(supabaseClient, "MENTOR")
+};
 
 export async function getMentorAssignments(supabaseClient: SupabaseClient<Database>): Promise<MentorAssignments> {
     return supabaseClient

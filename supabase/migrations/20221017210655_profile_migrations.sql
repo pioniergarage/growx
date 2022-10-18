@@ -33,6 +33,40 @@ CREATE POLICY "Allow individuals insert access" ON "public"."profile" FOR INSERT
 CREATE POLICY "Allow individuals update access" ON "public"."profile" FOR UPDATE USING (("auth"."uid"() = "user_id"));
 
 
+-- Admin
+CREATE TABLE "public"."admin" (
+    "user_id"       "uuid" NOT NULL,
+    "inserted_at"   timestamp with time zone DEFAULT "timezone"('utc'::"text", "now"()) NOT NULL,
+    "inserted_by"   "uuid",
+    CONSTRAINT "admin_pk" PRIMARY KEY ("user_id"),
+    CONSTRAINT "admin_fk_user_id" FOREIGN KEY ("user_id") REFERENCES "public"."profile"("user_id"),
+    CONSTRAINT "admin_fk_inserted_by" FOREIGN KEY ("inserted_by") REFERENCES "public"."profile"("user_id")
+)
+
+CREATE FUNCTION "public"."restrict_type_update"() RETURNS "trigger"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    AS $$
+  declare
+    is_admin boolean;
+  begin
+    select count(user_id) > 0 into is_admin from "public"."admin" where user_id = auth.uid();
+    if is_admin then
+      return new;
+    end if;
+
+    if new.role = 'MENTOR'::public.user_role then
+      return new;
+    end if;
+    
+    new.role = old.role;
+    return new;
+  end;
+$$;
+
+
+ALTER FUNCTION "public"."restrict_type_update"() OWNER TO "supabase_admin";
+CREATE TRIGGER "on_profile_update" BEFORE UPDATE ON "public"."profile" FOR EACH ROW EXECUTE FUNCTION "public"."restrict_type_update"();
+
 -- Contact Information
 -- private, accessible in some situations
 

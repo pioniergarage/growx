@@ -1,99 +1,82 @@
 import { SupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from 'database/DatabaseDefition';
+import { handleEmptyResponse, handleResponse, handleSingleResponse } from '../../database/utils';
+import { ContactInformation, FurtherProfileInfo, Profile } from './types';
 
-import { handleResponse, handleSingleResponse } from '../../database/utils';
-import { FurtherProfileInfo, Profile } from './types';
+interface ProfileApi {
+    getProfile: (supabaseClient: SupabaseClient<Database>, user_id: string) => Promise<Profile>
+    getProfiles: (supabaseClient: SupabaseClient<Database>) => Promise<Profile[]>
+    getProfilesOfType: (supabaseClient: SupabaseClient<Database>, type: Profile["type"]) => Promise<Profile[]>
+    upsertProfile: (supabaseClient: SupabaseClient<Database>, profile: Profile) => Promise<Profile>
 
-export const mapProfileDto: (dto: Database['public']['Tables']['profiles']['Row']) => Profile = (
-    dto
-) => ({
-    userId: dto.user_id,
-    firstName: dto.first_name,
-    lastName: dto.last_name,
-    phone: dto.phone || undefined,
-    homeland: dto.homeland || undefined,
-    email: dto.email,
-    studies: dto.studies || undefined,
-    university: dto.university || undefined,
-    universityCountry: dto.universityCountry || undefined,
-    gender: dto.gender || undefined,
-    role: dto.role,
-    avatar: dto.avatar || undefined,
-    skills: dto.skills as string[],
-    bio: dto.bio || '',
-    keyQualification: dto.keyQualification,
-});
+    getContactInformation: (supabaseClient: SupabaseClient<Database>, user_id: string) => Promise<ContactInformation>
+    upsertContactInformation: (SupabaseClient: SupabaseClient<Database>, user_id: string, info: ContactInformation) => Promise<ContactInformation>
 
-export async function fetchProfile(supabaseClient: SupabaseClient<Database>, user_id: string): Promise<Profile> {
-    return supabaseClient
-        .from('profiles')
-        .select('*')
-        .eq('user_id', user_id)
-        .single()
-        .then(handleSingleResponse)
-        .then(mapProfileDto);
+    insertSignupInfo: (supabaseClient: SupabaseClient<Database>, info: FurtherProfileInfo) => void
 }
 
-export const updateProfile = async (supabaseClient: SupabaseClient<Database>,
-    profile: Partial<Profile> & Pick<Profile, 'userId'>
-) =>
-    supabaseClient
-        .from('profiles')
-        .update(
-            {
-                first_name: profile.firstName,
-                last_name: profile.lastName,
-                email: profile.email,
-                phone: profile.phone,
-                studies: profile.studies,
-                university: profile.university,
-                universityCountry: profile.universityCountry,
-                homeland: profile.homeland,
-                gender: profile.gender,
-                avatar: profile.avatar,
-                skills: profile.skills,
-                role: profile.role,
-                bio: profile.bio,
-                keyQualification: profile.keyQualification,
-            }
-        )
-        .match({ user_id: profile.userId })
-        .select()
-        .single()
-        .then(handleSingleResponse)
-        .then(mapProfileDto);
+const profileApi: ProfileApi = {
+    async getProfile(supabaseClient, user_id) {
+        const profile = await supabaseClient
+            .from('profile')
+            .select('*')
+            .eq('user_id', user_id)
+            .single()
+            .then(handleSingleResponse);
+        return profile
+    },
+    async getProfiles(supabaseClient) {
+        const profiles = await supabaseClient
+            .from('profile')
+            .select('*')
+            .then(handleResponse)
+        return profiles;
+    },
+    async getProfilesOfType(supabaseClient, type) {
+        const profiles = supabaseClient
+            .from('profile')
+            .select('*')
+            .eq("type", type)
+            .select()
+            .then(handleResponse)
+        return profiles
+    },
+    async upsertProfile(supabaseClient, profile) {
+        const updated =
+            await supabaseClient
+                .from('profile')
+                .upsert(profile)
+                .select()
+                .single()
+                .then(handleSingleResponse)
+        return updated;
+    },
 
-export const getProfiles = async (supabaseClient: SupabaseClient<Database>): Promise<Profile[]> => {
-    return supabaseClient
-        .from('profiles')
-        .select('*')
-        .then(handleResponse)
-        .then((dtos) => dtos.map(mapProfileDto));
-};
+    async getContactInformation(supabaseClient, user_id) {
+        const info = await supabaseClient
+            .from("contact_information")
+            .select("*")
+            .match({ user_id })
+            .single()
+            .then(handleSingleResponse);
+        return info;
+    },
+    async upsertContactInformation(SupabaseClient, user_id, info) {
+        const updated = await SupabaseClient
+            .from("contact_information")
+            .upsert({ ...info, user_id })
+            .select()
+            .single()
+            .then(handleSingleResponse);
+        return updated;
+    },
+    async insertSignupInfo(supabaseClient, info) {
+        supabaseClient
+            .from('signup_info')
+            .insert(info)
+            .then(handleEmptyResponse)
+    },
+}
 
-export const getPublicMentors = async (supabaseClient: SupabaseClient<Database>) => {
-    return supabaseClient
-        .from('profiles')
-        .select('user_id, first_name, last_name, avatar, bio')
-        .match({ role: 'MENTOR' })
-        .select()
-        .then(handleResponse)
-        .then((dtos) =>
-            dtos.map(({ user_id, first_name, last_name, bio, avatar }) => ({
-                userId: user_id,
-                firstName: first_name,
-                lastName: last_name,
-                bio: bio ?? '',
-                avatar,
-            }))
-        );
-};
+export default profileApi;
 
-export const insertSignupInfo = async (supabaseClient: SupabaseClient<Database>,
-    info: FurtherProfileInfo & { email: string }
-) =>
-    supabaseClient
-        .from('signup_info')
-        .insert(info)
-        .select()
-        .single();

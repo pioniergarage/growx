@@ -3,7 +3,7 @@ export type Team = {
     name: string;
     description: string;
     tags: string[];
-    logo?: string;
+    logo: string | null;
     archived: boolean;
     requestSupport: string[];
     mentor?: string;

@@ -1,4 +1,3 @@
-export type FAQ = {
-    question: string;
-    answer: string;
-};
+import { Database } from "database/DatabaseDefition";
+
+export type FAQ = Database["public"]["Tables"]["faqs"]["Row"]

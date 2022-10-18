@@ -9,145 +9,24 @@ export type Json =
 export interface Database {
     public: {
         Tables: {
-            events: {
-                Row: {
-                    id: number;
-                    inserted_at: string;
-                    updated_at: string;
-                    title: string;
-                    date: string;
-                    description: string;
-                    mandatory: boolean;
-                    location: string;
-                    sq_mandatory: boolean;
-                    type: Database['public']['Enums']['enum_event_type'] | null;
-                };
-                Insert: {
-                    id?: number;
-                    inserted_at?: string;
-                    updated_at?: string;
-                    title?: string;
-                    date?: string;
-                    description?: string;
-                    mandatory?: boolean;
-                    location: string;
-                    sq_mandatory?: boolean;
-                    type?:
-                        | Database['public']['Enums']['enum_event_type']
-                        | null;
-                };
-                Update: {
-                    id?: number;
-                    inserted_at?: string;
-                    updated_at?: string;
-                    title?: string;
-                    date?: string;
-                    description?: string;
-                    mandatory?: boolean;
-                    location?: string;
-                    sq_mandatory?: boolean;
-                    type?:
-                        | Database['public']['Enums']['enum_event_type']
-                        | null;
-                };
-            };
-            team_requests: {
-                Row: {
-                    inserted_at: string;
-                    user_id: string;
-                    team_id: number;
-                };
-                Insert: {
-                    inserted_at?: string;
-                    user_id: string;
-                    team_id: number;
-                };
-                Update: {
-                    inserted_at?: string;
-                    user_id?: string;
-                    team_id?: number;
-                };
-            };
-            profiles: {
+            contact_information: {
                 Row: {
                     user_id: string;
-                    inserted_at: string;
-                    first_name: string;
-                    last_name: string;
-                    email: string;
-                    gender: Database['public']['Enums']['gender'] | null;
+                    email: string | null;
                     phone: string | null;
-                    studies: string | null;
-                    university: string | null;
-                    homeland: string | null;
-                    avatar: string | null;
-                    role: Database['public']['Enums']['user_role'];
-                    skills: Json;
-                    bio: string | null;
-                    keyQualification: boolean;
-                    universityCountry: string | null;
+                    country: string | null;
                 };
                 Insert: {
                     user_id: string;
-                    inserted_at?: string;
-                    first_name?: string;
-                    last_name?: string;
-                    email?: string;
-                    gender?: Database['public']['Enums']['gender'] | null;
+                    email?: string | null;
                     phone?: string | null;
-                    studies?: string | null;
-                    university?: string | null;
-                    homeland?: string | null;
-                    avatar?: string | null;
-                    role?: Database['public']['Enums']['user_role'];
-                    skills?: Json;
-                    bio?: string | null;
-                    keyQualification?: boolean;
-                    universityCountry?: string | null;
+                    country?: string | null;
                 };
                 Update: {
                     user_id?: string;
-                    inserted_at?: string;
-                    first_name?: string;
-                    last_name?: string;
-                    email?: string;
-                    gender?: Database['public']['Enums']['gender'] | null;
+                    email?: string | null;
                     phone?: string | null;
-                    studies?: string | null;
-                    university?: string | null;
-                    homeland?: string | null;
-                    avatar?: string | null;
-                    role?: Database['public']['Enums']['user_role'];
-                    skills?: Json;
-                    bio?: string | null;
-                    keyQualification?: boolean;
-                    universityCountry?: string | null;
-                };
-            };
-            signup_info: {
-                Row: {
-                    created_at: string | null;
-                    lookingForTeam: boolean;
-                    idea: string;
-                    expectations: string;
-                    source: string;
-                    email: string;
-                };
-                Insert: {
-                    created_at?: string | null;
-                    lookingForTeam?: boolean;
-                    idea?: string;
-                    expectations?: string;
-                    source?: string;
-                    email?: string;
-                };
-                Update: {
-                    created_at?: string | null;
-                    lookingForTeam?: boolean;
-                    idea?: string;
-                    expectations?: string;
-                    source?: string;
-                    email?: string;
+                    country?: string | null;
                 };
             };
             event_backup19_08_2022: {
@@ -193,134 +72,336 @@ export interface Database {
             };
             event_registrations: {
                 Row: {
-                    inserted_at: string;
                     user_id: string;
                     event_id: number;
+                    inserted_at: string;
                     present: boolean;
                 };
                 Insert: {
-                    inserted_at?: string;
                     user_id: string;
                     event_id: number;
+                    inserted_at?: string;
                     present?: boolean;
                 };
                 Update: {
-                    inserted_at?: string;
                     user_id?: string;
                     event_id?: number;
+                    inserted_at?: string;
                     present?: boolean;
+                };
+            };
+            events: {
+                Row: {
+                    location: string;
+                    type: Database['public']['Enums']['enum_event_type'] | null;
+                    inserted_at: string;
+                    updated_at: string;
+                    title: string;
+                    date: string;
+                    description: string;
+                    mandatory: boolean;
+                    sq_mandatory: boolean;
+                    id: number;
+                };
+                Insert: {
+                    location: string;
+                    type?:
+                        | Database['public']['Enums']['enum_event_type']
+                        | null;
+                    inserted_at?: string;
+                    updated_at?: string;
+                    title?: string;
+                    date?: string;
+                    description?: string;
+                    mandatory?: boolean;
+                    sq_mandatory?: boolean;
+                    id?: number;
+                };
+                Update: {
+                    location?: string;
+                    type?:
+                        | Database['public']['Enums']['enum_event_type']
+                        | null;
+                    inserted_at?: string;
+                    updated_at?: string;
+                    title?: string;
+                    date?: string;
+                    description?: string;
+                    mandatory?: boolean;
+                    sq_mandatory?: boolean;
+                    id?: number;
+                };
+            };
+            faqs: {
+                Row: {
+                    created_at: string | null;
+                    question: string | null;
+                    answer: string | null;
+                    id: number;
+                };
+                Insert: {
+                    created_at?: string | null;
+                    question?: string | null;
+                    answer?: string | null;
+                    id?: number;
+                };
+                Update: {
+                    created_at?: string | null;
+                    question?: string | null;
+                    answer?: string | null;
+                    id?: number;
+                };
+            };
+            mentor_assignment: {
+                Row: {
+                    mentor: string;
+                    team: number;
+                    created_at: string | null;
+                };
+                Insert: {
+                    mentor: string;
+                    team: number;
+                    created_at?: string | null;
+                };
+                Update: {
+                    mentor?: string;
+                    team?: number;
+                    created_at?: string | null;
+                };
+            };
+            profile: {
+                Row: {
+                    user_id: string;
+                    type: Database['public']['Enums']['profile_type'];
+                    avatar: string | null;
+                    inserted_at: string;
+                    forename: string;
+                    surname: string;
+                    gender: Database['public']['Enums']['gender'];
+                    is_student: boolean;
+                    bio: string;
+                    skills: string[];
+                };
+                Insert: {
+                    user_id: string;
+                    type: Database['public']['Enums']['profile_type'];
+                    avatar?: string | null;
+                    inserted_at?: string;
+                    forename?: string;
+                    surname?: string;
+                    gender?: Database['public']['Enums']['gender'];
+                    is_student?: boolean;
+                    bio?: string;
+                    skills?: string[];
+                };
+                Update: {
+                    user_id?: string;
+                    type?: Database['public']['Enums']['profile_type'];
+                    avatar?: string | null;
+                    inserted_at?: string;
+                    forename?: string;
+                    surname?: string;
+                    gender?: Database['public']['Enums']['gender'];
+                    is_student?: boolean;
+                    bio?: string;
+                    skills?: string[];
+                };
+            };
+            profiles: {
+                Row: {
+                    user_id: string;
+                    phone: string | null;
+                    studies: string | null;
+                    university: string | null;
+                    homeland: string | null;
+                    avatar: string | null;
+                    bio: string | null;
+                    inserted_at: string;
+                    first_name: string;
+                    last_name: string;
+                    email: string;
+                    gender: Database['public']['Enums']['gender'] | null;
+                    role: Database['public']['Enums']['user_role'];
+                    skills: Json;
+                    keyQualification: boolean;
+                    universityCountry: string | null;
+                };
+                Insert: {
+                    user_id: string;
+                    phone?: string | null;
+                    studies?: string | null;
+                    university?: string | null;
+                    homeland?: string | null;
+                    avatar?: string | null;
+                    bio?: string | null;
+                    inserted_at?: string;
+                    first_name?: string;
+                    last_name?: string;
+                    email?: string;
+                    gender?: Database['public']['Enums']['gender'] | null;
+                    role?: Database['public']['Enums']['user_role'];
+                    skills?: Json;
+                    keyQualification?: boolean;
+                    universityCountry?: string | null;
+                };
+                Update: {
+                    user_id?: string;
+                    phone?: string | null;
+                    studies?: string | null;
+                    university?: string | null;
+                    homeland?: string | null;
+                    avatar?: string | null;
+                    bio?: string | null;
+                    inserted_at?: string;
+                    first_name?: string;
+                    last_name?: string;
+                    email?: string;
+                    gender?: Database['public']['Enums']['gender'] | null;
+                    role?: Database['public']['Enums']['user_role'];
+                    skills?: Json;
+                    keyQualification?: boolean;
+                    universityCountry?: string | null;
+                };
+            };
+            signup_info: {
+                Row: {
+                    created_at: string | null;
+                    lookingForTeam: boolean;
+                    idea: string;
+                    expectations: string;
+                    source: string;
+                    email: string;
+                };
+                Insert: {
+                    created_at?: string | null;
+                    lookingForTeam?: boolean;
+                    idea?: string;
+                    expectations?: string;
+                    source?: string;
+                    email?: string;
+                };
+                Update: {
+                    created_at?: string | null;
+                    lookingForTeam?: boolean;
+                    idea?: string;
+                    expectations?: string;
+                    source?: string;
+                    email?: string;
+                };
+            };
+            sponsors: {
+                Row: {
+                    type: Database['public']['Enums']['sponsor_type'];
+                    created_at: string | null;
+                    name: string;
+                    logo: string;
+                    link: string;
+                    id: number;
+                };
+                Insert: {
+                    type: Database['public']['Enums']['sponsor_type'];
+                    created_at?: string | null;
+                    name?: string;
+                    logo?: string;
+                    link?: string;
+                    id?: number;
+                };
+                Update: {
+                    type?: Database['public']['Enums']['sponsor_type'];
+                    created_at?: string | null;
+                    name?: string;
+                    logo?: string;
+                    link?: string;
+                    id?: number;
+                };
+            };
+            student: {
+                Row: {
+                    user_id: string;
+                    studies: string | null;
+                    university: string | null;
+                    university_country: string | null;
+                    sq: boolean;
+                };
+                Insert: {
+                    user_id: string;
+                    studies?: string | null;
+                    university?: string | null;
+                    university_country?: string | null;
+                    sq?: boolean;
+                };
+                Update: {
+                    user_id?: string;
+                    studies?: string | null;
+                    university?: string | null;
+                    university_country?: string | null;
+                    sq?: boolean;
                 };
             };
             team_members: {
                 Row: {
-                    inserted_at: string;
                     user_id: string;
                     team_id: number;
+                    inserted_at: string;
                 };
                 Insert: {
-                    inserted_at?: string;
                     user_id: string;
                     team_id: number;
+                    inserted_at?: string;
                 };
                 Update: {
-                    inserted_at?: string;
                     user_id?: string;
                     team_id?: number;
+                    inserted_at?: string;
+                };
+            };
+            team_requests: {
+                Row: {
+                    user_id: string;
+                    team_id: number;
+                    inserted_at: string;
+                };
+                Insert: {
+                    user_id: string;
+                    team_id: number;
+                    inserted_at?: string;
+                };
+                Update: {
+                    user_id?: string;
+                    team_id?: number;
+                    inserted_at?: string;
                 };
             };
             teams: {
                 Row: {
                     inserted_at: string;
-                    id: number;
                     name: string;
                     description: string;
                     tags: Json;
                     logo: string | null;
                     archived: boolean;
                     requestSupport: Json;
+                    id: number;
                 };
                 Insert: {
                     inserted_at?: string;
-                    id?: number;
                     name?: string;
                     description?: string;
                     tags?: Json;
                     logo?: string | null;
                     archived?: boolean;
                     requestSupport?: Json;
+                    id?: number;
                 };
                 Update: {
                     inserted_at?: string;
-                    id?: number;
                     name?: string;
                     description?: string;
                     tags?: Json;
                     logo?: string | null;
                     archived?: boolean;
                     requestSupport?: Json;
-                };
-            };
-            mentor_assignment: {
-                Row: {
-                    created_at: string | null;
-                    mentor: string;
-                    team: number;
-                };
-                Insert: {
-                    created_at?: string | null;
-                    mentor: string;
-                    team: number;
-                };
-                Update: {
-                    created_at?: string | null;
-                    mentor?: string;
-                    team?: number;
-                };
-            };
-            sponsors: {
-                Row: {
-                    id: number;
-                    created_at: string | null;
-                    name: string;
-                    logo: string;
-                    link: string;
-                    type: Database['public']['Enums']['sponsor_type'];
-                };
-                Insert: {
                     id?: number;
-                    created_at?: string | null;
-                    name?: string;
-                    logo?: string;
-                    link?: string;
-                    type: Database['public']['Enums']['sponsor_type'];
-                };
-                Update: {
-                    id?: number;
-                    created_at?: string | null;
-                    name?: string;
-                    logo?: string;
-                    link?: string;
-                    type?: Database['public']['Enums']['sponsor_type'];
-                };
-            };
-            faqs: {
-                Row: {
-                    id: number;
-                    created_at: string | null;
-                    question: string | null;
-                    answer: string | null;
-                };
-                Insert: {
-                    id?: number;
-                    created_at?: string | null;
-                    question?: string | null;
-                    answer?: string | null;
-                };
-                Update: {
-                    id?: number;
-                    created_at?: string | null;
-                    question?: string | null;
-                    answer?: string | null;
                 };
             };
         };
@@ -328,21 +409,26 @@ export interface Database {
             [_ in never]: never;
         };
         Functions: {
-            isadmin: {
-                Args: { user_id: string };
-                Returns: boolean;
-            };
             accept_request: {
                 Args: { requesting_user_id: string };
                 Returns: undefined;
             };
+            isadmin: {
+                Args: { user_id: string };
+                Returns: boolean;
+            };
+            json_array_to_text_array: {
+                Args: { _js: Json };
+                Returns: string[];
+            };
         };
         Enums: {
-            gender: 'MALE' | 'FEMALE' | 'OTHER';
             enum_event_type: 'Online' | 'Offline' | 'Hybrid';
-            user_role: 'PARTICIPANT' | 'BUDDY' | 'MENTOR' | 'EXPERT' | 'ORGA';
-            sponsor_type: 'GOLD' | 'SILVER' | 'BRONZE' | 'FLAGSHIP';
             event_type: 'Online' | 'Offline' | 'Hybrid';
+            gender: 'MALE' | 'FEMALE' | 'OTHER';
+            profile_type: 'PARTICIPANT' | 'MENTOR' | 'BUDDY' | 'EXPERT';
+            sponsor_type: 'GOLD' | 'SILVER' | 'BRONZE' | 'FLAGSHIP';
+            user_role: 'PARTICIPANT' | 'BUDDY' | 'MENTOR' | 'EXPERT' | 'ORGA';
         };
     };
 }

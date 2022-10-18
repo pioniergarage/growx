@@ -14,16 +14,13 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
+import { StudentInformation } from '../types';
 
 export const kitName = 'Karlsruhe Institute of Technology';
 const kitCountry = 'Germany';
 
 type UniversityFormProps = {
-    onNext: (info: {
-        university: string;
-        country: string;
-        isSQ: boolean;
-    }) => void;
+    onNext: (info: StudentInformation) => void;
 };
 
 const UniversityForm = ({ onNext }: UniversityFormProps) => {
@@ -35,7 +32,11 @@ const UniversityForm = ({ onNext }: UniversityFormProps) => {
             isSQ: false,
         },
         onSubmit: ({ university, country, isSQ, atKIT }) => {
-            onNext({ university, country, isSQ: isSQ && atKIT });
+            onNext({
+                university,
+                university_country: country,
+                sq: isSQ && atKIT,
+            });
         },
         validate: ({ university, country }) => {
             const errors: Record<string, string> = {};

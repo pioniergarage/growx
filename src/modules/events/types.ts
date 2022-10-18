@@ -1,16 +1,6 @@
-export enum EventType {
-    Online = 'Online',
-    Offline = 'Offline',
-    Hybrid = 'Hybrid',
+import { Database } from "database/DatabaseDefition";
+
+export type GrowEvent = Omit<Database["public"]["Tables"]["events"]["Row"], "date"> & {
+    date: Date
 }
 
-export type GrowEvent = {
-    date: Date;
-    id: number;
-    title: string;
-    description?: string;
-    mandatory?: boolean;
-    location: string;
-    sq_mandatory?: boolean;
-    type?: EventType;
-};

@@ -1,20 +1,21 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Database } from "database/DatabaseDefition";
-import { useUpdateProfile } from "modules/profile/hooks";
+import { useUpsertProfile } from "modules/profile/hooks";
 import { Profile } from "modules/profile/types";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import QUERY_KEYS from "utils/queryKeys";
 import { fetchUserAvatar, uploadUserAvatar } from "./api";
 
 export function useAvatarUrl({
     userId,
     avatar,
 }: {
-    userId?: Profile['userId'];
+    userId?: Profile['user_id'];
     avatar: Profile['avatar'];
 }) {
     const supabaseClient = useSupabaseClient<Database>();
     const result = useQuery(
-        ['avatar', userId],
+        QUERY_KEYS.avatar(userId),
         async () => {
             if (!avatar) {
                 return null;
@@ -30,7 +31,7 @@ export function useAvatarUrl({
 export function useUploadAvatar() {
     const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
-    const { updateProfile } = useUpdateProfile();
+    const { updateProfile } = useUpsertProfile();
     const mutation = useMutation(
         ({ profile, file }: { profile: Profile; file: File }) =>
             uploadUserAvatar(supabaseClient, profile, file),
@@ -38,7 +39,7 @@ export function useUploadAvatar() {
             onSuccess: async (filename, { profile, file }) => {
                 updateProfile({ ...profile, avatar: filename });
                 queryClient.setQueryData(
-                    ['avatar', profile.userId],
+                    QUERY_KEYS.avatar(profile.user_id),
                     URL.createObjectURL(file)
                 );
             },

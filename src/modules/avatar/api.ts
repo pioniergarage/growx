@@ -15,7 +15,7 @@ export const fetchUserAvatar = (supabaseClient: SupabaseClient<Database>, avatar
         });
 
 export const uploadUserAvatar = async (supabaseClient: SupabaseClient<Database>, profile: Profile, avatar: File) => {
-    const fileName = `${profile.userId}.jpg`;
+    const fileName = `${profile.user_id}.jpg`;
     const filePath = `${fileName}`;
     const resizedImage = await resizeImage(avatar, 200, 200);
     return supabaseClient.storage

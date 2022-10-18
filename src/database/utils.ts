@@ -1,7 +1,7 @@
 import {
     PostgrestMaybeSingleResponse,
     PostgrestResponse,
-    PostgrestSingleResponse
+    PostgrestSingleResponse,
 } from '@supabase/supabase-js';
 
 export function handleResponse<T>({
@@ -42,4 +42,10 @@ export function handleMaybeSingleResponse<T>({
         throw error;
     }
     return data;
+}
+
+export function handleEmptyResponse({ error }: PostgrestResponse<undefined>) {
+    if (error) {
+        throw error;
+    }
 }

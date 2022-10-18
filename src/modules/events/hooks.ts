@@ -2,18 +2,10 @@ import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { User } from '@supabase/supabase-js';
 import { Database } from 'database/DatabaseDefition';
 
-import {
-    deleteEvent,
-    getEvent,
-    getEvents,
-    getRegistrationsOfUser,
-    getRegistrationsTo,
-    insertEvent,
-    registerUser,
-    unregisterUser,
-    updateEvent
-} from 'modules/events/api';
+
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import QUERY_KEYS from 'utils/queryKeys';
+import growEventApi from './api';
 import { GrowEvent } from './types';
 
 export function useRegisterUserToEvent() {
@@ -29,11 +21,11 @@ export function useRegisterUserToEvent() {
             event: GrowEvent;
             present: boolean;
         }) => {
-            return registerUser(supabaseClient, user.id, event.id, present);
+            return growEventApi.registerUser(supabaseClient, user.id, event.id, present);
         },
         {
             onSuccess: () =>
-                queryClient.invalidateQueries(['eventRegistrationsOfUser']),
+                queryClient.invalidateQueries(QUERY_KEYS.registrationsOfUser()),
         }
     );
     return { ...mutation, registerUser: mutation.mutateAsync };
@@ -44,11 +36,11 @@ export function useUnregisterUserFromEvent() {
     const supabaseClient = useSupabaseClient<Database>();
     const mutation = useMutation(
         async ({ user, event }: { user: User; event: GrowEvent }) => {
-            return unregisterUser(supabaseClient, user.id, event.id);
+            return growEventApi.unregisterUser(supabaseClient, user.id, event.id);
         },
         {
             onSuccess: () =>
-                queryClient.invalidateQueries(['eventRegistrationsOfUser']),
+                queryClient.invalidateQueries(QUERY_KEYS.registrationsOfUser()),
         }
     );
     return { ...mutation, unregisterUser: mutation.mutateAsync };
@@ -57,8 +49,8 @@ export function useUnregisterUserFromEvent() {
 export function useRegistrationsToEvent(event: GrowEvent) {
     const supabaseClient = useSupabaseClient<Database>();
     const query = useQuery(
-        ['eventRegistrations', event.id],
-        async () => await getRegistrationsTo(supabaseClient, event.id)
+        QUERY_KEYS.registrationsToEvent(event.id),
+        async () => await growEventApi.getRegistrationsTo(supabaseClient, event.id)
     );
     return { ...query, registrations: query.data };
 }
@@ -66,12 +58,12 @@ export function useRegistrationsToEvent(event: GrowEvent) {
 export function useRegistrationsOfUser(userId?: string) {
     const supabaseClient = useSupabaseClient<Database>();
     const query = useQuery(
-        ['eventRegistrationsOfUser', userId],
+        QUERY_KEYS.registrationsOfUser(userId),
         async () => {
             if (!userId) {
                 throw new Error('Cannot fetch registrations of undefined user');
             }
-            return await getRegistrationsOfUser(supabaseClient, userId);
+            return await growEventApi.getRegistrationsOfUser(supabaseClient, userId);
         },
         { enabled: !!userId }
     );
@@ -81,8 +73,8 @@ export function useRegistrationsOfUser(userId?: string) {
 export function useGrowEvent(id: number) {
     const supabaseClient = useSupabaseClient<Database>();
     const { data, ...rest } = useQuery(
-        ['event', id],
-        async () => await getEvent(supabaseClient, id)
+        QUERY_KEYS.event(id),
+        async () => await growEventApi.getEvent(supabaseClient, id)
     );
     return { event: data, ...rest };
 }
@@ -91,12 +83,12 @@ export function useGrowEvents() {
     const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
     const { data, ...rest } = useQuery(
-        'events',
-        async () => await getEvents(supabaseClient),
+        QUERY_KEYS.events(),
+        async () => await growEventApi.getEvents(supabaseClient),
         {
             onSuccess: (events) =>
                 events.forEach((event) =>
-                    queryClient.setQueryData(['event', event.id], event)
+                    queryClient.setQueryData(QUERY_KEYS.event(event.id), event)
                 ),
         }
     );
@@ -107,11 +99,11 @@ export function useUpdateEvent() {
     const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        async (patch: Partial<GrowEvent> & Pick<GrowEvent, 'id'>) =>
-            await updateEvent(supabaseClient, patch),
+        async (patch: GrowEvent) =>
+            await growEventApi.updateEvent(supabaseClient, patch),
         {
             onSuccess: (updated) => {
-                queryClient.setQueryData(['event', updated.id], updated);
+                queryClient.setQueryData(QUERY_KEYS.event(updated.id), updated);
             },
         }
     );
@@ -122,10 +114,10 @@ export function useDeleteEvent() {
     const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        async (eventId: number) => await deleteEvent(supabaseClient, eventId),
+        async (eventId: number) => await growEventApi.deleteEvent(supabaseClient, eventId),
         {
             onSuccess: (_, eventId) => {
-                queryClient.setQueryData(['event', eventId], undefined);
+                queryClient.setQueryData(QUERY_KEYS.event(eventId), undefined);
             },
         }
     );
@@ -135,13 +127,11 @@ export function useDeleteEvent() {
 export function useInsertEvent() {
     const queryClient = useQueryClient();
     const supabaseClient = useSupabaseClient<Database>();
-    const mutation = useMutation(async (event: Partial<GrowEvent>) => await insertEvent(supabaseClient, event), {
+    const mutation = useMutation(async (event: Partial<GrowEvent>) => await growEventApi.insertEvent(supabaseClient, event), {
         onSuccess: (created) => {
-            queryClient.setQueryData(['event', created.id], created);
-            const oldEvents: GrowEvent[] = queryClient.getQueryData(
-                'events'
-            ) as GrowEvent[];
-            queryClient.setQueryData('events', [...oldEvents, created]);
+            queryClient.setQueryData(QUERY_KEYS.event(created.id), created);
+            const oldEvents: GrowEvent[] = queryClient.getQueryData(QUERY_KEYS.events()) as GrowEvent[];
+            queryClient.setQueryData(QUERY_KEYS.events(), [...oldEvents, created]);
         },
     });
     return { ...mutation, insertEvent: mutation.mutateAsync };

@@ -13,45 +13,33 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { Gender } from 'modules/profile/types';
-
-export type PersonalInfo = {
-    firstName: string;
-    lastName: string;
-    gender: Gender;
-    phone: string;
-    homeland: string;
-};
+import { PersonalInfo } from '../types';
 
 type PersonalInfoFormProps = {
     onNext: (info: PersonalInfo) => void;
-    initialFirstName?: string;
-    initialLastName?: string;
-    initialGender?: Gender;
+    initialInfo?: Partial<PersonalInfo>;
     isLoading?: boolean;
 };
 
 const PersonalInfoForm = ({
     onNext,
-    initialFirstName = '',
-    initialLastName = '',
-    initialGender = 'OTHER',
+    initialInfo = {},
     isLoading = false,
 }: PersonalInfoFormProps) => {
     const formik = useFormik<PersonalInfo>({
         initialValues: {
-            firstName: initialFirstName,
-            lastName: initialLastName,
-            gender: initialGender,
+            forename: initialInfo.forename ?? '',
+            surname: initialInfo.surname ?? '',
+            gender: initialInfo.gender ?? 'OTHER',
             phone: '',
-            homeland: '',
+            country: '',
         },
         onSubmit: (values) => onNext(values),
         validate: (values) => {
             const errors: Record<string, string> = {};
-            if (!values.firstName) errors.firstName = 'Required';
-            if (!values.lastName) errors.lastName = 'Required';
-            if (!values.homeland) errors.homeland = 'Required';
+            if (!values.forename) errors.forename = 'Required';
+            if (!values.surname) errors.surname = 'Required';
+            if (!values.country) errors.country = 'Required';
             return errors;
         },
         validateOnChange: false,
@@ -67,37 +55,35 @@ const PersonalInfoForm = ({
                     </Text>
                 </Box>
                 <FormControl
-                    isInvalid={!!formik.errors.firstName}
+                    isInvalid={!!formik.errors.forename}
                     isDisabled={isLoading}
                     isRequired
                 >
-                    <FormLabel htmlFor="firstName">First name</FormLabel>
+                    <FormLabel htmlFor="forename">Forename</FormLabel>
                     <Input
-                        name="firstName"
-                        id="firstName"
+                        name="forename"
+                        id="forename"
                         onChange={formik.handleChange}
-                        value={formik.values.firstName}
+                        value={formik.values.forename}
                     />
                     <FormErrorMessage>
-                        {formik.errors.firstName}
+                        {formik.errors.forename}
                     </FormErrorMessage>
                 </FormControl>
                 <FormControl
-                    isInvalid={!!formik.errors.lastName}
+                    isInvalid={!!formik.errors.surname}
                     isDisabled={isLoading}
                     isRequired
                 >
-                    <FormLabel htmlFor="lastName">Last name</FormLabel>
+                    <FormLabel htmlFor="surname">Surname</FormLabel>
                     <Input
-                        type="lastName"
-                        name="lastName"
-                        id="lastName"
+                        type="surname"
+                        name="surname"
+                        id="surname"
                         onChange={formik.handleChange}
-                        value={formik.values.lastName}
+                        value={formik.values.surname}
                     />
-                    <FormErrorMessage>
-                        {formik.errors.lastName}
-                    </FormErrorMessage>
+                    <FormErrorMessage>{formik.errors.surname}</FormErrorMessage>
                 </FormControl>
                 <FormControl as="fieldset" isDisabled={isLoading}>
                     <FormLabel as="legend">Gender</FormLabel>
@@ -141,19 +127,17 @@ const PersonalInfoForm = ({
                 </FormControl>
                 <FormControl
                     isDisabled={isLoading}
-                    isInvalid={!!formik.errors.homeland}
+                    isInvalid={!!formik.errors.country}
                     isRequired
                 >
                     <FormLabel>Country</FormLabel>
                     <Input
-                        name="homeland"
-                        id="homeland"
+                        name="country"
+                        id="country"
                         onChange={formik.handleChange}
-                        value={formik.values.homeland}
+                        value={formik.values.country}
                     />
-                    <FormErrorMessage>
-                        {formik.errors.homeland}
-                    </FormErrorMessage>
+                    <FormErrorMessage>{formik.errors.country}</FormErrorMessage>
                 </FormControl>
                 <Button
                     type="submit"
