@@ -22,3 +22,6 @@ print("Saving backup to backup/" + file_name)
 cmd = f'PGPASSWORD="{password}" pg_dump -h {host} -p {port} -U {user} -F c {database} > backups/{file_name}'
 
 os.system(cmd)
+
+# how to restore
+# pg_restore -v -d <DB URL> <backup>

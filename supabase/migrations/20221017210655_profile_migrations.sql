@@ -40,6 +40,7 @@ CREATE TABLE "public"."contact_information" (
     "user_id"   "uuid" NOT NULL,
     "email"     "text" DEFAULT ''::"text",
     "phone"     "text" DEFAULT ''::"text",
+    "country"   "text" DEFAULT ''::"text",
     CONSTRAINT "contact_information_pk" PRIMARY KEY ("user_id"),
     CONSTRAINT "contact_information_fk" FOREIGN KEY ("user_id") REFERENCES "public"."profile"("user_id")
 );
@@ -58,10 +59,10 @@ CREATE POLICY "Allow individuals update access" ON "public"."contact_information
 -- private information
 
 CREATE TABLE "public"."student" (
-    "user_id"    "uuid" NOT NULL, 
-    "studies"    "text" DEFAULT ''::"text",
-    "university" "text" DEFAULT ''::"text",
-    "country"    "text" DEFAULT ''::"text", 
+    "user_id"               "uuid" NOT NULL, 
+    "studies"               "text" DEFAULT ''::"text",
+    "university"            "text" DEFAULT ''::"text",
+    "university_country"    "text" DEFAULT ''::"text", 
     "sq"         boolean DEFAULT false  NOT NULL,  
     CONSTRAINT "sutdent_pk" PRIMARY KEY ("user_id"),
     CONSTRAINT "student_fk" FOREIGN KEY ("user_id") REFERENCES "public"."profile"("user_id")
