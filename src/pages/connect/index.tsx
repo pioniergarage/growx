@@ -19,8 +19,7 @@ import { useUser } from '@supabase/auth-helpers-react';
 
 import GrowEventCard from 'modules/events/components/GrowEventCard';
 import { useGrowEvents, useRegistrationsOfUser } from 'modules/events/hooks';
-import { useProfile, useUpdateProfile } from 'modules/profile/hooks';
-import { kitName } from 'modules/signup/components/UniversityForm';
+import { useProfile, useUpsertProfile } from 'modules/profile/hooks';
 import CreateTeamButton from 'modules/teams/components/CreateTeamButton';
 import TeamCard from 'modules/teams/components/TeamCard';
 import { useTeam, useTeamIdOfUser, useTeamRequests } from 'modules/teams/hooks';
@@ -29,7 +28,7 @@ import { useMemo, useState } from 'react';
 
 const ConnectIndex: React.FC = () => {
     const user = useUser();
-    const { profile } = useProfile(user?.id);
+    const { profile } = useProfile();
     const { events } = useGrowEvents();
     const upcomingEvents = useMemo(() => {
         if (events) {
@@ -56,7 +55,7 @@ const ConnectIndex: React.FC = () => {
                         Welcome back,
                     </Text>
                     &nbsp;
-                    {profile.firstName}
+                    {profile.forename}
                 </Heading>
                 {upcomingEvents.length > 0 ? (
                     <Box>
@@ -83,13 +82,13 @@ const ConnectIndex: React.FC = () => {
                     </Box>
                 ) : undefined}
 
-                <YourTeam userId={profile.userId} />
-                {profile.university === kitName && !SQRegistrationOver ? (
+                <YourTeam userId={profile.user_id} />
+                {/* {profile.university === kitName && !SQRegistrationOver ? (
                     <SQInfo
                         userId={profile.userId}
                         keyQualification={profile.keyQualification}
                     />
-                ) : undefined}
+                ) : undefined} */}
             </VStack>
         </Flex>
     );
@@ -155,10 +154,10 @@ const SQInfo = ({
     userId: string;
     keyQualification: boolean;
 }) => {
-    const { updateProfile } = useUpdateProfile();
+    const { upsertProfile } = useUpsertProfile();
     const [updated, setUpdated] = useState(false);
     async function setSQ(value: boolean) {
-        await updateProfile({ keyQualification: value, userId });
+        //await upsertProfile({ sq: value, userId });
         setUpdated(!updated);
     }
     return (

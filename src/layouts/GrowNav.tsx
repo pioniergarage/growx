@@ -11,7 +11,7 @@ import {
     useBreakpointValue,
 } from '@chakra-ui/react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { useProfile } from 'modules/profile/hooks';
+import { useIsAdmin, useProfile } from 'modules/profile/hooks';
 import Link, { LinkProps } from 'next/link';
 import { useRouter } from 'next/router';
 import { PropsWithChildren } from 'react';
@@ -64,6 +64,7 @@ const GrowConnectNavButton: React.FC<
 export default function GrowNav() {
     const supabaseClient = useSupabaseClient();
     const { profile } = useProfile();
+    const { isAdmin } = useIsAdmin();
     const router = useRouter();
     const queryClient = useQueryClient();
 
@@ -128,9 +129,7 @@ export default function GrowNav() {
                             Teams
                         </GrowConnectNavButton>
                         <Show above="sm">
-                            {profile.role === 'ORGA' ? (
-                                <NavAdminMenu />
-                            ) : undefined}
+                            {isAdmin ? <NavAdminMenu /> : undefined}
                         </Show>
                         <Menu placement="bottom-end">
                             {({ isOpen }) => (
@@ -140,14 +139,7 @@ export default function GrowNav() {
                                         isRound={true}
                                         as={IconButton}
                                         size="lg"
-                                        icon={
-                                            <UserAvatar
-                                                userId={profile.userId}
-                                                firstName={profile.firstName}
-                                                lastName={profile.lastName}
-                                                avatar={profile.avatar}
-                                            />
-                                        }
+                                        icon={<UserAvatar profile={profile} />}
                                     />
                                     <MenuList>
                                         <Link href="/connect/profile">

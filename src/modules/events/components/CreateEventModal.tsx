@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 
 import { useState } from 'react';
-import { EventType, GrowEvent } from '../types';
+import { GrowEvent } from '../types';
 
 interface EventModalProps {
     isOpen: boolean;
@@ -26,12 +26,14 @@ interface EventModalProps {
     initialValue?: Partial<GrowEvent>;
 }
 
-const emptyEvent = {
+const emptyEvent: Omit<GrowEvent, 'id'> = {
     title: '',
-    description: undefined,
-    mandatory: undefined,
+    description: '',
+    mandatory: false,
     location: '',
     date: new Date(),
+    type: 'Hybrid',
+    sq_mandatory: false,
 };
 
 const CreateEventModal: React.FC<EventModalProps> = ({
@@ -121,23 +123,17 @@ const CreateEventModal: React.FC<EventModalProps> = ({
                         <FormLabel>How to participate</FormLabel>
                         <Select
                             name="SelectEventSQMandatory"
-                            value={event.type}
+                            value={event.type || 'Hybrid'}
                             onChange={(e) =>
                                 setEvent({
                                     ...event,
-                                    type: e.target.value as EventType,
+                                    type: e.target.value as GrowEvent['type'],
                                 })
                             }
                         >
-                            <option value={EventType.Online}>
-                                {EventType.Online}
-                            </option>
-                            <option value={EventType.Offline}>
-                                {EventType.Offline}
-                            </option>
-                            <option value={EventType.Hybrid}>
-                                {EventType.Hybrid}
-                            </option>
+                            <option value={'Online'}>Online</option>
+                            <option value={'Offline'}>Offline</option>
+                            <option value="Hybrid">Hybrid</option>
                         </Select>
                     </FormControl>
                 </ModalBody>

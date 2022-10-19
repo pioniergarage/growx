@@ -14,7 +14,7 @@ import { useProfile } from 'modules/profile/hooks';
 const EventsPage = () => {
     const { events } = useGrowEvents();
     const { profile } = useProfile();
-    const { registrations } = useRegistrationsOfUser(profile?.userId);
+    const { registrations } = useRegistrationsOfUser(profile?.user_id);
 
     return (
         <Box>

@@ -20,7 +20,7 @@ import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 
 import ChangeRoleMenu from 'modules/profile/components/ChangeRole';
 import { useProfiles } from 'modules/profile/hooks';
-import { Profile } from 'modules/profile/types';
+import { getFullName, Profile } from 'modules/profile/types';
 import { useState } from 'react';
 import { downloadCSV } from 'utils/csv';
 
@@ -44,26 +44,24 @@ const ProfileList = (props: { profiles: Profile[] }) => {
                     <Tbody>
                         {props.profiles.map((profile) => (
                             <Tr
-                                key={profile.userId}
+                                key={profile.user_id}
                                 onMouseEnter={() =>
-                                    setMenuVisible(profile.userId)
+                                    setMenuVisible(profile.user_id)
                                 }
                                 onMouseLeave={() => {
                                     setMenuVisible(null);
                                     setOpen(null);
                                 }}
                             >
-                                <Td>
-                                    {profile.firstName} {profile.lastName}
-                                </Td>
-                                <Td>{profile.email}</Td>
-                                <Td>{profile.phone}</Td>
-                                <Td>{profile.gender}</Td>
+                                <Td>{getFullName(profile)}</Td>
+                                <Td>{}</Td>
+                                <Td>{}</Td>
+                                <Td>{}</Td>
                                 <Td>
                                     <ChangeRoleMenu
                                         isOpen={
-                                            isMenuVisible === profile.userId &&
-                                            isOpen === profile.userId
+                                            isMenuVisible === profile.user_id &&
+                                            isOpen === profile.user_id
                                         }
                                         onClose={() => {
                                             setOpen(null);
@@ -76,12 +74,13 @@ const ProfileList = (props: { profiles: Profile[] }) => {
                                             rightIcon={<ChevronDownIcon />}
                                             size="sm"
                                             visibility={
-                                                isMenuVisible === profile.userId
+                                                isMenuVisible ===
+                                                profile.user_id
                                                     ? 'visible'
                                                     : 'hidden'
                                             }
                                             onClick={() =>
-                                                setOpen(profile.userId)
+                                                setOpen(profile.user_id)
                                             }
                                         >
                                             Role
@@ -115,18 +114,7 @@ export default function ProfilesAdmin() {
                 'SQ',
             ],
             profiles.map((p) =>
-                [
-                    p.firstName,
-                    p.lastName,
-                    p.email,
-                    p.phone,
-                    p.gender,
-                    p.homeland,
-                    p.studies,
-                    p.university,
-                    p.universityCountry,
-                    p.keyQualification,
-                ].map((a) => (a ? a : ''))
+                [p.forename, p.surname].map((a) => (a ? a : ''))
             ),
             `profiles.csv`
         );
@@ -149,7 +137,7 @@ export default function ProfilesAdmin() {
                                 onClick={() =>
                                     downloadProfiles(
                                         profiles.filter(
-                                            (p) => p.role === 'PARTICIPANT'
+                                            (p) => p.type === 'PARTICIPANT'
                                         )
                                     )
                                 }
@@ -161,7 +149,7 @@ export default function ProfilesAdmin() {
                         </Flex>
                         <ProfileList
                             profiles={profiles.filter(
-                                (p) => p.role === 'PARTICIPANT'
+                                (p) => p.type === 'PARTICIPANT'
                             )}
                         />
                     </Box>
@@ -169,7 +157,7 @@ export default function ProfilesAdmin() {
                         <Heading size="md">Mentors</Heading>
                         <ProfileList
                             profiles={profiles.filter(
-                                (p) => p.role === 'MENTOR'
+                                (p) => p.type === 'MENTOR'
                             )}
                         />
                     </Box>
@@ -177,7 +165,7 @@ export default function ProfilesAdmin() {
                         <Heading size="md">Experts</Heading>
                         <ProfileList
                             profiles={profiles.filter(
-                                (p) => p.role === 'EXPERT'
+                                (p) => p.type === 'EXPERT'
                             )}
                         />
                     </Box>
@@ -185,14 +173,8 @@ export default function ProfilesAdmin() {
                         <Heading size="md">Buddies</Heading>
                         <ProfileList
                             profiles={profiles.filter(
-                                (p) => p.role === 'BUDDY'
+                                (p) => p.type === 'BUDDY'
                             )}
-                        />
-                    </Box>
-                    <Box>
-                        <Heading size="md">Orga</Heading>
-                        <ProfileList
-                            profiles={profiles.filter((p) => p.role === 'ORGA')}
                         />
                     </Box>
                 </VStack>

@@ -27,7 +27,7 @@ export default function TeamCard(team: Team) {
                 h={20}
                 alignItems="stretch"
             >
-                <TeamLogo {...team} size={20} />
+                <TeamLogo logo={team.logo} name={team.name} size={20} />
                 <Flex
                     flexDir="column"
                     p={4}

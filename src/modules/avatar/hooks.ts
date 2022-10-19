@@ -31,13 +31,13 @@ export function useAvatarUrl({
 export function useUploadAvatar() {
     const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
-    const { updateProfile } = useUpsertProfile();
+    const { upsertProfile } = useUpsertProfile();
     const mutation = useMutation(
         ({ profile, file }: { profile: Profile; file: File }) =>
             uploadUserAvatar(supabaseClient, profile, file),
         {
             onSuccess: async (filename, { profile, file }) => {
-                updateProfile({ ...profile, avatar: filename });
+                upsertProfile({ ...profile, avatar: filename });
                 queryClient.setQueryData(
                     QUERY_KEYS.avatar(profile.user_id),
                     URL.createObjectURL(file)

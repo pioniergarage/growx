@@ -16,7 +16,7 @@ import { useFormik } from 'formik';
 import { FurtherProfileInfo } from 'modules/profile/types';
 
 type FurtherInfoProps = {
-    onNext: (info: FurtherProfileInfo) => void;
+    onNext: (info: Omit<FurtherProfileInfo, 'email'>) => void;
 };
 
 const FurtherInfo = ({ onNext }: FurtherInfoProps) => {

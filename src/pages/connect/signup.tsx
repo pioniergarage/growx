@@ -4,12 +4,13 @@ import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import LoginLayout from 'layouts/LoginLayout';
 import {
     useInsertFurhterProfileInfo,
-    useUpdateProfile,
+    useUpsertProfile,
 } from 'modules/profile/hooks';
 import EmailAndPasswordForm, {
     SignUpInfo,
 } from 'modules/signup/components/EmailAndPasswordForm';
 import FurtherInfo from 'modules/signup/components/FurtherInfo';
+import PersonalInfoForm from 'modules/signup/components/PersonalInfoForm';
 import StudentForm from 'modules/signup/components/StudentForm';
 import UniversityForm from 'modules/signup/components/UniversityForm';
 import { PersonalInfo, StudentInformation } from 'modules/signup/types';
@@ -21,7 +22,7 @@ const SignUp: NextPageWithLayout = () => {
     const supabaseClient = useSupabaseClient();
     const router = useRouter();
 
-    const { updateProfile } = useUpdateProfile();
+    const { upsertProfile } = useUpsertProfile();
     const { insertFurtherProfileInfo } = useInsertFurhterProfileInfo();
 
     const [step, setStep] = useState(0);
@@ -31,7 +32,13 @@ const SignUp: NextPageWithLayout = () => {
         email: '',
         password: '',
     });
-    const [personalInfo, setPersonalInfo] = useState<PersonalInfo>();
+    const [personalInfo, setPersonalInfo] = useState<PersonalInfo>({
+        forename: '',
+        surname: '',
+        gender: 'MALE',
+        phone: '',
+        country: '',
+    });
 
     async function signUp({ email, password }: SignUpInfo) {
         const { data, error } = await supabaseClient.auth.signUp({
@@ -50,13 +57,14 @@ const SignUp: NextPageWithLayout = () => {
     ) {
         try {
             const user = await signUp(emailAndPassword);
-            await updateProfile({
-                email: emailAndPassword.email,
+            await upsertProfile({
                 ...personalInfo,
-                userId: user.id,
-                university,
-                universityCountry,
-                keyQualification: isSQ,
+                user_id: user.id,
+                bio: '',
+                is_student: !!studentInfo?.university,
+                avatar: '',
+                skills: [],
+                type: 'PARTICIPANT',
             });
             router.replace('/connect');
         } catch (error) {
@@ -97,27 +105,19 @@ const SignUp: NextPageWithLayout = () => {
                             setStep(step + 1);
                         } else {
                             setStep(step + 2);
-                            createAccount(
-                                emailAndPassword,
-                                personalInfo,
-                                false,
-                                undefined,
-                                undefined
-                            );
+                            createAccount(emailAndPassword, personalInfo);
                         }
                     }}
                 />
             ) : step === 4 ? (
                 <UniversityForm
-                    onNext={({ university, country, isSQ }) => {
+                    onNext={({ university, university_country, sq }) => {
                         setStep(step + 1);
-                        createAccount(
-                            emailAndPassword,
-                            personalInfo,
-                            isSQ,
+                        createAccount(emailAndPassword, personalInfo, {
+                            sq,
                             university,
-                            country
-                        );
+                            university_country,
+                        });
                     }}
                 />
             ) : step === 5 && !signUpError ? (

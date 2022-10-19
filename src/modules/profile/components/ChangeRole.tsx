@@ -11,7 +11,7 @@ import {
     MenuList,
 } from '@chakra-ui/react';
 
-import { useUpdateProfile } from 'modules/profile/hooks';
+import { useUpsertProfile } from 'modules/profile/hooks';
 import { PropsWithChildren, useRef, useState } from 'react';
 import { Profile, UserRole } from '../types';
 
@@ -42,7 +42,7 @@ const RoleChangeDialog = ({
                     </AlertDialogHeader>
 
                     <AlertDialogBody>
-                        Are you sure {profile?.firstName} ({profile?.role})
+                        Are you sure {profile?.forename} ({profile?.type})
                         should be {newRole}?
                     </AlertDialogBody>
 
@@ -67,7 +67,7 @@ const ChangeRoleMenu = (
         profile: Profile;
     } & PropsWithChildren
 ) => {
-    const { updateProfile } = useUpdateProfile();
+    const { upsertProfile } = useUpsertProfile();
     const [roleChange, setRoleChange] = useState<{
         profile: Profile;
         newRole: UserRole;
@@ -77,10 +77,7 @@ const ChangeRoleMenu = (
         if (!roleChange) {
             return;
         }
-        updateProfile({
-            userId: roleChange.profile.userId,
-            role: roleChange.newRole,
-        });
+        upsertProfile({ ...roleChange.profile, type: roleChange.newRole });
         props.onClose();
         setRoleChange(null);
     }
@@ -130,16 +127,6 @@ const ChangeRoleMenu = (
                     }
                 >
                     Buddy
-                </MenuItem>
-                <MenuItem
-                    onClick={() =>
-                        setRoleChange({
-                            profile: props.profile,
-                            newRole: 'ORGA',
-                        })
-                    }
-                >
-                    Orga
                 </MenuItem>
             </MenuList>
         </Menu>

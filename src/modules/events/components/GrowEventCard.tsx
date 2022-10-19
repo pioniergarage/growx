@@ -14,9 +14,8 @@ import {
     useRegisterUserToEvent,
     useUnregisterUserFromEvent,
 } from 'modules/events/hooks';
-import { useProfile } from 'modules/profile/hooks';
 import { useMemo } from 'react';
-import { EventType, GrowEvent } from '../types';
+import { GrowEvent } from '../types';
 import EventTagList from './EventTagList';
 import SignUpDialog from './SignUpDialog';
 
@@ -39,7 +38,6 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
     const { unregisterUser, isLoading: isUnregistering } =
         useUnregisterUserFromEvent();
     const user = useUser();
-    const { profile } = useProfile();
     const toast = useToast();
     const { day, month, time, over } = useMemo(() => {
         const day = String(event.date.getDate()).padStart(2, '0');
@@ -104,15 +102,12 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
 
             {!over ? (
                 <>
-                    <EventTagList
-                        event={event}
-                        isSQTagVisible={profile?.keyQualification}
-                    />
+                    <EventTagList event={event} isSQTagVisible={false} />
                     <EventRegistration
                         registration={registration}
                         onDeregister={deregister}
                         isLoading={isRegistering || isUnregistering}
-                        eventType={event.type || EventType.Online}
+                        eventType={event.type}
                         onRegister={register}
                     />
                 </>
@@ -126,7 +121,7 @@ type EventRegistrationProps = {
     onDeregister: () => void;
     onRegister: (present: boolean) => void;
     isLoading: boolean;
-    eventType: EventType;
+    eventType: GrowEvent['type'];
 };
 const EventRegistration = ({
     registration,
@@ -138,10 +133,10 @@ const EventRegistration = ({
     const { isOpen, onClose, onOpen } = useDisclosure();
 
     const handleRegisterClick = () => {
-        if (eventType === EventType.Hybrid) {
+        if (eventType === 'Hybrid') {
             onOpen();
         } else {
-            onRegister(eventType === EventType.Offline);
+            onRegister(eventType === 'Offline');
         }
     };
 
@@ -188,7 +183,7 @@ const EventRegistration = ({
                 >
                     Register
                 </Button>
-                {eventType === EventType.Hybrid ? (
+                {eventType === 'Hybrid' ? (
                     <SignUpDialog
                         isOpen={isOpen}
                         onSubmit={(present) => {

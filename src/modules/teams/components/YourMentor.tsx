@@ -19,13 +19,11 @@ const YourMentor: React.FC<YourMentorProps> = ({ team }) => {
                 Your mentor
             </Text>
             <ProfileCard
-                key={mentor.userId}
-                firstName={mentor.firstName}
-                lastName={mentor.lastName}
-                email={mentor.email}
+                key={mentor.user_id}
+                forename={mentor.forename}
+                surname={mentor.surname}
                 avatar={mentor.avatar}
-                userId={mentor.userId}
-                phone={mentor.phone}
+                user_id={mentor.user_id}
                 bio={mentor.bio}
             />
         </VStack>

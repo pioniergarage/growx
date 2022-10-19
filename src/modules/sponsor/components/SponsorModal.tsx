@@ -18,9 +18,9 @@ import {
 } from '@chakra-ui/react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
-import { uploadLogo } from 'modules/sponsor/api';
 import { useEffect, useState } from 'react';
 import FileSelect from '../../../components/FileSelect';
+import sponsorApi from '../api';
 import { Sponsor } from '../types';
 
 interface SponsorModalProps {
@@ -47,7 +47,11 @@ const SponsorModal: React.FC<SponsorModalProps> = ({
             return;
         }
 
-        const url = await uploadLogo(supabaseClient, files[0].name, files[0]);
+        const url = await sponsorApi.uploadLogo(
+            supabaseClient,
+            files[0].name,
+            files[0]
+        );
         setSponsor({ ...sponsor, logo: url });
     };
 

@@ -23,7 +23,7 @@ import {
 } from 'modules/events/hooks';
 import { GrowEvent } from 'modules/events/types';
 import ProfileCard from 'modules/profile/components/ProfileCard';
-import { Profile } from 'modules/profile/types';
+import { getFullName, Profile } from 'modules/profile/types';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { downloadCSV } from 'utils/csv';
@@ -39,11 +39,9 @@ function Registrations(event: GrowEvent) {
         }[] = []
     ) {
         downloadCSV(
-            ['name', 'email', 'phone', 'online/person'],
+            ['name', 'online/person'],
             registrations.map(({ present, profile }) => [
-                profile.firstName + ' ' + profile.lastName,
-                profile.email,
-                profile.phone || '',
+                getFullName(profile),
                 present ? 'in person' : 'online',
             ]),
             `${event.title}-registrations.csv`
@@ -67,16 +65,15 @@ function Registrations(event: GrowEvent) {
             </Flex>
             <SimpleGrid columns={2} gap={2}>
                 {registrations?.map((registration) => (
-                    <HStack key={registration.profile.userId}>
+                    <HStack key={registration.profile.user_id}>
                         <Box fontSize={10} width={12}>
                             {registration.present ? 'In Person' : 'Online'}
                         </Box>
                         <ProfileCard
-                            firstName={registration.profile.firstName}
-                            lastName={registration.profile.lastName}
-                            email={registration.profile.email}
+                            forename={registration.profile.forename}
+                            surname={registration.profile.surname}
                             avatar={registration.profile.avatar}
-                            userId={registration.profile.userId}
+                            user_id={registration.profile.user_id}
                         />
                     </HStack>
                 ))}
@@ -97,7 +94,7 @@ const EventDetails: NextPageWithLayout = () => {
     const { deleteEvent } = useDeleteEvent();
     const [isEditing, setEditing] = useState(false);
 
-    async function saveEvent(patch: Partial<GrowEvent>) {
+    async function saveEvent(patch: Omit<GrowEvent, 'id'>) {
         if (!initialEvent) return;
         try {
             updateEvent({ ...patch, id: initialEvent.id });

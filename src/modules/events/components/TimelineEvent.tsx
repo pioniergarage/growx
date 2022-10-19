@@ -8,7 +8,7 @@ import {
     FaExclamation,
     FaMapMarkerAlt,
 } from 'react-icons/fa';
-import { GrowEvent, EventType } from '../types';
+import { GrowEvent } from '../types';
 import EventTag from './EventTag';
 
 interface TimelineEventProps {
@@ -57,11 +57,11 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({ event }) => {
                             {event.location}
                         </EventTag>
                     ) : undefined}
-                    {event.type === EventType.Hybrid ? (
+                    {event.type === 'Hybrid' ? (
                         <EventTag icon={FaChromecast}>Hybrid</EventTag>
-                    ) : event.type === EventType.Online ? (
+                    ) : event.type === 'Online' ? (
                         <EventTag icon={FaCloud}>Online</EventTag>
-                    ) : event.type === EventType.Offline ? (
+                    ) : event.type === 'Offline' ? (
                         <EventTag icon={FaBuilding}>Offline</EventTag>
                     ) : undefined}
                     {event.mandatory ? (

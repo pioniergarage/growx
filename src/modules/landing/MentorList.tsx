@@ -1,10 +1,10 @@
 import { Flex, Heading, Text, VStack } from '@chakra-ui/react';
-import { PublicMentorProfile } from 'modules/mentor/types';
+import { getFullName, Profile } from 'modules/profile/types';
 
 import UserAvatar from '../../modules/avatar/components/UserAvatar';
 
 type MentorListProps = {
-    mentors: PublicMentorProfile[];
+    mentors: Profile[];
 };
 const MentorList: React.FC<MentorListProps> = ({ mentors }) => {
     return (
@@ -14,21 +14,13 @@ const MentorList: React.FC<MentorListProps> = ({ mentors }) => {
                 {mentors.map((mentor) => (
                     <Flex
                         as="li"
-                        key={mentor.userId}
+                        key={mentor.user_id}
                         gap={4}
                         alignItems="center"
                     >
-                        <UserAvatar
-                            firstName={mentor.firstName}
-                            lastName={mentor.lastName}
-                            userId={mentor.userId}
-                            avatar={mentor.avatar}
-                            alignSelf="start"
-                        />
+                        <UserAvatar profile={mentor} alignSelf="start" />
                         <Flex flexDir="column">
-                            <Heading size="sm">
-                                {mentor.firstName + ' ' + mentor.lastName}
-                            </Heading>
+                            <Heading size="sm">{getFullName(mentor)}</Heading>
                             <Text color="gray.400" lineHeight={1.3}>
                                 {mentor.bio}
                             </Text>

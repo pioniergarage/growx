@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 
 import UserAvatar from 'modules/avatar/components/UserAvatar';
-import { Profile } from 'modules/profile/types';
+import { getFullName, Profile } from 'modules/profile/types';
 import {
     useAcceptRequest,
     useDeclineRequest,
@@ -43,16 +43,17 @@ const RequestItem: React.FC<RequestItemProps> = ({
                 gap={1}
             >
                 <GridItem rowSpan={{ base: 2, sm: 1 }}>
-                    <UserAvatar {...profile} />
+                    <UserAvatar profile={profile} />
                 </GridItem>
                 <GridItem fontWeight="bold">
-                    <Link href={'/connect/profiles/' + profile.userId} passHref>
-                        <LinkOverlay>
-                            {profile.firstName + profile.lastName}
-                        </LinkOverlay>
+                    <Link
+                        href={'/connect/profiles/' + profile.user_id}
+                        passHref
+                    >
+                        <LinkOverlay>{getFullName(profile)}</LinkOverlay>
                     </Link>
                 </GridItem>
-                <GridItem color="gray.500">{profile.email}</GridItem>
+                <GridItem color="gray.500"></GridItem>
                 <GridItem
                     justifySelf={{ base: 'start', sm: 'end' }}
                     colStart={{ base: 2, sm: 'auto' }}
@@ -88,8 +89,8 @@ const TeamRequests: React.FC<TeamRequestsProps> = ({ team }) => {
     const [loadingIds, setLoadingIds] = useState<string[]>([]);
 
     async function onAcceptRequest(profile: Profile) {
-        setLoadingIds([...loadingIds, profile.userId]);
-        await acceptRequest(profile.userId, {
+        setLoadingIds([...loadingIds, profile.user_id]);
+        await acceptRequest(profile.user_id, {
             onError: () => {
                 toast({
                     status: 'error',
@@ -99,20 +100,16 @@ const TeamRequests: React.FC<TeamRequestsProps> = ({ team }) => {
             onSuccess: () => {
                 toast({
                     status: 'success',
-                    title:
-                        profile.firstName +
-                        ' ' +
-                        profile.lastName +
-                        ' joined your team',
+                    title: getFullName(profile) + ' joined your team',
                 });
             },
         });
-        setLoadingIds(loadingIds.filter((i) => i != profile.userId));
+        setLoadingIds(loadingIds.filter((i) => i != profile.user_id));
     }
 
     async function onDeclineRequest(profile: Profile) {
-        setLoadingIds([...loadingIds, profile.userId]);
-        await declineRequest(profile.userId, {
+        setLoadingIds([...loadingIds, profile.user_id]);
+        await declineRequest(profile.user_id, {
             onError: () => {
                 toast({
                     status: 'error',
@@ -120,7 +117,7 @@ const TeamRequests: React.FC<TeamRequestsProps> = ({ team }) => {
                 });
             },
         });
-        setLoadingIds(loadingIds.filter((i) => i != profile.userId));
+        setLoadingIds(loadingIds.filter((i) => i != profile.user_id));
     }
 
     if (requests.length === 0) {
@@ -138,8 +135,8 @@ const TeamRequests: React.FC<TeamRequestsProps> = ({ team }) => {
                         onAccept={() => onAcceptRequest(member)}
                         onDecline={() => onDeclineRequest(member)}
                         profile={member}
-                        key={member.userId}
-                        loading={loadingIds.includes(member.userId)}
+                        key={member.user_id}
+                        loading={loadingIds.includes(member.user_id)}
                     />
                 ))}
             </VStack>

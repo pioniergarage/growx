@@ -1,7 +1,7 @@
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import growEventApi from 'modules/events/api';
 
-import { getEvents } from 'modules/events/api';
 import { GrowEvent } from 'modules/events/types';
 import { getFAQs } from 'modules/faq/api';
 import { FAQ } from 'modules/faq/types';
@@ -14,9 +14,9 @@ import Timeline from 'modules/landing/ShortTimeline';
 import SponsorBlock from 'modules/landing/sponsor/SponsorBlock';
 import LongTimeline from 'modules/landing/Timeline';
 import WaitingForBlock from 'modules/landing/WaitingForBlock';
-import { PublicMentorProfile } from 'modules/mentor/types';
-import { getPublicMentors } from 'modules/profile/api';
-import { getSponsors } from 'modules/sponsor/api';
+import mentorApi from 'modules/mentor/api';
+import { Profile } from 'modules/profile/types';
+import sponsorApi from 'modules/sponsor/api';
 import { Sponsor } from 'modules/sponsor/types';
 import { PropsWithChildren } from 'react';
 
@@ -24,13 +24,15 @@ export const getServerSideProps = withPageAuth({
     authRequired: false,
     async getServerSideProps(ctx, supabase) {
         try {
-            const sponsors = await getSponsors(supabase);
+            const sponsors = await sponsorApi.getSponsors(supabase);
             const faqs = await getFAQs(supabase);
-            const events = (await getEvents(supabase)).map((e) => ({
-                ...e,
-                date: e.date.toISOString(),
-            }));
-            const mentors = await getPublicMentors(supabase);
+            const events = (await growEventApi.getEvents(supabase)).map(
+                (e) => ({
+                    ...e,
+                    date: e.date.toISOString(),
+                })
+            );
+            const mentors = await mentorApi.getMentors(supabase);
             return { props: { sponsors, faqs, events, mentors } };
         } catch (error) {
             console.error(error);
@@ -42,7 +44,7 @@ interface HomeProps {
     sponsors: Sponsor[];
     faqs: FAQ[];
     events: (Omit<GrowEvent, 'date'> & { date: string })[];
-    mentors: PublicMentorProfile[];
+    mentors: Profile[];
 }
 
 const Home: React.FC<HomeProps> = ({

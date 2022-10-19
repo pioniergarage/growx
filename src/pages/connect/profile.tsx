@@ -13,11 +13,9 @@ import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 
 import UserAvatar from 'modules/avatar/components/UserAvatar';
 import { useUploadAvatar } from 'modules/avatar/hooks';
-import ProfileForm from 'modules/profile/components/ProfileForm';
 import UsersProfileView from 'modules/profile/components/UsersProfileView';
-import { useProfile, useUpdateProfile } from 'modules/profile/hooks';
-import { Profile } from 'modules/profile/types';
-import { useMemo, useState } from 'react';
+import { useProfile } from 'modules/profile/hooks';
+import { useMemo } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 
 function SkeletonLoader() {
@@ -87,57 +85,21 @@ function AvatarControl() {
 }
 
 function ProfileDetailsControl() {
-    const [isEditing, setEditing] = useState(false);
-    const { profile, isLoading: loading } = useProfile();
-    const { updateProfile } = useUpdateProfile();
-    const toast = useToast();
-
-    async function handleSave(profile: Profile) {
-        try {
-            await updateProfile(profile);
-
-            toast({
-                title: 'Profile updated.',
-                status: 'success',
-                duration: 4000,
-                isClosable: true,
-            });
-            setEditing(false);
-        } catch (error) {
-            toast({
-                title: 'Something went wrong. Could not update profile.',
-                status: 'error',
-                duration: 4000,
-                isClosable: true,
-            });
-        }
-    }
-
+    const { profile } = useProfile();
     return (
         <VStack alignItems="stretch" gap={2}>
-            {!isEditing || !profile ? (
+            {!profile ? (
                 profile ? (
                     <>
                         <UsersProfileView profile={profile} />
-                        <Button
-                            onClick={() => setEditing(true)}
-                            width={20}
-                            variant="outline"
-                        >
+                        <Button disabled width={20} variant="outline">
                             Edit
                         </Button>
                     </>
                 ) : (
                     <SkeletonLoader />
                 )
-            ) : (
-                <ProfileForm
-                    profile={profile}
-                    onSave={handleSave}
-                    loading={loading}
-                    onCancel={() => setEditing(false)}
-                />
-            )}
+            ) : undefined}
         </VStack>
     );
 }

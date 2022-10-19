@@ -1,22 +1,16 @@
 import { Avatar, AvatarProps, SkeletonCircle } from '@chakra-ui/react';
-import { Profile } from 'modules/profile/types';
+import { getFullName, Profile } from 'modules/profile/types';
 import { useAvatarUrl } from '../hooks';
 
 export interface UserAvatarProps extends AvatarProps {
-    userId?: Profile['userId'];
-    avatar?: Profile['avatar'];
-    firstName?: Profile['firstName'];
-    lastName?: Profile['lastName'];
+    profile?: Profile;
 }
 
-const UserAvatar: React.FC<UserAvatarProps> = ({
-    userId,
-    avatar,
-    firstName,
-    lastName,
-    ...rest
-}) => {
-    const { avatarUrl, isLoading } = useAvatarUrl({ userId, avatar });
+const UserAvatar: React.FC<UserAvatarProps> = ({ profile, ...rest }) => {
+    const { avatarUrl, isLoading } = useAvatarUrl({
+        userId: profile?.user_id,
+        avatar: profile?.avatar ?? null,
+    });
     if (isLoading) {
         return <SkeletonCircle size={rest.size == 'sm' ? '10' : '12'} />;
     }
@@ -24,7 +18,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
         <Avatar
             userSelect="none"
             size="md"
-            name={firstName + ' ' + lastName}
+            name={getFullName(profile)}
             src={avatarUrl || undefined}
             bg="gray.500"
             {...rest}

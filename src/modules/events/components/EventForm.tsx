@@ -22,7 +22,7 @@ import { FocusableElement } from '@chakra-ui/utils';
 import { useFormik } from 'formik';
 
 import { useRef } from 'react';
-import { EventType, GrowEvent } from '../types';
+import { GrowEvent } from '../types';
 
 type EventFormProps = {
     onSubmit: (value: Omit<GrowEvent, 'id'>) => void | Promise<unknown>;
@@ -182,18 +182,15 @@ export default function EventForm({
                             <FormLabel>How to participate</FormLabel>
                             <Select
                                 id="type"
-                                value={formik.values.type}
+                                value={
+                                    (formik.values.type as GrowEvent['type']) ||
+                                    'Hybrid'
+                                }
                                 onChange={formik.handleChange}
                             >
-                                <option value={EventType.Online}>
-                                    {EventType.Online}
-                                </option>
-                                <option value={EventType.Offline}>
-                                    {EventType.Offline}
-                                </option>
-                                <option value={EventType.Hybrid}>
-                                    {EventType.Hybrid}
-                                </option>
+                                <option value={'Online'}>Online</option>
+                                <option value={'Offline'}>Offline</option>
+                                <option value="Hybrid">Hybrid</option>
                             </Select>
                         </FormControl>
 

@@ -22,7 +22,7 @@ import {
 
 import UserAvatar from 'modules/avatar/components/UserAvatar';
 import { useProfiles } from 'modules/profile/hooks';
-import { Profile } from 'modules/profile/types';
+import { getFullName, Profile } from 'modules/profile/types';
 import { useMemo, useState } from 'react';
 
 type MentorSelectProps = {
@@ -35,7 +35,7 @@ type MentorSelectProps = {
 const MentorSelect = (props: MentorSelectProps) => {
     const { profiles } = useProfiles();
     const mentors = useMemo(
-        () => (profiles ?? []).filter((p) => p.role === 'MENTOR'),
+        () => (profiles ?? []).filter((p) => p.type === 'MENTOR'),
         [profiles]
     );
     const [input, setInput] = useState('');
@@ -43,8 +43,8 @@ const MentorSelect = (props: MentorSelectProps) => {
         () =>
             mentors.filter(
                 (m) =>
-                    m.firstName.toUpperCase().includes(input) ||
-                    m.lastName.toUpperCase().includes(input)
+                    m.forename.toUpperCase().includes(input) ||
+                    m.surname.toUpperCase().includes(input)
             ),
         [input, mentors]
     );
@@ -58,15 +58,7 @@ const MentorSelect = (props: MentorSelectProps) => {
                     <IconButton
                         isRound
                         aria-label="Adjust mentor"
-                        icon={
-                            <UserAvatar
-                                size="sm"
-                                userId={props.mentor.userId}
-                                avatar={props.mentor.avatar}
-                                firstName={props.mentor.firstName}
-                                lastName={props.mentor.lastName}
-                            />
-                        }
+                        icon={<UserAvatar size="sm" profile={props.mentor} />}
                     />
                 ) : (
                     <Box
@@ -94,10 +86,7 @@ const MentorSelect = (props: MentorSelectProps) => {
                                 onClick={props.onUnselect}
                                 variant="link"
                             >
-                                Clear Mentor:{' '}
-                                {props.mentor.firstName +
-                                    ' ' +
-                                    props.mentor.lastName}
+                                Clear Mentor: {getFullName(props.mentor)}
                             </Button>
                             <Divider my={2} />
                         </>
@@ -118,7 +107,7 @@ const MentorSelect = (props: MentorSelectProps) => {
                         >
                             {filteredMentors.map((mentor) => (
                                 <ListItem
-                                    key={mentor.userId}
+                                    key={mentor.user_id}
                                     cursor="pointer"
                                     _hover={{ bgColor: 'gray.600' }}
                                     p={1.5}
@@ -141,10 +130,7 @@ const MentorSelect = (props: MentorSelectProps) => {
                                 >
                                     <UserAvatar
                                         size="sm"
-                                        userId={mentor.userId}
-                                        firstName={mentor.firstName}
-                                        lastName={mentor.lastName}
-                                        avatar={mentor.avatar}
+                                        profile={mentor}
                                         bg="gray.500"
                                     />
                                     <Flex
@@ -152,9 +138,7 @@ const MentorSelect = (props: MentorSelectProps) => {
                                         flexDir="column"
                                     >
                                         <Text as="div" fontWeight="medium">
-                                            {mentor.firstName +
-                                                ' ' +
-                                                mentor.lastName}
+                                            {getFullName(mentor)}
                                         </Text>
                                         <Text
                                             as="div"

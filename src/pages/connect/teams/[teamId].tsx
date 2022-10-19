@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
-import { getTeam } from 'modules/teams/api';
+import teamApi from 'modules/teams/api';
 import LeaveTeamButton from 'modules/teams/components/LeaveTeamButton';
 import MemberList from 'modules/teams/components/MemberList';
 import RequestButton from 'modules/teams/components/RequestButton';
@@ -36,6 +36,7 @@ import { Team } from 'modules/teams/types';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState } from 'react';
+
 const TeamLogo = dynamic(() => import('modules/teams/components/TeamLogo'), {
     ssr: false,
 });
@@ -212,7 +213,7 @@ const TeamDetails: React.FC<TeamDetails> = ({ team: serverSideTeam }) => {
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
     getServerSideProps: async (context, supabase) => {
-        const team = await getTeam(
+        const team = await teamApi.getTeam(
             supabase,
             parseInt(context.query.teamId as string)
         );

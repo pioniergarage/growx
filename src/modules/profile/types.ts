@@ -2,13 +2,14 @@ import { Database } from "database/DatabaseDefition";
 
 export type Gender = Database["public"]["Enums"]["gender"]
 
-export type Profile = Database["public"]["Tables"]["profile"]["Row"]
+export type Profile = Omit<Database["public"]["Tables"]["profile"]["Row"], "inserted_at">
+export const getFullName = (person?: Partial<Pick<Profile, "forename" | "surname">>) => `${person?.forename} ${person?.surname}`
 
 export type ContactInformation = Database["public"]["Tables"]["contact_information"]["Row"]
 
-export type UserRole = Database["public"]["Enums"]["user_role"]
+export type UserRole = Profile["type"]
 
-export type FurtherProfileInfo = Database["public"]["Tables"]["signup_info"]["Row"]
+export type FurtherProfileInfo = Omit<Database["public"]["Tables"]["signup_info"]["Row"], "created_at">
 
 export const availableSkills = [
     'AgriTech',

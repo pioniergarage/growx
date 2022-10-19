@@ -1,14 +1,13 @@
 import { Alert, AlertIcon, Spinner, Text, VStack } from '@chakra-ui/react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import LoginLayout from 'layouts/LoginLayout';
-import { useUpdateProfile } from 'modules/profile/hooks';
+import { useUpsertProfile } from 'modules/profile/hooks';
 import DetailInformation from 'modules/signup/components/DetailInformationForm';
 import EmailAndPasswordForm, {
     SignUpInfo,
 } from 'modules/signup/components/EmailAndPasswordForm';
-import PersonalInfoForm, {
-    PersonalInfo,
-} from 'modules/signup/components/PersonalInfoForm';
+import PersonalInfoForm from 'modules/signup/components/PersonalInfoForm';
+import { PersonalInfo } from 'modules/signup/types';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
@@ -19,11 +18,17 @@ const MentorSignUp: NextPageWithLayout = () => {
         email: '',
         password: '',
     });
-    const [personalInfo, setPersonalInfo] = useState<PersonalInfo>();
+    const [personalInfo, setPersonalInfo] = useState<PersonalInfo>({
+        forename: '',
+        surname: '',
+        gender: 'MALE',
+        phone: '',
+        country: '',
+    });
 
     const [step, setStep] = useState(0);
     const [signUpError, setSignUpError] = useState<string>('');
-    const { updateProfile } = useUpdateProfile();
+    const { upsertProfile } = useUpsertProfile();
     const router = useRouter();
 
     const { firstName, lastName, email } = router.query;
@@ -41,13 +46,14 @@ const MentorSignUp: NextPageWithLayout = () => {
                 return data.user;
             })
             .then((user) => {
-                updateProfile({
+                upsertProfile({
                     ...personalInfo,
                     skills,
-                    email: emailAndPassword.email,
-                    userId: user.id,
-                    role: 'MENTOR',
+                    user_id: user.id,
+                    type: 'MENTOR',
                     bio,
+                    avatar: '',
+                    is_student: false,
                 });
             })
             .then(() => router.push('/connect'))
@@ -67,8 +73,10 @@ const MentorSignUp: NextPageWithLayout = () => {
                 />
             ) : step == 1 ? (
                 <PersonalInfoForm
-                    initialFirstName={firstName as string}
-                    initialLastName={lastName as string}
+                    initialInfo={{
+                        forename: firstName as string,
+                        surname: lastName as string,
+                    }}
                     onNext={(info) => {
                         setPersonalInfo(info);
                         setStep(step + 1);

@@ -1,6 +1,6 @@
 import { SupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from 'database/DatabaseDefition';
-import { handleEmptyResponse, handleResponse, handleSingleResponse } from '../../database/utils';
+import { handleEmptyResponse, handleMaybeSingleResponse, handleResponse, handleSingleResponse } from '../../database/utils';
 import { ContactInformation, FurtherProfileInfo, Profile } from './types';
 
 interface ProfileApi {
@@ -13,6 +13,8 @@ interface ProfileApi {
     upsertContactInformation: (SupabaseClient: SupabaseClient<Database>, user_id: string, info: ContactInformation) => Promise<ContactInformation>
 
     insertSignupInfo: (supabaseClient: SupabaseClient<Database>, info: FurtherProfileInfo) => void
+
+    isAdmin: (SupabaseClient: SupabaseClient<Database>, user_id: string) => Promise<boolean>
 }
 
 const profileApi: ProfileApi = {
@@ -76,6 +78,16 @@ const profileApi: ProfileApi = {
             .insert(info)
             .then(handleEmptyResponse)
     },
+
+    async isAdmin(supabaseClient, user_id) {
+        return await supabaseClient
+            .from("admin")
+            .select('user_id')
+            .eq('user_id', user_id)
+            .maybeSingle()
+            .then(handleMaybeSingleResponse)
+            .then((result) => !!result)
+    }
 }
 
 export default profileApi;

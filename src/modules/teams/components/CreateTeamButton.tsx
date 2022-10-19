@@ -12,7 +12,7 @@ const CreateTeamButton = (props: ButtonProps) => {
     function onCreateTeam() {
         createTeam(
             {
-                name: `${profile?.firstName}'s team`,
+                name: `${profile?.forename}'s team`,
             },
             {
                 onError: () => {

@@ -5,7 +5,7 @@ import QUERY_KEYS from 'utils/queryKeys';
 import profileApi from './api';
 import { FurtherProfileInfo, Profile } from './types';
 
-export function useUsersProfile() {
+export function useProfile() {
     const supabaseClient = useSupabaseClient<Database>();
     const user = useUser();
     const result = useQuery(
@@ -66,7 +66,7 @@ export function useUpsertProfile() {
             },
         }
     );
-    return { ...mutation, updateProfile: mutation.mutateAsync };
+    return { ...mutation, upsertProfile: mutation.mutateAsync };
 }
 
 export function useContactInformation(userId?: string) {
@@ -90,4 +90,21 @@ export function useInsertFurhterProfileInfo() {
         profileApi.insertSignupInfo(supabaseClient, data)
     );
     return { ...mutation, insertFurtherProfileInfo: mutation.mutateAsync };
+}
+
+export function useIsAdmin() {
+    const supabaseClient = useSupabaseClient<Database>();
+    const user = useUser();
+    const result = useQuery(
+        QUERY_KEYS.admin(user?.id),
+        async () => {
+            if (!user?.id) {
+                throw new Error('user id not available. Cannot fetch Profile');
+            }
+
+            return profileApi.isAdmin(supabaseClient, user.id);
+        },
+        { enabled: !!user }
+    );
+    return { ...result, isAdmin: result.data };
 }

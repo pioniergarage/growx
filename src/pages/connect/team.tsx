@@ -1,7 +1,7 @@
 import PageLink from '@/components/navigation/PageLink';
 import { Text, VStack } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { getTeamIdOfUser } from 'modules/teams/api';
+import teamApi from 'modules/teams/api';
 import CreateTeamButton from 'modules/teams/components/CreateTeamButton';
 import { NextPageWithLayout } from 'utils/types';
 
@@ -32,7 +32,7 @@ export const getServerSideProps = withPageAuth({
                 },
             };
         }
-        const teamId = await getTeamIdOfUser(supabase, data.user.id);
+        const teamId = await teamApi.getTeamIdOfUser(supabase, data.user.id);
         if (teamId) {
             return {
                 redirect: {
