@@ -56,8 +56,8 @@ const ProfileList = (props: { profiles: Profile[] }) => {
                                 <Td>
                                     {profile.firstName} {profile.lastName}
                                 </Td>
-                                <Td>{profile.email}</Td>
-                                <Td>{profile.phone}</Td>
+                                <Td></Td>
+                                <Td></Td>
                                 <Td>{profile.gender}</Td>
                                 <Td>
                                     <ChangeRoleMenu
@@ -118,8 +118,8 @@ export default function ProfilesAdmin() {
                 [
                     p.firstName,
                     p.lastName,
-                    p.email,
-                    p.phone,
+                    '',
+                    '',
                     p.gender,
                     p.homeland,
                     p.studies,

@@ -83,14 +83,7 @@ const TeamRow = ({ team }: { team: Team }) => {
             </Flex>
             <Flex alignItems="center" gap={1}>
                 {members?.map((m) => (
-                    <UserAvatar
-                        key={m.userId}
-                        firstName={m.firstName}
-                        lastName={m.lastName}
-                        avatar={m.avatar}
-                        userId={m.userId}
-                        size="sm"
-                    />
+                    <UserAvatar key={m.userId} profile={m} size="sm" />
                 ))}
             </Flex>
             <MentorSelect

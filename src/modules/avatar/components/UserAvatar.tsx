@@ -3,20 +3,14 @@ import { Profile } from 'modules/profile/types';
 import { useAvatarUrl } from '../hooks';
 
 export interface UserAvatarProps extends AvatarProps {
-    userId?: Profile['userId'];
-    avatar?: Profile['avatar'];
-    firstName?: Profile['firstName'];
-    lastName?: Profile['lastName'];
+    profile?: Partial<Profile>;
 }
 
-const UserAvatar: React.FC<UserAvatarProps> = ({
-    userId,
-    avatar,
-    firstName,
-    lastName,
-    ...rest
-}) => {
-    const { avatarUrl, isLoading } = useAvatarUrl({ userId, avatar });
+const UserAvatar: React.FC<UserAvatarProps> = ({ profile, ...rest }) => {
+    const { avatarUrl, isLoading } = useAvatarUrl({
+        userId: profile?.userId,
+        avatar: profile?.userId,
+    });
     if (isLoading) {
         return <SkeletonCircle size={rest.size == 'sm' ? '10' : '12'} />;
     }
@@ -24,7 +18,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
         <Avatar
             userSelect="none"
             size="md"
-            name={firstName + ' ' + lastName}
+            name={profile?.firstName + ' ' + profile?.lastName}
             src={avatarUrl || undefined}
             bg="gray.500"
             {...rest}

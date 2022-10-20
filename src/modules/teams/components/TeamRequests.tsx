@@ -52,7 +52,7 @@ const RequestItem: React.FC<RequestItemProps> = ({
                         </LinkOverlay>
                     </Link>
                 </GridItem>
-                <GridItem color="gray.500">{profile.email}</GridItem>
+                <GridItem color="gray.500"></GridItem>
                 <GridItem
                     justifySelf={{ base: 'start', sm: 'end' }}
                     colStart={{ base: 2, sm: 'auto' }}

@@ -5,60 +5,62 @@ import { Flex, Heading, HStack, Tag, Text } from '@chakra-ui/react';
 import UserAvatar, {
     UserAvatarProps,
 } from 'modules/avatar/components/UserAvatar';
+import { ContactInformation } from 'modules/contactInformation/types';
 import { Team } from 'modules/teams/types';
 import { FaLightbulb, FaUsers } from 'react-icons/fa';
 import { Profile } from '../types';
 
-type ProfileCardProps = UserAvatarProps &
-    Partial<Pick<Profile, 'email' | 'phone' | 'bio'>> & {
-        team?: Team;
-        skills?: Profile['skills'];
-        role?: Profile['role'];
-        size?: 'lg' | 'md' | 'sm';
-    };
+type ProfileCardProps = UserAvatarProps & {
+    profile: Profile;
+    contact?: ContactInformation;
+    size?: 'sm' | 'md';
+    team?: Team;
+};
 
-const ProfileCard: React.FC<ProfileCardProps> = (props) => {
-    const name = props.firstName + ' ' + props.lastName;
-    const size = props.size || 'md';
+const ProfileCard: React.FC<ProfileCardProps> = ({
+    profile,
+    contact,
+    size = 'md',
+    team,
+}) => {
+    const name = profile.firstName + ' ' + profile.lastName;
     return (
         <HStack gap={1}>
-            <UserAvatar size={size} {...props} />
+            <UserAvatar size={size} profile={profile} />
             <Flex flexDir="column">
                 <HStack>
                     <Heading size={size}>{name}</Heading>
-                    {props.role ? <Tag>{props.role}</Tag> : undefined}
+                    {profile.role ? <Tag>{profile.role}</Tag> : undefined}
                 </HStack>
                 <Flex flexDir="column">
-                    {props.bio ? (
-                        <Text lineHeight={1.2}>{props.bio}</Text>
+                    {profile.bio ? (
+                        <Text lineHeight={1.2}>{profile.bio}</Text>
                     ) : undefined}
                     <Flex columnGap={4} color="gray.400" wrap="wrap">
-                        {props.email ? (
+                        {contact?.email ? (
                             <HStack>
                                 <EmailIcon />
-                                <Text>{props.email}</Text>
+                                <Text>{contact.email}</Text>
                             </HStack>
                         ) : undefined}
-                        {props.phone ? (
+                        {contact?.phone ? (
                             <HStack>
                                 <PhoneIcon />
-                                <Text>{props.phone}</Text>
+                                <Text>{contact.phone}</Text>
                             </HStack>
                         ) : undefined}
-                        {props.team ? (
+                        {team ? (
                             <HStack>
                                 <FaUsers />
-                                <PageLink
-                                    href={'/connect/teams/' + props.team.id}
-                                >
-                                    {props.team.name}
+                                <PageLink href={'/connect/teams/' + team.id}>
+                                    {team.name}
                                 </PageLink>
                             </HStack>
                         ) : undefined}
-                        {props.skills ? (
+                        {profile.skills ? (
                             <HStack>
                                 <FaLightbulb />
-                                <Text>{props.skills.join(', ')}</Text>
+                                <Text>{profile.skills.join(', ')}</Text>
                             </HStack>
                         ) : undefined}
                     </Flex>

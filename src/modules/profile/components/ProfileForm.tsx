@@ -14,13 +14,15 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
+import { ContactInformation } from 'modules/contactInformation/types';
 
 import { useState } from 'react';
-import { Profile, availableSkills } from '../types';
+import { availableSkills, Profile } from '../types';
 interface ProflieFormProps {
-    onSave: (profile: Profile) => void;
+    onSave: (profile: Profile, contactInformation: ContactInformation) => void;
     loading: boolean;
     profile: Profile;
+    contactInformation: ContactInformation;
     onCancel?: () => void;
 }
 
@@ -28,13 +30,15 @@ const ProfileForm: React.FC<ProflieFormProps> = ({
     onSave,
     loading,
     profile,
+    contactInformation,
     onCancel,
 }) => {
     const { skills: initialSkills, ...restProfile } = profile;
     const [skills, setSkills] = useState(initialSkills);
     const formik = useFormik({
-        initialValues: restProfile,
-        onSubmit: (values) => onSave({ ...values, skills }),
+        initialValues: { ...restProfile, ...contactInformation },
+        onSubmit: ({ email, phone, ...rest }) =>
+            onSave({ ...rest, skills }, { email, phone }),
         validate: (values) => {
             const errors: Record<string, string> = {};
             if (!values.firstName) errors.firstName = 'Required';
@@ -48,10 +52,8 @@ const ProfileForm: React.FC<ProflieFormProps> = ({
             <VStack gap={4} alignItems="stretch">
                 <SimpleGrid columns={2} gap={4}>
                     <GridItem colSpan={2}>
-                        <FormControl isDisabled>
-                            <FormLabel htmlFor="email">
-                                Email address*
-                            </FormLabel>
+                        <FormControl isDisabled isRequired>
+                            <FormLabel htmlFor="email">Email address</FormLabel>
                             <Input
                                 name="email"
                                 id="email"
@@ -63,8 +65,9 @@ const ProfileForm: React.FC<ProflieFormProps> = ({
                     <FormControl
                         isDisabled={loading}
                         isInvalid={!!formik.errors.firstName}
+                        isRequired
                     >
-                        <FormLabel htmlFor="firstName">First name*</FormLabel>
+                        <FormLabel htmlFor="firstName">First name</FormLabel>
                         <Input
                             name="firstName"
                             id="firstName"
@@ -78,8 +81,9 @@ const ProfileForm: React.FC<ProflieFormProps> = ({
                     <FormControl
                         isDisabled={loading}
                         isInvalid={!!formik.errors.lastName}
+                        isRequired
                     >
-                        <FormLabel htmlFor="lastName">Last name*</FormLabel>
+                        <FormLabel htmlFor="lastName">Last name</FormLabel>
                         <Input
                             name="lastName"
                             id="lastName"
