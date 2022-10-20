@@ -16,6 +16,7 @@ type ProfileCardProps = UserAvatarProps & {
     size?: 'sm' | 'md';
     team?: Team;
     showRole?: boolean;
+    showSkills?: boolean;
 };
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
@@ -24,6 +25,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     size = 'md',
     team,
     showRole = false,
+    showSkills = false,
 }) => {
     const name = profile.firstName + ' ' + profile.lastName;
     return (
@@ -61,7 +63,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                                 </PageLink>
                             </HStack>
                         ) : undefined}
-                        {profile.skills.length > 0 ? (
+                        {profile.skills.length > 0 && showSkills ? (
                             <HStack>
                                 <FaLightbulb />
                                 <Text>{profile.skills.join(', ')}</Text>
