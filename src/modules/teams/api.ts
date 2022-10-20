@@ -16,7 +16,7 @@ const mapTeamDto = (teamDto: Database['public']['Tables']['teams']['Row']): Team
     ...teamDto,
     tags: teamDto.tags as string[],
     requestSupport: teamDto.requestSupport as string[],
-    logo: teamDto.logo || undefined
+    logo: teamDto.logo
 });
 
 export async function createTeam(supabaseClient: SupabaseClient<Database>, team: Partial<Team>) {
