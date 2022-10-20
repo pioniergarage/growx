@@ -5,6 +5,9 @@ const nextConfig = {
     eslint: {
         ignoreDuringBuilds: true,
     },
+    images: {
+        domains: ['www.hoc.kit.edu']
+    }
 };
 
 module.exports = nextConfig;
