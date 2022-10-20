@@ -81,6 +81,7 @@ const NavBarContainer: React.FC<PropsWithChildren> = ({ children }) => {
                 py={4}
                 px={4}
                 maxW="container.xl"
+                overflowX="hidden"
             >
                 {children}
             </Flex>

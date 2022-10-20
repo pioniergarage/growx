@@ -79,6 +79,9 @@ export default function GrowNav() {
             <HStack gap={{ base: 2, sm: 0, lg: 2 }}>
                 {!profile ? (
                     <>
+                        <Link href="/startup_diploma">
+                            <Button variant="ghost">Startup Diploma</Button>
+                        </Link>
                         <Show above="md">
                             <Link href="/#faqs">
                                 <Button variant="ghost">FAQs</Button>
@@ -86,16 +89,16 @@ export default function GrowNav() {
                             <Link href="/#timeline">
                                 <Button variant="ghost">Timeline</Button>
                             </Link>
+                            {isSignUpEnabled ? (
+                                <Link href="/connect/signup">
+                                    <a>
+                                        <Button>Participate</Button>
+                                    </a>
+                                </Link>
+                            ) : (
+                                <Button disabled>Participate</Button>
+                            )}
                         </Show>
-                        {isSignUpEnabled ? (
-                            <Link href="/connect/signup">
-                                <a>
-                                    <Button>Participate</Button>
-                                </a>
-                            </Link>
-                        ) : (
-                            <Button disabled>Participate</Button>
-                        )}
 
                         <Link href="/connect/login">
                             <a>
