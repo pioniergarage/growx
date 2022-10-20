@@ -64,7 +64,7 @@ const StartupDiplomaPage = () => {
                         successfully.
                     </Text>
                     <VStack alignItems="start">
-                        <Box>
+                        <Flex flexWrap="wrap">
                             <Text as="span" fontWeight="bold" mr={2}>
                                 For more information:
                             </Text>
@@ -72,13 +72,17 @@ const StartupDiplomaPage = () => {
                                 href="https://www.hoc.kit.edu/startupdiploma-en.php"
                                 passHref
                             >
-                                <NuxtLink isExternal color="primary">
+                                <NuxtLink
+                                    isExternal
+                                    color="primary"
+                                    wordBreak="break-word"
+                                >
                                     https://www.hoc.kit.edu/startupdiploma-en.php
                                     <ExternalLinkIcon mx="2px" />
                                 </NuxtLink>
                             </Link>
-                        </Box>
-                        <Box>
+                        </Flex>
+                        <Flex flexWrap="wrap">
                             <Text as="span" fontWeight="bold" mr={2}>
                                 For registration @ HoC:
                             </Text>
@@ -86,18 +90,22 @@ const StartupDiplomaPage = () => {
                                 href="https://studium.hoc.kit.edu/index.php/veranstaltungsdetailssp5/?id=795f3115-495a-42a7-a80c-9bf3406de2b2"
                                 passHref
                             >
-                                <NuxtLink isExternal color="primary">
+                                <NuxtLink
+                                    isExternal
+                                    color="primary"
+                                    wordBreak="break-word"
+                                >
                                     https://studium.hoc.kit.edu/index.php/veranstaltungsdetailssp5/?id=795f3115-495a-42a7-a80c-9bf3406de2b2
                                     <ExternalLinkIcon mx="2px" />
                                 </NuxtLink>
                             </Link>
-                        </Box>
+                        </Flex>
                         <Text>
                             <Text as="span" fontWeight="bold" mr={2}>
                                 Please note:
                             </Text>
                             You also must register on the grow.pioniergarage.de
-                            website during the registration process.{' '}
+                            website during the registration process.
                         </Text>
                     </VStack>
                 </VStack>

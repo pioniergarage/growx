@@ -21,3 +21,8 @@ main {
 .vertical-line {
     border-left: 2px solid hsl(var(--bc));
 }
+
+body {
+    max-width: 100vw;
+    overflow-x: hidden;
+}

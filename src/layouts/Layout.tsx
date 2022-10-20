@@ -67,7 +67,9 @@ export default function Layout({ children }: PropsWithChildren) {
                                 />
                             </Box>
                         </Box>
-                        <Box px={4}>{children}</Box>
+                        <Box px={4} maxW="100vw">
+                            {children}
+                        </Box>
                     </Box>
                     {/* <ReactQueryDevtools initialIsOpen={false} /> */}
                 </QueryClientProvider>
