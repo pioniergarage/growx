@@ -4,8 +4,6 @@ export type Profile = {
     userId: string;
     firstName: string;
     lastName: string;
-    email: string;
-    phone?: string;
     studies?: string;
     university?: string;
     universityCountry?: string;

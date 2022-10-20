@@ -117,12 +117,13 @@ export const getRegistrationsTo = (supabaseClient: SupabaseClient<Database>, eve
         .from(
             'event_registrations'
         )
-        .select('present, profiles (*)')
+        .select('present, profiles (*), contact_information(*)')
         .match({ event_id })
         .then(handleResponse)
         .then((dtos) =>
-            dtos.map(({ present, profiles }) => ({
+            dtos.map(({ present, profiles, contact_information }) => ({
                 present,
                 profile: mapProfileDto(profiles as Database['public']['Tables']['profiles']['Row']),
+                contact_information: contact_information as Database['public']['Tables']['contact_information']['Row']
             }))
         );

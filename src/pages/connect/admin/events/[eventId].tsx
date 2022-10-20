@@ -12,6 +12,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { ContactInformation } from 'modules/contactInformation/types';
 
 import EventForm from 'modules/events/components/EventForm';
 import TimelineEvent from 'modules/events/components/TimelineEvent';
@@ -36,14 +37,15 @@ function Registrations(event: GrowEvent) {
         registrations: {
             present: boolean;
             profile: Profile;
+            contact_information: ContactInformation;
         }[] = []
     ) {
         downloadCSV(
             ['name', 'email', 'phone', 'online/person'],
-            registrations.map(({ present, profile }) => [
+            registrations.map(({ present, profile, contact_information }) => [
                 profile.firstName + ' ' + profile.lastName,
-                profile.email,
-                profile.phone || '',
+                contact_information.email,
+                contact_information.phone || '',
                 present ? 'in person' : 'online',
             ]),
             `${event.title}-registrations.csv`
@@ -71,13 +73,7 @@ function Registrations(event: GrowEvent) {
                         <Box fontSize={10} width={12}>
                             {registration.present ? 'In Person' : 'Online'}
                         </Box>
-                        <ProfileCard
-                            firstName={registration.profile.firstName}
-                            lastName={registration.profile.lastName}
-                            email={registration.profile.email}
-                            avatar={registration.profile.avatar}
-                            userId={registration.profile.userId}
-                        />
+                        <ProfileCard profile={registration.profile} />
                     </HStack>
                 ))}
             </SimpleGrid>

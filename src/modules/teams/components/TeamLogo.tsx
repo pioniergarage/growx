@@ -8,7 +8,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { FaUsers } from 'react-icons/fa';
 
 interface TeamLogoProps {
-    logo?: string;
+    logo?: string | null;
     name?: string;
     loading?: boolean;
     size?: ResponsiveValue<number | string>;

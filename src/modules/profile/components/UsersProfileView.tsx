@@ -1,4 +1,5 @@
 import { Box, Grid } from '@chakra-ui/react';
+import { ContactInformation } from 'modules/contactInformation/types';
 import { Profile } from '../types';
 
 const ProfilePropertyRow = ({
@@ -6,7 +7,7 @@ const ProfilePropertyRow = ({
     value,
 }: {
     name: string;
-    value?: string | number;
+    value?: string | number | null;
 }) => (
     <>
         <Box fontWeight="semibold">{name}</Box>
@@ -14,7 +15,10 @@ const ProfilePropertyRow = ({
     </>
 );
 
-export default function UsersProfileView({ profile }: { profile: Profile }) {
+export default function UsersProfileView(props: {
+    profile: Profile;
+    contact: ContactInformation;
+}) {
     return (
         <Grid
             templateColumns={{ base: '1fr', md: '10rem 1fr' }}
@@ -23,21 +27,27 @@ export default function UsersProfileView({ profile }: { profile: Profile }) {
         >
             <ProfilePropertyRow
                 name="Name"
-                value={profile.firstName + ' ' + profile.lastName}
+                value={props.profile.firstName + ' ' + props.profile.lastName}
             />
-            <ProfilePropertyRow name="Email" value={profile.email} />
-            <ProfilePropertyRow name="Phone" value={profile.phone} />
-            <ProfilePropertyRow name="Gender" value={profile.gender} />
-            <ProfilePropertyRow name="Homeland" value={profile.homeland} />
-            <ProfilePropertyRow name="University" value={profile.university} />
-            <ProfilePropertyRow name="Studies" value={profile.studies} />
-            {['MENTOR', 'EXPERT', 'ORGA'].includes(profile.role) ? (
+            <ProfilePropertyRow name="Email" value={props.contact.email} />
+            <ProfilePropertyRow name="Phone" value={props.contact.phone} />
+            <ProfilePropertyRow name="Gender" value={props.profile.gender} />
+            <ProfilePropertyRow
+                name="Homeland"
+                value={props.profile.homeland}
+            />
+            <ProfilePropertyRow
+                name="University"
+                value={props.profile.university}
+            />
+            <ProfilePropertyRow name="Studies" value={props.profile.studies} />
+            {['MENTOR', 'EXPERT', 'ORGA'].includes(props.profile.role) ? (
                 <>
                     <ProfilePropertyRow
                         name="Skills"
-                        value={profile.skills.join(', ')}
+                        value={props.profile.skills.join(', ')}
                     />
-                    <ProfilePropertyRow name="Bio" value={profile.bio} />
+                    <ProfilePropertyRow name="Bio" value={props.profile.bio} />
                 </>
             ) : undefined}
         </Grid>

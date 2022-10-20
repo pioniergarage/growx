@@ -1,6 +1,6 @@
 import { Alert, AlertIcon, Spinner, Text, VStack } from '@chakra-ui/react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import LoginLayout from 'layouts/LoginLayout';
+import { useInsertContactInformation } from 'modules/contactInformation/hooks';
 import { useUpdateProfile } from 'modules/profile/hooks';
 import DetailInformation from 'modules/signup/components/DetailInformationForm';
 import EmailAndPasswordForm, {
@@ -24,6 +24,7 @@ const MentorSignUp: NextPageWithLayout = () => {
     const [step, setStep] = useState(0);
     const [signUpError, setSignUpError] = useState<string>('');
     const { updateProfile } = useUpdateProfile();
+    const { insertContactInformation } = useInsertContactInformation();
     const router = useRouter();
 
     const { firstName, lastName, email } = router.query;
@@ -44,10 +45,16 @@ const MentorSignUp: NextPageWithLayout = () => {
                 updateProfile({
                     ...personalInfo,
                     skills,
-                    email: emailAndPassword.email,
                     userId: user.id,
                     role: 'MENTOR',
                     bio,
+                });
+                insertContactInformation({
+                    userId: user.id,
+                    info: {
+                        email: emailAndPassword.email,
+                        phone: personalInfo?.phone || '',
+                    },
                 });
             })
             .then(() => router.push('/connect'))
@@ -98,5 +105,4 @@ const MentorSignUp: NextPageWithLayout = () => {
     );
 };
 
-MentorSignUp.getLayout = (page) => <LoginLayout>{page}</LoginLayout>;
 export default MentorSignUp;

@@ -10,6 +10,7 @@ type YourMentorProps = {
 
 const YourMentor: React.FC<YourMentorProps> = ({ team }) => {
     const { mentor } = useTeamMentor(team.id);
+
     if (!mentor) {
         return <></>;
     }
@@ -19,14 +20,9 @@ const YourMentor: React.FC<YourMentorProps> = ({ team }) => {
                 Your mentor
             </Text>
             <ProfileCard
-                key={mentor.userId}
-                firstName={mentor.firstName}
-                lastName={mentor.lastName}
-                email={mentor.email}
-                avatar={mentor.avatar}
-                userId={mentor.userId}
-                phone={mentor.phone}
-                bio={mentor.bio}
+                key={mentor.profile.userId}
+                profile={mentor.profile}
+                contact={mentor.contact}
             />
         </VStack>
     );

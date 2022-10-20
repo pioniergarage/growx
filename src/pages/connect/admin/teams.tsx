@@ -48,7 +48,7 @@ const TeamRow = ({ team }: { team: Team }) => {
                 alignItems="center"
                 gap={2}
             >
-                <TeamLogo {...team} size={10} />
+                <TeamLogo logo={team.logo} name={team.name} size={10} />
                 <Flex flexDir="column">
                     <Flex gap={2}>
                         <Link
@@ -83,14 +83,7 @@ const TeamRow = ({ team }: { team: Team }) => {
             </Flex>
             <Flex alignItems="center" gap={1}>
                 {members?.map((m) => (
-                    <UserAvatar
-                        key={m.userId}
-                        firstName={m.firstName}
-                        lastName={m.lastName}
-                        avatar={m.avatar}
-                        userId={m.userId}
-                        size="sm"
-                    />
+                    <UserAvatar key={m.userId} profile={m} size="sm" />
                 ))}
             </Flex>
             <MentorSelect

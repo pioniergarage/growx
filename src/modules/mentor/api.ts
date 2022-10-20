@@ -1,6 +1,8 @@
 
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Database } from 'database/DatabaseDefition';
+import contactInformationApi from 'modules/contactInformation/api';
+import { ContactInformation } from 'modules/contactInformation/types';
 import { Profile } from 'modules/profile/types';
 import { Team } from 'modules/teams/types';
 
@@ -25,8 +27,11 @@ export async function getMentorAssignments(supabaseClient: SupabaseClient<Databa
         );
 }
 
-export async function getTeamMentor(supabaseClient: SupabaseClient<Database>, teamId: number): Promise<Profile> {
-    return supabaseClient
+export async function getTeamMentor(supabaseClient: SupabaseClient<Database>, teamId: number): Promise<{
+    profile: Profile,
+    contact: ContactInformation
+}> {
+    const profile = await supabaseClient
         .from(
             'mentor_assignment'
         )
@@ -35,6 +40,8 @@ export async function getTeamMentor(supabaseClient: SupabaseClient<Database>, te
         .single()
         .then(handleSingleResponse)
         .then((dto) => mapProfileDto(dto.mentor as Database['public']['Tables']['profiles']['Row']));
+    const contact = await contactInformationApi.getContactInformation(supabaseClient, profile.userId)
+    return { profile, contact }
 }
 
 export async function assignMentor(supabaseClient: SupabaseClient<Database>,
