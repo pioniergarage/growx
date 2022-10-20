@@ -143,7 +143,8 @@ const TeamDetails: React.FC<TeamDetails> = ({ team: serverSideTeam }) => {
                                 <TeamLogoControl team={team} />
                             ) : (
                                 <TeamLogo
-                                    {...team}
+                                    logo={team?.logo}
+                                    name={team?.name}
                                     size={{ base: 16, sm: 24 }}
                                 />
                             )}

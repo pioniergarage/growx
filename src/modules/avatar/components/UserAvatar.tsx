@@ -9,7 +9,7 @@ export interface UserAvatarProps extends AvatarProps {
 const UserAvatar: React.FC<UserAvatarProps> = ({ profile, ...rest }) => {
     const { avatarUrl, isLoading } = useAvatarUrl({
         userId: profile?.userId,
-        avatar: profile?.userId,
+        avatar: profile?.avatar,
     });
     if (isLoading) {
         return <SkeletonCircle size={rest.size == 'sm' ? '10' : '12'} />;

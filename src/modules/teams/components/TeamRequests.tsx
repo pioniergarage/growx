@@ -37,7 +37,7 @@ const RequestItem: React.FC<RequestItemProps> = ({
     return (
         <LinkBox>
             <Grid
-                templateColumns={{ base: '4rem 1fr', sm: '4rem 10rem 1fr 1fr' }}
+                templateColumns={{ base: '4rem 1fr', sm: '4rem 1fr 1fr' }}
                 alignItems="center"
                 justifyItems="start"
                 gap={1}
@@ -52,7 +52,6 @@ const RequestItem: React.FC<RequestItemProps> = ({
                         </LinkOverlay>
                     </Link>
                 </GridItem>
-                <GridItem color="gray.500"></GridItem>
                 <GridItem
                     justifySelf={{ base: 'start', sm: 'end' }}
                     colStart={{ base: 2, sm: 'auto' }}
