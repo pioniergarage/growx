@@ -13,6 +13,11 @@ import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 
 import UserAvatar from 'modules/avatar/components/UserAvatar';
 import { useUploadAvatar } from 'modules/avatar/hooks';
+import {
+    useContactInformation,
+    useUpdateContactInformation,
+} from 'modules/contactInformation/hooks';
+import { ContactInformation } from 'modules/contactInformation/types';
 import ProfileForm from 'modules/profile/components/ProfileForm';
 import UsersProfileView from 'modules/profile/components/UsersProfileView';
 import { useProfile, useUpdateProfile } from 'modules/profile/hooks';
@@ -73,7 +78,7 @@ function AvatarControl() {
             <VStack alignItems="start">
                 <UserAvatar
                     size="xl"
-                    {...profile}
+                    profile={profile}
                     filter={isLoading ? 'brightness(70%)' : undefined}
                 />
                 <FileSelect onSelect={uploadAvatar}>
@@ -90,12 +95,20 @@ function ProfileDetailsControl() {
     const [isEditing, setEditing] = useState(false);
     const { profile, isLoading: loading } = useProfile();
     const { updateProfile } = useUpdateProfile();
+    const { contactInformation } = useContactInformation();
+    const { updateContactInformation } = useUpdateContactInformation();
     const toast = useToast();
 
-    async function handleSave(profile: Profile) {
+    async function handleSave(
+        profile: Profile,
+        contactInformation: ContactInformation
+    ) {
         try {
             await updateProfile(profile);
-
+            await updateContactInformation({
+                userId: profile.userId,
+                info: contactInformation,
+            });
             toast({
                 title: 'Profile updated.',
                 status: 'success',
@@ -115,10 +128,13 @@ function ProfileDetailsControl() {
 
     return (
         <VStack alignItems="stretch" gap={2}>
-            {!isEditing || !profile ? (
-                profile ? (
+            {!isEditing || !profile || !contactInformation ? (
+                profile && contactInformation ? (
                     <>
-                        <UsersProfileView profile={profile} />
+                        <UsersProfileView
+                            profile={profile}
+                            contact={contactInformation}
+                        />
                         <Button
                             onClick={() => setEditing(true)}
                             width={20}
@@ -133,6 +149,7 @@ function ProfileDetailsControl() {
             ) : (
                 <ProfileForm
                     profile={profile}
+                    contactInformation={contactInformation}
                     onSave={handleSave}
                     loading={loading}
                     onCancel={() => setEditing(false)}

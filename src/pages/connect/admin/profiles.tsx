@@ -17,14 +17,15 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { useFullProfiles } from 'modules/admin/hooks';
+import { ContactInformation } from 'modules/contactInformation/types';
 
 import ChangeRoleMenu from 'modules/profile/components/ChangeRole';
-import { useProfiles } from 'modules/profile/hooks';
 import { Profile } from 'modules/profile/types';
 import { useState } from 'react';
 import { downloadCSV } from 'utils/csv';
 
-const ProfileList = (props: { profiles: Profile[] }) => {
+const ProfileList = (props: { profiles: (Profile & ContactInformation)[] }) => {
     const [isMenuVisible, setMenuVisible] = useState<string | null>(null);
     const [isOpen, setOpen] = useState<string | null>(null);
 
@@ -98,9 +99,9 @@ const ProfileList = (props: { profiles: Profile[] }) => {
 };
 
 export default function ProfilesAdmin() {
-    const { profiles, isLoading } = useProfiles();
+    const { profiles, isLoading } = useFullProfiles();
 
-    function downloadProfiles(profiles: Profile[]) {
+    function downloadProfiles(profiles: (Profile & ContactInformation)[]) {
         downloadCSV(
             [
                 'Forename',

@@ -143,14 +143,7 @@ export default function GrowNav() {
                                         isRound={true}
                                         as={IconButton}
                                         size="lg"
-                                        icon={
-                                            <UserAvatar
-                                                userId={profile.userId}
-                                                firstName={profile.firstName}
-                                                lastName={profile.lastName}
-                                                avatar={profile.avatar}
-                                            />
-                                        }
+                                        icon={<UserAvatar profile={profile} />}
                                     />
                                     <MenuList>
                                         <Link href="/connect/profile">

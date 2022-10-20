@@ -2,6 +2,7 @@ import { Alert, AlertIcon, Spinner, Text, VStack } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import LoginLayout from 'layouts/LoginLayout';
+import { useInsertContactInformation } from 'modules/contactInformation/hooks';
 import {
     useInsertFurhterProfileInfo,
     useUpdateProfile,
@@ -21,6 +22,8 @@ import { NextPageWithLayout } from 'utils/types';
 
 const SignUp: NextPageWithLayout = () => {
     const supabaseClient = useSupabaseClient();
+    const router = useRouter();
+
     const [step, setStep] = useState(0);
     const [emailAndPassword, setEmailAndPassword] = useState<SignUpInfo>({
         email: '',
@@ -33,11 +36,11 @@ const SignUp: NextPageWithLayout = () => {
         phone: '',
         homeland: '',
     });
-
     const [signUpError, setSignUpError] = useState<string>('');
-    const router = useRouter();
+
     const { updateProfile } = useUpdateProfile();
     const { insertFurtherProfileInfo } = useInsertFurhterProfileInfo();
+    const { insertContactInformation } = useInsertContactInformation();
 
     async function signUp({ email, password }: SignUpInfo) {
         const { data, error } = await supabaseClient.auth.signUp({
@@ -58,8 +61,14 @@ const SignUp: NextPageWithLayout = () => {
     ) {
         try {
             const user = await signUp(emailAndPassword);
+            await insertContactInformation({
+                userId: user.id,
+                info: {
+                    email: emailAndPassword.email,
+                    phone: personalInfo.phone,
+                },
+            });
             await updateProfile({
-                email: emailAndPassword.email,
                 ...personalInfo,
                 userId: user.id,
                 university,
@@ -150,8 +159,6 @@ export default SignUp;
 export const getServerSideProps = withPageAuth({
     authRequired: false,
     getServerSideProps: async (context, supabase) => {
-        console.log('Hello from server side props');
-
         const { data, error } = await supabase.auth.getSession();
         if (error) {
             throw error;

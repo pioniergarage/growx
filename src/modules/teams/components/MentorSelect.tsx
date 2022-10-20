@@ -58,15 +58,7 @@ const MentorSelect = (props: MentorSelectProps) => {
                     <IconButton
                         isRound
                         aria-label="Adjust mentor"
-                        icon={
-                            <UserAvatar
-                                size="sm"
-                                userId={props.mentor.userId}
-                                avatar={props.mentor.avatar}
-                                firstName={props.mentor.firstName}
-                                lastName={props.mentor.lastName}
-                            />
-                        }
+                        icon={<UserAvatar size="sm" profile={props.mentor} />}
                     />
                 ) : (
                     <Box
@@ -141,10 +133,7 @@ const MentorSelect = (props: MentorSelectProps) => {
                                 >
                                     <UserAvatar
                                         size="sm"
-                                        userId={mentor.userId}
-                                        firstName={mentor.firstName}
-                                        lastName={mentor.lastName}
-                                        avatar={mentor.avatar}
+                                        profile={mentor}
                                         bg="gray.500"
                                     />
                                     <Flex

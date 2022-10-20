@@ -15,15 +15,7 @@ const MemberList: React.FC<MemberListProps> = ({ members }) => {
             </Text>
             <SimpleGrid columns={{ base: 1, lg: 2 }} gap={4}>
                 {members.map((member) => (
-                    <ProfileCard
-                        key={member.userId}
-                        firstName={member.firstName}
-                        lastName={member.lastName}
-                        email={member.email}
-                        avatar={member.avatar}
-                        userId={member.userId}
-                        phone={member.phone}
-                    />
+                    <ProfileCard key={member.userId} profile={member} />
                 ))}
             </SimpleGrid>
         </VStack>

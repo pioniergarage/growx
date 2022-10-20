@@ -18,13 +18,7 @@ const MentorList: React.FC<MentorListProps> = ({ mentors }) => {
                         gap={4}
                         alignItems="center"
                     >
-                        <UserAvatar
-                            firstName={mentor.firstName}
-                            lastName={mentor.lastName}
-                            userId={mentor.userId}
-                            avatar={mentor.avatar}
-                            alignSelf="start"
-                        />
+                        <UserAvatar profile={mentor} alignSelf="start" />
                         <Flex flexDir="column">
                             <Heading size="sm">
                                 {mentor.firstName + ' ' + mentor.lastName}
