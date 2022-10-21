@@ -37,21 +37,16 @@ const Countdown: React.FC<CountdownProps> = ({
     };
 
     const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(to));
-    const [timer, setTimer] = useState<NodeJS.Timer>();
 
     useEffect(() => {
-        if (!timer) {
-            setTimer(
-                setInterval(() => {
-                    setTimeLeft(calculateTimeLeft(to));
-                }, 1000)
-            );
-        }
+        const timer = setInterval(() => {
+            setTimeLeft(calculateTimeLeft(to));
+        }, 1000);
+
         return () => {
             clearInterval(timer);
-            setTimer(undefined);
         };
-    }, [to, timer]);
+    }, [to]);
 
     return (
         <Flex flexDir="column" p={2} alignItems="center">
