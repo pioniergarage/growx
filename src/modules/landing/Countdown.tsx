@@ -37,14 +37,16 @@ const Countdown: React.FC<CountdownProps> = ({
     };
 
     const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(to));
-    // eslint-disable-next-line no-undef
     const [timer, setTimer] = useState<NodeJS.Timer>();
 
     useEffect(() => {
-        if (!timer)
+        if (!timer) {
             setTimer(
-                setInterval(() => setTimeLeft(calculateTimeLeft(to)), 1000)
+                setInterval(() => {
+                    setTimeLeft(calculateTimeLeft(to));
+                }, 1000)
             );
+        }
         return () => clearInterval(timer);
     }, [to, timer]);
 
