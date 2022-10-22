@@ -67,7 +67,7 @@ export default function Layout({ children }: PropsWithChildren) {
                                 />
                             </Box>
                         </Box>
-                        <Box px={4} maxW="100vw">
+                        <Box px={{ base: 4, md: 6 }} maxW="100vw">
                             {children}
                         </Box>
                     </Box>

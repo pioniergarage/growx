@@ -8,7 +8,6 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
-import { isSignUpEnabled, signUpStart } from 'utils/dates';
 import AnimatedLogo from './AnimatedLogo';
 import ParticipateButton from './ParticipateButton';
 
@@ -66,17 +65,7 @@ export default function MainInfoBlock() {
                         </Text>
                     </Box>
 
-                    <Box>
-                        <ParticipateButton />
-                        <Box mt={2}>
-                            {isSignUpEnabled ? undefined : (
-                                <Text variant="info">
-                                    Sign-up from{' '}
-                                    {signUpStart.toLocaleDateString()}
-                                </Text>
-                            )}
-                        </Box>
-                    </Box>
+                    <ParticipateButton />
                 </VStack>
             </GridItem>
             <GridItem

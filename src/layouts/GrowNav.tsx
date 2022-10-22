@@ -1,63 +1,131 @@
 import {
     Button,
+    Drawer,
+    DrawerBody,
+    DrawerContent,
+    DrawerHeader,
+    DrawerOverlay,
+    Flex,
     HStack,
     IconButton,
-    IconButtonProps,
     Menu,
     MenuButton,
     MenuItem,
     MenuList,
     Show,
-    useBreakpointValue,
+    useDisclosure,
 } from '@chakra-ui/react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useProfile } from 'modules/profile/hooks';
-import Link, { LinkProps } from 'next/link';
+import { Profile } from 'modules/profile/types';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { PropsWithChildren } from 'react';
-import {
-    FaCalendarAlt,
-    FaHome,
-    FaSignOutAlt,
-    FaUser,
-    FaUsers,
-} from 'react-icons/fa';
+import { useEffect } from 'react';
+import { FaSignOutAlt, FaUser, FaUsers } from 'react-icons/fa';
 import { useQueryClient } from 'react-query';
-import { isSignUpEnabled } from 'utils/dates';
-import { Logo, NavBarContainer } from '../components/navigation/Nav';
-import NavAdminMenu from '../components/navigation/NavAdminMenu';
+import {
+    MenuToggle,
+    MobileMenuButton,
+    NavBarContainer,
+} from '../components/navigation/Nav';
 import UserAvatar from '../modules/avatar/components/UserAvatar';
 
-const GrowConnectNavButton: React.FC<
-    PropsWithChildren & LinkProps & Pick<IconButtonProps, 'aria-label' | 'icon'>
-> = ({ children, icon, ...rest }) => {
-    const variant = useBreakpointValue({
-        base: undefined,
-        lg: icon,
-    });
+const MobileMenu = () => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (onClose) {
+            router.events.on('routeChangeComplete', onClose);
+
+            return () => {
+                router.events.off('routeChangeComplete', onClose);
+            };
+        }
+    }, [router, onClose]);
+
     return (
         <>
-            <Show above="md">
-                <Link {...rest}>
-                    <a>
-                        <Button variant="ghost" leftIcon={variant}>
-                            {children}
-                        </Button>
-                    </a>
-                </Link>
-            </Show>
-            <Show below="md">
-                <Link {...rest}>
-                    <a>
-                        <IconButton
-                            aria-label={rest['aria-label']}
-                            icon={icon}
-                            variant="ghost"
+            <MenuToggle onClick={onOpen} variant="ghost" />
+            <Drawer
+                onClose={onClose}
+                isOpen={isOpen}
+                placement="left"
+                size="xs"
+            >
+                <DrawerOverlay />
+                <DrawerContent>
+                    <DrawerHeader as={Flex} alignItems="center" pl={2}>
+                        <MenuToggle onClick={onClose} variant="ghost" />
+                        <Image
+                            alt="Grow Logo"
+                            src="/images/GROW.png"
+                            layout="fixed"
+                            width={128 / 2}
+                            height={27 / 2}
                         />
-                    </a>
-                </Link>
-            </Show>
+                    </DrawerHeader>
+                    <DrawerBody p={0} zIndex={20}>
+                        <MobileMenuButton href="/startup_diploma">
+                            Startup Diploma
+                        </MobileMenuButton>
+                        <MobileMenuButton href="/#timeline">
+                            Timeline
+                        </MobileMenuButton>
+                        <MobileMenuButton href="/#faqs">FAQs</MobileMenuButton>
+                    </DrawerBody>
+                </DrawerContent>
+            </Drawer>
         </>
+    );
+};
+
+const GrowLogo = () => {
+    return (
+        <Link href="/" passHref>
+            <Flex as="a" flexGrow="1">
+                <Image
+                    alt="Grow Logo"
+                    src="/images/GROW.png"
+                    layout="fixed"
+                    width={85}
+                    height={18}
+                />
+            </Flex>
+        </Link>
+    );
+};
+
+const ProfileMenu = (props: { profile: Profile; handleLogout: () => void }) => {
+    return (
+        <Menu placement="bottom-end">
+            {({ isOpen }) => (
+                <>
+                    <MenuButton
+                        isActive={isOpen}
+                        isRound={true}
+                        as={IconButton}
+                        size="lg"
+                        icon={<UserAvatar profile={props.profile} />}
+                    />
+                    <MenuList>
+                        <Link href="/connect/profile">
+                            <MenuItem icon={<FaUser />}>Profile</MenuItem>
+                        </Link>
+                        <Link href="/connect/team">
+                            <MenuItem icon={<FaUsers />}>Your Team</MenuItem>
+                        </Link>
+                        <MenuItem
+                            onClick={props.handleLogout}
+                            icon={<FaSignOutAlt />}
+                        >
+                            Sign out
+                        </MenuItem>
+                    </MenuList>
+                </>
+            )}
+        </Menu>
     );
 };
 
@@ -75,29 +143,17 @@ export default function GrowNav() {
 
     return (
         <NavBarContainer>
-            <Logo />
+            <MobileMenu />
+            <GrowLogo />
             <HStack gap={{ base: 2, sm: 0, lg: 2 }}>
                 {!profile ? (
                     <>
-                        <Link href="/startup_diploma">
-                            <Button variant="ghost">Startup Diploma</Button>
-                        </Link>
                         <Show above="md">
-                            <Link href="/#faqs">
-                                <Button variant="ghost">FAQs</Button>
+                            <Link href="/connect/signup">
+                                <a>
+                                    <Button>Participate</Button>
+                                </a>
                             </Link>
-                            <Link href="/#timeline">
-                                <Button variant="ghost">Timeline</Button>
-                            </Link>
-                            {isSignUpEnabled ? (
-                                <Link href="/connect/signup">
-                                    <a>
-                                        <Button>Participate</Button>
-                                    </a>
-                                </Link>
-                            ) : (
-                                <Button disabled>Participate</Button>
-                            )}
                         </Show>
 
                         <Link href="/connect/login">
@@ -107,66 +163,10 @@ export default function GrowNav() {
                         </Link>
                     </>
                 ) : (
-                    <>
-                        <GrowConnectNavButton
-                            href="/connect"
-                            icon={<FaHome />}
-                            aria-label="Home"
-                        >
-                            Home
-                        </GrowConnectNavButton>
-
-                        <GrowConnectNavButton
-                            href="/connect/events"
-                            icon={<FaCalendarAlt />}
-                            aria-label="Events"
-                        >
-                            Events
-                        </GrowConnectNavButton>
-                        <GrowConnectNavButton
-                            href="/connect/teams"
-                            icon={<FaUsers />}
-                            aria-label="Teams"
-                        >
-                            Teams
-                        </GrowConnectNavButton>
-                        <Show above="sm">
-                            {profile.role === 'ORGA' ? (
-                                <NavAdminMenu />
-                            ) : undefined}
-                        </Show>
-                        <Menu placement="bottom-end">
-                            {({ isOpen }) => (
-                                <>
-                                    <MenuButton
-                                        isActive={isOpen}
-                                        isRound={true}
-                                        as={IconButton}
-                                        size="lg"
-                                        icon={<UserAvatar profile={profile} />}
-                                    />
-                                    <MenuList>
-                                        <Link href="/connect/profile">
-                                            <MenuItem icon={<FaUser />}>
-                                                Profile
-                                            </MenuItem>
-                                        </Link>
-                                        <Link href="/connect/team">
-                                            <MenuItem icon={<FaUsers />}>
-                                                Your Team
-                                            </MenuItem>
-                                        </Link>
-                                        <MenuItem
-                                            onClick={handleLogout}
-                                            icon={<FaSignOutAlt />}
-                                        >
-                                            Sign out
-                                        </MenuItem>
-                                    </MenuList>
-                                </>
-                            )}
-                        </Menu>
-                    </>
+                    <ProfileMenu
+                        profile={profile}
+                        handleLogout={handleLogout}
+                    />
                 )}
             </HStack>
         </NavBarContainer>

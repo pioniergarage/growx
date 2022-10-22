@@ -8,6 +8,7 @@ import {
 } from '@chakra-ui/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { PropsWithChildren } from 'react';
 
 const Logo = () => {
@@ -41,7 +42,7 @@ const Logo = () => {
 };
 
 interface MenuToggleProps extends ButtonProps {
-    isOpen: boolean;
+    isOpen?: boolean;
 }
 
 const MenuToggle: React.FC<MenuToggleProps> = ({
@@ -51,7 +52,7 @@ const MenuToggle: React.FC<MenuToggleProps> = ({
 }) => {
     return (
         <Button
-            display={{ base: 'block', md: 'none' }}
+            display={{ base: 'flex', md: 'none' }}
             onClick={onClick}
             {...rest}
         >
@@ -79,9 +80,12 @@ const NavBarContainer: React.FC<PropsWithChildren> = ({ children }) => {
                 justify="space-between"
                 wrap="wrap"
                 py={4}
-                px={4}
+                pr={4}
+                pl={2}
+                px={{ base: undefined, md: 6 }}
                 maxW="container.xl"
                 overflowX="hidden"
+                gap={2}
             >
                 {children}
             </Flex>
@@ -89,4 +93,32 @@ const NavBarContainer: React.FC<PropsWithChildren> = ({ children }) => {
     );
 };
 
-export { NavBarContainer, MenuToggle, Logo };
+const MobileMenuButton = (props: PropsWithChildren & { href: string }) => {
+    const router = useRouter();
+
+    return (
+        <Link href={props.href} passHref>
+            <Flex
+                as="a"
+                _hover={{
+                    backgroundColor: 'whiteAlpha.200',
+                }}
+                _focus={{
+                    backgroundColor: 'whiteAlpha.200',
+                }}
+                bgColor={
+                    router.asPath.endsWith(props.href)
+                        ? 'whiteAlpha.200'
+                        : undefined
+                }
+                px={6}
+                py={4}
+                fontWeight="semibold"
+            >
+                {props.children}
+            </Flex>
+        </Link>
+    );
+};
+
+export { NavBarContainer, MenuToggle, Logo, MobileMenuButton };
