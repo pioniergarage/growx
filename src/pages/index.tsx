@@ -8,14 +8,11 @@ import { FAQ } from 'modules/faq/types';
 import Faqs from 'modules/landing/FaqList';
 import GrowVideo from 'modules/landing/GrowVideo';
 import MainInfoBlock from 'modules/landing/MainInfoBlock';
-import MentorList from 'modules/landing/MentorList';
 import MotivationBlock from 'modules/landing/MotivationBlock';
 import Timeline from 'modules/landing/ShortTimeline';
 import SponsorBlock from 'modules/landing/sponsor/SponsorBlock';
 import LongTimeline from 'modules/landing/Timeline';
 import WaitingForBlock from 'modules/landing/WaitingForBlock';
-import { PublicMentorProfile } from 'modules/mentor/types';
-import { getPublicMentors } from 'modules/profile/api';
 import { getSponsors } from 'modules/sponsor/api';
 import { Sponsor } from 'modules/sponsor/types';
 import { PropsWithChildren } from 'react';
@@ -30,8 +27,7 @@ export const getServerSideProps = withPageAuth({
                 ...e,
                 date: e.date.toISOString(),
             }));
-            const mentors = await getPublicMentors(supabase);
-            return { props: { sponsors, faqs, events, mentors } };
+            return { props: { sponsors, faqs, events } };
         } catch (error) {
             console.error(error);
             throw error;
@@ -42,14 +38,12 @@ interface HomeProps {
     sponsors: Sponsor[];
     faqs: FAQ[];
     events: (Omit<GrowEvent, 'date'> & { date: string })[];
-    mentors: PublicMentorProfile[];
 }
 
 const Home: React.FC<HomeProps> = ({
     sponsors = [],
     faqs = [],
     events: jsonEvents = [],
-    mentors = [],
 }) => {
     const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
     return (
@@ -112,10 +106,6 @@ const Home: React.FC<HomeProps> = ({
                     />
                 </Box>
                 <WaitingForBlock />
-            </Section>
-
-            <Section>
-                <MentorList mentors={mentors} />
             </Section>
 
             <Section divider id="faqs" mt={24}>

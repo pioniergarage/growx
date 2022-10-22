@@ -1,8 +1,8 @@
 import { Button } from '@chakra-ui/button';
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import {
+    BoxProps,
     ButtonProps,
-    Center,
     Flex,
     useBreakpointValue,
 } from '@chakra-ui/react';
@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { PropsWithChildren } from 'react';
 
-const Logo = () => {
+const GrowLogo = (boxProps: BoxProps) => {
     const size = useBreakpointValue({
         base: {
             width: 128 / 2,
@@ -28,7 +28,7 @@ const Logo = () => {
     });
     return (
         <Link href="/" passHref>
-            <Center as="a">
+            <Flex as="a" {...boxProps}>
                 <Image
                     alt="Grow Logo"
                     src="/images/GROW.png"
@@ -36,7 +36,7 @@ const Logo = () => {
                     width={size?.width || 128 / 2}
                     height={size?.height || 27 / 2}
                 />
-            </Center>
+            </Flex>
         </Link>
     );
 };
@@ -77,7 +77,6 @@ const NavBarContainer: React.FC<PropsWithChildren> = ({ children }) => {
                 as="nav"
                 flexGrow={1}
                 align="center"
-                justify="space-between"
                 wrap="wrap"
                 py={4}
                 pr={4}
@@ -104,7 +103,7 @@ const MobileMenuButton = (props: PropsWithChildren & { href: string }) => {
                     backgroundColor: 'whiteAlpha.200',
                 }}
                 _focus={{
-                    backgroundColor: 'whiteAlpha.200',
+                    backgroundColor: 'whiteAlpha.300',
                 }}
                 bgColor={
                     router.asPath.endsWith(props.href)
@@ -121,4 +120,20 @@ const MobileMenuButton = (props: PropsWithChildren & { href: string }) => {
     );
 };
 
-export { NavBarContainer, MenuToggle, Logo, MobileMenuButton };
+const DesktopMenuButton = (props: PropsWithChildren & { href: string }) => {
+    return (
+        <Link href={props.href} passHref>
+            <a>
+                <Button variant="ghost">{props.children}</Button>
+            </a>
+        </Link>
+    );
+};
+
+export {
+    NavBarContainer,
+    MenuToggle,
+    GrowLogo,
+    MobileMenuButton,
+    DesktopMenuButton,
+};

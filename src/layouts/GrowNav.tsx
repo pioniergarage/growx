@@ -18,18 +18,31 @@ import {
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useProfile } from 'modules/profile/hooks';
 import { Profile } from 'modules/profile/types';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { FaSignOutAlt, FaUser, FaUsers } from 'react-icons/fa';
 import { useQueryClient } from 'react-query';
 import {
+    DesktopMenuButton,
+    GrowLogo,
     MenuToggle,
     MobileMenuButton,
     NavBarContainer,
 } from '../components/navigation/Nav';
 import UserAvatar from '../modules/avatar/components/UserAvatar';
+
+const DesktopMenu = () => {
+    return (
+        <Show above="md">
+            <DesktopMenuButton href="/">Home</DesktopMenuButton>
+            <DesktopMenuButton href="/startup_diploma">
+                Startup Diploma
+            </DesktopMenuButton>
+            <DesktopMenuButton href="/mentor">Mentors</DesktopMenuButton>
+        </Show>
+    );
+};
 
 const MobileMenu = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -58,42 +71,20 @@ const MobileMenu = () => {
                 <DrawerContent>
                     <DrawerHeader as={Flex} alignItems="center" pl={2}>
                         <MenuToggle onClick={onClose} variant="ghost" />
-                        <Image
-                            alt="Grow Logo"
-                            src="/images/GROW.png"
-                            layout="fixed"
-                            width={128 / 2}
-                            height={27 / 2}
-                        />
+                        <GrowLogo />
                     </DrawerHeader>
                     <DrawerBody p={0} zIndex={20}>
+                        <MobileMenuButton href="/">Home</MobileMenuButton>
                         <MobileMenuButton href="/startup_diploma">
                             Startup Diploma
                         </MobileMenuButton>
-                        <MobileMenuButton href="/#timeline">
-                            Timeline
+                        <MobileMenuButton href="/mentor">
+                            Mentors
                         </MobileMenuButton>
-                        <MobileMenuButton href="/#faqs">FAQs</MobileMenuButton>
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>
         </>
-    );
-};
-
-const GrowLogo = () => {
-    return (
-        <Link href="/" passHref>
-            <Flex as="a" flexGrow="1">
-                <Image
-                    alt="Grow Logo"
-                    src="/images/GROW.png"
-                    layout="fixed"
-                    width={85}
-                    height={18}
-                />
-            </Flex>
-        </Link>
     );
 };
 
@@ -144,8 +135,9 @@ export default function GrowNav() {
     return (
         <NavBarContainer>
             <MobileMenu />
-            <GrowLogo />
+            <GrowLogo flexGrow={1} />
             <HStack gap={{ base: 2, sm: 0, lg: 2 }}>
+                <DesktopMenu />
                 {!profile ? (
                     <>
                         <Show above="md">
