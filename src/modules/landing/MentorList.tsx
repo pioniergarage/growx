@@ -1,28 +1,29 @@
-import { Flex, Heading, Text, VStack } from '@chakra-ui/react';
-import { PublicMentorProfile } from 'modules/mentor/types';
-
-import UserAvatar from '../../modules/avatar/components/UserAvatar';
+import { Flex, SimpleGrid } from '@chakra-ui/react';
+import ProfileCard from 'modules/profile/components/ProfileCard';
+import { Profile } from 'modules/profile/types';
 
 type MentorListProps = {
-    mentors: PublicMentorProfile[];
+    mentors: Profile[];
 };
 const MentorList: React.FC<MentorListProps> = ({ mentors }) => {
+    const halfWayIndex = Math.ceil(mentors.length / 2);
+
+    const firstHalfMentors = mentors.slice(0, halfWayIndex);
+    const secondHalfMentors = mentors.slice(halfWayIndex);
     return (
-        <VStack as="ul" alignItems="start" gap={2}>
-            {mentors.map((mentor) => (
-                <Flex as="li" key={mentor.userId} gap={4} alignItems="center">
-                    <UserAvatar profile={mentor} alignSelf="start" />
-                    <Flex flexDir="column">
-                        <Heading size="sm">
-                            {mentor.firstName + ' ' + mentor.lastName}
-                        </Heading>
-                        <Text color="gray.400" lineHeight={1.3}>
-                            {mentor.bio}
-                        </Text>
-                    </Flex>
-                </Flex>
-            ))}
-        </VStack>
+        <SimpleGrid columns={{ base: 1, md: 2 }} gap={6}>
+            <Flex flexDir="column" gap={6}>
+                {firstHalfMentors.map((mentor) => (
+                    <ProfileCard key={mentor.userId} profile={mentor} />
+                ))}
+            </Flex>
+
+            <Flex flexDir="column" gap={6}>
+                {secondHalfMentors.map((mentor) => (
+                    <ProfileCard key={mentor.userId} profile={mentor} />
+                ))}
+            </Flex>
+        </SimpleGrid>
     );
 };
 

@@ -40,7 +40,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 </HStack>
                 <Flex flexDir="column">
                     {profile.bio ? (
-                        <Text lineHeight={1.2}>{profile.bio}</Text>
+                        <Text lineHeight={1.2} color="gray.400">{profile.bio}</Text>
                     ) : undefined}
                     <Flex columnGap={4} color="gray.400" wrap="wrap">
                         {contact?.email ? (
