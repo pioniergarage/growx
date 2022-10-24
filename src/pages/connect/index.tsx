@@ -83,7 +83,9 @@ const ConnectIndex: React.FC = () => {
                     </Box>
                 ) : undefined}
 
-                <YourTeam userId={profile.userId} />
+                {['PARTICIPANT', 'ORGA'].includes(profile.role) ? (
+                    <YourTeam userId={profile.userId} />
+                ) : undefined}
                 {profile.university === kitName && !SQRegistrationOver ? (
                     <SQInfo
                         userId={profile.userId}

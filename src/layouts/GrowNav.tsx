@@ -133,9 +133,15 @@ const ProfileMenu = (props: { profile: Profile; handleLogout: () => void }) => {
                         <Link href="/connect/profile">
                             <MenuItem icon={<FaUser />}>Profile</MenuItem>
                         </Link>
-                        <Link href="/connect/team">
-                            <MenuItem icon={<FaUsers />}>Your Team</MenuItem>
-                        </Link>
+                        {['PARTICIPANT', 'ORGA'].includes(
+                            props.profile.role
+                        ) ? (
+                            <Link href="/connect/team">
+                                <MenuItem icon={<FaUsers />}>
+                                    Your Team
+                                </MenuItem>
+                            </Link>
+                        ) : undefined}
                         <MenuItem
                             onClick={props.handleLogout}
                             icon={<FaSignOutAlt />}
