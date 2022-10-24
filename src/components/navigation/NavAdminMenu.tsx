@@ -8,7 +8,6 @@ import {
     useBreakpointValue,
 } from '@chakra-ui/react';
 import Link from 'next/link';
-import { FaCogs } from 'react-icons/fa';
 
 const NavAdminMenu = () => {
     const variant = useBreakpointValue({
@@ -17,12 +16,7 @@ const NavAdminMenu = () => {
     });
     return (
         <Menu>
-            <MenuButton
-                as={variant}
-                variant="ghost"
-                icon={<FaCogs />}
-                leftIcon={variant === Button ? <FaCogs /> : undefined}
-            >
+            <MenuButton as={variant} variant="ghost">
                 Admin
             </MenuButton>
             <MenuList>

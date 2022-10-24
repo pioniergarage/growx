@@ -52,7 +52,7 @@ const MenuToggle: React.FC<MenuToggleProps> = ({
 }) => {
     return (
         <Button
-            display={{ base: 'flex', md: 'none' }}
+            display={{ base: 'flex', lg: 'none' }}
             onClick={onClick}
             {...rest}
         >
@@ -70,7 +70,7 @@ const NavBarContainer: React.FC<PropsWithChildren> = ({ children }) => {
             top={0}
             right={0}
             width="100%"
-            bg={{ base: 'blackAlpha.300', md: 'transparent' }}
+            bg={{ base: 'blackAlpha.300', lg: 'transparent' }}
             zIndex={3}
         >
             <Flex
@@ -80,11 +80,11 @@ const NavBarContainer: React.FC<PropsWithChildren> = ({ children }) => {
                 wrap="wrap"
                 py={4}
                 pr={4}
-                pl={2}
-                px={{ base: undefined, md: 6 }}
+                pl={4}
+                px={{ base: undefined, lg: 6 }}
                 maxW="container.xl"
                 overflowX="hidden"
-                gap={2}
+                gap={4}
             >
                 {children}
             </Flex>

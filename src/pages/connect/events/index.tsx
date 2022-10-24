@@ -1,7 +1,10 @@
+import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
     Box,
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
     Flex,
-    Heading,
     Skeleton,
     SkeletonText,
     VStack,
@@ -10,6 +13,7 @@ import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import GrowEventCard from 'modules/events/components/GrowEventCard';
 import { useGrowEvents, useRegistrationsOfUser } from 'modules/events/hooks';
 import { useProfile } from 'modules/profile/hooks';
+import Link from 'next/link';
 
 const EventsPage = () => {
     const { events } = useGrowEvents();
@@ -18,7 +22,17 @@ const EventsPage = () => {
 
     return (
         <Box>
-            <Heading mb={6}>Events</Heading>
+            <Breadcrumb
+                color="gray.500"
+                separator={<ChevronRightIcon color="gray.500" />}
+                mb={4}
+            >
+                <BreadcrumbItem isCurrentPage>
+                    <Link href="/connect/events" passHref>
+                        <BreadcrumbLink>Events</BreadcrumbLink>
+                    </Link>
+                </BreadcrumbItem>
+            </Breadcrumb>
             <VStack alignItems="stretch" gap={10}>
                 {registrations === undefined || events === undefined ? (
                     <>

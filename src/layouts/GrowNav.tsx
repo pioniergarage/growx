@@ -1,3 +1,4 @@
+import NavAdminMenu from '@/components/navigation/NavAdminMenu';
 import {
     Button,
     Drawer,
@@ -32,19 +33,34 @@ import {
 } from '../components/navigation/Nav';
 import UserAvatar from '../modules/avatar/components/UserAvatar';
 
-const DesktopMenu = () => {
+const DesktopMenu = (props: { profile?: Profile }) => {
     return (
-        <Show above="md">
+        <Show above="lg">
             <DesktopMenuButton href="/">Home</DesktopMenuButton>
             <DesktopMenuButton href="/startup_diploma">
                 Startup Diploma
             </DesktopMenuButton>
             <DesktopMenuButton href="/mentor">Mentors</DesktopMenuButton>
+
+            {props.profile ? (
+                <>
+                    <DesktopMenuButton href="/connect">News</DesktopMenuButton>
+                    <DesktopMenuButton href="/connect/teams">
+                        Teams
+                    </DesktopMenuButton>
+                    <DesktopMenuButton href="/connect/events">
+                        Events
+                    </DesktopMenuButton>
+                    {props.profile.role === 'ORGA' ? (
+                        <NavAdminMenu />
+                    ) : undefined}
+                </>
+            ) : undefined}
         </Show>
     );
 };
 
-const MobileMenu = () => {
+const MobileMenu = (props: { profile?: Profile }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const router = useRouter();
 
@@ -60,7 +76,7 @@ const MobileMenu = () => {
 
     return (
         <>
-            <MenuToggle onClick={onOpen} variant="ghost" />
+            <MenuToggle onClick={onOpen} />
             <Drawer
                 onClose={onClose}
                 isOpen={isOpen}
@@ -69,11 +85,11 @@ const MobileMenu = () => {
             >
                 <DrawerOverlay />
                 <DrawerContent bg="gray.900">
-                    <DrawerHeader as={Flex} alignItems="center" pl={2}>
-                        <MenuToggle onClick={onClose} variant="ghost" mr={2} />
+                    <DrawerHeader as={Flex} alignItems="center" pl={4} pt={5}>
+                        <MenuToggle onClick={onClose} variant="ghost" mr={4} />
                         <GrowLogo />
                     </DrawerHeader>
-                    <DrawerBody p={0} zIndex={20}>
+                    <DrawerBody p={0} mt={1} zIndex={20}>
                         <MobileMenuButton href="/">Home</MobileMenuButton>
                         <MobileMenuButton href="/startup_diploma">
                             Startup Diploma
@@ -81,6 +97,19 @@ const MobileMenu = () => {
                         <MobileMenuButton href="/mentor">
                             Mentors
                         </MobileMenuButton>
+                        {props.profile ? (
+                            <>
+                                <MobileMenuButton href="/connect">
+                                    News
+                                </MobileMenuButton>
+                                <MobileMenuButton href="/connect/teams">
+                                    Teams
+                                </MobileMenuButton>
+                                <MobileMenuButton href="/connect/events">
+                                    Events
+                                </MobileMenuButton>
+                            </>
+                        ) : undefined}
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>
@@ -134,10 +163,10 @@ export default function GrowNav() {
 
     return (
         <NavBarContainer>
-            <MobileMenu />
+            <MobileMenu profile={profile} />
             <GrowLogo flexGrow={1} />
             <HStack gap={{ base: 2, sm: 0, lg: 2 }}>
-                <DesktopMenu />
+                <DesktopMenu profile={profile} />
                 {!profile ? (
                     <>
                         <Show above="md">
