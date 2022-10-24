@@ -12,7 +12,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ profile, ...rest }) => {
         avatar: profile?.avatar,
     });
     if (isLoading) {
-        return <SkeletonCircle size={rest.size == 'sm' ? '10' : '12'} />;
+        return <SkeletonCircle size={rest.size == 'sm' ? '10' : '12'} flexShrink="0"  />;
     }
     return (
         <Avatar
