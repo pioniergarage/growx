@@ -1,7 +1,7 @@
 import {
     PostgrestMaybeSingleResponse,
     PostgrestResponse,
-    PostgrestSingleResponse
+    PostgrestSingleResponse,
 } from '@supabase/supabase-js';
 
 export function handleResponse<T>({

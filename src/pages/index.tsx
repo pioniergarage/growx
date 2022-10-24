@@ -1,5 +1,5 @@
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { createClient } from '@supabase/supabase-js';
 
 import { getEvents } from 'modules/events/api';
 import { GrowEvent } from 'modules/events/types';
@@ -17,23 +17,25 @@ import { getSponsors } from 'modules/sponsor/api';
 import { Sponsor } from 'modules/sponsor/types';
 import { PropsWithChildren } from 'react';
 
-export const getServerSideProps = withPageAuth({
-    authRequired: false,
-    async getServerSideProps(ctx, supabase) {
-        try {
-            const sponsors = await getSponsors(supabase);
-            const faqs = await getFAQs(supabase);
-            const events = (await getEvents(supabase)).map((e) => ({
-                ...e,
-                date: e.date.toISOString(),
-            }));
-            return { props: { sponsors, faqs, events } };
-        } catch (error) {
-            console.error(error);
-            throw error;
-        }
-    },
-});
+export const getStaticProps = async () => {
+    const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
+    );
+    try {
+        const sponsors = await getSponsors(supabase);
+        const faqs = await getFAQs(supabase);
+        const events = (await getEvents(supabase)).map((e) => ({
+            ...e,
+            date: e.date.toISOString(),
+        }));
+        return { props: { sponsors, faqs, events } };
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
 interface HomeProps {
     sponsors: Sponsor[];
     faqs: FAQ[];

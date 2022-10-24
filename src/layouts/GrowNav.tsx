@@ -68,9 +68,9 @@ const MobileMenu = () => {
                 size="xs"
             >
                 <DrawerOverlay />
-                <DrawerContent>
+                <DrawerContent bg="gray.900">
                     <DrawerHeader as={Flex} alignItems="center" pl={2}>
-                        <MenuToggle onClick={onClose} variant="ghost" />
+                        <MenuToggle onClick={onClose} variant="ghost" mr={2} />
                         <GrowLogo />
                     </DrawerHeader>
                     <DrawerBody p={0} zIndex={20}>
