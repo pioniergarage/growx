@@ -71,10 +71,10 @@ export default function Layout({ children }: PropsWithChildren) {
                             {children}
                         </Box>
                     </Box>
+                    <Footer />
                     {/* <ReactQueryDevtools initialIsOpen={false} /> */}
                 </QueryClientProvider>
             </SessionContextProvider>
-            <Footer />
         </>
     );
 }

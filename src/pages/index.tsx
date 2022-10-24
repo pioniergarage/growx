@@ -110,11 +110,11 @@ const Home: React.FC<HomeProps> = ({
                 <WaitingForBlock />
             </Section>
 
-            <Section divider id="faqs" mt={24}>
+            <Section id="faqs" mt={24}>
                 <Faqs faqs={faqs} />
             </Section>
 
-            <Section mt={6}>
+            <Section mt={20}>
                 <SponsorBlock sponsors={sponsors} />
             </Section>
         </>
