@@ -92,11 +92,11 @@ const EmailAndPasswordForm = ({
                     <Heading size="md" lineHeight={0.8}>
                         Sign up
                     </Heading>
-                    {signUpAs ? (
+                    {signUpAs && (
                         <Text color="gray.400" mb={4}>
                             as {signUpAs}
                         </Text>
-                    ) : undefined}
+                    )}
                 </Box>
                 <FormControl
                     isInvalid={!!formik.errors.email}

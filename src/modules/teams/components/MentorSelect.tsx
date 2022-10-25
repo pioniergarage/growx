@@ -78,7 +78,7 @@ const MentorSelect = (props: MentorSelectProps) => {
                 <PopoverCloseButton />
                 <PopoverHeader>Select Mentor</PopoverHeader>
                 <PopoverBody>
-                    {props.mentor ? (
+                    {props.mentor && (
                         <>
                             <Button
                                 leftIcon={<CloseIcon w={2} h={2} />}
@@ -93,7 +93,7 @@ const MentorSelect = (props: MentorSelectProps) => {
                             </Button>
                             <Divider my={2} />
                         </>
-                    ) : undefined}
+                    )}
                     <Box>
                         <Input
                             placeholder="Select mentor"

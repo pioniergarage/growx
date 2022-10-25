@@ -167,27 +167,29 @@ const TeamDetails: React.FC<TeamDetails> = ({ team: serverSideTeam }) => {
                                 >
                                     Edit
                                 </Button>
-                            ) : team &&
-                              !teamIdOfUser &&
-                              !teamIdOfUserLoading ? (
-                                <RequestButton
-                                    team={team}
-                                    currentRequestId={teamRequested?.id}
-                                    onRequest={handleRequest}
-                                    onWithdraw={handleWithdraw}
-                                    isLoading={
-                                        teamRequestedLoading ||
-                                        joining ||
-                                        withdrawing
-                                    }
-                                    size="sm"
-                                    w={{ base: '100%', md: '10rem' }}
-                                />
-                            ) : undefined}
+                            ) : (
+                                team &&
+                                !teamIdOfUser &&
+                                !teamIdOfUserLoading && (
+                                    <RequestButton
+                                        team={team}
+                                        currentRequestId={teamRequested?.id}
+                                        onRequest={handleRequest}
+                                        onWithdraw={handleWithdraw}
+                                        isLoading={
+                                            teamRequestedLoading ||
+                                            joining ||
+                                            withdrawing
+                                        }
+                                        size="sm"
+                                        w={{ base: '100%', md: '10rem' }}
+                                    />
+                                )
+                            )}
                         </Flex>
                         <TeamDescription description={team?.description} />
                         <MemberList members={members || []} />
-                        {team && isUsersTeam && user ? (
+                        {team && isUsersTeam && user && (
                             <>
                                 <YourMentor team={team} />
                                 <TeamRequests team={team} />
@@ -196,15 +198,17 @@ const TeamDetails: React.FC<TeamDetails> = ({ team: serverSideTeam }) => {
                                     maxW="10rem"
                                 />
                             </>
-                        ) : undefined}
+                        )}
                     </>
-                ) : team ? (
-                    <TeamForm
-                        onSave={onSaveTeam}
-                        team={team}
-                        onCancel={() => setEditing(false)}
-                    />
-                ) : undefined}
+                ) : (
+                    team && (
+                        <TeamForm
+                            onSave={onSaveTeam}
+                            team={team}
+                            onCancel={() => setEditing(false)}
+                        />
+                    )
+                )}
             </TeamDetailsSkeleton>
         </VStack>
     );

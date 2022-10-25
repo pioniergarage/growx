@@ -150,7 +150,7 @@ const EventDetails: NextPageWithLayout = () => {
                             Edit
                         </Button>
                     </Flex>
-                    {isEditing ? (
+                    {isEditing && (
                         <EventForm
                             onSubmit={saveEvent}
                             onChange={(updated) =>
@@ -164,7 +164,7 @@ const EventDetails: NextPageWithLayout = () => {
                             onDelete={handleDeleteEvent}
                             onCancel={() => setEditing(false)}
                         />
-                    ) : undefined}
+                    )}
                     <Divider />
                     <Registrations {...initialEvent} />
                 </>

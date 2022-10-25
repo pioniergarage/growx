@@ -46,44 +46,43 @@ export default function EventManagement() {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {events
-                            ? events.map((event) => (
-                                  <Tr key={event.id}>
-                                      <Td>{event.date.toLocaleString()}</Td>
-                                      <Td>
-                                          <PageLink
-                                              color="primary"
-                                              href={
-                                                  '/connect/admin/events/' +
-                                                  event.id
-                                              }
-                                          >
-                                              {event.title}
-                                          </PageLink>
-                                      </Td>
-                                      <Td>{event.location}</Td>
-                                      <Td>{event.type}</Td>
-                                      <Td>
-                                          <CheckIcon
-                                              visibility={
-                                                  event.mandatory
-                                                      ? 'visible'
-                                                      : 'hidden'
-                                              }
-                                          />
-                                      </Td>
-                                      <Td>
-                                          <CheckIcon
-                                              visibility={
-                                                  event.sq_mandatory
-                                                      ? 'visible'
-                                                      : 'hidden'
-                                              }
-                                          />
-                                      </Td>
-                                  </Tr>
-                              ))
-                            : undefined}
+                        {events &&
+                            events.map((event) => (
+                                <Tr key={event.id}>
+                                    <Td>{event.date.toLocaleString()}</Td>
+                                    <Td>
+                                        <PageLink
+                                            color="primary"
+                                            href={
+                                                '/connect/admin/events/' +
+                                                event.id
+                                            }
+                                        >
+                                            {event.title}
+                                        </PageLink>
+                                    </Td>
+                                    <Td>{event.location}</Td>
+                                    <Td>{event.type}</Td>
+                                    <Td>
+                                        <CheckIcon
+                                            visibility={
+                                                event.mandatory
+                                                    ? 'visible'
+                                                    : 'hidden'
+                                            }
+                                        />
+                                    </Td>
+                                    <Td>
+                                        <CheckIcon
+                                            visibility={
+                                                event.sq_mandatory
+                                                    ? 'visible'
+                                                    : 'hidden'
+                                            }
+                                        />
+                                    </Td>
+                                </Tr>
+                            ))}
                     </Tbody>
                 </Table>
             </TableContainer>

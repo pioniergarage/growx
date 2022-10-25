@@ -44,41 +44,39 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <Flex flexDir="column">
                 <HStack>
                     <Heading size={size}>{name}</Heading>
-                    {profile.role && showRole ? (
-                        <Tag>{profile.role}</Tag>
-                    ) : undefined}
+                    {profile.role && showRole && <Tag>{profile.role}</Tag>}
                 </HStack>
                 <Flex flexDir="column">
-                    {profile.bio ? (
+                    {profile.bio && (
                         <CollapsableText text={profile.bio} color="gray.400" />
-                    ) : undefined}
+                    )}
                     <Flex columnGap={4} color="gray.400" wrap="wrap">
-                        {contact?.email ? (
+                        {contact?.email && (
                             <HStack>
                                 <EmailIcon />
                                 <Text>{contact.email}</Text>
                             </HStack>
-                        ) : undefined}
-                        {contact?.phone ? (
+                        )}
+                        {contact?.phone && (
                             <HStack>
                                 <PhoneIcon />
                                 <Text>{contact.phone}</Text>
                             </HStack>
-                        ) : undefined}
-                        {team ? (
+                        )}
+                        {team && (
                             <HStack>
                                 <FaUsers />
                                 <PageLink href={'/connect/teams/' + team.id}>
                                     {team.name}
                                 </PageLink>
                             </HStack>
-                        ) : undefined}
-                        {profile.skills.length > 0 && showSkills ? (
+                        )}
+                        {profile.skills.length > 0 && showSkills && (
                             <HStack>
                                 <FaLightbulb />
                                 <Text>{profile.skills.join(', ')}</Text>
                             </HStack>
-                        ) : undefined}
+                        )}
                     </Flex>
                 </Flex>
             </Flex>
@@ -107,7 +105,7 @@ const CollapsableText = (props: { text: string } & TextProps) => {
                     {props.text}
                 </Text>
             </Collapse>
-            {showMore ? (
+            {showMore && (
                 <Button
                     display="inline-block"
                     variant="link"
@@ -118,7 +116,7 @@ const CollapsableText = (props: { text: string } & TextProps) => {
                 >
                     Show {show ? 'Less' : 'More'}
                 </Button>
-            ) : undefined}
+            )}
         </Flex>
     );
 };

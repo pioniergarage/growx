@@ -137,18 +137,21 @@ const SignUp: NextPageWithLayout = () => {
                         );
                     }}
                 />
-            ) : step === 5 && !signUpError ? (
-                <VStack>
-                    <Text color="gray.400">Creating account</Text>
-                    <Spinner />
-                </VStack>
-            ) : undefined}
-            {signUpError ? (
+            ) : (
+                step === 5 &&
+                !signUpError && (
+                    <VStack>
+                        <Text color="gray.400">Creating account</Text>
+                        <Spinner />
+                    </VStack>
+                )
+            )}
+            {signUpError && (
                 <Alert status="error">
                     <AlertIcon />
                     {signUpError}
                 </Alert>
-            ) : undefined}
+            )}
         </VStack>
     );
 };

@@ -58,11 +58,11 @@ const TeamRow = ({ team }: { team: Team }) => {
                         >
                             <LinkOverlay>{team.name}</LinkOverlay>
                         </Link>
-                        {team.archived ? (
+                        {team.archived && (
                             <Tag size="sm" colorScheme="orange">
                                 Archived
                             </Tag>
-                        ) : undefined}
+                        )}
                     </Flex>
                     <Flex gap={1}>
                         {team.requestSupport.map((subject) => (

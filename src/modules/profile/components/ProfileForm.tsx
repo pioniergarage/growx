@@ -171,7 +171,7 @@ const ProfileForm: React.FC<ProflieFormProps> = ({
                             value={formik.values.homeland || ''}
                         />
                     </FormControl>
-                    {['MENTOR', 'EXPERT', 'ORGA'].includes(profile.role) ? (
+                    {['MENTOR', 'EXPERT', 'ORGA'].includes(profile.role) && (
                         <>
                             <GridItem colSpan={2}>
                                 <FormControl>
@@ -207,7 +207,7 @@ const ProfileForm: React.FC<ProflieFormProps> = ({
                                 </FormControl>
                             </GridItem>
                         </>
-                    ) : undefined}
+                    )}
                 </SimpleGrid>
 
                 <HStack>

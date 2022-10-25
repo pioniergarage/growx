@@ -58,7 +58,7 @@ const ConnectIndex: React.FC = () => {
                     &nbsp;
                     {profile.firstName}
                 </Heading>
-                {upcomingEvents.length > 0 ? (
+                {upcomingEvents.length > 0 && (
                     <Box>
                         <Heading
                             mb={2}
@@ -81,17 +81,17 @@ const ConnectIndex: React.FC = () => {
                             ))}
                         </VStack>
                     </Box>
-                ) : undefined}
+                )}
 
-                {['PARTICIPANT', 'ORGA'].includes(profile.role) ? (
+                {['PARTICIPANT', 'ORGA'].includes(profile.role) && (
                     <YourTeam userId={profile.userId} />
-                ) : undefined}
-                {profile.university === kitName && !SQRegistrationOver ? (
+                )}
+                {profile.university === kitName && !SQRegistrationOver && (
                     <SQInfo
                         userId={profile.userId}
                         keyQualification={profile.keyQualification}
                     />
-                ) : undefined}
+                )}
             </VStack>
         </Flex>
     );

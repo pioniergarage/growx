@@ -89,19 +89,22 @@ const BuddySignup: NextPageWithLayout = () => {
                         setStep(step + 1);
                     }}
                 />
-            ) : step == 3 && !signUpError ? (
-                <VStack>
-                    <Text color="gray.400">Creating buddy account</Text>
-                    <Spinner />
-                </VStack>
-            ) : undefined}
+            ) : (
+                step == 3 &&
+                !signUpError && (
+                    <VStack>
+                        <Text color="gray.400">Creating buddy account</Text>
+                        <Spinner />
+                    </VStack>
+                )
+            )}
 
-            {signUpError ? (
+            {signUpError && (
                 <Alert status="error">
                     <AlertIcon />
                     {signUpError}
                 </Alert>
-            ) : undefined}
+            )}
         </VStack>
     );
 };

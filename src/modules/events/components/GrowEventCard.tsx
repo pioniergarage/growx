@@ -102,7 +102,7 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
             </Flex>
             <Text color="gray.400">{event.description}</Text>
 
-            {!over ? (
+            {!over && (
                 <>
                     <EventTagList
                         event={event}
@@ -116,7 +116,7 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
                         onRegister={register}
                     />
                 </>
-            ) : undefined}
+            )}
         </Flex>
     );
 };
@@ -158,12 +158,12 @@ const EventRegistration = ({
                 borderRadius={4}
             >
                 <AlertIcon />
-                {registration ? (
+                {registration && (
                     <>
                         You have signed up (
                         {registration.present ? 'in person' : 'online'})
                     </>
-                ) : undefined}
+                )}
                 <Button
                     onClick={onDeregister}
                     size="sm"
@@ -188,7 +188,7 @@ const EventRegistration = ({
                 >
                     Register
                 </Button>
-                {eventType === EventType.Hybrid ? (
+                {eventType === EventType.Hybrid && (
                     <SignUpDialog
                         isOpen={isOpen}
                         onSubmit={(present) => {
@@ -197,7 +197,7 @@ const EventRegistration = ({
                         }}
                         onCancel={onClose}
                     />
-                ) : undefined}
+                )}
             </>
         );
     }

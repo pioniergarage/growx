@@ -101,12 +101,12 @@ const ResetPassword: NextPageWithLayout = () => {
                     </Button>
                 </VStack>
             </form>
-            {error ? (
+            {error && (
                 <Alert status="error">
                     <AlertIcon />
                     {error}
                 </Alert>
-            ) : undefined}
+            )}
         </VStack>
     );
 };

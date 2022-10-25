@@ -122,7 +122,7 @@ const UniversityForm = ({ onNext }: UniversityFormProps) => {
                             {formik.errors.country}
                         </FormErrorMessage>
                     </FormControl>
-                    {formik.values.atKIT ? (
+                    {formik.values.atKIT && (
                         <FormControl>
                             <FormLabel mt={4}>KIT students only</FormLabel>
                             <Checkbox
@@ -145,7 +145,7 @@ const UniversityForm = ({ onNext }: UniversityFormProps) => {
                                 </Link>
                             </Checkbox>
                         </FormControl>
-                    ) : undefined}
+                    )}
                 </VStack>
                 <Button type="submit">Next</Button>
             </VStack>

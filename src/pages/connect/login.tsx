@@ -45,12 +45,12 @@ const LoginPage: NextPageWithLayout = () => {
                 height={27}
             />
             <LogInForm onSubmit={handleLogin} loading={loading} />
-            {loginError ? (
+            {loginError && (
                 <Alert status="error" width="16rem">
                     <AlertIcon />
                     {loginError}
                 </Alert>
-            ) : undefined}
+            )}
             <Flex flexDir="column">
                 <PageLink
                     color="primary"

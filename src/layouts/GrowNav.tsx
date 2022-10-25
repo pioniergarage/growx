@@ -42,7 +42,7 @@ const DesktopMenu = (props: { profile?: Profile }) => {
             </DesktopMenuButton>
             <DesktopMenuButton href="/mentor">Mentors</DesktopMenuButton>
 
-            {props.profile ? (
+            {props.profile && (
                 <>
                     <DesktopMenuButton href="/connect">News</DesktopMenuButton>
                     <DesktopMenuButton href="/connect/teams">
@@ -51,11 +51,9 @@ const DesktopMenu = (props: { profile?: Profile }) => {
                     <DesktopMenuButton href="/connect/events">
                         Events
                     </DesktopMenuButton>
-                    {props.profile.role === 'ORGA' ? (
-                        <NavAdminMenu />
-                    ) : undefined}
+                    {props.profile.role === 'ORGA' && <NavAdminMenu />}
                 </>
-            ) : undefined}
+            )}
         </Show>
     );
 };
@@ -97,7 +95,7 @@ const MobileMenu = (props: { profile?: Profile }) => {
                         <MobileMenuButton href="/mentor">
                             Mentors
                         </MobileMenuButton>
-                        {props.profile ? (
+                        {props.profile && (
                             <>
                                 <MobileMenuButton href="/connect">
                                     News
@@ -109,7 +107,7 @@ const MobileMenu = (props: { profile?: Profile }) => {
                                     Events
                                 </MobileMenuButton>
                             </>
-                        ) : undefined}
+                        )}
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>
@@ -135,13 +133,13 @@ const ProfileMenu = (props: { profile: Profile; handleLogout: () => void }) => {
                         </Link>
                         {['PARTICIPANT', 'ORGA'].includes(
                             props.profile.role
-                        ) ? (
+                        ) && (
                             <Link href="/connect/team">
                                 <MenuItem icon={<FaUsers />}>
                                     Your Team
                                 </MenuItem>
                             </Link>
-                        ) : undefined}
+                        )}
                         <MenuItem
                             onClick={props.handleLogout}
                             icon={<FaSignOutAlt />}

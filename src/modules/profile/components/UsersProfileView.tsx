@@ -41,7 +41,7 @@ export default function UsersProfileView(props: {
                 value={props.profile.university}
             />
             <ProfilePropertyRow name="Studies" value={props.profile.studies} />
-            {['MENTOR', 'EXPERT', 'ORGA'].includes(props.profile.role) ? (
+            {['MENTOR', 'EXPERT', 'ORGA'].includes(props.profile.role) && (
                 <>
                     <ProfilePropertyRow
                         name="Skills"
@@ -49,7 +49,7 @@ export default function UsersProfileView(props: {
                     />
                     <ProfilePropertyRow name="Bio" value={props.profile.bio} />
                 </>
-            ) : undefined}
+            )}
         </Grid>
     );
 }

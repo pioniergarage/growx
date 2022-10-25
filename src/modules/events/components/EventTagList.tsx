@@ -7,7 +7,7 @@ import {
     FaExclamation,
     FaMapMarkerAlt,
 } from 'react-icons/fa';
-import { GrowEvent, EventType } from '../types';
+import { EventType, GrowEvent } from '../types';
 import EventTag from './EventTag';
 
 type EventTagListProps = FlexProps & {
@@ -29,24 +29,26 @@ const EventTagList = ({
             alignItems="start"
             {...flexProps}
         >
-            {event.location ? (
+            {event.location && (
                 <EventTag icon={FaMapMarkerAlt}>{event.location}</EventTag>
-            ) : undefined}
-            {event.type === EventType.Hybrid ? (
+            )}
+            {event.type === EventType.Hybrid && (
                 <EventTag icon={FaChromecast}>Hybrid</EventTag>
-            ) : event.type === EventType.Online ? (
+            )}
+            {event.type === EventType.Online && (
                 <EventTag icon={FaCloud}>Online</EventTag>
-            ) : event.type === EventType.Offline ? (
+            )}
+            {event.type === EventType.Offline && (
                 <EventTag icon={FaBuilding}>Offline</EventTag>
-            ) : undefined}
-            {event.sq_mandatory && isSQTagVisible ? (
+            )}
+            {event.sq_mandatory && isSQTagVisible && (
                 <EventTag icon={FaExclamation}>Mandatory for SQ</EventTag>
-            ) : undefined}
-            {event.mandatory ? (
+            )}
+            {event.mandatory && (
                 <EventTag icon={FaExclamation} colorScheme="red">
                     Mandatory
                 </EventTag>
-            ) : undefined}
+            )}
         </Flex>
     );
 };

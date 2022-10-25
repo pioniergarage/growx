@@ -38,7 +38,7 @@ export default function FullTableProps<T>({
                 <Box overflow="scroll" {...rest}>
                     <TableContainer py={2}>
                         <Table size="sm">
-                            {values.length > 0 ? (
+                            {values.length > 0 && (
                                 <Thead>
                                     <Tr>
                                         {Object.keys(values[0]).map((p) => (
@@ -46,7 +46,7 @@ export default function FullTableProps<T>({
                                         ))}
                                     </Tr>
                                 </Thead>
-                            ) : undefined}
+                            )}
                             <Tbody>
                                 {values.map((value: T) => (
                                     <Tr key={String(value[idProp])}>

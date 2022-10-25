@@ -97,14 +97,14 @@ const SponsorModal: React.FC<SponsorModalProps> = ({
                                 <Button variant="outline">Upload</Button>
                             </FileSelect>
                         </HStack>
-                        {sponsor.logo ? (
+                        {sponsor.logo && (
                             <Image
                                 mt={2}
                                 alt="Sponsor logo preview"
                                 src={sponsor.logo}
                                 maxH={100}
                             />
-                        ) : undefined}
+                        )}
                     </FormControl>
 
                     <FormControl mt={4}>
