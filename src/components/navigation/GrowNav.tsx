@@ -24,14 +24,14 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { FaSignOutAlt, FaUser, FaUsers } from 'react-icons/fa';
 import { useQueryClient } from 'react-query';
+import UserAvatar from '../../modules/avatar/components/UserAvatar';
 import {
     DesktopMenuButton,
     GrowLogo,
     MenuToggle,
     MobileMenuButton,
     NavBarContainer,
-} from '../components/navigation/Nav';
-import UserAvatar from '../modules/avatar/components/UserAvatar';
+} from './Nav';
 
 const DesktopMenu = (props: { profile?: Profile }) => {
     return (
