@@ -54,6 +54,8 @@ const MenuToggle: React.FC<MenuToggleProps> = ({
         <Button
             display={{ base: 'flex', lg: 'none' }}
             onClick={onClick}
+            className="tap-highlight-transparent"
+            variant="ghost"
             {...rest}
         >
             {isOpen ? <CloseIcon /> : <HamburgerIcon />}
@@ -61,16 +63,16 @@ const MenuToggle: React.FC<MenuToggleProps> = ({
     );
 };
 
-const NavBarContainer: React.FC<PropsWithChildren> = ({ children }) => {
+const TopNavBar: React.FC<PropsWithChildren> = ({ children }) => {
     return (
         <Flex
             as="header"
             justifyContent="center"
-            position="absolute"
+            position="fixed"
             top={0}
             right={0}
             width="100%"
-            bg={{ base: 'blackAlpha.300', lg: 'transparent' }}
+            bg={{ base: 'blackAlpha.700', lg: 'blackAlpha.500' }}
             zIndex={3}
         >
             <Flex
@@ -78,7 +80,7 @@ const NavBarContainer: React.FC<PropsWithChildren> = ({ children }) => {
                 flexGrow={1}
                 align="center"
                 wrap="wrap"
-                py={4}
+                py={2}
                 pr={4}
                 pl={4}
                 px={{ base: undefined, lg: 6 }}
@@ -92,7 +94,9 @@ const NavBarContainer: React.FC<PropsWithChildren> = ({ children }) => {
     );
 };
 
-const MobileMenuButton = (props: PropsWithChildren & { href: string }) => {
+const MobileMenuButton = (
+    props: PropsWithChildren & { href: string; icon?: JSX.Element }
+) => {
     const router = useRouter();
 
     return (
@@ -110,10 +114,16 @@ const MobileMenuButton = (props: PropsWithChildren & { href: string }) => {
                         ? 'whiteAlpha.200'
                         : undefined
                 }
+                color={
+                    router.asPath.endsWith(props.href) ? 'primary' : undefined
+                }
                 px={6}
                 py={4}
                 fontWeight="semibold"
+                alignItems="center"
+                gap={2}
             >
+                {props.icon}
                 {props.children}
             </Flex>
         </Link>
@@ -130,10 +140,4 @@ const DesktopMenuButton = (props: PropsWithChildren & { href: string }) => {
     );
 };
 
-export {
-    NavBarContainer,
-    MenuToggle,
-    GrowLogo,
-    MobileMenuButton,
-    DesktopMenuButton,
-};
+export { TopNavBar, MenuToggle, GrowLogo, MobileMenuButton, DesktopMenuButton };
