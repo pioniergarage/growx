@@ -3,7 +3,7 @@ import { Database } from "database/DatabaseDefition";
 import { Profile } from "modules/profile/types";
 import { Team } from "modules/teams/types";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { assignMentor, getMentorAssignments, getTeamMentor, unassignMentor } from "./api";
+import { assignMentor, getAssignedTeamLeads, getMentorAssignments, getTeamMentor, unassignMentor } from "./api";
 import { MentorAssignments } from "./types";
 
 export function useMentorAssignments() {
@@ -55,4 +55,10 @@ export function useUnassignMentor() {
         }
     );
     return { ...mutation, unassignMentor: mutation.mutateAsync };
+}
+
+export function useGetAssignedTeamLeads() {
+    const supabaseClient = useSupabaseClient<Database>()
+    const query = useQuery('assignedTeamLeads', () => getAssignedTeamLeads(supabaseClient));
+    return { ...query, teamLeads: query.data };
 }

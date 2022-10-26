@@ -49,12 +49,17 @@ const navigationItems: NavigationItem[] = [
         isHidden: (profile) => !profile,
         icon: <FaUserFriends />,
     },
-
     {
         href: '/connect/events',
         label: 'Events',
         isHidden: (profile) => !profile,
         icon: <FaCalendarAlt />,
+    },
+    {
+        href: '/connect/assigned_teams',
+        label: 'Assigned',
+        isHidden: (profile) => !profile || profile.role != "MENTOR",
+        icon: <FaUserFriends />,
     },
 ];
 
