@@ -54,6 +54,7 @@ const MenuToggle: React.FC<MenuToggleProps> = ({
         <Button
             display={{ base: 'flex', lg: 'none' }}
             onClick={onClick}
+            className="tap-highlight-transparent"
             {...rest}
         >
             {isOpen ? <CloseIcon /> : <HamburgerIcon />}
@@ -61,7 +62,7 @@ const MenuToggle: React.FC<MenuToggleProps> = ({
     );
 };
 
-const NavBarContainer: React.FC<PropsWithChildren> = ({ children }) => {
+const TopNavBar: React.FC<PropsWithChildren> = ({ children }) => {
     return (
         <Flex
             as="header"
@@ -131,7 +132,7 @@ const DesktopMenuButton = (props: PropsWithChildren & { href: string }) => {
 };
 
 export {
-    NavBarContainer,
+    TopNavBar,
     MenuToggle,
     GrowLogo,
     MobileMenuButton,

@@ -7,7 +7,6 @@ import {
     DrawerHeader,
     DrawerOverlay,
     Flex,
-    HStack,
     IconButton,
     Menu,
     MenuButton,
@@ -30,7 +29,7 @@ import {
     GrowLogo,
     MenuToggle,
     MobileMenuButton,
-    NavBarContainer,
+    TopNavBar,
 } from './Nav';
 
 const DesktopMenu = (props: { profile?: Profile }) => {
@@ -58,8 +57,11 @@ const DesktopMenu = (props: { profile?: Profile }) => {
     );
 };
 
-const MobileMenu = (props: { profile?: Profile }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+const SideNav: React.FC<{
+    profile?: Profile;
+    isOpen: boolean;
+    onClose: () => void;
+}> = ({ profile, isOpen, onClose }) => {
     const router = useRouter();
 
     useEffect(() => {
@@ -74,7 +76,6 @@ const MobileMenu = (props: { profile?: Profile }) => {
 
     return (
         <>
-            <MenuToggle onClick={onOpen} />
             <Drawer
                 onClose={onClose}
                 isOpen={isOpen}
@@ -95,7 +96,7 @@ const MobileMenu = (props: { profile?: Profile }) => {
                         <MobileMenuButton href="/mentor">
                             Mentors
                         </MobileMenuButton>
-                        {props.profile && (
+                        {profile && (
                             <>
                                 <MobileMenuButton href="/connect">
                                     News
@@ -153,9 +154,8 @@ const ProfileMenu = (props: { profile: Profile; handleLogout: () => void }) => {
     );
 };
 
-export default function GrowNav() {
+const ProfileMenuWrapper: React.FC<{ profile?: Profile }> = ({ profile }) => {
     const supabaseClient = useSupabaseClient();
-    const { profile } = useProfile();
     const router = useRouter();
     const queryClient = useQueryClient();
 
@@ -165,35 +165,51 @@ export default function GrowNav() {
         router.push('/');
     }
 
-    return (
-        <NavBarContainer>
-            <MobileMenu profile={profile} />
-            <GrowLogo flexGrow={1} />
-            <HStack gap={{ base: 2, sm: 0, lg: 2 }}>
-                <DesktopMenu profile={profile} />
-                {!profile ? (
-                    <>
-                        <Show above="md">
-                            <Link href="/connect/signup">
-                                <a>
-                                    <Button>Participate</Button>
-                                </a>
-                            </Link>
-                        </Show>
+    if (profile) {
+        return <ProfileMenu profile={profile} handleLogout={handleLogout} />;
+    } else {
+        return (
+            <>
+                <Show above="md">
+                    <Link href="/connect/signup">
+                        <a>
+                            <Button>Participate</Button>
+                        </a>
+                    </Link>
+                </Show>
 
-                        <Link href="/connect/login">
-                            <a>
-                                <Button>Sign in</Button>
-                            </a>
-                        </Link>
-                    </>
-                ) : (
-                    <ProfileMenu
-                        profile={profile}
-                        handleLogout={handleLogout}
-                    />
-                )}
-            </HStack>
-        </NavBarContainer>
+                <Link href="/connect/login">
+                    <a>
+                        <Button>Sign in</Button>
+                    </a>
+                </Link>
+            </>
+        );
+    }
+};
+
+export default function GrowNav() {
+    const { profile } = useProfile();
+
+    const {
+        isOpen: isSideNavOpen,
+        onOpen: onSideNavOpen,
+        onClose: onSideNavClose,
+    } = useDisclosure();
+
+    return (
+        <>
+            <SideNav
+                profile={profile}
+                isOpen={isSideNavOpen}
+                onClose={onSideNavClose}
+            />
+            <TopNavBar>
+                <MenuToggle onClick={onSideNavOpen} />
+                <GrowLogo flexGrow={1} />
+                <DesktopMenu profile={profile} />
+                <ProfileMenuWrapper profile={profile} />
+            </TopNavBar>
+        </>
     );
 }
