@@ -1,6 +1,6 @@
 import { Show } from '@chakra-ui/react';
 import { Profile } from 'modules/profile/types';
-import { NavigationItem } from './GrowNav';
+import { NavigationItem } from '../../modules/navigation/GrowNav';
 import { DesktopMenuButton } from './Nav';
 import NavAdminMenu from './NavAdminMenu';
 
