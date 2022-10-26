@@ -94,7 +94,9 @@ const TopNavBar: React.FC<PropsWithChildren> = ({ children }) => {
     );
 };
 
-const MobileMenuButton = (props: PropsWithChildren & { href: string }) => {
+const MobileMenuButton = (
+    props: PropsWithChildren & { href: string; icon?: JSX.Element }
+) => {
     const router = useRouter();
 
     return (
@@ -118,7 +120,10 @@ const MobileMenuButton = (props: PropsWithChildren & { href: string }) => {
                 px={6}
                 py={4}
                 fontWeight="semibold"
+                alignItems="center"
+                gap={2}
             >
+                {props.icon}
                 {props.children}
             </Flex>
         </Link>

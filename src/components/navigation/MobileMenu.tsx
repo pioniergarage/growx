@@ -50,7 +50,11 @@ const MobileMenu: React.FC<{
             {items.map(
                 (item) =>
                     !(item.isHidden && item.isHidden(profile)) && (
-                        <MobileMenuButton key={item.label} href={item.href}>
+                        <MobileMenuButton
+                            key={item.label}
+                            href={item.href}
+                            icon={item.icon}
+                        >
                             {item.label}
                         </MobileMenuButton>
                     )
