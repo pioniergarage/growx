@@ -4,7 +4,7 @@ import { Profile } from 'modules/profile/types';
 import { DesktopMenu } from './DesktopMenu';
 import { GrowLogo, MenuToggle, TopNavBar } from './Nav';
 import ProfileMenuWrapper from './ProfileMenuWrapper';
-import MobileMenu from './SideNav';
+import MobileMenu from './MobileMenu';
 
 export type NavigationItem = {
     href: string;

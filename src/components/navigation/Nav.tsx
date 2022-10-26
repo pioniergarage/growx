@@ -80,7 +80,7 @@ const TopNavBar: React.FC<PropsWithChildren> = ({ children }) => {
                 flexGrow={1}
                 align="center"
                 wrap="wrap"
-                py={4}
+                py={2}
                 pr={4}
                 pl={4}
                 px={{ base: undefined, lg: 6 }}
@@ -111,6 +111,9 @@ const MobileMenuButton = (props: PropsWithChildren & { href: string }) => {
                     router.asPath.endsWith(props.href)
                         ? 'whiteAlpha.200'
                         : undefined
+                }
+                color={
+                    router.asPath.endsWith(props.href) ? 'primary' : undefined
                 }
                 px={6}
                 py={4}

@@ -38,11 +38,11 @@ const MobileMenu: React.FC<{
     return (
         <Flex
             flexDir="column"
-            bg="gray.900"
+            bg="blackAlpha.800"
             position="fixed"
-            top="5rem"
+            top="4rem"
+            bottom="0"
             left="0"
-            h="calc(100vh - 5rem)"
             w="100%"
             zIndex={2000}
             overflowY="scroll"
