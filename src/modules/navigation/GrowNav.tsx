@@ -1,4 +1,3 @@
-import { useDisclosure } from '@chakra-ui/react';
 import { useProfile } from 'modules/profile/hooks';
 import { Profile } from 'modules/profile/types';
 import {
@@ -9,10 +8,15 @@ import {
     FaNewspaper,
     FaUserFriends,
 } from 'react-icons/fa';
-import { DesktopMenu } from './DesktopMenu';
-import MobileMenu from './MobileMenu';
-import { GrowLogo, MenuToggle, TopNavBar } from './Nav';
-import ProfileMenuWrapper from './ProfileMenuWrapper';
+import { DesktopMenu } from '../../components/navigation/DesktopMenu';
+import MobileMenu from '../../components/navigation/MobileMenu';
+import {
+    GrowLogo,
+    MenuToggle,
+    TopNavBar,
+} from '../../components/navigation/Nav';
+import ProfileMenuWrapper from '../../components/navigation/ProfileMenuWrapper';
+import { useSideNav } from './hooks';
 
 export type NavigationItem = {
     href: string;
@@ -58,7 +62,7 @@ const navigationItems: NavigationItem[] = [
     {
         href: '/connect/assigned_teams',
         label: 'Assigned',
-        isHidden: (profile) => !profile || profile.role != "MENTOR",
+        isHidden: (profile) => !profile || profile.role != 'MENTOR',
         icon: <FaUserFriends />,
     },
 ];
@@ -68,13 +72,14 @@ export default function GrowNav() {
 
     const {
         isOpen: isSideNavOpen,
+        alpha: navAlpha,
         onClose: onSideNavClose,
         onToggle: onSideNavToggle,
-    } = useDisclosure();
-
+    } = useSideNav();
+    
     return (
         <>
-            <TopNavBar>
+            <TopNavBar alpha={navAlpha}>
                 <MobileMenu
                     items={navigationItems}
                     profile={profile}

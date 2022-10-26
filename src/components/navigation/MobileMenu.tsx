@@ -2,7 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import { Profile } from 'modules/profile/types';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { NavigationItem } from './GrowNav';
+import { NavigationItem } from '../../modules/navigation/GrowNav';
 import { MobileMenuButton } from './Nav';
 
 const MobileMenu: React.FC<{
@@ -16,20 +16,11 @@ const MobileMenu: React.FC<{
     useEffect(() => {
         if (onClose) {
             router.events.on('routeChangeComplete', onClose);
-
             return () => {
                 router.events.off('routeChangeComplete', onClose);
             };
         }
     }, [router, onClose]);
-
-    useEffect(() => {
-        if (isOpen) {
-            document.querySelector('body')?.classList.add('clamp-height');
-        } else {
-            document.querySelector('body')?.classList.remove('clamp-height');
-        }
-    }, [isOpen]);
 
     if (!isOpen) {
         return <></>;
@@ -38,7 +29,7 @@ const MobileMenu: React.FC<{
     return (
         <Flex
             flexDir="column"
-            bg="blackAlpha.800"
+            bg="blackAlpha.900"
             position="fixed"
             top="3.5rem"
             bottom="0"

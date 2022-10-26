@@ -63,7 +63,10 @@ const MenuToggle: React.FC<MenuToggleProps> = ({
     );
 };
 
-const TopNavBar: React.FC<PropsWithChildren> = ({ children }) => {
+const TopNavBar: React.FC<PropsWithChildren & { alpha: number }> = ({
+    children,
+    alpha,
+}) => {
     return (
         <Flex
             as="header"
@@ -72,8 +75,8 @@ const TopNavBar: React.FC<PropsWithChildren> = ({ children }) => {
             top={0}
             right={0}
             width="100%"
-            bg={{ base: 'blackAlpha.700', lg: 'blackAlpha.500' }}
             zIndex={3}
+            sx={{ backgroundColor: `rgba(0,0,0,${alpha})` }}
         >
             <Flex
                 as="nav"

@@ -1,8 +1,8 @@
-import GrowNav from '@/components/navigation/GrowNav';
 import { Box } from '@chakra-ui/react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import Footer from 'modules/landing/Footer';
+import GrowNav from 'modules/navigation/GrowNav';
 import Head from 'next/head';
 import React, { PropsWithChildren, useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
