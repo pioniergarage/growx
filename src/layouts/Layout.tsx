@@ -16,7 +16,7 @@ export default function Layout({ children }: PropsWithChildren) {
         },
     });
     const [supabaseClient] = useState(() => createBrowserSupabaseClient());
-    
+
     return (
         <>
             <Head>
