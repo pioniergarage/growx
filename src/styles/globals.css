@@ -27,7 +27,11 @@ body {
     overflow-x: hidden;
 }
 
+.clamp-height {
+    max-height: 100vh;
+    overflow-y: hidden;
+}
+
 .tap-highlight-transparent {
     -webkit-tap-highlight-color: transparent;
 }
-

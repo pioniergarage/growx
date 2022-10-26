@@ -4,7 +4,7 @@ import { Profile } from 'modules/profile/types';
 import { DesktopMenu } from './DesktopMenu';
 import { GrowLogo, MenuToggle, TopNavBar } from './Nav';
 import ProfileMenuWrapper from './ProfileMenuWrapper';
-import SideNav from './SideNav';
+import MobileMenu from './SideNav';
 
 export type NavigationItem = {
     href: string;
@@ -48,22 +48,24 @@ export default function GrowNav() {
 
     const {
         isOpen: isSideNavOpen,
-        onOpen: onSideNavOpen,
         onClose: onSideNavClose,
+        onToggle: onSideNavToggle,
     } = useDisclosure();
 
     return (
-        <TopNavBar>
-            <MenuToggle onClick={onSideNavOpen} />
-            <SideNav
-                items={navigationItems}
-                profile={profile}
-                isOpen={isSideNavOpen}
-                onClose={onSideNavClose}
-            />
-            <GrowLogo flexGrow={1} />
-            <DesktopMenu items={navigationItems} profile={profile} />
-            <ProfileMenuWrapper profile={profile} />
-        </TopNavBar>
+        <>
+            <TopNavBar>
+                <MobileMenu
+                    items={navigationItems}
+                    profile={profile}
+                    isOpen={isSideNavOpen}
+                    onClose={onSideNavClose}
+                />
+                <MenuToggle onClick={onSideNavToggle} isOpen={isSideNavOpen} />
+                <GrowLogo flexGrow={1} />
+                <DesktopMenu items={navigationItems} profile={profile} />
+                <ProfileMenuWrapper profile={profile} />
+            </TopNavBar>
+        </>
     );
 }

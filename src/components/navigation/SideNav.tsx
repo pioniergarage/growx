@@ -1,18 +1,11 @@
-import {
-    Drawer,
-    DrawerBody,
-    DrawerContent,
-    DrawerHeader,
-    DrawerOverlay,
-    Flex,
-} from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { Profile } from 'modules/profile/types';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { NavigationItem } from './GrowNav';
-import { GrowLogo, MenuToggle, MobileMenuButton } from './Nav';
+import { MobileMenuButton } from './Nav';
 
-const SideNav: React.FC<{
+const MobileMenu: React.FC<{
     profile?: Profile;
     isOpen: boolean;
     onClose: () => void;
@@ -30,37 +23,40 @@ const SideNav: React.FC<{
         }
     }, [router, onClose]);
 
+    useEffect(() => {
+        if (isOpen) {
+            document.querySelector('body')?.classList.add('clamp-height');
+        } else {
+            document.querySelector('body')?.classList.remove('clamp-height');
+        }
+    }, [isOpen]);
+
+    if (!isOpen) {
+        return <></>;
+    }
+
     return (
-        <>
-            <Drawer
-                onClose={onClose}
-                isOpen={isOpen}
-                placement="left"
-                size="xs"
-            >
-                <DrawerOverlay />
-                <DrawerContent bg="gray.900">
-                    <DrawerHeader as={Flex} alignItems="center" pl={4} pt={5}>
-                        <MenuToggle onClick={onClose} variant="ghost" mr={4} />
-                        <GrowLogo />
-                    </DrawerHeader>
-                    <DrawerBody p={0} mt={1} zIndex={20}>
-                        {items.map(
-                            (item) =>
-                                !(item.isHidden && item.isHidden(profile)) && (
-                                    <MobileMenuButton
-                                        key={item.label}
-                                        href={item.href}
-                                    >
-                                        {item.label}
-                                    </MobileMenuButton>
-                                )
-                        )}
-                    </DrawerBody>
-                </DrawerContent>
-            </Drawer>
-        </>
+        <Flex
+            flexDir="column"
+            bg="gray.900"
+            position="fixed"
+            top="5rem"
+            left="0"
+            h="calc(100vh - 5rem)"
+            w="100%"
+            zIndex={2000}
+            overflowY="scroll"
+        >
+            {items.map(
+                (item) =>
+                    !(item.isHidden && item.isHidden(profile)) && (
+                        <MobileMenuButton key={item.label} href={item.href}>
+                            {item.label}
+                        </MobileMenuButton>
+                    )
+            )}
+        </Flex>
     );
 };
 
-export default SideNav;
+export default MobileMenu;
