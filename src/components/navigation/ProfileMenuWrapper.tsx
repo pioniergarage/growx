@@ -25,8 +25,8 @@ const ProfileMenu = (props: { profile: Profile; handleLogout: () => void }) => {
                         isActive={isOpen}
                         isRound={true}
                         as={IconButton}
-                        size="lg"
-                        icon={<UserAvatar profile={props.profile} />}
+                        size="md"
+                        icon={<UserAvatar profile={props.profile} size="sm" />}
                     />
                     <MenuList>
                         <Link href="/connect/profile">

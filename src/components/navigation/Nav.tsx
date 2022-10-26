@@ -21,7 +21,7 @@ const GrowLogo = (boxProps: BoxProps) => {
             width: (128 * 2) / 3,
             height: (27 * 2) / 3,
         },
-        md: {
+        lg: {
             width: 128,
             height: 27,
         },

@@ -40,7 +40,7 @@ const MobileMenu: React.FC<{
             flexDir="column"
             bg="blackAlpha.800"
             position="fixed"
-            top="4rem"
+            top="3.5rem"
             bottom="0"
             left="0"
             w="100%"
