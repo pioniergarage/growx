@@ -1,6 +1,7 @@
 import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
 import PageLink from '@/components/navigation/PageLink';
-import { Box, Divider, Flex } from '@chakra-ui/react';
+import { ChevronRightIcon } from '@chakra-ui/icons';
+import { Divider, Flex } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import InsertedStats from 'modules/admin/components/InsertedStats';
 import { useProfileStats, useTeamsWithDates } from 'modules/admin/hooks';
@@ -32,15 +33,16 @@ const AdminPage: React.FC = () => {
 
     return (
         <Flex flexDir="column" gap={4}>
-            <Box>
+            <Flex gap={4}>
                 <AdminBreadcrumbs route={[]} />
-                <Flex as="ul" gap={4} color="gray.500">
+                <ChevronRightIcon color="gray.500" mt={1} />
+                <Flex as="ul" flexDir="column" color="gray.500">
                     <PageLink href="/connect/admin/profiles">Profiles</PageLink>
                     <PageLink href="/connect/admin/sponsors">Sponsors</PageLink>
                     <PageLink href="/connect/admin/events">Events</PageLink>
                     <PageLink href="/connect/admin/teams">Teams</PageLink>
                 </Flex>
-            </Box>
+            </Flex>
             <Divider />
             <Flex wrap="wrap" gap={4}>
                 <InsertedStats data={participants}>Participants</InsertedStats>

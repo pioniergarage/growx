@@ -2,6 +2,7 @@ import { useProfile } from 'modules/profile/hooks';
 import { Profile } from 'modules/profile/types';
 import {
     FaCalendarAlt,
+    FaCogs,
     FaHandsHelping,
     FaHome,
     FaMedal,
@@ -65,6 +66,12 @@ const navigationItems: NavigationItem[] = [
         isHidden: (profile) => !profile || profile.role != 'MENTOR',
         icon: <FaUserFriends />,
     },
+    {
+        href: '/connect/admin',
+        label: 'Admin',
+        isHidden: (profile) => !profile || profile.role != 'ORGA',
+        icon: <FaCogs />,
+    },
 ];
 
 export default function GrowNav() {
@@ -76,7 +83,7 @@ export default function GrowNav() {
         onClose: onSideNavClose,
         onToggle: onSideNavToggle,
     } = useSideNav();
-    
+
     return (
         <>
             <TopNavBar alpha={navAlpha}>
