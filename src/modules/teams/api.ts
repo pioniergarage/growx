@@ -12,7 +12,7 @@ import {
 import { mapProfileDto } from '../profile/api';
 import { Team } from './types';
 
-const mapTeamDto = (teamDto: Database['public']['Tables']['teams']['Row']): Team => ({
+export const mapTeamDto = (teamDto: Database['public']['Tables']['teams']['Row']): Team => ({
     ...teamDto,
     tags: teamDto.tags as string[],
     requestSupport: teamDto.requestSupport as string[],
