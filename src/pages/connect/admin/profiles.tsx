@@ -153,7 +153,7 @@ export default function ProfilesAdmin() {
                     </TabList>
 
                     <TabPanels>
-                        <TabPanel>
+                        <TabPanel px={0}>
                             <ProfileList
                                 profiles={profiles.filter(
                                     (p) => p.role === 'PARTICIPANT'
@@ -171,28 +171,28 @@ export default function ProfilesAdmin() {
                                 Download
                             </Button>
                         </TabPanel>
-                        <TabPanel>
+                        <TabPanel px={0}>
                             <ProfileList
                                 profiles={profiles.filter(
                                     (p) => p.role === 'MENTOR'
                                 )}
                             />
                         </TabPanel>
-                        <TabPanel>
+                        <TabPanel px={0}>
                             <ProfileList
                                 profiles={profiles.filter(
                                     (p) => p.role === 'EXPERT'
                                 )}
                             />
                         </TabPanel>
-                        <TabPanel>
+                        <TabPanel px={0}>
                             <ProfileList
                                 profiles={profiles.filter(
                                     (p) => p.role === 'BUDDY'
                                 )}
                             />
                         </TabPanel>
-                        <TabPanel>
+                        <TabPanel px={0}>
                             <ProfileList
                                 profiles={profiles.filter(
                                     (p) => p.role === 'ORGA'
