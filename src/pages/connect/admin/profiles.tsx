@@ -1,14 +1,16 @@
 import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
-    Box,
     Button,
-    Flex,
-    Heading,
     MenuButton,
     Spinner,
+    Tab,
     Table,
     TableContainer,
+    TabList,
+    TabPanel,
+    TabPanels,
+    Tabs,
     Tbody,
     Td,
     Th,
@@ -35,7 +37,7 @@ const ProfileList = (props: { profiles: (Profile & ContactInformation)[] }) => {
                 <Table size="sm">
                     <Thead>
                         <Tr>
-                            <Th>Name</Th>
+                            <Th>Name ({props.profiles.length})</Th>
                             <Th>Email</Th>
                             <Th>Phone</Th>
                             <Th>Gender</Th>
@@ -141,11 +143,22 @@ export default function ProfilesAdmin() {
             {isLoading || !profiles ? (
                 <Spinner />
             ) : (
-                <VStack alignItems="stretch" gap={8}>
-                    <Box>
-                        <Flex justifyContent="space-between" mb={1}>
-                            <Heading size="md">Participants</Heading>
+                <Tabs>
+                    <TabList>
+                        <Tab>Participants</Tab>
+                        <Tab>Mentors</Tab>
+                        <Tab>Experts</Tab>
+                        <Tab>Buddies</Tab>
+                        <Tab>Orga</Tab>
+                    </TabList>
 
+                    <TabPanels>
+                        <TabPanel>
+                            <ProfileList
+                                profiles={profiles.filter(
+                                    (p) => p.role === 'PARTICIPANT'
+                                )}
+                            />
                             <Button
                                 onClick={() =>
                                     downloadProfiles(
@@ -154,49 +167,40 @@ export default function ProfilesAdmin() {
                                         )
                                     )
                                 }
-                                size="sm"
-                                variant="link"
                             >
                                 Download
                             </Button>
-                        </Flex>
-                        <ProfileList
-                            profiles={profiles.filter(
-                                (p) => p.role === 'PARTICIPANT'
-                            )}
-                        />
-                    </Box>
-                    <Box>
-                        <Heading size="md">Mentors</Heading>
-                        <ProfileList
-                            profiles={profiles.filter(
-                                (p) => p.role === 'MENTOR'
-                            )}
-                        />
-                    </Box>
-                    <Box>
-                        <Heading size="md">Experts</Heading>
-                        <ProfileList
-                            profiles={profiles.filter(
-                                (p) => p.role === 'EXPERT'
-                            )}
-                        />
-                    </Box>
-                    <Box>
-                        <Heading size="md">Buddies</Heading>
-                        <ProfileList
-                            profiles={profiles.filter(
-                                (p) => p.role === 'BUDDY'
-                            )}
-                        />
-                    </Box>
-                    <Box>
-                        <Heading size="md">Orga</Heading>
-                        <ProfileList
-                            profiles={profiles.filter((p) => p.role === 'ORGA')}
-                        />
-                    </Box>
-                </VStack>
+                        </TabPanel>
+                        <TabPanel>
+                            <ProfileList
+                                profiles={profiles.filter(
+                                    (p) => p.role === 'MENTOR'
+                                )}
+                            />
+                        </TabPanel>
+                        <TabPanel>
+                            <ProfileList
+                                profiles={profiles.filter(
+                                    (p) => p.role === 'EXPERT'
+                                )}
+                            />
+                        </TabPanel>
+                        <TabPanel>
+                            <ProfileList
+                                profiles={profiles.filter(
+                                    (p) => p.role === 'BUDDY'
+                                )}
+                            />
+                        </TabPanel>
+                        <TabPanel>
+                            <ProfileList
+                                profiles={profiles.filter(
+                                    (p) => p.role === 'ORGA'
+                                )}
+                            />
+                        </TabPanel>
+                    </TabPanels>
+                </Tabs>
             )}
         </VStack>
     );
