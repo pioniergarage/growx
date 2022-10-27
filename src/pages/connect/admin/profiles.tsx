@@ -144,7 +144,7 @@ export default function ProfilesAdmin() {
                 <Spinner />
             ) : (
                 <Tabs>
-                    <TabList>
+                    <TabList overflowX="scroll" pb={1} maxW="100%">
                         <Tab>Participants</Tab>
                         <Tab>Mentors</Tab>
                         <Tab>Experts</Tab>
