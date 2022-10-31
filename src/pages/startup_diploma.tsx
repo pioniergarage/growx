@@ -13,35 +13,40 @@ import Link from 'next/link';
 const StartupDiplomaPage = () => {
     return (
         <>
-            <VStack alignItems="stretch" gap={8} maxW="container.sm" mx="auto">
+            <VStack alignItems="stretch" gap={8} maxW="container.xl" mx="auto">
                 <Box>
                     <Heading size="sm">For KIT-Students only</Heading>
                     <Text>
                         Together with HoC and EnTechnon, we can offer you this
-                        year&apos;s{' '}
+                        year&apos;s&nbsp;
                         <Text as="span" color="secondary" fontWeight="bold">
                             2 ECTS
-                        </Text>{' '}
-                        as an interdisciplinary qualification for your
+                        </Text>
+                        &nbsp; as an interdisciplinary qualification for your
                         participation in GROW!
                     </Text>
                 </Box>
+
                 <VStack gap={4} alignItems="start">
-                    <Heading>Get Your Startup Diploma</Heading>
+                    <Heading>Your Startup Diploma</Heading>
+                    <Image
+                        mt={10}
+                        src="https://www.hoc.kit.edu/img/Perspektivenlabor/STARTUP%20DIPLOMA/neue%20Dateien%20September/startup%20diploma_schaubilder2.png"
+                        alt="info graphic"
+                        objectFit="contain"
+                    />
                     <Flex flexDir="column" gap={4}>
                         <Heading size="md">
-                            You already know that you want to start your own
-                            business or are thinking about it?
+                            You are thinking about starting your own business?
                         </Heading>
                         <Heading size="md">
                             You are looking for impulses from experienced
-                            experts from entrepreneurship, research and teaching
-                            to learn the necessary tools for your startup
-                            process?
+                            experts to learn the necessary tools for your
+                            startup process?
                         </Heading>
                         <Heading size="md">
                             You want your startup to be value-driven and
-                            (nevertheless) successful?
+                            successful?
                         </Heading>
                     </Flex>
                     <Text>
@@ -107,15 +112,15 @@ const StartupDiplomaPage = () => {
                             You also must register on the grow.pioniergarage.de
                             website during the registration process.
                         </Text>
+                        <Text>
+                            <Text as="span" fontWeight="bold" mr={2}>
+                                Still have a question?
+                            </Text>
+                            Feel free to contact us at grow@pioniergarage.de
+                        </Text>
                     </VStack>
                 </VStack>
             </VStack>
-            <Image
-                mt={10}
-                src="https://www.hoc.kit.edu/img/Perspektivenlabor/STARTUP%20DIPLOMA/neue%20Dateien%20September/startup%20diploma_schaubilder2.png"
-                alt="info graphic"
-                objectFit="contain"
-            />
         </>
     );
 };
