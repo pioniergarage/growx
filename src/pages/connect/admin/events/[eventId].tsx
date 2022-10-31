@@ -5,13 +5,20 @@ import {
     Divider,
     Flex,
     Heading,
-    HStack,
-    SimpleGrid,
     Spinner,
+    Table,
+    TableContainer,
+    Tag,
+    Tbody,
+    Td,
+    Th,
+    Thead,
+    Tr,
     useToast,
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import UserAvatar from 'modules/avatar/components/UserAvatar';
 import { ContactInformation } from 'modules/contactInformation/types';
 
 import EventForm from 'modules/events/components/EventForm';
@@ -23,10 +30,10 @@ import {
     useUpdateEvent,
 } from 'modules/events/hooks';
 import { GrowEvent } from 'modules/events/types';
-import ProfileCard from 'modules/profile/components/ProfileCard';
 import { Profile } from 'modules/profile/types';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { FaLaptop } from 'react-icons/fa';
 import { downloadCSV } from 'utils/csv';
 import { NextPageWithLayout } from 'utils/types';
 
@@ -41,12 +48,13 @@ function Registrations(event: GrowEvent) {
         }[] = []
     ) {
         downloadCSV(
-            ['name', 'email', 'phone', 'online/person'],
+            ['name', 'email', 'phone', 'online/person', 'role'],
             registrations.map(({ present, profile, contact_information }) => [
                 profile.firstName + ' ' + profile.lastName,
                 contact_information.email,
                 contact_information.phone || '',
                 present ? 'in person' : 'online',
+                profile.role,
             ]),
             `${event.title}-registrations.csv`
         );
@@ -67,16 +75,39 @@ function Registrations(event: GrowEvent) {
                     Download as CSV
                 </Button>
             </Flex>
-            <SimpleGrid columns={2} gap={2}>
-                {registrations?.map((registration) => (
-                    <HStack key={registration.profile.userId}>
-                        <Box fontSize={10} width={12}>
-                            {registration.present ? 'In Person' : 'Online'}
-                        </Box>
-                        <ProfileCard profile={registration.profile} />
-                    </HStack>
-                ))}
-            </SimpleGrid>
+            <TableContainer>
+                <Table variant="simple">
+                    <Thead>
+                        <Tr>
+                            <Th />
+                            <Th>Name</Th>
+                            <Th>Online</Th>
+                            <Th>Email</Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        {registrations?.map((r) => (
+                            <Tr key={r.profile.userId}>
+                                <Td py={0}>
+                                    <UserAvatar profile={r.profile} size="sm" />
+                                </Td>
+                                <Td>
+                                    {r.profile.firstName +
+                                        ' ' +
+                                        r.profile.lastName}
+                                    {r.profile.role != 'PARTICIPANT' && (
+                                        <Tag size="sm" ml={2}>
+                                            {r.profile.role}
+                                        </Tag>
+                                    )}
+                                </Td>
+                                <Td>{r.present ? <FaLaptop /> : undefined}</Td>
+                                <Td>{r.contact_information.email}</Td>
+                            </Tr>
+                        ))}
+                    </Tbody>
+                </Table>
+            </TableContainer>
         </Box>
     );
 }
