@@ -1,6 +1,6 @@
-import { Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react';
+import { Box, Flex, Hide, Show, Text } from '@chakra-ui/react';
+import { CollapsableText } from 'modules/profile/components/ProfileCard';
 
-import { useMemo } from 'react';
 import {
     FaBuilding,
     FaChromecast,
@@ -16,62 +16,48 @@ interface TimelineEventProps {
 }
 
 const TimelineEvent: React.FC<TimelineEventProps> = ({ event }) => {
-    const { day, month } = useMemo(() => {
-        const date = event.date;
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = date.toLocaleString('en-US', { month: 'short' });
-        return { day, month };
-    }, [event.date]);
-
     const over = new Date() > event.date;
 
     return (
-        <HStack
-            gap={{ base: 2, md: 4 }}
-            alignItems="stretch"
+        <Flex
+            flexDir="column"
+            alignItems="start"
             color={over ? 'gray.500' : 'inherit'}
         >
-            <VStack
-                lineHeight={0.7}
-                alignItems="end"
+            <Box color="gray.500" fontSize={14} fontWeight="bold">
+                {event.date.toLocaleString()}
+            </Box>
+            <Box
+                fontWeight="600"
                 fontSize={{ base: 'lg', md: '2xl' }}
-                fontWeight="semibold"
-                width={{ base: '2.5rem', md: '3.5rem' }}
-                flexShrink={0}
+                lineHeight={1.3}
             >
-                <Text>{day}</Text>
-                <Text>{month}</Text>
-            </VStack>
-            <Flex flexDir="column" alignItems="start">
-                <Heading size="md">{event.title}</Heading>
-                <Text mt={0}>{event.description}</Text>
-                <Flex
-                    mt={1}
-                    flexWrap="wrap"
-                    gap={2}
-                    flexDir={{ base: 'column', sm: 'row' }}
-                    alignItems="start"
-                >
-                    {event.location && (
-                        <EventTag icon={FaMapMarkerAlt}>
-                            {event.location}
-                        </EventTag>
-                    )}
-                    {event.type === EventType.Hybrid && (
-                        <EventTag icon={FaChromecast}>Hybrid</EventTag>
-                    )}
-                    {event.type === EventType.Online && (
-                        <EventTag icon={FaCloud}>Online</EventTag>
-                    )}
-                    {event.type === EventType.Offline && (
-                        <EventTag icon={FaBuilding}>Offline</EventTag>
-                    )}
-                    {event.mandatory && (
-                        <EventTag icon={FaExclamation}>Mandatory</EventTag>
-                    )}
-                </Flex>
+                {event.title}
+            </Box>
+            <Flex my={2} flexWrap="wrap" gap={2} alignItems="start">
+                {event.location && (
+                    <EventTag icon={FaMapMarkerAlt}>{event.location}</EventTag>
+                )}
+                {event.type === EventType.Hybrid && (
+                    <EventTag icon={FaChromecast}>Hybrid</EventTag>
+                )}
+                {event.type === EventType.Online && (
+                    <EventTag icon={FaCloud}>Online</EventTag>
+                )}
+                {event.type === EventType.Offline && (
+                    <EventTag icon={FaBuilding}>Offline</EventTag>
+                )}
+                {event.mandatory && (
+                    <EventTag icon={FaExclamation}>Mandatory</EventTag>
+                )}
             </Flex>
-        </HStack>
+            <Hide above="md">
+                <CollapsableText text={event.description} color="gray.300" />
+            </Hide>
+            <Show above="md">
+                <Text color="gray.300">{event.description}</Text>
+            </Show>
+        </Flex>
     );
 };
 

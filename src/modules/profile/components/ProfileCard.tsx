@@ -84,7 +84,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     );
 };
 
-const CollapsableText = (props: { text: string } & TextProps) => {
+export const CollapsableText = (props: { text?: string } & TextProps) => {
     const [show, setShow] = useState(false);
     const [showMore, setShowMore] = useState(false);
 
