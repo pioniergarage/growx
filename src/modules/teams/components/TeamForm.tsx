@@ -1,16 +1,12 @@
 import TagSelect from '@/components/TagSelect';
 import {
     Button,
-    Flex,
     FormControl,
     FormLabel,
     GridItem,
     HStack,
     Input,
     SimpleGrid,
-    Tag,
-    TagCloseButton,
-    TagLabel,
     Textarea,
     VStack,
 } from '@chakra-ui/react';
@@ -52,53 +48,6 @@ const TeamForm: React.FC<TeamFormProps> = ({ onSave, team, onCancel }) => {
                             value={formik.values.name}
                         />
                     </FormControl>
-                    <FormControl isDisabled={formik.values.tags.length >= 3}>
-                        <FormLabel htmlFor="name">Tags</FormLabel>
-                        <Input
-                            mb={2}
-                            placeholder="Add Tag"
-                            onKeyDown={(e) => {
-                                if (e.key == 'Enter') {
-                                    formik.setFieldValue(
-                                        'tags',
-                                        formik.values.tags.concat(
-                                            e.target.value
-                                        )
-                                    );
-                                    e.target.value = '';
-                                    e.preventDefault();
-                                }
-                            }}
-                        />
-                        <Flex gap={2}>
-                            {formik.values.tags.map((tag, i) => (
-                                <Tag key={i} borderRadius="full">
-                                    <TagLabel>{tag}</TagLabel>
-                                    <TagCloseButton
-                                        onClick={() => {
-                                            const tags = formik.values.tags;
-                                            tags.splice(i, 1);
-                                            formik.setFieldValue('tags', tags);
-                                        }}
-                                    />
-                                </Tag>
-                            ))}
-                        </Flex>
-                    </FormControl>
-                    <GridItem>
-                        <FormControl>
-                            <FormLabel htmlFor="description">
-                                Description
-                            </FormLabel>
-                            <Textarea
-                                name="description"
-                                id="description"
-                                value={formik.values.description}
-                                onChange={formik.handleChange}
-                                placeholder="Describe what the startup is about."
-                            />
-                        </FormControl>
-                    </GridItem>
                     <GridItem>
                         <FormControl>
                             <FormLabel htmlFor="mentoring">
@@ -123,6 +72,20 @@ const TeamForm: React.FC<TeamFormProps> = ({ onSave, team, onCancel }) => {
                                     );
                                     setRequestSupport(newSupportRequests);
                                 }}
+                            />
+                        </FormControl>
+                    </GridItem>
+                    <GridItem colSpan={2}>
+                        <FormControl>
+                            <FormLabel htmlFor="description">
+                                Description
+                            </FormLabel>
+                            <Textarea
+                                name="description"
+                                id="description"
+                                value={formik.values.description}
+                                onChange={formik.handleChange}
+                                placeholder="Describe what the startup is about."
                             />
                         </FormControl>
                     </GridItem>
