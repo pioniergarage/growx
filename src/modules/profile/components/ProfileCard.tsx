@@ -16,7 +16,7 @@ import UserAvatar, {
 } from 'modules/avatar/components/UserAvatar';
 import { ContactInformation } from 'modules/contactInformation/types';
 import { Team } from 'modules/teams/types';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaLightbulb, FaUsers } from 'react-icons/fa';
 import { Profile } from '../types';
 
@@ -91,7 +91,7 @@ export const CollapsableText = (props: { text?: string } & TextProps) => {
     const handleToggle = () => setShow(!show);
     const ref = useRef<HTMLParagraphElement>(null);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (!ref.current) {
             return;
         }
