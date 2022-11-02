@@ -6,7 +6,7 @@ interface CountdownProps extends TextProps {
 }
 
 const Countdown: React.FC<CountdownProps> = ({
-    to = new Date('11/05/2022'),
+    to = new Date('11/12/2022'),
     ...props
 }) => {
     const calculateTimeLeft = (to: Date) => {
@@ -56,11 +56,8 @@ const Countdown: React.FC<CountdownProps> = ({
                 {timeLeft.minutes + 'm'}&nbsp;
                 {timeLeft.seconds + 's'}
             </Text>
-            <Text variant="info">
-                Until{' '}
-                <Text as="span" color="secondary" fontWeight="semibold">
-                    Kickoff Event
-                </Text>
+            <Text variant="info" fontWeight="bold">
+                Extended Sign-up Period
             </Text>
         </Flex>
     );
