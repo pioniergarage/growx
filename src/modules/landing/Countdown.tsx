@@ -6,7 +6,7 @@ interface CountdownProps extends TextProps {
 }
 
 const Countdown: React.FC<CountdownProps> = ({
-    to = new Date('11/05/2022'),
+    to = new Date('2022-11-05T16:00:00Z'),
     ...props
 }) => {
     const calculateTimeLeft = (to: Date) => {
