@@ -91,28 +91,25 @@ export default function SponsorAdmin() {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {sponsors &&
-                            sponsors.map((sponsor) => (
-                                <Tr key={sponsor.name}>
-                                    <Td>
-                                        <IconButton
-                                            aria-label="Adjust sponsor"
-                                            icon={<FaPen />}
-                                            variant="ghost"
-                                            size="xs"
-                                            onClick={() =>
-                                                adjustSponsor(sponsor)
-                                            }
-                                        />
-                                    </Td>
-                                    <Td>{sponsor.name}</Td>
-                                    <Td>{image(sponsor)}</Td>
-                                    <Td>{sponsor.type}</Td>
-                                    <Td>
-                                        <Link>{sponsor.link}</Link>
-                                    </Td>
-                                </Tr>
-                            ))}
+                        {(sponsors ?? []).map((sponsor) => (
+                            <Tr key={sponsor.name}>
+                                <Td>
+                                    <IconButton
+                                        aria-label="Adjust sponsor"
+                                        icon={<FaPen />}
+                                        variant="ghost"
+                                        size="xs"
+                                        onClick={() => adjustSponsor(sponsor)}
+                                    />
+                                </Td>
+                                <Td>{sponsor.name}</Td>
+                                <Td>{image(sponsor)}</Td>
+                                <Td>{sponsor.type}</Td>
+                                <Td>
+                                    <Link>{sponsor.link}</Link>
+                                </Td>
+                            </Tr>
+                        ))}
                     </Tbody>
                 </Table>
             </TableContainer>
