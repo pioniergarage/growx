@@ -7,7 +7,7 @@ import { EventType, GrowEvent } from './types';
 export const mapEventDto: (
     dto: Database['public']['Tables']['events']['Row']
 ) => GrowEvent = (dto) => ({
-    date: new Date(dto.date),
+    date: new Date(dto.date + "Z"),
     id: dto.id,
     title: dto.title,
     description: dto.description,
