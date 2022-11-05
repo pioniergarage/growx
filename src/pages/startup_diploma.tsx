@@ -1,6 +1,7 @@
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     Box,
+    Button,
     Flex,
     Heading,
     Image,
@@ -8,9 +9,25 @@ import {
     Text,
     VStack,
 } from '@chakra-ui/react';
+import { useProfile, useUpdateProfile } from 'modules/profile/hooks';
+import { kitName } from 'modules/signup/components/UniversityForm';
 import Link from 'next/link';
 
+export const SQRegistrationEnd = new Date(2022, 10, 7); // month is zero indexed
+export const SQRegistrationOver = new Date() > SQRegistrationEnd;
+
 const StartupDiplomaPage = () => {
+    const { profile } = useProfile();
+    const { updateProfile } = useUpdateProfile();
+    async function signUpForSQ() {
+        if (!profile) {
+            return;
+        }
+        await updateProfile({
+            keyQualification: true,
+            userId: profile?.userId,
+        });
+    }
     return (
         <>
             <VStack alignItems="stretch" gap={8} maxW="container.xl" mx="auto">
@@ -68,6 +85,16 @@ const StartupDiplomaPage = () => {
                         the necessary tools to realise their startup idea
                         successfully.
                     </Text>
+                    {profile &&
+                        profile.university === kitName &&
+                        !SQRegistrationOver &&
+                        (profile.keyQualification ? (
+                            <Button disabled>Signed up!</Button>
+                        ) : (
+                            <Button onClick={signUpForSQ}>
+                                Sign up for Startup Diploma
+                            </Button>
+                        ))}
                     <VStack alignItems="start">
                         <Flex flexWrap="wrap">
                             <Text as="span" fontWeight="bold" mr={2}>
@@ -109,7 +136,7 @@ const StartupDiplomaPage = () => {
                             <Text as="span" fontWeight="bold" mr={2}>
                                 Please note:
                             </Text>
-                            You also must register on the grow.pioniergarage.de
+                            You also must register on this
                             website during the registration process.
                         </Text>
                         <Text>
