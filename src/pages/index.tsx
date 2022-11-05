@@ -89,7 +89,7 @@ const Home: React.FC<HomeProps> = ({
                 <LongTimeline events={events} />
             </Section>
 
-            <Section position="relative" my={24} px={0}>
+            {/* <Section position="relative" my={24} px={0}>
                 <Box
                     maxW="container.xl"
                     top={0}
@@ -108,7 +108,7 @@ const Home: React.FC<HomeProps> = ({
                     />
                 </Box>
                 <WaitingForBlock />
-            </Section>
+            </Section> */}
 
             <Section id="faqs" mt={24}>
                 <Faqs faqs={faqs} />
