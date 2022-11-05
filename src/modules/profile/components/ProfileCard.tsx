@@ -16,7 +16,7 @@ import UserAvatar, {
 } from 'modules/avatar/components/UserAvatar';
 import { ContactInformation } from 'modules/contactInformation/types';
 import { Team } from 'modules/teams/types';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaLightbulb, FaUsers } from 'react-icons/fa';
 import { Profile } from '../types';
 

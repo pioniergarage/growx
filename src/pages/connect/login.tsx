@@ -52,13 +52,13 @@ const LoginPage: NextPageWithLayout = () => {
                 </Alert>
             )}
             <Flex flexDir="column">
-                {/* <PageLink
+                <PageLink
                     color="primary"
                     textAlign="center"
                     href="/connect/signup"
                 >
                     Don&apos;t have an account yet? Click here to sign up.
-                </PageLink> */}
+                </PageLink>
                 <PageLink
                     color="primary"
                     textAlign="center"

@@ -65,7 +65,7 @@ export default function MainInfoBlock() {
                         </Text>
                     </Box>
 
-                    {/* <ParticipateButton /> */}
+                    <ParticipateButton />
                 </VStack>
             </GridItem>
             <GridItem
