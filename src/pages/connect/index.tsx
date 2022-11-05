@@ -1,16 +1,10 @@
 import PageLink from '@/components/navigation/PageLink';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     Alert,
     AlertIcon,
     Box,
     Flex,
-    FormControl,
-    FormLabel,
     Heading,
-    HStack,
-    Link,
-    Switch,
     Text,
     VStack,
 } from '@chakra-ui/react';
@@ -19,13 +13,15 @@ import { useUser } from '@supabase/auth-helpers-react';
 
 import GrowEventCard from 'modules/events/components/GrowEventCard';
 import { useGrowEvents, useRegistrationsOfUser } from 'modules/events/hooks';
-import { useProfile, useUpdateProfile } from 'modules/profile/hooks';
+import { useProfile } from 'modules/profile/hooks';
+import SQSignup from 'modules/signup/components/SQSignup';
 import { kitName } from 'modules/signup/components/UniversityForm';
 import CreateTeamButton from 'modules/teams/components/CreateTeamButton';
 import TeamCard from 'modules/teams/components/TeamCard';
 import { useTeam, useTeamIdOfUser, useTeamRequests } from 'modules/teams/hooks';
 import { Team } from 'modules/teams/types';
-import { useMemo, useState } from 'react';
+import { SQRegistrationOver } from 'pages/startup_diploma';
+import { useMemo } from 'react';
 
 const ConnectIndex: React.FC = () => {
     const user = useUser();
@@ -87,7 +83,7 @@ const ConnectIndex: React.FC = () => {
                     <YourTeam userId={profile.userId} />
                 )}
                 {profile.university === kitName && !SQRegistrationOver && (
-                    <SQInfo
+                    <SQSignup
                         userId={profile.userId}
                         keyQualification={profile.keyQualification}
                     />
@@ -146,55 +142,6 @@ const TeamRequestInfo = ({ team }: { team: Team }) => {
             </Alert>
         );
     }
-};
-
-const SQRegistrationEnd = new Date(2022, 10, 7); // month is zero indexed
-const SQRegistrationOver = new Date() > SQRegistrationEnd;
-const SQInfo = ({
-    userId,
-    keyQualification,
-}: {
-    userId: string;
-    keyQualification: boolean;
-}) => {
-    const { updateProfile } = useUpdateProfile();
-    const [updated, setUpdated] = useState(false);
-    async function setSQ(value: boolean) {
-        await updateProfile({ keyQualification: value, userId });
-        setUpdated(!updated);
-    }
-    return (
-        <Box>
-            <Heading mb={1} size="sm" color="gray.400" fontSize={12}>
-                Key and interdisciplinary qualification
-            </Heading>
-            <Box>
-                All KIT students have the opportunity to go through a special
-                training format, the successful completion of which is rewarded
-                with the &quot;Startup Diploma&quot; certificate. More info:
-                &nbsp;
-                <Link
-                    href="https://www.hoc.kit.edu/startupdiploma.php"
-                    isExternal
-                >
-                    HoC <ExternalLinkIcon mx="2px" />
-                </Link>
-                <FormControl as={HStack} mt={1}>
-                    <Switch
-                        onChange={(e) => setSQ(e.target.checked)}
-                        isChecked={
-                            (updated && !keyQualification) ||
-                            (keyQualification && !updated)
-                        }
-                    />
-                    <FormLabel>
-                        Binding registration as key and interdisciplinary
-                        qualifications
-                    </FormLabel>
-                </FormControl>
-            </Box>
-        </Box>
-    );
 };
 
 export default ConnectIndex;

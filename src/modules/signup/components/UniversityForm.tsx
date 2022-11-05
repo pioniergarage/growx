@@ -16,7 +16,7 @@ import {
 import { useFormik } from 'formik';
 
 export const kitName = 'Karlsruhe Institute of Technology';
-const kitCountry = 'Germany';
+export const kitCountry = 'Germany';
 
 type UniversityFormProps = {
     onNext: (info: {
