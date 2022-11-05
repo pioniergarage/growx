@@ -26,7 +26,7 @@ const ForgotPassword: NextPageWithLayout = () => {
         }
         setLoading(true);
         await supabaseClient.auth.resetPasswordForEmail(email, {
-            redirectTo: '/connect/resetpassword',
+            redirectTo: 'https://grow.pioniergarage.de/connect/resetpassword',
         });
         setReset(true);
     };

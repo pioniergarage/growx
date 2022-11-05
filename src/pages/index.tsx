@@ -10,7 +10,7 @@ import GrowVideo from 'modules/landing/GrowVideo';
 import MainInfoBlock from 'modules/landing/MainInfoBlock';
 import MotivationBlock from 'modules/landing/MotivationBlock';
 import Timeline from 'modules/landing/ShortTimeline';
-import SponsorBlock from 'modules/landing/sponsor/SponsorBlock';
+import Sponsors from 'modules/landing/sponsor/Sponsors';
 import LongTimeline from 'modules/landing/Timeline';
 import WaitingForBlock from 'modules/landing/WaitingForBlock';
 import { getSponsors } from 'modules/sponsor/api';
@@ -115,7 +115,7 @@ const Home: React.FC<HomeProps> = ({
             </Section>
 
             <Section mt={20}>
-                <SponsorBlock sponsors={sponsors} />
+                <Sponsors sponsors={sponsors} />
             </Section>
         </>
     );
