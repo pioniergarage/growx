@@ -41,7 +41,7 @@ type EventFormType = Omit<GrowEvent, 'date'> & {
 function formValueToGrowEvent(value: EventFormType): Omit<GrowEvent, 'id'> {
     const { date: dateString, time, ...rest } = value;
     const date = new Date(`${dateString}T${time}`);
-    return { ...rest, date: new Date(date.getTime() + 1000 * 60 * 60) }; // temp fix: add 1 hour
+    return { ...rest, date: new Date(date.getTime()) };
 }
 
 /**
