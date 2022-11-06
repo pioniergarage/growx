@@ -17,6 +17,8 @@ import { getSponsors } from 'modules/sponsor/api';
 import { Sponsor } from 'modules/sponsor/types';
 import { PropsWithChildren } from 'react';
 
+const minutesToSeconds = (minutes: number) => minutes * 60;
+
 export const getStaticProps = async () => {
     const supabase = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL as string,
@@ -29,7 +31,7 @@ export const getStaticProps = async () => {
             ...e,
             date: e.date.toISOString(),
         }));
-        return { props: { sponsors, faqs, events } };
+        return { props: { sponsors, faqs, events }, revalidate:  minutesToSeconds(30)};
     } catch (error) {
         console.error(error);
         throw error;
