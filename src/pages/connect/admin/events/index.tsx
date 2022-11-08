@@ -1,4 +1,4 @@
-import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
+import AdminBreadcrumbs, { AdminBreadcrumbItem } from '@/components/navigation/AdminBreadcrumbs';
 import PageLink from '@/components/navigation/PageLink';
 import { CheckIcon } from '@chakra-ui/icons';
 import {
@@ -31,7 +31,11 @@ export default function EventManagement() {
 
     return (
         <VStack alignItems="start">
-            <AdminBreadcrumbs route={[['Events', '/connect/admin/events']]} />
+        <AdminBreadcrumbs>
+            <AdminBreadcrumbItem href="/connect/admin/events">
+                Events
+            </AdminBreadcrumbItem>
+        </AdminBreadcrumbs>
 
             <TableContainer>
                 <Table size="sm">

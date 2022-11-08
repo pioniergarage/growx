@@ -1,4 +1,6 @@
-import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
+import AdminBreadcrumbs, {
+    AdminBreadcrumbItem,
+} from '@/components/navigation/AdminBreadcrumbs';
 import {
     Box,
     Button,
@@ -146,7 +148,11 @@ const TeamAdmin = () => {
     const { teams } = useAllTeams([]);
     return (
         <VStack alignItems="stretch">
-            <AdminBreadcrumbs route={[['Teams', '/connect/admin/teams']]} />
+            <AdminBreadcrumbs>
+                <AdminBreadcrumbItem href="/connect/admin/teams">
+                    Teams
+                </AdminBreadcrumbItem>
+            </AdminBreadcrumbs>
             {teams === undefined ? <Spinner /> : <TeamTable teams={teams} />}
         </VStack>
     );

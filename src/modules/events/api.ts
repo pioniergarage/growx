@@ -15,6 +15,7 @@ export const mapEventDto: (
     location: dto.location,
     sq_mandatory: dto.sq_mandatory,
     type: dto.type as EventType,
+    duration: dto.duration
 });
 
 export const getEvents = (supabaseClient: SupabaseClient<Database>) =>
@@ -80,6 +81,7 @@ export const updateEvent = (
             location: growEvent.location,
             sq_mandatory: growEvent.sq_mandatory,
             type: growEvent.type,
+            duration: growEvent.duration
         })
         .match({ id: growEvent.id })
         .select()

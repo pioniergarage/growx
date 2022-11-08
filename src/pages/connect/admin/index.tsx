@@ -34,7 +34,7 @@ const AdminPage: React.FC = () => {
     return (
         <Flex flexDir="column" gap={4}>
             <Flex gap={4}>
-                <AdminBreadcrumbs route={[]} />
+                <AdminBreadcrumbs />
                 <ChevronRightIcon color="gray.500" mt={1} />
                 <Flex as="ul" flexDir="column" color="gray.500">
                     <PageLink href="/connect/admin/profiles">Profiles</PageLink>

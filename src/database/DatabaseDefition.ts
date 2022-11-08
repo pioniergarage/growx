@@ -99,6 +99,7 @@ export interface Database {
                     location: string;
                     sq_mandatory: boolean;
                     type: Database['public']['Enums']['enum_event_type'] | null;
+                    duration: number;
                 };
                 Insert: {
                     id?: number;
@@ -113,6 +114,7 @@ export interface Database {
                     type?:
                         | Database['public']['Enums']['enum_event_type']
                         | null;
+                    duration?: number;
                 };
                 Update: {
                     id?: number;
@@ -127,6 +129,7 @@ export interface Database {
                     type?:
                         | Database['public']['Enums']['enum_event_type']
                         | null;
+                    duration?: number;
                 };
             };
             faqs: {

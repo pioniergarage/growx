@@ -1,4 +1,6 @@
-import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
+import AdminBreadcrumbs, {
+    AdminBreadcrumbItem,
+} from '@/components/navigation/AdminBreadcrumbs';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
     Button,
@@ -137,9 +139,11 @@ export default function ProfilesAdmin() {
 
     return (
         <VStack alignItems="stretch">
-            <AdminBreadcrumbs
-                route={[['Profiles', '/connect/admin/profiles']]}
-            />
+            <AdminBreadcrumbs>
+                <AdminBreadcrumbItem href="/connect/admin/profiles">
+                    Profiles
+                </AdminBreadcrumbItem>
+            </AdminBreadcrumbs>
             {isLoading || !profiles ? (
                 <Spinner />
             ) : (

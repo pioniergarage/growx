@@ -54,11 +54,11 @@ export function useUnregisterUserFromEvent() {
     return { ...mutation, unregisterUser: mutation.mutateAsync };
 }
 
-export function useRegistrationsToEvent(event: GrowEvent) {
+export function useRegistrationsToEvent(eventId: number) {
     const supabaseClient = useSupabaseClient<Database>();
     const query = useQuery(
-        ['eventRegistrations', event.id],
-        async () => await getRegistrationsTo(supabaseClient, event.id)
+        ['eventRegistrations', eventId],
+        async () => await getRegistrationsTo(supabaseClient, eventId)
     );
     return { ...query, registrations: query.data };
 }
