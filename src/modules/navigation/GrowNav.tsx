@@ -85,19 +85,17 @@ export default function GrowNav() {
     } = useSideNav();
 
     return (
-        <>
-            <TopNavBar alpha={navAlpha}>
-                <MobileMenu
-                    items={navigationItems}
-                    profile={profile}
-                    isOpen={isSideNavOpen}
-                    onClose={onSideNavClose}
-                />
-                <MenuToggle onClick={onSideNavToggle} isOpen={isSideNavOpen} />
-                <GrowLogo flexGrow={1} />
-                <DesktopMenu items={navigationItems} profile={profile} />
-                <ProfileMenuWrapper profile={profile} />
-            </TopNavBar>
-        </>
+        <TopNavBar alpha={navAlpha}>
+            <MobileMenu
+                items={navigationItems}
+                profile={profile}
+                isOpen={isSideNavOpen}
+                onClose={onSideNavClose}
+            />
+            <MenuToggle onClick={onSideNavToggle} isOpen={isSideNavOpen} />
+            <GrowLogo flexGrow={1} />
+            <DesktopMenu items={navigationItems} profile={profile} />
+            <ProfileMenuWrapper profile={profile} />
+        </TopNavBar>
     );
 }

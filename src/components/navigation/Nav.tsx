@@ -66,7 +66,7 @@ const MenuToggle: React.FC<MenuToggleProps> = ({
     );
 };
 
-const ChakraBox = chakra(motion.div, {
+const ChakraBox = chakra(motion.header, {
     /**
      * Allow motion props and non-Chakra props to be forwarded.
      */
@@ -86,7 +86,7 @@ const TopNavBar: React.FC<PropsWithChildren & { alpha: number }> = ({
             top={0}
             right={0}
             width="100%"
-            zIndex={3}
+            zIndex={5}
             sx={{ backgroundColor: `rgba(0,0,0,${alpha})` }}
             initial={{ y: '-100%' }}
             animate={{ y: 0 }}
