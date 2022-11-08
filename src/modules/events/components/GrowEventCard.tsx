@@ -25,12 +25,10 @@ type GrowEventCardProps = {
     registration?: { present: boolean };
 };
 
-/**
- * Event element component for the grow connact page
- * @param event the event contain all important information of the event.
- * @param registered This parameter set the state for the registration
- * @returns HTML code that display one event with the date, title, description, location, type and if the event is mandatory.
- */
+function addMinutes(date: Date, minutes: number) {
+    return new Date(date.getTime() + minutes * 60000);
+}
+
 const GrowEventCard: React.FC<GrowEventCardProps> = ({
     event,
     registration,
@@ -41,16 +39,25 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
     const user = useUser();
     const { profile } = useProfile();
     const toast = useToast();
-    const { day, month, time, over } = useMemo(() => {
-        const day = String(event.date.getDate()).padStart(2, '0');
-        const month = event.date.toLocaleString('en-US', { month: 'short' });
-        const time = event.date.toLocaleString('en-US', {
+
+    const eventTimeFormatted = useMemo(() => {
+        const start = event.date.toLocaleString('DE-de', {
+            day: '2-digit',
+            month: '2-digit',
+            year: '2-digit',
             hour: '2-digit',
             minute: '2-digit',
         });
-        const over = new Date() > event.date;
-        return { day, month, time, over };
-    }, [event.date]);
+        if (event.duration <= 0) {
+            return start;
+        }
+        const endTime = addMinutes(event.date, event.duration).toLocaleString(
+            'DE-de',
+            { hour: '2-digit', minute: '2-digit' }
+        );
+        return start + ' - ' + endTime;
+    }, [event.date, event.duration]);
+    const over = useMemo(() => new Date() > event.date, [event.date]);
 
     async function register(present: boolean) {
         if (!user) return;
@@ -96,7 +103,7 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
         <Flex flexDir="column" color={over ? 'gray.500' : 'inherit'}>
             <Flex gap="2px" flexDir="column">
                 <Heading size="xs" color="primary">
-                    {month} {day}, {time}
+                    {eventTimeFormatted}
                 </Heading>
                 <Heading size="md">{event.title}</Heading>
             </Flex>
