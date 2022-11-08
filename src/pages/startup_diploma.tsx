@@ -136,8 +136,8 @@ const StartupDiplomaPage = () => {
                             <Text as="span" fontWeight="bold" mr={2}>
                                 Please note:
                             </Text>
-                            You also must register on this
-                            website during the registration process.
+                            You also must register on this website during the
+                            registration process.
                         </Text>
                         <Text>
                             <Text as="span" fontWeight="bold" mr={2}>

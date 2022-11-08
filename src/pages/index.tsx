@@ -31,7 +31,10 @@ export const getStaticProps = async () => {
             ...e,
             date: e.date.toISOString(),
         }));
-        return { props: { sponsors, faqs, events }, revalidate:  minutesToSeconds(30)};
+        return {
+            props: { sponsors, faqs, events },
+            revalidate: minutesToSeconds(30),
+        };
     } catch (error) {
         console.error(error);
         throw error;
