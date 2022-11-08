@@ -9,6 +9,7 @@ import {
     Button,
     FormControl,
     FormErrorMessage,
+    FormHelperText,
     FormLabel,
     HStack,
     Input,
@@ -163,22 +164,45 @@ export default function EventForm({
                                 {formik.errors.time}
                             </FormErrorMessage>
                         </FormControl>
-                        <FormControl isDisabled={isLoading}>
-                            <FormLabel htmlFor="location">Location</FormLabel>
+                        <FormControl
+                            isDisabled={isLoading}
+                            isInvalid={!!formik.errors.duration}
+                        >
+                            <FormLabel htmlFor="time">Duration</FormLabel>
                             <Input
-                                name="location"
-                                id="location"
+                                name="duration"
+                                id="duration"
                                 onChange={formik.handleChange}
-                                value={formik.values.location}
+                                value={formik.values.duration}
+                                placeholder="0"
                                 borderColor={
-                                    formik.values.location !==
-                                    initialFormValue.location
+                                    formik.values.duration !==
+                                    initialFormValue.duration
                                         ? 'green.200'
                                         : undefined
                                 }
                             />
+                            <FormErrorMessage>
+                                {formik.errors.time}
+                            </FormErrorMessage>
+                            <FormHelperText>in minutes</FormHelperText>
                         </FormControl>
                     </HStack>
+                    <FormControl isDisabled={isLoading}>
+                        <FormLabel htmlFor="location">Location</FormLabel>
+                        <Input
+                            name="location"
+                            id="location"
+                            onChange={formik.handleChange}
+                            value={formik.values.location}
+                            borderColor={
+                                formik.values.location !==
+                                initialFormValue.location
+                                    ? 'green.200'
+                                    : undefined
+                            }
+                        />
+                    </FormControl>
                     <HStack alignItems="end" gap={4}>
                         <FormControl mt={6}>
                             <FormLabel>How to participate</FormLabel>
