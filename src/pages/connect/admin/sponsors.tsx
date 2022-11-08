@@ -1,4 +1,6 @@
-import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
+import AdminBreadcrumbs, {
+    AdminBreadcrumbItem,
+} from '@/components/navigation/AdminBreadcrumbs';
 import {
     Button,
     Heading,
@@ -72,9 +74,11 @@ export default function SponsorAdmin() {
 
     return (
         <VStack alignItems="start">
-            <AdminBreadcrumbs
-                route={[['Sponsors', '/connect/admin/sponsors']]}
-            />
+            <AdminBreadcrumbs>
+                <AdminBreadcrumbItem href="/connect/admin/sponsors">
+                    Sponsors
+                </AdminBreadcrumbItem>
+            </AdminBreadcrumbs>
             <Heading size="md" as="h3">
                 Sponsors
             </Heading>
