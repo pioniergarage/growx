@@ -67,6 +67,9 @@ const ParticlesTest = () => {
                         size: {
                             value: { min: 0, max: 2 },
                         },
+                        opacity: {
+                            value: { min: 0, max: 1 },
+                        },
                     },
                     detectRetina: true,
                     fullScreen: {
