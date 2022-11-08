@@ -4,6 +4,8 @@
 
 html {
     scroll-behavior: smooth;
+    --primary: #997ed6;
+    --secondary: #ED64A6;
 }
 
 main {

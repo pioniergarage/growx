@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
+import { motion } from 'framer-motion';
 import Footer from 'modules/landing/Footer';
 import GrowNav from 'modules/navigation/GrowNav';
 import Head from 'next/head';
@@ -48,7 +49,7 @@ const MainWrapper: React.FC<PropsWithChildren> = ({ children }) => {
             as="main"
             maxW="container.xl"
             mx="auto"
-            py={24}
+            pt={24}
             position="relative"
         >
             <GradientBackground />
@@ -61,7 +62,16 @@ const MainWrapper: React.FC<PropsWithChildren> = ({ children }) => {
 
 const GradientBackground: React.FC = () => {
     return (
-        <Box position="absolute" h="10rem" top={0} w="100%" zIndex={-10}>
+        <Box
+            as={motion.div}
+            position="absolute"
+            h="10rem"
+            top={0}
+            w="100%"
+            zIndex={-10}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+        >
             <Box
                 maxW="container.xl"
                 transform="translate(0, -50%)"

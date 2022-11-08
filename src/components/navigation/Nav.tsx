@@ -3,9 +3,12 @@ import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import {
     BoxProps,
     ButtonProps,
+    chakra,
     Flex,
+    shouldForwardProp,
     useBreakpointValue,
 } from '@chakra-ui/react';
+import { isValidMotionProp, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -63,13 +66,21 @@ const MenuToggle: React.FC<MenuToggleProps> = ({
     );
 };
 
+const ChakraBox = chakra(motion.div, {
+    /**
+     * Allow motion props and non-Chakra props to be forwarded.
+     */
+    shouldForwardProp: (prop) =>
+        isValidMotionProp(prop) || shouldForwardProp(prop),
+});
+
 const TopNavBar: React.FC<PropsWithChildren & { alpha: number }> = ({
     children,
     alpha,
 }) => {
     return (
-        <Flex
-            as="header"
+        <ChakraBox
+            className="flex"
             justifyContent="center"
             position="fixed"
             top={0}
@@ -77,6 +88,11 @@ const TopNavBar: React.FC<PropsWithChildren & { alpha: number }> = ({
             width="100%"
             zIndex={3}
             sx={{ backgroundColor: `rgba(0,0,0,${alpha})` }}
+            initial={{ y: '-100%' }}
+            animate={{ y: 0 }}
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore no problem in operation, although type error appears.
+            transition={{ delay: 0.5, type: 'tween' }}
         >
             <Flex
                 as="nav"
@@ -93,7 +109,7 @@ const TopNavBar: React.FC<PropsWithChildren & { alpha: number }> = ({
             >
                 {children}
             </Flex>
-        </Flex>
+        </ChakraBox>
     );
 };
 

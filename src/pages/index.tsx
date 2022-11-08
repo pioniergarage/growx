@@ -1,5 +1,6 @@
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
+import { motion } from 'framer-motion';
 
 import { getEvents } from 'modules/events/api';
 import { GrowEvent } from 'modules/events/types';
@@ -55,8 +56,9 @@ const Home: React.FC<HomeProps> = ({
     const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
     return (
         <>
-            <Section divider position="relative">
+            <Section position="relative" minH="80vh">
                 <Box
+                    as={motion.div}
                     maxW="container.xl"
                     transform="translate(0, -50%)"
                     top={0}
@@ -64,7 +66,8 @@ const Home: React.FC<HomeProps> = ({
                     h={{ base: '40rem', md: '100%' }}
                     position="absolute"
                     zIndex={-10}
-                    opacity={0.6}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0.6 }}
                 >
                     <Box
                         position="absolute"
@@ -78,15 +81,19 @@ const Home: React.FC<HomeProps> = ({
                 <MainInfoBlock />
             </Section>
 
-            <Section my="4rem">
+            <Divider mb={20} />
+
+            <Section>
                 <GrowVideo />
             </Section>
+
+            <Divider my={20} />
 
             <Section>
                 <Timeline />
             </Section>
 
-            <Section divider mt="8rem">
+            <Section mt="8rem">
                 <MotivationBlock />
             </Section>
 
@@ -126,16 +133,11 @@ const Home: React.FC<HomeProps> = ({
     );
 };
 
-function Section({
-    children,
-    divider = false,
-    ...rest
-}: PropsWithChildren & { divider?: boolean } & BoxProps) {
+function Section({ children, ...rest }: PropsWithChildren & BoxProps) {
     return (
-        <Box as="section" my={8} {...rest}>
+        <Box as="section" {...rest}>
             <Box mx="auto" maxW="container.xl">
                 {children}
-                {divider && <Divider my={8} />}
             </Box>
         </Box>
     );

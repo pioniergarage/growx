@@ -14,31 +14,35 @@ const MotivationItem: React.FC<MotivationItemProps> = ({
     children,
 }) => {
     return (
-        <VStack gap={1} alignItems="flex-start">
-            <Flex
-                borderRadius={4}
-                bgColor="whiteAlpha.200"
-                width="2.5rem"
-                height="2.5rem"
-                justifyContent="center"
-                alignItems="center"
-            >
-                <Icon />
+        <VStack gap={2} alignItems="flex-start">
+            <Flex alignItems="center" gap={3}>
+                <Flex
+                    borderRadius={4}
+                    bg="transparent"
+                    width="2.5rem"
+                    height="2.5rem"
+                    justifyContent="center"
+                    alignItems="center"
+                    border="2px solid var(--secondary)"
+                    boxShadow="0px 0px 10px 2px var(--secondary), 0px 0px 6px 2px var(--secondary) inset"
+                >
+                    <Icon />
+                </Flex>
+                <Text as="h3" fontWeight="bold" fontSize="lg">
+                    {heading}
+                </Text>
             </Flex>
-            <Heading size="md" color="secondary">
-                {heading}
-            </Heading>
-            <Text>{children}</Text>
+            <Text variant="info">{children}</Text>
         </VStack>
     );
 };
 
 export default function MotivationBlock() {
     return (
-        <VStack alignItems="start">
+        <VStack alignItems="start" gap={4}>
             <Heading size="lg">Why GROW?</Heading>
             <SimpleGrid
-                columns={{ base: 1, md: 3 }}
+                columns={{ base: 1, lg: 3 }}
                 gap={8}
                 w="full"
                 alignItems="start"

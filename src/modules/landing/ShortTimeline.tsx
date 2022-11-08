@@ -18,7 +18,18 @@ const TimelineItem: React.FC<TimeLineItemProps> = ({
 }) => {
     return (
         <Box borderRadius={2} overflow="hidden">
-            <Box position="relative" height="320px">
+            <Box
+                position="relative"
+                height="320px"
+                sx={{
+                    '&:hover img': {
+                        transform: 'scale(1.05)',
+                    },
+                    img: {
+                        transition: 'all 0.2s',
+                    },
+                }}
+            >
                 <Image
                     alt={title}
                     src={`/images/${image}`}
@@ -65,7 +76,7 @@ export default function ShortTimeline() {
             objectPosition: '0 0',
         },
         {
-            date: '21. Jan 23', 
+            date: '21. Jan 23',
             title: 'Final',
             description: `Present your results to a huge crowd and show how far you have come. 
             Each participant will have learned a lot and gained a lot of experience by this point. 
@@ -74,7 +85,7 @@ export default function ShortTimeline() {
         },
     ];
     return (
-        <VStack alignItems={{ base: 'center', md: 'start' }} spacing={4}>
+        <VStack alignItems={{ base: 'center', md: 'start' }} spacing={8}>
             <Heading size="lg" textAlign="center">
                 From the ideation to the launch in 11 weeks
             </Heading>

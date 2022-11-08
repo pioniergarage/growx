@@ -55,7 +55,9 @@ const TimelineEvent: React.FC<TimelineEventProps> = ({ event }) => {
                 <CollapsableText text={event.description} color="gray.300" />
             </Hide>
             <Show above="md">
-                <Text color="gray.300">{event.description}</Text>
+                <Text variant="info" color={over ? 'gray.500' : undefined}>
+                    {event.description}
+                </Text>
             </Show>
         </Flex>
     );
