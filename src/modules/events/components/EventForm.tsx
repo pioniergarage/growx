@@ -25,12 +25,12 @@ import { useRef } from 'react';
 import { EventType, GrowEvent } from '../types';
 
 type EventFormProps = {
-    onSubmit: (value: Omit<GrowEvent, 'id'>) => void | Promise<unknown>;
+    onSubmit: (value: GrowEvent) => void;
     onChange: (value: Omit<GrowEvent, 'id'>) => void;
     onCancel: () => void;
-    initialValue: GrowEvent;
-    loading: boolean;
     onDelete: () => void;
+    initialValue: GrowEvent;
+    isLoading: boolean;
 };
 
 type EventFormType = Omit<GrowEvent, 'date'> & {
@@ -38,10 +38,10 @@ type EventFormType = Omit<GrowEvent, 'date'> & {
     time: string;
 };
 
-function formValueToGrowEvent(value: EventFormType): Omit<GrowEvent, 'id'> {
+function formValueToGrowEvent(value: EventFormType, id: number): GrowEvent {
     const { date: dateString, time, ...rest } = value;
     const date = new Date(`${dateString}T${time}`);
-    return { ...rest, date: new Date(date.getTime()) };
+    return { ...rest, date: new Date(date.getTime()), id };
 }
 
 /**
@@ -71,7 +71,7 @@ export default function EventForm({
     onSubmit,
     onChange,
     initialValue,
-    loading,
+    isLoading,
     onDelete,
     onCancel,
 }: EventFormProps) {
@@ -80,9 +80,11 @@ export default function EventForm({
         date: formatDate(initialValue.date),
         time: formatTime(initialValue.date),
     };
+
     const formik = useFormik<EventFormType>({
         initialValues: initialFormValue,
-        onSubmit: (formValue) => onSubmit(formValueToGrowEvent(formValue)),
+        onSubmit: (formValue) =>
+            onSubmit(formValueToGrowEvent(formValue, initialValue.id)),
         validate: (values) => {
             const errors: Record<string, string> = {};
             if (!values.date.match(/^\d{4}-\d\d-\d\d$/))
@@ -90,7 +92,7 @@ export default function EventForm({
             if (!values.time.match(/^\d\d:\d\d$/))
                 errors.time = 'Wrong format: Use HH:mm';
             if (Object.entries(errors).length === 0) {
-                onChange(formValueToGrowEvent(values));
+                onChange(formValueToGrowEvent(values, initialValue.id));
             }
             return errors;
         },
@@ -104,7 +106,7 @@ export default function EventForm({
             <form onSubmit={formik.handleSubmit}>
                 <VStack alignItems="stretch">
                     <HStack alignItems="start">
-                        <FormControl isDisabled={loading}>
+                        <FormControl isDisabled={isLoading}>
                             <FormLabel htmlFor="title">Title</FormLabel>
                             <Input
                                 name="title"
@@ -120,7 +122,7 @@ export default function EventForm({
                             />
                         </FormControl>
                         <FormControl
-                            isDisabled={loading}
+                            isDisabled={isLoading}
                             isInvalid={!!formik.errors.date}
                         >
                             <FormLabel htmlFor="date">Date</FormLabel>
@@ -141,7 +143,7 @@ export default function EventForm({
                             </FormErrorMessage>
                         </FormControl>
                         <FormControl
-                            isDisabled={loading}
+                            isDisabled={isLoading}
                             isInvalid={!!formik.errors.time}
                         >
                             <FormLabel htmlFor="time">Time</FormLabel>
@@ -161,7 +163,7 @@ export default function EventForm({
                                 {formik.errors.time}
                             </FormErrorMessage>
                         </FormControl>
-                        <FormControl isDisabled={loading}>
+                        <FormControl isDisabled={isLoading}>
                             <FormLabel htmlFor="location">Location</FormLabel>
                             <Input
                                 name="location"
@@ -197,7 +199,7 @@ export default function EventForm({
                             </Select>
                         </FormControl>
 
-                        <FormControl isDisabled={loading}>
+                        <FormControl isDisabled={isLoading}>
                             <Switch
                                 id="mandatory"
                                 isChecked={formik.values.mandatory}
@@ -206,7 +208,7 @@ export default function EventForm({
                                 Mandatory
                             </Switch>
                         </FormControl>
-                        <FormControl isDisabled={loading}>
+                        <FormControl isDisabled={isLoading}>
                             <Switch
                                 id="sq_mandatory"
                                 isChecked={formik.values.sq_mandatory}
@@ -216,7 +218,7 @@ export default function EventForm({
                             </Switch>
                         </FormControl>
                     </HStack>
-                    <FormControl isDisabled={loading}>
+                    <FormControl isDisabled={isLoading}>
                         <FormLabel htmlFor="description">Description</FormLabel>
                         <Textarea
                             name="description"
@@ -237,13 +239,13 @@ export default function EventForm({
                     <HStack>
                         <Button
                             color="secondary"
-                            isLoading={loading}
+                            isLoading={isLoading}
                             type="submit"
                         >
                             Save
                         </Button>
                         <Button
-                            isDisabled={loading}
+                            isDisabled={isLoading}
                             onClick={() => {
                                 formik.setValues(initialFormValue);
                                 onCancel();
@@ -252,7 +254,7 @@ export default function EventForm({
                             Cancel
                         </Button>
                         <Box flexGrow={1} />
-                        <Button isLoading={loading} onClick={openDialog}>
+                        <Button isLoading={isLoading} onClick={openDialog}>
                             Delete
                         </Button>
                         <AlertDialog

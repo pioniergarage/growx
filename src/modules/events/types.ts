@@ -13,4 +13,5 @@ export type GrowEvent = {
     location: string;
     sq_mandatory?: boolean;
     type?: EventType;
+    duration: number;
 };

@@ -1,8 +1,23 @@
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
+import { PropsWithChildren } from 'react';
 import PageLink from './PageLink';
 
-const AdminBreadcrumbs = ({ route }: { route: string[][] }) => {
+export const AdminBreadcrumbItem: React.FC<
+    {
+        href: string;
+    } & PropsWithChildren
+> = ({ href, children }) => {
+    return (
+        <BreadcrumbItem>
+            <BreadcrumbLink href={href} as={PageLink}>
+                {children}
+            </BreadcrumbLink>
+        </BreadcrumbItem>
+    );
+};
+
+const AdminBreadcrumbs: React.FC<PropsWithChildren> = ({ children }) => {
     return (
         <Breadcrumb
             color="gray.500"
@@ -13,13 +28,7 @@ const AdminBreadcrumbs = ({ route }: { route: string[][] }) => {
                     Admin
                 </BreadcrumbLink>
             </BreadcrumbItem>
-            {route.map((item) => (
-                <BreadcrumbItem key={`breadcrum-${item[0]}`}>
-                    <BreadcrumbLink href={item[1]} as={PageLink}>
-                        {item[0]}
-                    </BreadcrumbLink>
-                </BreadcrumbItem>
-            ))}
+            {children}
         </Breadcrumb>
     );
 };
