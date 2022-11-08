@@ -32,6 +32,7 @@ const emptyEvent = {
     mandatory: undefined,
     location: '',
     date: new Date(),
+    duration: 0,
 };
 
 const CreateEventModal: React.FC<EventModalProps> = ({
