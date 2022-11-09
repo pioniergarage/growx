@@ -34,13 +34,12 @@ const StartupDiplomaPage = () => {
                 <Box>
                     <Heading size="sm">For KIT-Students only</Heading>
                     <Text>
-                        Together with HoC and EnTechnon, we can offer you this
-                        year&apos;s&nbsp;
+                        Together with HoC and EnTechnon, we can offer you&nbsp;
                         <Text as="span" color="secondary" fontWeight="bold">
                             2 ECTS
                         </Text>
                         &nbsp; as an interdisciplinary qualification for your
-                        participation in GROW!
+                        participation in GROW this year!
                     </Text>
                 </Box>
 
