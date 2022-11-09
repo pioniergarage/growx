@@ -1,6 +1,5 @@
 import { Box, BoxProps, Divider, Show } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
-import { motion } from 'framer-motion';
 
 import { getEvents } from 'modules/events/api';
 import { GrowEvent } from 'modules/events/types';
@@ -16,71 +15,11 @@ import LongTimeline from 'modules/landing/Timeline';
 import WaitingForBlock from 'modules/landing/WaitingForBlock';
 import { getSponsors } from 'modules/sponsor/api';
 import { Sponsor } from 'modules/sponsor/types';
-import { PropsWithChildren, useCallback } from 'react';
-import Particles from 'react-tsparticles';
-import { loadFull } from 'tsparticles';
-import type { Engine } from 'tsparticles-engine';
-
-const ParticlesTest = () => {
-    const particlesInit = useCallback(async (engine: Engine) => {
-        // you can initialize the tsParticles instance (engine) here, adding custom shapes or presets
-        // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-        // starting from v2 you can add only the features you need reducing the bundle size
-        await loadFull(engine);
-    }, []);
-
-    return (
-        <Box
-            position="absolute"
-            top={0}
-            right={0}
-            left={0}
-            sx={{
-                '*': {
-                    height: 'max(50vh, 30rem)',
-                },
-            }}
-        >
-            <Particles
-                id="tsparticles"
-                init={particlesInit}
-                options={{
-                    pauseOnOutsideViewport: true,
-                    fpsLimit: 120,
-                    particles: {
-                        color: {
-                            value: '#ffffff',
-                        },
-                        move: {
-                            direction: 'none',
-                            enable: true,
-                            random: true,
-                            speed: 1,
-                            straight: false,
-                        },
-                        number: {
-                            value: 40,
-                        },
-                        shape: {
-                            type: 'circle',
-                        },
-                        size: {
-                            value: { min: 0, max: 2 },
-                        },
-                        opacity: {
-                            value: { min: 0, max: 1 },
-                        },
-                    },
-                    detectRetina: true,
-                    fullScreen: {
-                        enable: false,
-                        zIndex: -1,
-                    },
-                }}
-            />
-        </Box>
-    );
-};
+import dynamic from 'next/dynamic';
+import { PropsWithChildren } from 'react';
+const ParticleBackground = dynamic(
+    () => import('@/components/ParticleBackground')
+);
 
 const minutesToSeconds = (minutes: number) => minutes * 60;
 
@@ -121,11 +60,10 @@ const Home: React.FC<HomeProps> = ({
     return (
         <>
             <Show above="lg">
-                <ParticlesTest />
+                <ParticleBackground />
             </Show>
             <Section position="relative" minH="80vh">
                 <Box
-                    as={motion.div}
                     maxW="container.xl"
                     transform="translate(0, -50%)"
                     top={0}
@@ -133,8 +71,6 @@ const Home: React.FC<HomeProps> = ({
                     h={{ base: '40rem', md: '100%' }}
                     position="absolute"
                     zIndex={-10}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 0.6 }}
                 >
                     <Box
                         position="absolute"
