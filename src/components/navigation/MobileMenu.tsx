@@ -31,8 +31,10 @@ const MobileMenu: React.FC<{
             flexDir="column"
             bg="blackAlpha.900"
             position="fixed"
-            top="3.5rem"
+            top="0"
             bottom="0"
+            h="100vh"
+            mt="3.5rem"
             left="0"
             w="100%"
             zIndex={2000}

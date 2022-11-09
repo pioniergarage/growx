@@ -1,6 +1,5 @@
-import { Box, BoxProps, Divider } from '@chakra-ui/react';
+import { Box, BoxProps, Divider, Show } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
-import { motion } from 'framer-motion';
 
 import { getEvents } from 'modules/events/api';
 import { GrowEvent } from 'modules/events/types';
@@ -16,7 +15,11 @@ import LongTimeline from 'modules/landing/Timeline';
 import WaitingForBlock from 'modules/landing/WaitingForBlock';
 import { getSponsors } from 'modules/sponsor/api';
 import { Sponsor } from 'modules/sponsor/types';
+import dynamic from 'next/dynamic';
 import { PropsWithChildren } from 'react';
+const ParticleBackground = dynamic(
+    () => import('@/components/ParticleBackground')
+);
 
 const minutesToSeconds = (minutes: number) => minutes * 60;
 
@@ -56,9 +59,11 @@ const Home: React.FC<HomeProps> = ({
     const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
     return (
         <>
+            <Show above="lg">
+                <ParticleBackground />
+            </Show>
             <Section position="relative" minH="80vh">
                 <Box
-                    as={motion.div}
                     maxW="container.xl"
                     transform="translate(0, -50%)"
                     top={0}
@@ -66,8 +71,6 @@ const Home: React.FC<HomeProps> = ({
                     h={{ base: '40rem', md: '100%' }}
                     position="absolute"
                     zIndex={-10}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 0.6 }}
                 >
                     <Box
                         position="absolute"
