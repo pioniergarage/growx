@@ -161,8 +161,14 @@ export default SignUp;
 
 export const getServerSideProps = withPageAuth({
     authRequired: false,
-    getServerSideProps: async (context, supabase) => {
-        const { data, error } = await supabase.auth.getSession();
+    getServerSideProps: async () => {
+        return {
+            redirect: {
+                permanent: true,
+                destination: '/',
+            },
+        };
+        /* const { data, error } = await supabase.auth.getSession();
         if (error) {
             throw error;
         }
@@ -176,6 +182,6 @@ export const getServerSideProps = withPageAuth({
             };
         } else {
             return { props: {} };
-        }
+        } */
     },
 });

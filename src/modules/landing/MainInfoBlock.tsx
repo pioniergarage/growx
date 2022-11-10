@@ -7,11 +7,7 @@ import {
     Text,
     VStack,
 } from '@chakra-ui/react';
-import dynamic from 'next/dynamic';
 import AnimatedLogo from './AnimatedLogo';
-import ParticipateButton from './ParticipateButton';
-
-const Countdown = dynamic(import('./Countdown'), { ssr: false });
 
 function Fact({ amount, title }: { amount: string; title: string }) {
     return (
@@ -42,7 +38,6 @@ export default function MainInfoBlock() {
                     rowSpan={2}
                 >
                     <AnimatedLogo boxSize={250} />
-                    <Countdown />
                 </GridItem>
             </Show>
             <GridItem className="md:order-1">
@@ -65,8 +60,6 @@ export default function MainInfoBlock() {
                             your market.
                         </Text>
                     </Box>
-
-                    <ParticipateButton />
                 </VStack>
             </GridItem>
             <GridItem

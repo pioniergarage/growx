@@ -5,7 +5,6 @@ import {
     MenuButton,
     MenuItem,
     MenuList,
-    Show,
 } from '@chakra-ui/react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import UserAvatar from 'modules/avatar/components/UserAvatar';
@@ -70,14 +69,6 @@ const ProfileMenuWrapper: React.FC<{ profile?: Profile }> = ({ profile }) => {
     } else {
         return (
             <>
-                <Show above="md">
-                    <Link href="/connect/signup">
-                        <a>
-                            <Button>Participate</Button>
-                        </a>
-                    </Link>
-                </Show>
-
                 <Link href="/connect/login">
                     <a>
                         <Button>Sign in</Button>

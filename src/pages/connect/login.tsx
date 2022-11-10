@@ -55,13 +55,6 @@ const LoginPage: NextPageWithLayout = () => {
                 <PageLink
                     color="primary"
                     textAlign="center"
-                    href="/connect/signup"
-                >
-                    Don&apos;t have an account yet? Click here to sign up.
-                </PageLink>
-                <PageLink
-                    color="primary"
-                    textAlign="center"
                     href="/connect/forgotpassword"
                 >
                     Forgot your password?
