@@ -4,7 +4,7 @@ import {
     ResponsiveValue,
     Skeleton,
 } from '@chakra-ui/react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaUsers } from 'react-icons/fa';
 
 interface TeamLogoProps {
@@ -20,7 +20,6 @@ const TeamLogo: React.FC<TeamLogoProps> = ({
     size = 24,
     loading = false,
 }) => {
-    const hash = useMemo(() => Date.now().toString() + loading, [loading]);
     const [imageLoaded, setImageLoaded] = useState(false);
     useEffect(() => {
         if (imageLoaded && loading) {
@@ -36,12 +35,13 @@ const TeamLogo: React.FC<TeamLogoProps> = ({
             >
                 {logo ? (
                     <NuxtImage
-                        src={logo + '?' + hash}
+                        src={logo}
                         alt={name}
                         w={size}
                         h={size}
                         objectFit="cover"
                         onLoad={() => setImageLoaded(true)}
+                        onLoadStart={() => setImageLoaded(false)}
                     />
                 ) : (
                     <Center w={size} h={size} bgColor="whiteAlpha.200">

@@ -15,13 +15,13 @@ import {
     requestToJoinTeam,
     updateTeam,
     uploadTeamLogo,
-    withdrawRequest
+    withdrawRequest,
 } from 'modules/teams/api';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Team } from './types';
 
 export function useTeamIdOfUser(userId?: string) {
-    const supabaseClient = useSupabaseClient<Database>()
+    const supabaseClient = useSupabaseClient<Database>();
     const result = useQuery(
         'currentTeamId',
         async () => {
@@ -39,20 +39,24 @@ export function useTeamIdOfUser(userId?: string) {
 }
 
 export function useAllTeams(initialData?: Team[]) {
-    const supabaseClient = useSupabaseClient<Database>()
+    const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
-    const query = useQuery<Team[], string>('teams', () => getTeams(supabaseClient,), {
-        initialData: initialData,
-        onSuccess: (teams) =>
-            teams.forEach((team) => {
-                queryClient.setQueryData(['team', team.id], team);
-            }),
-    });
+    const query = useQuery<Team[], string>(
+        'teams',
+        () => getTeams(supabaseClient),
+        {
+            initialData: initialData,
+            onSuccess: (teams) =>
+                teams.forEach((team) => {
+                    queryClient.setQueryData(['team', team.id], team);
+                }),
+        }
+    );
     return { ...query, teams: query.data };
 }
 
 export function useTeam(teamId?: number | null, initialData?: Team) {
-    const supabaseClient = useSupabaseClient<Database>()
+    const supabaseClient = useSupabaseClient<Database>();
     const query = useQuery(
         ['team', teamId],
         () => {
@@ -67,13 +71,15 @@ export function useTeam(teamId?: number | null, initialData?: Team) {
 }
 
 export function useTeamMembers(teamId: number) {
-    const supabaseClient = useSupabaseClient<Database>()
-    const query = useQuery(['members', teamId], () => getTeamMembers(supabaseClient, teamId));
+    const supabaseClient = useSupabaseClient<Database>();
+    const query = useQuery(['members', teamId], () =>
+        getTeamMembers(supabaseClient, teamId)
+    );
     return { ...query, members: query.data };
 }
 
 export function useTeamRequests(teamId: number) {
-    const supabaseClient = useSupabaseClient<Database>()
+    const supabaseClient = useSupabaseClient<Database>();
     const query = useQuery(
         ['teamRequests', teamId],
         () => getRequestsToTeam(supabaseClient, teamId),
@@ -83,7 +89,7 @@ export function useTeamRequests(teamId: number) {
 }
 
 export function useCurrentRequest(userId?: string) {
-    const supabaseClient = useSupabaseClient<Database>()
+    const supabaseClient = useSupabaseClient<Database>();
     const query = useQuery(
         'currentTeamRequest',
         () => {
@@ -98,10 +104,11 @@ export function useCurrentRequest(userId?: string) {
 }
 
 export function useAcceptRequest() {
-    const supabaseClient = useSupabaseClient<Database>()
+    const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        (joiningUserId: string) => acceptRequestToJoinTeam(supabaseClient, joiningUserId),
+        (joiningUserId: string) =>
+            acceptRequestToJoinTeam(supabaseClient, joiningUserId),
         {
             onSuccess: () => {
                 queryClient.invalidateQueries('members');
@@ -113,10 +120,11 @@ export function useAcceptRequest() {
 }
 
 export function useDeclineRequest() {
-    const supabaseClient = useSupabaseClient<Database>()
+    const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        (joiningUserId: string) => declineRequestToJoinTeam(supabaseClient, joiningUserId),
+        (joiningUserId: string) =>
+            declineRequestToJoinTeam(supabaseClient, joiningUserId),
         {
             onSuccess: () => {
                 queryClient.invalidateQueries('teamRequests');
@@ -127,14 +135,15 @@ export function useDeclineRequest() {
 }
 
 export function useUploadTeamLogo() {
-    const supabaseClient = useSupabaseClient<Database>()
+    const supabaseClient = useSupabaseClient<Database>();
     const { updateTeam } = useUpdateTeam();
     const mutation = useMutation(
         ({ team, file }: { team: Team; file: File }) =>
             uploadTeamLogo(supabaseClient, team, file),
         {
             onSuccess: (publicUrl, { team }) => {
-                updateTeam({ ...team, logo: publicUrl });
+                const timestamp = Date.now();
+                updateTeam({ ...team, logo: publicUrl + '?r=' + timestamp });
             },
         }
     );
@@ -142,7 +151,7 @@ export function useUploadTeamLogo() {
 }
 
 export function useRemoveTeamLogo() {
-    const supabaseClient = useSupabaseClient<Database>()
+    const supabaseClient = useSupabaseClient<Database>();
     const { updateTeam } = useUpdateTeam();
     const mutation = useMutation(
         ({ team }: { team: Team }) => removeTeamLogo(supabaseClient, team),
@@ -156,7 +165,7 @@ export function useRemoveTeamLogo() {
 }
 
 export function useRequestToJoinTeam() {
-    const supabaseClient = useSupabaseClient<Database>()
+    const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
     const mutation = useMutation(
         ({ userId, teamId }: { userId: string; teamId: number }) =>
@@ -172,10 +181,11 @@ export function useRequestToJoinTeam() {
 }
 
 export function useWithdrawRequest() {
-    const supabaseClient = useSupabaseClient<Database>()
+    const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        ({ userId }: { userId: string }) => withdrawRequest(supabaseClient, userId),
+        ({ userId }: { userId: string }) =>
+            withdrawRequest(supabaseClient, userId),
         {
             onSuccess: () => {
                 queryClient.invalidateQueries(['teamRequests', undefined]);
@@ -187,35 +197,44 @@ export function useWithdrawRequest() {
 }
 
 export function useCreateTeam() {
-    const supabaseClient = useSupabaseClient<Database>()
+    const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
-    const mutation = useMutation((team: Partial<Team>) => createTeam(supabaseClient, team), {
-        onSuccess: (created) => {
-            queryClient.setQueryData(['team', created.id], created);
-        },
-    });
+    const mutation = useMutation(
+        (team: Partial<Team>) => createTeam(supabaseClient, team),
+        {
+            onSuccess: (created) => {
+                queryClient.setQueryData(['team', created.id], created);
+            },
+        }
+    );
     return { ...mutation, createTeam: mutation.mutateAsync };
 }
 
 export function useUpdateTeam() {
-    const supabaseClient = useSupabaseClient<Database>()
+    const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
-    const mutation = useMutation((team: Partial<Team>) => updateTeam(supabaseClient, team), {
-        onSuccess: (created) => {
-            queryClient.setQueryData(['team', created.id], created);
-        },
-    });
+    const mutation = useMutation(
+        (team: Partial<Team>) => updateTeam(supabaseClient, team),
+        {
+            onSuccess: (created) => {
+                queryClient.setQueryData(['team', created.id], created);
+            },
+        }
+    );
     return { ...mutation, updateTeam: mutation.mutateAsync };
 }
 
 export function useLeaveTeam() {
-    const supabaseClient = useSupabaseClient<Database>()
+    const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
-    const mutation = useMutation((userId: string) => leaveTeam(supabaseClient, userId), {
-        onSuccess: () => {
-            queryClient.invalidateQueries(['members']);
-            queryClient.invalidateQueries('currentTeamId');
-        },
-    });
+    const mutation = useMutation(
+        (userId: string) => leaveTeam(supabaseClient, userId),
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries(['members']);
+                queryClient.invalidateQueries('currentTeamId');
+            },
+        }
+    );
     return { ...mutation, leaveTeam: mutation.mutateAsync };
 }

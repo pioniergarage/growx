@@ -31,7 +31,7 @@ export const deleteSponsor = async (supabaseClient: SupabaseClient<Database>, id
 export const uploadLogo = async (supabaseClient: SupabaseClient<Database>, name: string, image: Blob) => {
     await supabaseClient.storage
         .from('sponsors')
-        .upload(name, image, { upsert: true })
+        .upload(name, image, { upsert: true, cacheControl: '604800' })
         .then(({ error, data }) => {
             if (error || !data) {
                 throw new Error(error?.message || 'Something went wrong');

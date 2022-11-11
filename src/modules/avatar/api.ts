@@ -3,7 +3,10 @@ import { Database } from 'database/DatabaseDefition';
 import { Profile } from 'modules/profile/types';
 import resizeImage from 'utils/resize';
 
-export const fetchUserAvatar = (supabaseClient: SupabaseClient<Database>, avatar: string) =>
+export const fetchUserAvatar = (
+    supabaseClient: SupabaseClient<Database>,
+    avatar: string
+) =>
     supabaseClient.storage
         .from('avatars')
         .download(avatar)
@@ -14,13 +17,22 @@ export const fetchUserAvatar = (supabaseClient: SupabaseClient<Database>, avatar
             return data;
         });
 
-export const uploadUserAvatar = async (supabaseClient: SupabaseClient<Database>, profile: Profile, avatar: File) => {
-    const fileName = `${profile.userId}.jpg`;
+export const uploadUserAvatar = async (
+    supabaseClient: SupabaseClient<Database>,
+    profile: Profile,
+    avatar: File
+) => {
+    if (profile.avatar) {
+        supabaseClient.storage.from('avatars').remove([profile.avatar]);
+    }
+
+    const timestamp = Date.now();
+    const fileName = `${profile.userId}-${timestamp}.jpg`;
     const filePath = `${fileName}`;
     const resizedImage = await resizeImage(avatar, 200, 200);
     return supabaseClient.storage
         .from('avatars')
-        .upload(filePath, resizedImage, { upsert: true })
+        .upload(filePath, resizedImage, { upsert: true, cacheControl: '604800' })
         .then(({ error, data }) => {
             if (error || !data) {
                 throw new Error(error?.message || 'Something went wrong');
