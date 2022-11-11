@@ -7,7 +7,7 @@ import { EventType, GrowEvent } from './types';
 export const mapEventDto: (
     dto: Database['public']['Tables']['events']['Row']
 ) => GrowEvent = (dto) => ({
-    date: new Date(dto.date + "Z"),
+    date: new Date(dto.date + 'Z'),
     id: dto.id,
     title: dto.title,
     description: dto.description,
@@ -15,28 +15,36 @@ export const mapEventDto: (
     location: dto.location,
     sq_mandatory: dto.sq_mandatory,
     type: dto.type as EventType,
-    duration: dto.duration
+    duration: dto.duration,
 });
 
 export const getEvents = (supabaseClient: SupabaseClient<Database>) =>
     supabaseClient
-        .from('events')
+        .from('event_with_reg')
         .select('*')
         .order('date')
         .then(handleResponse)
-        .then((dtos) => dtos.map(mapEventDto));
+        .then((dtos) =>
+            dtos.map((e) => ({
+                ...mapEventDto(e),
+                signupsPresent: (e.signups_present as number) || 0,
+            }))
+        );
 
 export const getEvent = (
     supabaseClient: SupabaseClient<Database>,
     eventId: number
 ) =>
     supabaseClient
-        .from('events')
+        .from('event_with_reg')
         .select('*')
         .match({ id: eventId })
         .single()
         .then(handleSingleResponse)
-        .then(mapEventDto);
+        .then((e) => ({
+            ...mapEventDto(e),
+            signupsPresent: (e.signups_present as number) || 0,
+        }));
 
 export const insertEvent = (
     supabaseClient: SupabaseClient<Database>,
@@ -81,7 +89,7 @@ export const updateEvent = (
             location: growEvent.location,
             sq_mandatory: growEvent.sq_mandatory,
             type: growEvent.type,
-            duration: growEvent.duration
+            duration: growEvent.duration,
         })
         .match({ id: growEvent.id })
         .select()

@@ -100,7 +100,7 @@ export function useGrowEvents() {
                 ),
         }
     );
-    return { events: data, ...rest };
+    return { events: data ?? [], ...rest };
 }
 
 export function useUpdateEvent() {
