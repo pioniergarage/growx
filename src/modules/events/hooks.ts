@@ -6,6 +6,7 @@ import {
     deleteEvent,
     getEvent,
     getEvents,
+    getEventWithSeats,
     getRegistrationsOfUser,
     getRegistrationsTo,
     insertEvent,
@@ -86,6 +87,16 @@ export function useGrowEvent(id: number) {
     );
     return { event: data, ...rest };
 }
+
+export function useGrowEventWithSeats(id: number) {
+    const supabaseClient = useSupabaseClient<Database>();
+    const { data, ...rest } = useQuery(
+        ['eventWithSeats', id],
+        async () => await getEventWithSeats(supabaseClient, id)
+    );
+    return { event: data, ...rest };
+}
+
 
 export function useGrowEvents() {
     const supabaseClient = useSupabaseClient<Database>();

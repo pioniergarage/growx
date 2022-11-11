@@ -10,7 +10,7 @@ import {
     FaMapMarkerAlt,
     FaTicketAlt,
 } from 'react-icons/fa';
-import { GrowEvent } from '../types';
+import { GrowEventWithSeats } from '../types';
 import { formatEventTime } from '../utils';
 
 const InfoRow: React.FC<
@@ -33,7 +33,7 @@ const InfoRow: React.FC<
 };
 
 type EventInformationCardProps = {
-    event: GrowEvent;
+    event: GrowEventWithSeats;
 };
 
 const EventInformationCard: React.FC<EventInformationCardProps> = ({
@@ -61,7 +61,7 @@ const EventInformationCard: React.FC<EventInformationCardProps> = ({
                 ∞
             </InfoRow>
             <InfoRow label="Presence seats left" icon={FaTicketAlt}>
-                23
+                {Math.max(event.presenceSeatsLeft, 0)}
             </InfoRow>
             {event.mandatory && (
                 <InfoRow

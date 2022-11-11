@@ -14,11 +14,11 @@ import {
     useRegistrationsOfUser,
     useUnregisterUserFromEvent,
 } from '../hooks';
-import { GrowEvent } from '../types';
+import { GrowEventWithSeats } from '../types';
 import SignUpDialog from './SignUpDialog';
 
 type EventRegistrationProps = {
-    event: GrowEvent;
+    event: GrowEventWithSeats;
 };
 
 const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
@@ -110,6 +110,14 @@ const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
                 </Alert>
             )}
             <SignUpDialog
+                isOfflineEnabled={
+                    (event.type === 'Hybrid' || event.type === 'Offline') &&
+                    event.presenceSeatsLeft > 0
+                }
+                isOnlineEnabled={
+                    event.type === 'Hybrid' || event.type === 'Online'
+                }
+                location={event.location}
                 isOpen={isOpen}
                 onSubmit={(e) => {
                     onClose();

@@ -13,14 +13,20 @@ import { Database } from 'database/DatabaseDefition';
 import { mapEventDto } from 'modules/events/api';
 import EventInformationCard from 'modules/events/components/EventInformationCard';
 import EventRegistration from 'modules/events/components/EventRegistration';
+import { GrowEventWithSeats } from 'modules/events/types';
 import Link from 'next/link';
 
 const GrowEvent = ({
     eventRaw,
 }: {
-    eventRaw: Database['public']['Tables']['events']['Row'];
+    eventRaw: Database['public']['Tables']['events']['Row'] & {
+        seats_left: number;
+    };
 }) => {
-    const event = mapEventDto(eventRaw);
+    const event: GrowEventWithSeats = {
+        ...mapEventDto(eventRaw),
+        presenceSeatsLeft: eventRaw.seats_left,
+    };
     return (
         <VStack alignItems="stretch" gap={2}>
             <Breadcrumb
@@ -54,7 +60,7 @@ const GrowEvent = ({
                 <Text variant="info" fontSize="sm">
                     {eventRaw.description}
                 </Text>
-                <Flex flexDir="column" gap={2} minW={{ md: '25rem' }}>
+                <Flex flexDir="column" gap={4} minW={{ md: '25rem' }}>
                     <EventInformationCard event={event} />
                     <EventRegistration event={event} />
                 </Flex>
@@ -66,7 +72,7 @@ export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
     getServerSideProps: async (context, supabase) => {
         const { data: eventRaw, error } = await supabase
-            .from('events')
+            .from('event_with_seats')
             .select('*')
             .match({ id: context.query.eventId })
             .single();

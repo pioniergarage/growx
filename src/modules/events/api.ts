@@ -20,30 +20,37 @@ export const mapEventDto: (
 
 export const getEvents = (supabaseClient: SupabaseClient<Database>) =>
     supabaseClient
-        .from('event_with_reg')
+        .from('events')
         .select('*')
         .order('date')
         .then(handleResponse)
-        .then((dtos) =>
-            dtos.map((e) => ({
-                ...mapEventDto(e),
-                signupsPresent: (e.signups_present as number) || 0,
-            }))
-        );
+        .then((dtos) => dtos.map(mapEventDto));
 
 export const getEvent = (
     supabaseClient: SupabaseClient<Database>,
     eventId: number
 ) =>
     supabaseClient
-        .from('event_with_reg')
+        .from('events')
         .select('*')
         .match({ id: eventId })
         .single()
         .then(handleSingleResponse)
-        .then((e) => ({
-            ...mapEventDto(e),
-            signupsPresent: (e.signups_present as number) || 0,
+        .then(mapEventDto);
+
+export const getEventWithSeats = (
+    supabaseClient: SupabaseClient<Database>,
+    eventId: number
+) =>
+    supabaseClient
+        .from('event_with_seats')
+        .select('*')
+        .match({ id: eventId })
+        .single()
+        .then(handleSingleResponse)
+        .then((dto) => ({
+            ...mapEventDto(dto),
+            presenceSeatsLeft: dto.seats_left as number,
         }));
 
 export const insertEvent = (

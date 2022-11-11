@@ -15,3 +15,7 @@ export type GrowEvent = {
     type?: EventType;
     duration: number;
 };
+
+export type GrowEventWithSeats = GrowEvent & {
+    presenceSeatsLeft: number;
+};
