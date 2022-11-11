@@ -1,3 +1,4 @@
+import Card from '@/components/Card';
 import {
     Box,
     Flex,
@@ -18,12 +19,11 @@ const TeamLogo = dynamic(() => import('./TeamLogo'), {
 export default function TeamCard(team: Team) {
     return (
         <LinkBox>
-            <HStack
-                bg="whiteAlpha.50"
+            <Card
+                as={HStack}
                 _hover={{ filter: 'brightness(110%)', bg: 'whiteAlpha.100' }}
                 _active={{ filter: 'brightness(110%)', bg: 'whiteAlpha.200' }}
                 overflow="hidden"
-                borderRadius={8}
                 h={20}
                 alignItems="stretch"
             >
@@ -44,7 +44,7 @@ export default function TeamCard(team: Team) {
                         {team.tags.join(' • ')}
                     </Box>
                 </Flex>
-            </HStack>
+            </Card>
         </LinkBox>
     );
 }

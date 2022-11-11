@@ -1,9 +1,18 @@
+import Card from '@/components/Card';
+import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import {
     Alert,
     AlertIcon,
+    Box,
     Button,
+    Collapse,
     Flex,
+    Grid,
+    GridItem,
     Heading,
+    Hide,
+    IconButton,
+    Show,
     Text,
     useDisclosure,
     useToast,
@@ -20,19 +29,17 @@ import { EventType, GrowEvent } from '../types';
 import EventTagList from './EventTagList';
 import SignUpDialog from './SignUpDialog';
 
-type GrowEventCardProps = {
+export type GrowEventCardProps = {
     event: GrowEvent;
     registration?: { present: boolean };
 };
-
-function addMinutes(date: Date, minutes: number) {
-    return new Date(date.getTime() + minutes * 60000);
-}
 
 const GrowEventCard: React.FC<GrowEventCardProps> = ({
     event,
     registration,
 }) => {
+    const { isOpen: isExpanded, onToggle: toggleExpanded } = useDisclosure();
+
     const { registerUser, isLoading: isRegistering } = useRegisterUserToEvent();
     const { unregisterUser, isLoading: isUnregistering } =
         useUnregisterUserFromEvent();
@@ -40,23 +47,6 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
     const { profile } = useProfile();
     const toast = useToast();
 
-    const eventTimeFormatted = useMemo(() => {
-        const start = event.date.toLocaleString('DE-de', {
-            day: '2-digit',
-            month: '2-digit',
-            year: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-        });
-        if (event.duration <= 0) {
-            return start;
-        }
-        const endTime = addMinutes(event.date, event.duration).toLocaleString(
-            'DE-de',
-            { hour: '2-digit', minute: '2-digit' }
-        );
-        return start + ' - ' + endTime;
-    }, [event.date, event.duration]);
     const over = useMemo(() => new Date() > event.date, [event.date]);
 
     async function register(present: boolean) {
@@ -100,31 +90,108 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
     }
 
     return (
-        <Flex flexDir="column" color={over ? 'gray.500' : 'inherit'}>
-            <Flex gap="2px" flexDir="column">
-                <Heading size="xs" color="primary">
-                    {eventTimeFormatted}
+        <Card
+            as={Grid}
+            alignItems="center"
+            gridTemplateColumns={{ base: '1fr 2fr', md: '10rem 2fr' }}
+            px={3}
+            pt={4}
+            pb={3}
+            columnGap={{ base: 2, md: 4 }}
+        >
+            <GridItem rowSpan={{ base: undefined, md: 3 }}>
+                <Heading
+                    lineHeight={1}
+                    textAlign="center"
+                    textTransform="uppercase"
+                    fontSize="2xl"
+                    color={over ? 'gray.500' : undefined}
+                >
+                    <Text as="span" fontSize="sm">
+                        {event.date.toLocaleString('en-US', {
+                            weekday: 'short',
+                        })}
+                    </Text>
+                    <br />
+                    {event.date.toLocaleString('en-US', {
+                        day: '2-digit',
+                        month: 'short',
+                    })}
                 </Heading>
-                <Heading size="md">{event.title}</Heading>
-            </Flex>
-            <Text color="gray.400">{event.description}</Text>
-
-            {!over && (
-                <>
-                    <EventTagList
-                        event={event}
-                        isSQTagVisible={profile?.keyQualification}
-                    />
-                    <EventRegistration
-                        registration={registration}
-                        onDeregister={deregister}
-                        isLoading={isRegistering || isUnregistering}
-                        eventType={event.type || EventType.Online}
-                        onRegister={register}
-                    />
-                </>
-            )}
-        </Flex>
+            </GridItem>
+            <Box>
+                <Heading size={{ base: 'xs', sm: 'md' }}>{event.title}</Heading>
+                <EventTagList
+                    event={event}
+                    isSQTagVisible={profile?.keyQualification}
+                    registration={over ? undefined : registration}
+                    transparent
+                    gap={0}
+                />
+            </Box>
+            <Show below="md">
+                {!over && (
+                    <>
+                        <GridItem colSpan={2}>
+                            <Collapse in={isExpanded}>
+                                <Flex py={2} flexDir="column">
+                                    <Text variant="info" fontSize="sm">
+                                        {event.description}
+                                    </Text>
+                                    {!over && (
+                                        <EventRegistration
+                                            registration={registration}
+                                            onDeregister={deregister}
+                                            isLoading={
+                                                isRegistering || isUnregistering
+                                            }
+                                            eventType={
+                                                event.type || EventType.Online
+                                            }
+                                            onRegister={register}
+                                        />
+                                    )}
+                                </Flex>
+                            </Collapse>
+                        </GridItem>
+                        <GridItem colSpan={2} mt={2}>
+                            <IconButton
+                                aria-label="expand"
+                                variant="ghost"
+                                w="100%"
+                                size="xs"
+                                icon={
+                                    isExpanded ? (
+                                        <ChevronUpIcon />
+                                    ) : (
+                                        <ChevronDownIcon />
+                                    )
+                                }
+                                onClick={toggleExpanded}
+                            />
+                        </GridItem>
+                    </>
+                )}
+            </Show>
+            <Hide below="md">
+                <GridItem colStart={2}>
+                    <Flex pt={2} flexDir="column">
+                        <Text variant="info" fontSize="sm">
+                            {event.description}
+                        </Text>
+                        {!over && (
+                            <EventRegistration
+                                registration={registration}
+                                onDeregister={deregister}
+                                isLoading={isRegistering || isUnregistering}
+                                eventType={event.type || EventType.Online}
+                                onRegister={register}
+                            />
+                        )}
+                    </Flex>
+                </GridItem>
+            </Hide>
+        </Card>
     );
 };
 

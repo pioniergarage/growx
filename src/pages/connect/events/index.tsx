@@ -33,7 +33,7 @@ const EventsPage = () => {
                     </Link>
                 </BreadcrumbItem>
             </Breadcrumb>
-            <VStack alignItems="stretch" gap={10}>
+            <VStack alignItems="stretch" gap={2}>
                 {registrations === undefined || events === undefined ? (
                     <>
                         <EventSkeleton />
