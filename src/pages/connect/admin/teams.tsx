@@ -2,6 +2,7 @@ import AdminBreadcrumbs, {
     AdminBreadcrumbItem,
 } from '@/components/navigation/AdminBreadcrumbs';
 import {
+    AvatarGroup,
     Box,
     Button,
     Flex,
@@ -83,11 +84,16 @@ const TeamRow = ({ team }: { team: Team }) => {
                     </Flex>
                 </Flex>
             </Flex>
-            <Flex alignItems="center" gap={1}>
+            <AvatarGroup max={4} size="sm">
                 {members?.map((m) => (
-                    <UserAvatar key={m.userId} profile={m} size="sm" />
+                    <UserAvatar
+                        key={m.userId}
+                        profile={m}
+                        size="sm"
+                        noSkeleton={true}
+                    />
                 ))}
-            </Flex>
+            </AvatarGroup>
             <MentorSelect
                 mentor={
                     mentorAssignments ? mentorAssignments[team.id] : undefined

@@ -9,9 +9,15 @@ import { useAvatarUrl } from '../hooks';
 
 export interface UserAvatarProps extends AvatarProps {
     profile?: Partial<Profile>;
+    noSkeleton?: boolean;
 }
 
-const UserAvatar: React.FC<UserAvatarProps> = ({ profile, size, ...rest }) => {
+const UserAvatar: React.FC<UserAvatarProps> = ({
+    profile,
+    size,
+    noSkeleton = false,
+    ...rest
+}) => {
     const { avatarUrl, isLoading } = useAvatarUrl({
         userId: profile?.userId,
         avatar: profile?.avatar,
@@ -19,7 +25,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ profile, size, ...rest }) => {
     const s = (
         useStyleConfig('Avatar', { size }) as { container: { width: number } }
     ).container.width;
-    if (isLoading) {
+    if (isLoading && !noSkeleton) {
         return <SkeletonCircle w={s} h={s} flexShrink="0" />;
     } else {
         return (
