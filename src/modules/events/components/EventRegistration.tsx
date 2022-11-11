@@ -2,6 +2,7 @@ import {
     Alert,
     AlertIcon,
     Button,
+    Text,
     useDisclosure,
     useToast,
 } from '@chakra-ui/react';
@@ -83,31 +84,30 @@ const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
                 </Button>
             )}
             {!!registration && (
-                <>
-                    <Alert
-                        status={registration ? 'success' : 'info'}
-                        mt={2}
-                        py={2}
-                        pr={2}
-                        backgroundColor="transparent"
-                        border="1px"
-                        borderColor="gray.700"
-                        borderRadius={4}
-                        fontSize="sm"
+                <Alert
+                    status={registration ? 'success' : 'info'}
+                    py={2}
+                    pr={2}
+                    backgroundColor="transparent"
+                    border="1px"
+                    borderColor="gray.700"
+                    borderRadius={4}
+                    fontSize="sm"
+                >
+                    <AlertIcon />
+                    <Text flexGrow={1}>
+                        Signed up (
+                        {registration.present ? 'presence' : 'online'} seat)
+                    </Text>
+                    <Button
+                        ml={2}
+                        size="sm"
+                        onClick={deregister}
+                        isLoading={isUnregistering}
                     >
-                        <AlertIcon />
-                        You have signed up for{' '}
-                        {registration.present ? 'a presence' : 'an online'} seat
-                        <Button
-                            ml={2}
-                            size="sm"
-                            onClick={deregister}
-                            isLoading={isUnregistering}
-                        >
-                            Cancel
-                        </Button>
-                    </Alert>
-                </>
+                        Cancel
+                    </Button>
+                </Alert>
             )}
             <SignUpDialog
                 isOpen={isOpen}

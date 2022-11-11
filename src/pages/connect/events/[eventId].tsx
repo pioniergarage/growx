@@ -54,9 +54,11 @@ const GrowEvent = ({
                 <Text variant="info" fontSize="sm">
                     {eventRaw.description}
                 </Text>
-                <EventInformationCard event={event} />
+                <Flex flexDir="column" gap={2} minW={{ md: '25rem' }}>
+                    <EventInformationCard event={event} />
+                    <EventRegistration event={event} />
+                </Flex>
             </Flex>
-            <EventRegistration event={event} />
         </VStack>
     );
 };
