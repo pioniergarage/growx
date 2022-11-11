@@ -98,6 +98,7 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
             pt={4}
             pb={3}
             columnGap={{ base: 2, md: 4 }}
+            opacity={over ? 0.5 : 1}
         >
             <GridItem rowSpan={{ base: undefined, md: 3 }}>
                 <Heading
