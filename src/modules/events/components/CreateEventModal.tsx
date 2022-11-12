@@ -33,6 +33,7 @@ const emptyEvent = {
     location: '',
     date: new Date(),
     duration: 0,
+    availableSeats: 0,
 };
 
 const CreateEventModal: React.FC<EventModalProps> = ({

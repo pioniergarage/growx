@@ -57,7 +57,7 @@ const GrowEvent = ({
             </Breadcrumb>
             <Heading size="md">{event.title}</Heading>
             <Flex flexDir={{ base: 'column', md: 'row' }} gap={4}>
-                <Text variant="info" fontSize="sm">
+                <Text variant="info" fontSize={{ base: 'sm', md: 'md' }}>
                     {eventRaw.description}
                 </Text>
                 <Flex flexDir="column" gap={4} minW={{ md: '25rem' }}>
