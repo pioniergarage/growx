@@ -14,13 +14,10 @@ import { useUser } from '@supabase/auth-helpers-react';
 import GrowEventCard from 'modules/events/components/GrowEventCard';
 import { useGrowEvents, useRegistrationsOfUser } from 'modules/events/hooks';
 import { useProfile } from 'modules/profile/hooks';
-import SQSignup from 'modules/signup/components/SQSignup';
-import { kitName } from 'modules/signup/components/UniversityForm';
 import CreateTeamButton from 'modules/teams/components/CreateTeamButton';
 import TeamCard from 'modules/teams/components/TeamCard';
 import { useTeam, useTeamIdOfUser, useTeamRequests } from 'modules/teams/hooks';
 import { Team } from 'modules/teams/types';
-import { SQRegistrationOver } from 'pages/startup_diploma';
 import { useMemo } from 'react';
 
 const ConnectIndex: React.FC = () => {
@@ -81,12 +78,6 @@ const ConnectIndex: React.FC = () => {
 
                 {['PARTICIPANT', 'ORGA'].includes(profile.role) && (
                     <YourTeam userId={profile.userId} />
-                )}
-                {profile.university === kitName && !SQRegistrationOver && (
-                    <SQSignup
-                        userId={profile.userId}
-                        keyQualification={profile.keyQualification}
-                    />
                 )}
             </VStack>
         </Flex>
