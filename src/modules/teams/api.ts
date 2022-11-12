@@ -36,6 +36,7 @@ export async function getTeams(supabaseClient: SupabaseClient<Database>) {
     return supabaseClient
         .from('teams')
         .select('*')
+        .order('inserted_at')
         .then(handleResponse)
         .then((dtos) => dtos.map(mapTeamDto));
 }
