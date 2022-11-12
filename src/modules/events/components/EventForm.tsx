@@ -23,18 +23,18 @@ import { FocusableElement } from '@chakra-ui/utils';
 import { useFormik } from 'formik';
 
 import { useRef } from 'react';
-import { EventType, GrowEvent } from '../types';
+import { EventType, GrowEvent, GrowEventWithSeats } from '../types';
 
 type EventFormProps = {
     onSubmit: (value: GrowEvent) => void;
     onChange: (value: Omit<GrowEvent, 'id'>) => void;
     onCancel: () => void;
     onDelete: () => void;
-    initialValue: GrowEvent;
+    initialValue: GrowEventWithSeats;
     isLoading: boolean;
 };
 
-type EventFormType = Omit<GrowEvent, 'date'> & {
+type EventFormType = Omit<GrowEventWithSeats, 'date'> & {
     date: string;
     time: string;
 };
@@ -188,21 +188,40 @@ export default function EventForm({
                             <FormHelperText>in minutes</FormHelperText>
                         </FormControl>
                     </HStack>
-                    <FormControl isDisabled={isLoading}>
-                        <FormLabel htmlFor="location">Location</FormLabel>
-                        <Input
-                            name="location"
-                            id="location"
-                            onChange={formik.handleChange}
-                            value={formik.values.location}
-                            borderColor={
-                                formik.values.location !==
-                                initialFormValue.location
-                                    ? 'green.200'
-                                    : undefined
-                            }
-                        />
-                    </FormControl>
+                    <HStack>
+                        <FormControl isDisabled={isLoading}>
+                            <FormLabel htmlFor="location">Location</FormLabel>
+                            <Input
+                                name="location"
+                                id="location"
+                                onChange={formik.handleChange}
+                                value={formik.values.location}
+                                borderColor={
+                                    formik.values.location !==
+                                    initialFormValue.location
+                                        ? 'green.200'
+                                        : undefined
+                                }
+                            />
+                        </FormControl>
+                        <FormControl isDisabled={isLoading}>
+                            <FormLabel htmlFor="availableSeats">
+                                Available Seats
+                            </FormLabel>
+                            <Input
+                                name="availableSeats"
+                                id="availableSeats"
+                                onChange={formik.handleChange}
+                                value={formik.values.availableSeats}
+                                borderColor={
+                                    formik.values.availableSeats !==
+                                    initialFormValue.availableSeats
+                                        ? 'green.200'
+                                        : undefined
+                                }
+                            />
+                        </FormControl>
+                    </HStack>
                     <HStack alignItems="end" gap={4}>
                         <FormControl mt={6}>
                             <FormLabel>How to participate</FormLabel>

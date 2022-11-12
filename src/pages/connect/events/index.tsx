@@ -56,7 +56,7 @@ const EventsPage = () => {
 };
 
 const EventSkeleton = () => {
-    return <Skeleton h="8rem" borderRadius={8} />;
+    return <Skeleton h={{ base: '8rem', lg: '5rem' }} borderRadius={8} />;
 };
 
 export default EventsPage;

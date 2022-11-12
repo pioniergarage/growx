@@ -66,7 +66,11 @@ const EventTagList = ({
                 </EventTag>
             )}
             {registration && (
-                <EventTag icon={FaCheck} transparent={transparent}>
+                <EventTag
+                    icon={FaCheck}
+                    transparent={transparent}
+                    colorScheme="green"
+                >
                     Signed up
                 </EventTag>
             )}

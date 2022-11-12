@@ -1,12 +1,12 @@
 import { Box, Button, Flex } from '@chakra-ui/react';
 
 import EventForm from 'modules/events/components/EventForm';
-import TimelineEvent from 'modules/events/components/TimelineEvent';
-import { GrowEvent } from 'modules/events/types';
+import { GrowEvent, GrowEventWithSeats } from 'modules/events/types';
 import { useState } from 'react';
+import GrowEventCard from './GrowEventCard';
 
 type EventConfigurationProps = {
-    initialEvent: GrowEvent;
+    initialEvent: GrowEventWithSeats;
     isLoading: boolean;
 
     onSave: (event: GrowEvent) => void;
@@ -26,7 +26,7 @@ const EventConfiguration: React.FC<EventConfigurationProps> = ({
         <>
             <Flex justifyContent="space-between">
                 <Box maxW="xl">
-                    <TimelineEvent event={event} />
+                    <GrowEventCard event={event} />
                 </Box>
                 <Button onClick={() => setEditing(true)} isDisabled={isEditing}>
                     Edit

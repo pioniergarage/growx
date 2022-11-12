@@ -1,4 +1,6 @@
-import AdminBreadcrumbs, { AdminBreadcrumbItem } from '@/components/navigation/AdminBreadcrumbs';
+import AdminBreadcrumbs, {
+    AdminBreadcrumbItem,
+} from '@/components/navigation/AdminBreadcrumbs';
 import PageLink from '@/components/navigation/PageLink';
 import { CheckIcon } from '@chakra-ui/icons';
 import {
@@ -15,12 +17,12 @@ import {
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 
 import CreateEventModal from 'modules/events/components/CreateEventModal';
-import { useGrowEvents, useInsertEvent } from 'modules/events/hooks';
+import { useGrowEventsWithSeats, useInsertEvent } from 'modules/events/hooks';
 import { GrowEvent } from 'modules/events/types';
 import { useState } from 'react';
 
 export default function EventManagement() {
-    const { events } = useGrowEvents();
+    const { events } = useGrowEventsWithSeats();
     const { insertEvent } = useInsertEvent();
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -31,11 +33,11 @@ export default function EventManagement() {
 
     return (
         <VStack alignItems="start">
-        <AdminBreadcrumbs>
-            <AdminBreadcrumbItem href="/connect/admin/events">
-                Events
-            </AdminBreadcrumbItem>
-        </AdminBreadcrumbs>
+            <AdminBreadcrumbs>
+                <AdminBreadcrumbItem href="/connect/admin/events">
+                    Events
+                </AdminBreadcrumbItem>
+            </AdminBreadcrumbs>
 
             <TableContainer>
                 <Table size="sm">
@@ -44,6 +46,7 @@ export default function EventManagement() {
                             <Th>Date</Th>
                             <Th>Title</Th>
                             <Th>Location</Th>
+                            <Th>Seats</Th>
                             <Th>Type</Th>
                             <Th>Mandatory</Th>
                             <Th>SQ-Mandatory</Th>
@@ -66,6 +69,11 @@ export default function EventManagement() {
                                         </PageLink>
                                     </Td>
                                     <Td>{event.location}</Td>
+                                    <Td>
+                                        {event.availableSeats -
+                                            event.presenceSeatsLeft}
+                                        /{event.availableSeats}
+                                    </Td>
                                     <Td>{event.type}</Td>
                                     <Td>
                                         <CheckIcon
