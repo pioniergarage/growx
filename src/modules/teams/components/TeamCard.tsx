@@ -1,12 +1,5 @@
 import Card from '@/components/Card';
-import {
-    Box,
-    Flex,
-    Heading,
-    HStack,
-    LinkBox,
-    LinkOverlay,
-} from '@chakra-ui/react';
+import { Flex, Heading, LinkBox, LinkOverlay } from '@chakra-ui/react';
 
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
@@ -20,7 +13,7 @@ export default function TeamCard(team: Team) {
     return (
         <LinkBox>
             <Card
-                as={HStack}
+                as={Flex}
                 _hover={{ filter: 'brightness(110%)', bg: 'whiteAlpha.100' }}
                 _active={{ filter: 'brightness(110%)', bg: 'whiteAlpha.200' }}
                 overflow="hidden"
@@ -30,19 +23,17 @@ export default function TeamCard(team: Team) {
                 <TeamLogo {...team} size={20} />
                 <Flex
                     flexDir="column"
-                    p={4}
+                    px={4}
                     alignItems="start"
+                    justify="center"
                     flexGrow={1}
                     gap={0}
                 >
                     <Link href={`/connect/teams/${team.id}`} passHref>
-                        <LinkOverlay my="auto">
-                            <Heading size="md">{team.name}</Heading>
+                        <LinkOverlay>
+                            <Heading size="sm">{team.name}</Heading>
                         </LinkOverlay>
                     </Link>
-                    <Box mt={0} fontSize="md" color="whiteAlpha.500">
-                        {team.tags.join(' • ')}
-                    </Box>
                 </Flex>
             </Card>
         </LinkBox>

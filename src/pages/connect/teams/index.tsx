@@ -28,7 +28,7 @@ const TeamsPage = () => {
                     <BreadcrumbSeparator />
                 </BreadcrumbItem>
             </Breadcrumb>
-            <SimpleGrid gap={4} columns={{ base: 1, md: 2 }}>
+            <SimpleGrid gap={4} columns={{ base: 1, sm: 2, lg: 3, xl: 4 }}>
                 {(teams ?? [])
                     .filter((t) => !t.archived)
                     .map((team) => (
