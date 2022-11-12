@@ -9,7 +9,7 @@ import {
     handleSingleResponse,
 } from '../../database/utils';
 import { mapProfileDto } from '../profile/api';
-import { Team } from './types';
+import { Team, TeamWithMembers } from './types';
 
 export const mapTeamDto = (
     teamDto: Database['public']['Tables']['teams']['Row']
@@ -38,6 +38,48 @@ export async function getTeams(supabaseClient: SupabaseClient<Database>) {
         .select('*')
         .then(handleResponse)
         .then((dtos) => dtos.map(mapTeamDto));
+}
+
+export async function getTeamsWithMembers(
+    supabaseClient: SupabaseClient<Database>
+) {
+    const dtos = await supabaseClient
+        .from('teams_with_members')
+        .select('*')
+        .then(handleResponse)
+        .then((dtos) =>
+            dtos.map((dto) => ({
+                teamId: dto.id as number,
+                teamName: dto.name as string,
+                logo: dto.logo as string,
+                isArchived: dto.archived as boolean,
+                requestSupport: dto.requestSupport as string[],
+                userId: dto.user_id as string,
+                firstName: dto.first_name as string,
+                lastName: dto.last_name as string,
+            }))
+        );
+    const teams: Record<number, TeamWithMembers> = {};
+    for (const d of dtos) {
+        const member = {
+            userId: d.userId,
+            firstName: d.firstName,
+            lastName: d.lastName,
+        };
+        if (d.teamId in teams) {
+            teams[d.teamId].members.push(member);
+        } else {
+            teams[d.teamId] = {
+                id: d.teamId,
+                name: d.teamName,
+                logo: d.logo,
+                isArchived: d.isArchived,
+                requestSupport: d.requestSupport,
+                members: [member],
+            };
+        }
+    }
+    return Object.values(teams);
 }
 
 export async function getTeam(

@@ -21,38 +21,85 @@ import {
 } from '@chakra-ui/react';
 
 import UserAvatar from 'modules/avatar/components/UserAvatar';
-import { useProfiles } from 'modules/profile/hooks';
 import { Profile } from 'modules/profile/types';
-import { useMemo, useState } from 'react';
+import { memo, useMemo, useState } from 'react';
+import { useMentors } from '../hooks';
+
+const UnmemorizedMentorListItem = ({ mentor }: { mentor: Profile }) => {
+    return (
+        <>
+            <UserAvatar size="sm" profile={mentor} bg="gray.500" />
+            <Flex justify="space-around" flexDir="column">
+                <Text as="div" fontWeight="medium">
+                    {mentor.firstName + ' ' + mentor.lastName}
+                </Text>
+                <Text
+                    as="div"
+                    fontSize="0.8rem"
+                    fontWeight="light"
+                    lineHeight={1.15}
+                    color="gray.400"
+                >
+                    {mentor.skills.join(', ')}
+                </Text>
+            </Flex>
+        </>
+    );
+};
+const MentorListItem = memo(UnmemorizedMentorListItem);
+
+type MentorListProps = {
+    onSelect: (mentor: Profile) => void;
+    onHover: (mentor?: Profile) => void;
+    input: string;
+    mentors: Profile[];
+};
+
+const MentorList: React.FC<MentorListProps> = (props) => {
+    const filteredMentors = useMemo(
+        () =>
+            props.mentors.filter(
+                (m) =>
+                    m.firstName.toUpperCase().includes(props.input) ||
+                    m.lastName.toUpperCase().includes(props.input)
+            ),
+        [props.input, props.mentors]
+    );
+    return (
+        <List as={Flex} flexDir="column" maxH="20rem" overflowY="scroll">
+            {filteredMentors.map((mentor) => (
+                <ListItem
+                    key={mentor.userId}
+                    cursor="pointer"
+                    _hover={{ bgColor: 'gray.600' }}
+                    p={1.5}
+                    as={HStack}
+                    onClick={() => props.onSelect(mentor)}
+                    onMouseEnter={() => props.onHover(mentor)}
+                    onMouseLeave={() => props.onHover()}
+                >
+                    <MentorListItem mentor={mentor} />
+                </ListItem>
+            ))}
+        </List>
+    );
+};
 
 type MentorSelectProps = {
     mentor?: Profile;
-    onSelect?: (mentor: Profile) => void;
-    onHover?: (mentor?: Profile) => void;
-    onUnselect?: () => void;
+    onSelect: (mentor: Profile) => void;
+    onHover: (mentor?: Profile) => void;
+    onUnselect: () => void;
     isLoading?: boolean;
 };
 const MentorSelect = (props: MentorSelectProps) => {
-    const { profiles } = useProfiles();
-    const mentors = useMemo(
-        () => (profiles ?? []).filter((p) => p.role === 'MENTOR'),
-        [profiles]
-    );
+    const mentors = useMentors();
     const [input, setInput] = useState('');
-    const filteredMentors = useMemo(
-        () =>
-            mentors.filter(
-                (m) =>
-                    m.firstName.toUpperCase().includes(input) ||
-                    m.lastName.toUpperCase().includes(input)
-            ),
-        [input, mentors]
-    );
     if (props.isLoading) {
         return <SkeletonCircle w={10} h={10} />;
     }
     return (
-        <Popover>
+        <Popover isLazy>
             <PopoverTrigger>
                 {props.mentor ? (
                     <IconButton
@@ -102,62 +149,12 @@ const MentorSelect = (props: MentorSelectProps) => {
                             }
                             mb={2}
                         />
-                        <List
-                            as={Flex}
-                            flexDir="column"
-                            maxH="20rem"
-                            overflowY="scroll"
-                        >
-                            {filteredMentors.map((mentor) => (
-                                <ListItem
-                                    key={mentor.userId}
-                                    cursor="pointer"
-                                    _hover={{ bgColor: 'gray.600' }}
-                                    p={1.5}
-                                    as={HStack}
-                                    onClick={() => {
-                                        if (props.onSelect) {
-                                            props.onSelect(mentor);
-                                        }
-                                    }}
-                                    onMouseEnter={() => {
-                                        if (props.onHover) {
-                                            props.onHover(mentor);
-                                        }
-                                    }}
-                                    onMouseLeave={() => {
-                                        if (props.onHover) {
-                                            props.onHover();
-                                        }
-                                    }}
-                                >
-                                    <UserAvatar
-                                        size="sm"
-                                        profile={mentor}
-                                        bg="gray.500"
-                                    />
-                                    <Flex
-                                        justify="space-around"
-                                        flexDir="column"
-                                    >
-                                        <Text as="div" fontWeight="medium">
-                                            {mentor.firstName +
-                                                ' ' +
-                                                mentor.lastName}
-                                        </Text>
-                                        <Text
-                                            as="div"
-                                            fontSize="0.8rem"
-                                            fontWeight="light"
-                                            lineHeight={1.15}
-                                            color="gray.400"
-                                        >
-                                            {mentor.skills.join(', ')}
-                                        </Text>
-                                    </Flex>
-                                </ListItem>
-                            ))}
-                        </List>
+                        <MentorList
+                            mentors={mentors}
+                            input={input}
+                            onHover={props.onHover}
+                            onSelect={props.onSelect}
+                        />
                     </Box>
                 </PopoverBody>
             </PopoverContent>

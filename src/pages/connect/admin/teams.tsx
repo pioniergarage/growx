@@ -24,17 +24,35 @@ import {
 import { Profile } from 'modules/profile/types';
 import MentorSelect from 'modules/teams/components/MentorSelect';
 import TeamLogo from 'modules/teams/components/TeamLogo';
-import { useAllTeams, useTeamMembers } from 'modules/teams/hooks';
-import { Team } from 'modules/teams/types';
+import { useAllTeamsWithMembers } from 'modules/teams/hooks';
+import { TeamWithMembers } from 'modules/teams/types';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 
-const TeamRow = ({ team }: { team: Team }) => {
-    const { members } = useTeamMembers(team.id);
-    const { mentorAssignments, isLoading } = useMentorAssignments();
+type TeamRowProps = {
+    team: TeamWithMembers;
+    mentor: Profile;
+};
+
+const TeamRow: React.FC<TeamRowProps> = ({ team, mentor }) => {
     const { assignMentor } = useAssignMentor();
     const { unassignMentor } = useUnassignMentor();
     const [mentorOnHover, setMentorOnHover] = useState<Profile>();
+
+    const handleMentorSelect = useCallback(
+        (mentor: Profile) => {
+            assignMentor({
+                teamId: team.id,
+                mentorId: mentor.userId,
+            });
+        },
+        [assignMentor, team.id]
+    );
+
+    const handleMentorUnselect = useCallback(() => {
+        unassignMentor({ teamId: team.id });
+    }, [unassignMentor, team.id]);
+
     return (
         <Grid
             gridTemplateColumns="1fr 10rem 4rem"
@@ -61,13 +79,13 @@ const TeamRow = ({ team }: { team: Team }) => {
                         >
                             <LinkOverlay>{team.name}</LinkOverlay>
                         </Link>
-                        {team.archived && (
+                        {team.isArchived && (
                             <Tag size="sm" colorScheme="orange">
                                 Archived
                             </Tag>
                         )}
                     </Flex>
-                    <Flex gap={1}>
+                    <Flex gap={1} flexWrap="wrap">
                         {team.requestSupport.map((subject) => (
                             <Tag
                                 key={subject}
@@ -77,6 +95,8 @@ const TeamRow = ({ team }: { team: Team }) => {
                                         ? 'green'
                                         : undefined
                                 }
+                                whiteSpace="nowrap"
+                                fontSize="x-small"
                             >
                                 {subject}
                             </Tag>
@@ -85,7 +105,7 @@ const TeamRow = ({ team }: { team: Team }) => {
                 </Flex>
             </Flex>
             <AvatarGroup max={4} size="sm">
-                {members?.map((m) => (
+                {team.members.map((m) => (
                     <UserAvatar
                         key={m.userId}
                         profile={m}
@@ -95,34 +115,26 @@ const TeamRow = ({ team }: { team: Team }) => {
                 ))}
             </AvatarGroup>
             <MentorSelect
-                mentor={
-                    mentorAssignments ? mentorAssignments[team.id] : undefined
-                }
-                onSelect={(mentor) =>
-                    assignMentor({
-                        teamId: team.id,
-                        mentorId: mentor.userId,
-                    })
-                }
-                onUnselect={() => {
-                    unassignMentor({ teamId: team.id });
-                }}
-                isLoading={isLoading}
+                mentor={mentor}
+                onSelect={handleMentorSelect}
+                onUnselect={handleMentorUnselect}
                 onHover={setMentorOnHover}
             />
         </Grid>
     );
 };
 
-const TeamTable = (props: { teams: Team[] }) => {
+const MemorizedTeamRow = memo(TeamRow);
+
+const TeamTable = (props: { teams: TeamWithMembers[] }) => {
     const [showArchivedTeams, setShowArchivedTeams] = useState(false);
+    const { mentorAssignments } = useMentorAssignments();
+
     const filteredTeams = useMemo(
-        () =>
-            showArchivedTeams
-                ? props.teams
-                : props.teams.filter((t) => !t.archived),
+        () => props.teams.filter((t) => !t.isArchived || showArchivedTeams),
         [props.teams, showArchivedTeams]
     );
+
     return (
         <Flex alignItems="stretch" flexDir="column">
             <Button
@@ -139,19 +151,23 @@ const TeamTable = (props: { teams: Team[] }) => {
                 py={3}
                 fontSize={14}
             >
-                <Box>{filteredTeams.length} Teams</Box>
+                <Box>{props.teams.length} Teams</Box>
                 <Box>Members</Box>
                 <Box>Mentor</Box>
             </Grid>
             {filteredTeams.map((team) => (
-                <TeamRow key={team.id} team={team} />
+                <MemorizedTeamRow
+                    key={team.id}
+                    team={team}
+                    mentor={(mentorAssignments ?? {})[team.id]}
+                />
             ))}
         </Flex>
     );
 };
 
 const TeamAdmin = () => {
-    const { teams } = useAllTeams([]);
+    const { teams } = useAllTeamsWithMembers();
     return (
         <VStack alignItems="stretch">
             <AdminBreadcrumbs>

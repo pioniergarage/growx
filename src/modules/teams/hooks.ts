@@ -1,5 +1,6 @@
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { Database } from 'database/DatabaseDefition';
+import { useProfiles } from 'modules/profile/hooks';
 import {
     acceptRequestToJoinTeam,
     createTeam,
@@ -10,6 +11,7 @@ import {
     getTeamMembers,
     getTeamRequestedToJoin,
     getTeams,
+    getTeamsWithMembers,
     leaveTeam,
     removeTeamLogo,
     requestToJoinTeam,
@@ -17,6 +19,7 @@ import {
     uploadTeamLogo,
     withdrawRequest,
 } from 'modules/teams/api';
+import { useMemo } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Team } from './types';
 
@@ -46,11 +49,22 @@ export function useAllTeams(initialData?: Team[]) {
         () => getTeams(supabaseClient),
         {
             initialData: initialData,
+            refetchOnWindowFocus: false,
             onSuccess: (teams) =>
                 teams.forEach((team) => {
                     queryClient.setQueryData(['team', team.id], team);
                 }),
         }
+    );
+    return { ...query, teams: query.data };
+}
+
+export function useAllTeamsWithMembers() {
+    const supabaseClient = useSupabaseClient<Database>();
+    const query = useQuery(
+        'teamsWithMembers',
+        () => getTeamsWithMembers(supabaseClient),
+        { refetchOnWindowFocus: false }
     );
     return { ...query, teams: query.data };
 }
@@ -238,3 +252,12 @@ export function useLeaveTeam() {
     );
     return { ...mutation, leaveTeam: mutation.mutateAsync };
 }
+
+export const useMentors = () => {
+    const { profiles } = useProfiles();
+    const mentors = useMemo(
+        () => (profiles ?? []).filter((p) => p.role === 'MENTOR'),
+        [profiles]
+    );
+    return mentors;
+};

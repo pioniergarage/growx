@@ -1,25 +1,39 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { Database } from "database/DatabaseDefition";
-import { Profile } from "modules/profile/types";
-import { Team } from "modules/teams/types";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { assignMentor, getAssignedTeamLeads, getMentorAssignments, getTeamMentor, unassignMentor } from "./api";
-import { MentorAssignments } from "./types";
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { Database } from 'database/DatabaseDefition';
+import { Profile } from 'modules/profile/types';
+import { Team } from 'modules/teams/types';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import {
+    assignMentor,
+    getAssignedTeamLeads,
+    getMentorAssignments,
+    getTeamMentor,
+    unassignMentor,
+} from './api';
+import { MentorAssignments } from './types';
 
 export function useMentorAssignments() {
-    const supabaseClient = useSupabaseClient<Database>()
-    const query = useQuery('mentorAssignments', () => getMentorAssignments(supabaseClient));
+    const supabaseClient = useSupabaseClient<Database>();
+    const query = useQuery(
+        'mentorAssignments',
+        () => getMentorAssignments(supabaseClient),
+        {
+            refetchOnWindowFocus: false,
+        }
+    );
     return { ...query, mentorAssignments: query.data };
 }
 
 export function useTeamMentor(teamId: number) {
-    const supabaseClient = useSupabaseClient<Database>()
-    const query = useQuery('teamMentor', () => getTeamMentor(supabaseClient, teamId));
+    const supabaseClient = useSupabaseClient<Database>();
+    const query = useQuery('teamMentor', () =>
+        getTeamMentor(supabaseClient, teamId)
+    );
     return { ...query, mentor: query.data };
 }
 
 export function useAssignMentor() {
-    const supabaseClient = useSupabaseClient<Database>()
+    const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
     const mutation = useMutation(
         ({
@@ -39,10 +53,11 @@ export function useAssignMentor() {
 }
 
 export function useUnassignMentor() {
-    const supabaseClient = useSupabaseClient<Database>()
+    const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        ({ teamId }: { teamId: Team['id'] }) => unassignMentor(supabaseClient, teamId),
+        ({ teamId }: { teamId: Team['id'] }) =>
+            unassignMentor(supabaseClient, teamId),
         {
             onSuccess: (deleted) => {
                 const newData =
@@ -58,7 +73,9 @@ export function useUnassignMentor() {
 }
 
 export function useGetAssignedTeamLeads() {
-    const supabaseClient = useSupabaseClient<Database>()
-    const query = useQuery('assignedTeamLeads', () => getAssignedTeamLeads(supabaseClient));
+    const supabaseClient = useSupabaseClient<Database>();
+    const query = useQuery('assignedTeamLeads', () =>
+        getAssignedTeamLeads(supabaseClient)
+    );
     return { ...query, teamLeads: query.data };
 }

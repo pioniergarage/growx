@@ -5,6 +5,7 @@ import {
     useStyleConfig,
 } from '@chakra-ui/react';
 import { Profile } from 'modules/profile/types';
+import { memo } from 'react';
 import { useAvatarUrl } from '../hooks';
 
 export interface UserAvatarProps extends AvatarProps {
@@ -12,7 +13,7 @@ export interface UserAvatarProps extends AvatarProps {
     noSkeleton?: boolean;
 }
 
-const UserAvatar: React.FC<UserAvatarProps> = ({
+let UserAvatar: React.FC<UserAvatarProps> = ({
     profile,
     size,
     noSkeleton = false,
@@ -40,4 +41,5 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
         );
     }
 };
+UserAvatar = memo(UserAvatar);
 export default UserAvatar;
