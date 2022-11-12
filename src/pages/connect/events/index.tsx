@@ -4,9 +4,7 @@ import {
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbLink,
-    Flex,
     Skeleton,
-    SkeletonText,
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
@@ -58,16 +56,7 @@ const EventsPage = () => {
 };
 
 const EventSkeleton = () => {
-    return (
-        <VStack alignItems="stretch">
-            <Skeleton maxW="10rem" h="2rem" />
-            <SkeletonText noOfLines={4} />
-            <Flex gap={2}>
-                <Skeleton h="1rem" w="3rem" />
-                <Skeleton h="1rem" w="4.2rem" />
-            </Flex>
-        </VStack>
-    );
+    return <Skeleton h={{ base: '8rem', lg: '5rem' }} borderRadius={8} />;
 };
 
 export default EventsPage;

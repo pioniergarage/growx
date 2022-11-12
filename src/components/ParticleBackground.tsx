@@ -50,7 +50,7 @@ const ParticleBackground = () => {
                                 straight: false,
                             },
                             number: {
-                                value: 40,
+                                value: 60,
                             },
                             shape: {
                                 type: 'circle',

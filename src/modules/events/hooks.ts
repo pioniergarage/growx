@@ -6,15 +6,17 @@ import {
     deleteEvent,
     getEvent,
     getEvents,
+    getEventsWithSeats,
+    getEventWithSeats,
     getRegistrationsOfUser,
     getRegistrationsTo,
     insertEvent,
     registerUser,
     unregisterUser,
-    updateEvent
+    updateEvent,
 } from 'modules/events/api';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { GrowEvent } from './types';
+import { GrowEvent, GrowEventWithSeats } from './types';
 
 export function useRegisterUserToEvent() {
     const queryClient = useQueryClient();
@@ -87,6 +89,15 @@ export function useGrowEvent(id: number) {
     return { event: data, ...rest };
 }
 
+export function useGrowEventWithSeats(id: number) {
+    const supabaseClient = useSupabaseClient<Database>();
+    const { data, ...rest } = useQuery(
+        ['eventWithSeats', id],
+        async () => await getEventWithSeats(supabaseClient, id)
+    );
+    return { event: data, ...rest };
+}
+
 export function useGrowEvents() {
     const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
@@ -100,14 +111,33 @@ export function useGrowEvents() {
                 ),
         }
     );
-    return { events: data, ...rest };
+    return { events: data ?? [], ...rest };
+}
+
+export function useGrowEventsWithSeats() {
+    const supabaseClient = useSupabaseClient<Database>();
+    const queryClient = useQueryClient();
+    const { data, ...rest } = useQuery(
+        'eventsWithSeats',
+        async () => await getEventsWithSeats(supabaseClient),
+        {
+            onSuccess: (events) =>
+                events.forEach((event) =>
+                    queryClient.setQueryData(
+                        ['eventWithSeats', event.id],
+                        event
+                    )
+                ),
+        }
+    );
+    return { events: data ?? [], ...rest };
 }
 
 export function useUpdateEvent() {
     const supabaseClient = useSupabaseClient<Database>();
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        async (patch: Partial<GrowEvent> & Pick<GrowEvent, 'id'>) =>
+        async (patch: Partial<GrowEventWithSeats> & Pick<GrowEvent, 'id'>) =>
             await updateEvent(supabaseClient, patch),
         {
             onSuccess: (updated) => {
@@ -135,14 +165,18 @@ export function useDeleteEvent() {
 export function useInsertEvent() {
     const queryClient = useQueryClient();
     const supabaseClient = useSupabaseClient<Database>();
-    const mutation = useMutation(async (event: Partial<GrowEvent>) => await insertEvent(supabaseClient, event), {
-        onSuccess: (created) => {
-            queryClient.setQueryData(['event', created.id], created);
-            const oldEvents: GrowEvent[] = queryClient.getQueryData(
-                'events'
-            ) as GrowEvent[];
-            queryClient.setQueryData('events', [...oldEvents, created]);
-        },
-    });
+    const mutation = useMutation(
+        async (event: Partial<GrowEvent>) =>
+            await insertEvent(supabaseClient, event),
+        {
+            onSuccess: (created) => {
+                queryClient.setQueryData(['event', created.id], created);
+                const oldEvents: GrowEvent[] = queryClient.getQueryData(
+                    'events'
+                ) as GrowEvent[];
+                queryClient.setQueryData('events', [...oldEvents, created]);
+            },
+        }
+    );
     return { ...mutation, insertEvent: mutation.mutateAsync };
 }

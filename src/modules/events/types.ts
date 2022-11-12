@@ -14,4 +14,9 @@ export type GrowEvent = {
     sq_mandatory?: boolean;
     type?: EventType;
     duration: number;
+    availableSeats: number;
+};
+
+export type GrowEventWithSeats = GrowEvent & {
+    presenceSeatsLeft: number;
 };

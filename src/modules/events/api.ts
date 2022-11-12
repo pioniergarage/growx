@@ -2,12 +2,12 @@ import { SupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from 'database/DatabaseDefition';
 import { handleResponse, handleSingleResponse } from '../../database/utils';
 import { mapProfileDto } from '../profile/api';
-import { EventType, GrowEvent } from './types';
+import { EventType, GrowEvent, GrowEventWithSeats } from './types';
 
 export const mapEventDto: (
     dto: Database['public']['Tables']['events']['Row']
 ) => GrowEvent = (dto) => ({
-    date: new Date(dto.date + "Z"),
+    date: new Date(dto.date + 'Z'),
     id: dto.id,
     title: dto.title,
     description: dto.description,
@@ -15,7 +15,8 @@ export const mapEventDto: (
     location: dto.location,
     sq_mandatory: dto.sq_mandatory,
     type: dto.type as EventType,
-    duration: dto.duration
+    duration: dto.duration,
+    availableSeats: dto.available_seats,
 });
 
 export const getEvents = (supabaseClient: SupabaseClient<Database>) =>
@@ -33,10 +34,53 @@ export const getEvent = (
     supabaseClient
         .from('events')
         .select('*')
+        .order('date')
         .match({ id: eventId })
         .single()
         .then(handleSingleResponse)
         .then(mapEventDto);
+
+export const getEventWithSeats = (
+    supabaseClient: SupabaseClient<Database>,
+    eventId: number
+) =>
+    supabaseClient
+        .from('event_with_seats')
+        .select('*')
+        .match({ id: eventId })
+        .single()
+        .then(handleSingleResponse)
+        .then(
+            (dto) =>
+                dto as Database['public']['Tables']['events']['Row'] & {
+                    seats_left: number;
+                }
+        )
+        .then((dto) => ({
+            ...mapEventDto(dto),
+            presenceSeatsLeft: dto.seats_left as number,
+        }));
+
+export const getEventsWithSeats = (supabaseClient: SupabaseClient<Database>) =>
+    supabaseClient
+        .from('event_with_seats')
+        .select('*')
+        .order('date')
+        .then(handleResponse)
+        .then((dtos) =>
+            dtos.map(
+                (dto) =>
+                    dto as Database['public']['Tables']['events']['Row'] & {
+                        seats_left: number;
+                    }
+            )
+        )
+        .then((dtos) =>
+            dtos.map(({ seats_left, ...dto }) => ({
+                ...mapEventDto(dto),
+                presenceSeatsLeft: seats_left as number,
+            }))
+        );
 
 export const insertEvent = (
     supabaseClient: SupabaseClient<Database>,
@@ -69,7 +113,7 @@ export const deleteEvent = (
 
 export const updateEvent = (
     supabaseClient: SupabaseClient<Database>,
-    growEvent: Partial<GrowEvent> & Pick<GrowEvent, 'id'>
+    growEvent: Partial<GrowEventWithSeats> & Pick<GrowEvent, 'id'>
 ) =>
     supabaseClient
         .from('events')
@@ -81,7 +125,8 @@ export const updateEvent = (
             location: growEvent.location,
             sq_mandatory: growEvent.sq_mandatory,
             type: growEvent.type,
-            duration: growEvent.duration
+            duration: growEvent.duration,
+            available_seats: growEvent.availableSeats,
         })
         .match({ id: growEvent.id })
         .select()

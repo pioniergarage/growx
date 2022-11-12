@@ -1,6 +1,7 @@
 import AdminBreadcrumbs, {
     AdminBreadcrumbItem,
 } from '@/components/navigation/AdminBreadcrumbs';
+import { ChevronRightIcon } from '@chakra-ui/icons';
 import { Divider, Spinner, useToast, VStack } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import EventConfiguration from 'modules/events/components/EventConfiguration';
@@ -8,7 +9,7 @@ import EventConfiguration from 'modules/events/components/EventConfiguration';
 import Registrations from 'modules/events/components/Registraions';
 import {
     useDeleteEvent,
-    useGrowEvent,
+    useGrowEventWithSeats,
     useUpdateEvent,
 } from 'modules/events/hooks';
 import { GrowEvent } from 'modules/events/types';
@@ -20,7 +21,7 @@ const EventDetails: NextPageWithLayout = () => {
     const router = useRouter();
     const eventId = Number.parseInt(router.query.eventId as string);
 
-    const { event, isLoading } = useGrowEvent(eventId);
+    const { event, isLoading } = useGrowEventWithSeats(eventId);
 
     const { updateEvent, isLoading: isUpdating } = useUpdateEvent();
     const { deleteEvent } = useDeleteEvent();
@@ -56,10 +57,11 @@ const EventDetails: NextPageWithLayout = () => {
     }
 
     return (
-        <VStack maxW="container.lg" alignItems="stretch" gap={4}>
+        <VStack alignItems="stretch" gap={4}>
             <AdminBreadcrumbs>
                 <AdminBreadcrumbItem href="/connect/admin/events">
                     Events
+                    <ChevronRightIcon color="gray.500" mx={2} />
                 </AdminBreadcrumbItem>
                 <AdminBreadcrumbItem
                     href={`/connect/admin/events/${event?.id}`}

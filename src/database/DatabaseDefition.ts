@@ -100,6 +100,7 @@ export interface Database {
                     sq_mandatory: boolean;
                     type: Database['public']['Enums']['enum_event_type'] | null;
                     duration: number;
+                    available_seats: number;
                 };
                 Insert: {
                     id?: number;
@@ -115,6 +116,7 @@ export interface Database {
                         | Database['public']['Enums']['enum_event_type']
                         | null;
                     duration?: number;
+                    available_seats?: number;
                 };
                 Update: {
                     id?: number;
@@ -130,6 +132,7 @@ export interface Database {
                         | Database['public']['Enums']['enum_event_type']
                         | null;
                     duration?: number;
+                    available_seats?: number;
                 };
             };
             faqs: {
@@ -345,6 +348,39 @@ export interface Database {
             };
         };
         Views: {
+            event_with_reg: {
+                Row: {
+                    signups_present: number | null;
+                    id: number | null;
+                    inserted_at: string | null;
+                    updated_at: string | null;
+                    title: string | null;
+                    date: string | null;
+                    description: string | null;
+                    mandatory: boolean | null;
+                    location: string | null;
+                    sq_mandatory: boolean | null;
+                    type: Database['public']['Enums']['enum_event_type'] | null;
+                    duration: number | null;
+                };
+            };
+            event_with_seats: {
+                Row: {
+                    seats_left: number | null;
+                    id: number | null;
+                    inserted_at: string | null;
+                    updated_at: string | null;
+                    title: string | null;
+                    date: string | null;
+                    description: string | null;
+                    mandatory: boolean | null;
+                    location: string | null;
+                    sq_mandatory: boolean | null;
+                    type: Database['public']['Enums']['enum_event_type'] | null;
+                    duration: number | null;
+                    available_seats: number | null;
+                };
+            };
             team_leads: {
                 Row: {
                     user_id: string | null;

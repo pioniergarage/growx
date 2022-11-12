@@ -11,6 +11,7 @@ import {
     FaMapMarkerAlt,
 } from 'react-icons/fa';
 import { EventType, GrowEvent } from '../types';
+import { formatEventTime } from '../utils';
 import EventTag from './EventTag';
 import { GrowEventCardProps } from './GrowEventCard';
 
@@ -20,9 +21,6 @@ type EventTagListProps = FlexProps & {
     transparent?: boolean;
     registration?: GrowEventCardProps['registration'];
 };
-function addMinutes(date: Date, minutes: number) {
-    return new Date(date.getTime() + minutes * 60000);
-}
 
 const EventTagList = ({
     event,
@@ -31,20 +29,10 @@ const EventTagList = ({
     registration,
     ...flexProps
 }: EventTagListProps) => {
-    const eventTimeFormatted = useMemo(() => {
-        const start = event.date.toLocaleString('DE-de', {
-            hour: '2-digit',
-            minute: '2-digit',
-        });
-        if (event.duration <= 0) {
-            return start;
-        }
-        const endTime = addMinutes(event.date, event.duration).toLocaleString(
-            'DE-de',
-            { hour: '2-digit', minute: '2-digit' }
-        );
-        return start + ' - ' + endTime;
-    }, [event.date, event.duration]);
+    const eventTimeFormatted = useMemo(
+        () => formatEventTime(event.date, event.duration),
+        [event.date, event.duration]
+    );
     return (
         <Flex
             mt={1}
@@ -78,7 +66,11 @@ const EventTagList = ({
                 </EventTag>
             )}
             {registration && (
-                <EventTag icon={FaCheck} transparent={transparent}>
+                <EventTag
+                    icon={FaCheck}
+                    transparent={transparent}
+                    colorScheme="green"
+                >
                     Signed up
                 </EventTag>
             )}

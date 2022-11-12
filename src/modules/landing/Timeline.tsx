@@ -1,6 +1,6 @@
 import { Heading, VStack } from '@chakra-ui/react';
+import GrowEventCard from 'modules/events/components/GrowEventCard';
 
-import TimelineEvent from 'modules/events/components/TimelineEvent';
 import { GrowEvent } from 'modules/events/types';
 
 interface LongTimelineProps {
@@ -13,7 +13,7 @@ const LongTimeline: React.FC<LongTimelineProps> = ({ events }) => {
             <Heading>Timeline</Heading>
             <VStack gap={4} alignItems="stretch" maxW="3xl">
                 {events.map((event) => (
-                    <TimelineEvent key={event.id} event={event} />
+                    <GrowEventCard key={event.id} event={event} />
                 ))}
             </VStack>
         </VStack>
