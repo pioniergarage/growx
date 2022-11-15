@@ -181,6 +181,17 @@ export default function ProfilesAdmin() {
                                     (p) => p.role === 'MENTOR'
                                 )}
                             />
+                            <Button
+                                onClick={() =>
+                                    downloadProfiles(
+                                        profiles.filter(
+                                            (p) => p.role === 'MENTOR'
+                                        )
+                                    )
+                                }
+                            >
+                                Download
+                            </Button>
                         </TabPanel>
                         <TabPanel px={0}>
                             <ProfileList
