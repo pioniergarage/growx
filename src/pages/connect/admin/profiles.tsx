@@ -1,10 +1,16 @@
 import AdminBreadcrumbs, {
     AdminBreadcrumbItem,
 } from '@/components/navigation/AdminBreadcrumbs';
-import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
     Button,
-    MenuButton,
+    IconButton,
+    Input,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     Spinner,
     Tab,
     Table,
@@ -18,23 +24,105 @@ import {
     Th,
     Thead,
     Tr,
+    useDisclosure,
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useFullProfiles } from 'modules/admin/hooks';
 import { ContactInformation } from 'modules/contactInformation/types';
 
-import ChangeRoleMenu from 'modules/profile/components/ChangeRole';
 import { Profile } from 'modules/profile/types';
-import { useState } from 'react';
+import { FocusEventHandler, memo, useCallback, useState } from 'react';
+import { FaEllipsisH } from 'react-icons/fa';
 import { downloadCSV } from 'utils/csv';
+import debounce from 'utils/debounce';
+
+type ProfileModalProps = {
+    onClose: () => void;
+    isOpen: boolean;
+};
+
+const ProfileModal: React.FC<ProfileModalProps> = ({ onClose, isOpen }) => {
+    return (
+        <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader>Adjust profile</ModalHeader>
+                <ModalBody></ModalBody>
+                <ModalFooter>
+                    <Button onClick={onClose}>Cancel</Button>
+                </ModalFooter>
+            </ModalContent>
+        </Modal>
+    );
+};
+
+const SearchInput = ({ onSearch }: { onSearch: (value: string) => void }) => {
+    const handleChange: FocusEventHandler<HTMLInputElement> = (e) => {
+        const { value } = e.target;
+        handleSearch(value);
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const handleSearch = useCallback(
+        debounce((val: string) => {
+            onSearch(val);
+        }, 500),
+        []
+    );
+    return <Input placeholder="Search" onChange={handleChange} size="sm" />;
+};
+
+const ProfileRowUnmemod = ({
+    profile,
+    isHidden,
+    onEdit,
+}: {
+    profile: Profile & ContactInformation;
+    isHidden: boolean;
+    onEdit: () => void;
+}) => {
+    return (
+        <Tr key={profile.userId} hidden={isHidden}>
+            <Td>
+                {profile.firstName} {profile.lastName}
+            </Td>
+            <Td>{profile.email}</Td>
+            <Td>{profile.phone}</Td>
+            <Td>
+                <IconButton
+                    onClick={onEdit}
+                    variant="ghost"
+                    size="2xs"
+                    aria-label="more"
+                    icon={<FaEllipsisH />}
+                />
+            </Td>
+        </Tr>
+    );
+};
+const ProfileRow = memo(ProfileRowUnmemod);
 
 const ProfileList = (props: { profiles: (Profile & ContactInformation)[] }) => {
-    const [isMenuVisible, setMenuVisible] = useState<string | null>(null);
-    const [isOpen, setOpen] = useState<string | null>(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const filter = useCallback(
+        (profile: Profile & ContactInformation, term: string) => {
+            term = term.toLocaleLowerCase();
+            return (
+                profile.firstName.toLocaleLowerCase().includes(term) ||
+                profile.lastName.toLocaleLowerCase().includes(term) ||
+                profile.email.includes(term) ||
+                profile.userId.includes(term)
+            );
+        },
+        []
+    );
 
     return (
         <VStack as="ul" alignItems="stretch" overflow="scroll">
+            <SearchInput onSearch={setSearchTerm} />
             <TableContainer py={2}>
                 <Table size="sm">
                     <Thead>
@@ -42,62 +130,22 @@ const ProfileList = (props: { profiles: (Profile & ContactInformation)[] }) => {
                             <Th>Name ({props.profiles.length})</Th>
                             <Th>Email</Th>
                             <Th>Phone</Th>
-                            <Th>Gender</Th>
-                            <Th>Adjust Role</Th>
+                            <Th></Th>
                         </Tr>
                     </Thead>
                     <Tbody>
                         {props.profiles.map((profile) => (
-                            <Tr
+                            <ProfileRow
                                 key={profile.userId}
-                                onMouseEnter={() =>
-                                    setMenuVisible(profile.userId)
-                                }
-                                onMouseLeave={() => {
-                                    setMenuVisible(null);
-                                    setOpen(null);
-                                }}
-                            >
-                                <Td>
-                                    {profile.firstName} {profile.lastName}
-                                </Td>
-                                <Td>{profile.email}</Td>
-                                <Td>{profile.phone}</Td>
-                                <Td>{profile.gender}</Td>
-                                <Td>
-                                    <ChangeRoleMenu
-                                        isOpen={
-                                            isMenuVisible === profile.userId &&
-                                            isOpen === profile.userId
-                                        }
-                                        onClose={() => {
-                                            setOpen(null);
-                                            setMenuVisible(null);
-                                        }}
-                                        profile={profile}
-                                    >
-                                        <MenuButton
-                                            as={Button}
-                                            rightIcon={<ChevronDownIcon />}
-                                            size="sm"
-                                            visibility={
-                                                isMenuVisible === profile.userId
-                                                    ? 'visible'
-                                                    : 'hidden'
-                                            }
-                                            onClick={() =>
-                                                setOpen(profile.userId)
-                                            }
-                                        >
-                                            Role
-                                        </MenuButton>
-                                    </ChangeRoleMenu>
-                                </Td>
-                            </Tr>
+                                profile={profile}
+                                isHidden={!filter(profile, searchTerm)}
+                                onEdit={onOpen}
+                            />
                         ))}
                     </Tbody>
                 </Table>
             </TableContainer>
+            <ProfileModal isOpen={isOpen} onClose={onClose} />
         </VStack>
     );
 };
@@ -118,7 +166,7 @@ export default function ProfilesAdmin() {
                 'Uni',
                 'Country of uni',
                 'SQ',
-                'skills'
+                'skills',
             ],
             profiles.map((p) =>
                 [
@@ -132,7 +180,7 @@ export default function ProfilesAdmin() {
                     p.university,
                     p.universityCountry,
                     p.keyQualification,
-                    p.skills.join(' - ')
+                    p.skills.join(' - '),
                 ].map((a) => (a ? a : ''))
             ),
             `profiles.csv`
