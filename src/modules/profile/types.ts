@@ -1,3 +1,5 @@
+import { ContactInformation } from 'modules/contactInformation/types';
+
 export type Gender = 'MALE' | 'FEMALE' | 'OTHER';
 
 export type Profile = {
@@ -53,10 +55,14 @@ export const availableSkills = [
     'Legal',
 ].sort();
 
-
 export type FurtherProfileInfo = {
     lookingForTeam: boolean;
     expectations: string;
     idea: string;
     source: string;
 };
+
+export type FullProfile = Profile &
+    ContactInformation & {
+        matriculation?: string;
+    };

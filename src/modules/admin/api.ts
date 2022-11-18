@@ -3,41 +3,47 @@ import { Database } from 'database/DatabaseDefition';
 import { handleResponse } from 'database/utils';
 import { ContactInformation } from 'modules/contactInformation/types';
 import { mapProfileDto } from 'modules/profile/api';
-import { Profile } from 'modules/profile/types';
+import { FullProfile, Profile } from 'modules/profile/types';
 import { mapTeamDto } from 'modules/teams/api';
 import { Team } from 'modules/teams/types';
 
 interface AdminApi {
-    getFullProfiles(
-        supabase: SupabaseClient<Database>
-    ): Promise<(Profile & ContactInformation)[]>;
+    getFullProfiles(supabase: SupabaseClient<Database>): Promise<FullProfile[]>;
     getAllProfiles(
         supabase: SupabaseClient<Database>
     ): Promise<(Profile & { insertedAt: Date })[]>;
     getActiveTeamsWithDates(
         supabase: SupabaseClient<Database>
     ): Promise<(Team & { insertedAt: Date })[]>;
+    upsertMatriculation(
+        supabase: SupabaseClient<Database>,
+        userId: string,
+        matriculation: string
+    ): Promise<void>;
 }
 
 const adminApi: AdminApi = {
     getFullProfiles: async (supabase) => {
         const profiles = await supabase
             .from('profiles')
-            .select('*, contact_information(*)')
+            .select('*, contact_information(*), matriculation(*)')
             .then(handleResponse)
             .then((dtos) =>
-                dtos.map(({ contact_information, ...rest }) => ({
+                dtos.map(({ contact_information, matriculation, ...rest }) => ({
                     profile: rest,
                     contact_informations:
                         contact_information as ContactInformation[],
+                    matriculation:
+                        matriculation as Database['public']['Tables']['matriculation']['Row'][],
                 }))
             )
-            .then((dtos) =>
-                dtos.map((dto) => ({
+            .then((dtos) => {
+                return dtos.map((dto) => ({
                     ...mapProfileDto(dto.profile),
                     ...(dto.contact_informations.pop() as ContactInformation),
-                }))
-            );
+                    matriculation: dto.matriculation.pop()?.Id,
+                }));
+            });
         return profiles;
     },
     getAllProfiles: async (supabase) => {
@@ -66,6 +72,13 @@ const adminApi: AdminApi = {
                     insertedAt: new Date(dto.inserted_at),
                 }))
             );
+    },
+
+    upsertMatriculation: async (supabase, userId, matriculation) => {
+        await supabase.from('matriculation').upsert({
+            Id: matriculation,
+            user_id: userId,
+        });
     },
 };
 
