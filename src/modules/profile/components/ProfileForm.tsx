@@ -19,10 +19,15 @@ import { ContactInformation } from 'modules/contactInformation/types';
 import { useState } from 'react';
 import { availableSkills, Profile } from '../types';
 interface ProflieFormProps {
-    onSave: (profile: Profile, contactInformation: ContactInformation) => void;
+    onSave: (
+        profile: Profile,
+        contactInformation: ContactInformation,
+        matriculation?: string
+    ) => void;
     loading: boolean;
     profile: Profile;
     contactInformation: ContactInformation;
+    matriculation?: string;
     onCancel?: () => void;
 }
 
@@ -32,13 +37,14 @@ const ProfileForm: React.FC<ProflieFormProps> = ({
     profile,
     contactInformation,
     onCancel,
+    matriculation,
 }) => {
     const { skills: initialSkills, ...restProfile } = profile;
     const [skills, setSkills] = useState(initialSkills);
     const formik = useFormik({
-        initialValues: { ...restProfile, ...contactInformation },
-        onSubmit: ({ email, phone, ...rest }) =>
-            onSave({ ...rest, skills }, { email, phone }),
+        initialValues: { ...restProfile, ...contactInformation, matriculation },
+        onSubmit: ({ email, phone, matriculation, ...rest }) =>
+            onSave({ ...rest, skills }, { email, phone }, matriculation),
         validate: (values) => {
             const errors: Record<string, string> = {};
             if (!values.firstName) errors.firstName = 'Required';
@@ -171,6 +177,17 @@ const ProfileForm: React.FC<ProflieFormProps> = ({
                             value={formik.values.homeland || ''}
                         />
                     </FormControl>
+                    {profile.role === 'PARTICIPANT' && profile.keyQualification && (
+                        <FormControl isDisabled={loading}>
+                            <FormLabel>Matriculation</FormLabel>
+                            <Input
+                                name="matriculation"
+                                id="matriculation"
+                                onChange={formik.handleChange}
+                                value={formik.values.matriculation || ''}
+                            />
+                        </FormControl>
+                    )}
                     {['MENTOR', 'EXPERT', 'ORGA'].includes(profile.role) && (
                         <>
                             <GridItem colSpan={2}>
@@ -195,7 +212,7 @@ const ProfileForm: React.FC<ProflieFormProps> = ({
                                     />
                                 </FormControl>
                             </GridItem>
-                            <GridItem>
+                            <GridItem colSpan={2}>
                                 <FormControl>
                                     <FormLabel>Describe yourself</FormLabel>
                                     <BioTextArea

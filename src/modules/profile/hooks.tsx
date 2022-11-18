@@ -3,10 +3,12 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { Database } from 'database/DatabaseDefition';
 import {
+    fetchMatriculation,
     fetchProfile,
     getProfiles,
     insertSignupInfo,
     updateProfile,
+    upsertMatriculation,
 } from 'modules/profile/api';
 import { FurtherProfileInfo, Profile } from './types';
 
@@ -51,6 +53,43 @@ export function useUpdateProfile() {
         }
     );
     return { ...mutation, updateProfile: mutation.mutateAsync };
+}
+
+export function useMatriculation() {
+    const supabaseClient = useSupabaseClient<Database>();
+    const user = useUser();
+    const query = useQuery(
+        'matriculation',
+        () => {
+            if (!user) {
+                throw new Error('User not available');
+            }
+            return fetchMatriculation(supabaseClient, user.id);
+        },
+        { enabled: !!user }
+    );
+    return { ...query, matriculation: query.data };
+}
+
+export function useUpsertMatriculation() {
+    const supabaseClient = useSupabaseClient<Database>();
+    const user = useUser();
+    const queryClient = useQueryClient();
+    const mutation = useMutation(
+        async (matriculation: string) => {
+            if (!user) {
+                throw new Error('User not available');
+            }
+            await upsertMatriculation(supabaseClient, user.id, matriculation);
+            return matriculation;
+        },
+        {
+            onSuccess(matriculation) {
+                queryClient.setQueryData('matriculation', matriculation);
+            },
+        }
+    );
+    return { ...mutation, upsertMatriculation: mutation.mutateAsync };
 }
 
 export function useProfiles() {
