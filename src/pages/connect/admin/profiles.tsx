@@ -14,6 +14,7 @@ import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import MentorsTab from 'modules/admin/components/MentorsTab';
 import ParticipantsTab from 'modules/admin/components/ParticipantsTab';
 import { useFullProfiles } from 'modules/admin/hooks';
+import { allowOrga } from 'modules/admin/utils';
 
 export default function ProfilesAdmin() {
     const { profiles, isLoading } = useFullProfiles();
@@ -50,4 +51,5 @@ export default function ProfilesAdmin() {
 
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
+    getServerSideProps: allowOrga,
 });

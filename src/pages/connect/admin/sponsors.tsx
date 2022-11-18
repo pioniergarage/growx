@@ -16,6 +16,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { allowOrga } from 'modules/admin/utils';
 
 import {
     useDeleteSponsor,
@@ -131,4 +132,5 @@ export default function SponsorAdmin() {
 
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
+    getServerSideProps: allowOrga,
 });

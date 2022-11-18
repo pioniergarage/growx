@@ -5,6 +5,7 @@ import { Divider, Flex } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import InsertedStats from 'modules/admin/components/InsertedStats';
 import { useProfileStats, useTeamsWithDates } from 'modules/admin/hooks';
+import { allowOrga } from 'modules/admin/utils';
 import { useMemo } from 'react';
 
 const AdminPage: React.FC = () => {
@@ -58,4 +59,5 @@ const AdminPage: React.FC = () => {
 export default AdminPage;
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
+    getServerSideProps: allowOrga,
 });

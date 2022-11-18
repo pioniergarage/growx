@@ -15,6 +15,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { allowOrga } from 'modules/admin/utils';
 
 import CreateEventModal from 'modules/events/components/CreateEventModal';
 import { useGrowEventsWithSeats, useInsertEvent } from 'modules/events/hooks';
@@ -112,4 +113,5 @@ export default function EventManagement() {
 
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
+    getServerSideProps: allowOrga,
 });

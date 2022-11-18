@@ -4,6 +4,7 @@ import AdminBreadcrumbs, {
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { Divider, Spinner, useToast, VStack } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { allowOrga } from 'modules/admin/utils';
 import EventConfiguration from 'modules/events/components/EventConfiguration';
 
 import Registrations from 'modules/events/components/Registraions';
@@ -91,4 +92,5 @@ export default EventDetails;
 
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
+    getServerSideProps: allowOrga,
 });
