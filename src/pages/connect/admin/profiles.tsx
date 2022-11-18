@@ -118,6 +118,7 @@ export default function ProfilesAdmin() {
                 'Uni',
                 'Country of uni',
                 'SQ',
+                'skills'
             ],
             profiles.map((p) =>
                 [
@@ -131,6 +132,7 @@ export default function ProfilesAdmin() {
                     p.university,
                     p.universityCountry,
                     p.keyQualification,
+                    p.skills.join(' - ')
                 ].map((a) => (a ? a : ''))
             ),
             `profiles.csv`
