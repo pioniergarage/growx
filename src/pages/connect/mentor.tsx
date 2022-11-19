@@ -1,5 +1,7 @@
 import { Alert, AlertIcon, Spinner, Text, VStack } from '@chakra-ui/react';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import LoginLayout from 'layouts/LoginLayout';
 import { useInsertContactInformation } from 'modules/contactInformation/hooks';
 import { useUpdateProfile } from 'modules/profile/hooks';
 import DetailInformation from 'modules/signup/components/DetailInformationForm';
@@ -108,4 +110,26 @@ const MentorSignUp: NextPageWithLayout = () => {
     );
 };
 
+MentorSignUp.getLayout = (page) => <LoginLayout>{page}</LoginLayout>;
 export default MentorSignUp;
+
+export const getServerSideProps = withPageAuth({
+    authRequired: false,
+    getServerSideProps: async (context, supabase) => {
+        const { data, error } = await supabase.auth.getSession();
+        if (error) {
+            throw error;
+        }
+
+        if (data.session) {
+            return {
+                redirect: {
+                    permanent: false,
+                    destination: '/connect',
+                },
+            };
+        } else {
+            return { props: {} };
+        }
+    },
+});
