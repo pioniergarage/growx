@@ -1,4 +1,14 @@
-import { Box, BoxProps, Divider, Show } from '@chakra-ui/react';
+import {
+    Box,
+    BoxProps,
+    Center,
+    Divider,
+    Flex,
+    Heading,
+    Image,
+    Show,
+    Text,
+} from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
 
 import { getEvents } from 'modules/events/api';
@@ -125,12 +135,36 @@ const Home: React.FC<HomeProps> = ({
                 <WaitingForBlock />
             </Section>
 
-            <Section id="faqs" mt={24}>
-                <Faqs faqs={faqs} />
+            <Divider my={24} />
+
+            <Section>
+                <Center as={Flex} flexDir="column" gap={4} alignItems="center">
+                    <Flex maxH="20rem" gap={4} maxW="40rem">
+                        <Box>
+                            <Image
+                                src="/images/patron.jpg"
+                                alt="Our patron"
+                                objectFit="contain"
+                            />
+                        </Box>
+                        <Box>
+                            <Heading>Our Patron</Heading>
+                            <Text variant="info">
+                                Professor Dr. Thomas Hirth, Vice-President for
+                                Transfer and International Affairs, is
+                                supporting GROW as our patron.
+                            </Text>
+                        </Box>
+                    </Flex>
+                </Center>
             </Section>
 
-            <Section mt={20}>
+            <Section my={20}>
                 <Sponsors sponsors={sponsors} />
+            </Section>
+
+            <Section id="faqs" my={24}>
+                <Faqs faqs={faqs} />
             </Section>
         </>
     );
