@@ -173,7 +173,7 @@ export function useInsertEvent() {
                 queryClient.setQueryData(['event', created.id], created);
                 const oldEvents: GrowEvent[] = queryClient.getQueryData(
                     'events'
-                ) as GrowEvent[];
+                ) as GrowEvent[] ?? [];
                 queryClient.setQueryData('events', [...oldEvents, created]);
             },
         }

@@ -85,16 +85,23 @@ export const getEventsWithSeats = (supabaseClient: SupabaseClient<Database>) =>
 export const insertEvent = (
     supabaseClient: SupabaseClient<Database>,
     event: Partial<GrowEvent>
-) =>
-    supabaseClient
+) => {
+    return supabaseClient
         .from('events')
         .insert({
+            title: event.title,
+            description: event.description,
+            mandatory: event.mandatory,
             location: event.location ?? '',
+            sq_mandatory: event.sq_mandatory,
+            type: event.type,
+            duration: event.duration,
         })
         .select()
         .single()
         .then(handleSingleResponse)
         .then(mapEventDto);
+};
 
 export const deleteEvent = (
     supabaseClient: SupabaseClient<Database>,

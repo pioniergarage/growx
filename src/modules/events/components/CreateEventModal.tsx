@@ -28,8 +28,8 @@ interface EventModalProps {
 
 const emptyEvent = {
     title: '',
-    description: undefined,
-    mandatory: undefined,
+    description: '',
+    mandatory: false,
     location: '',
     date: new Date(),
     duration: 0,
