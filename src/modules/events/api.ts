@@ -58,7 +58,8 @@ export const getEventWithSeats = (
         )
         .then((dto) => ({
             ...mapEventDto(dto),
-            presenceSeatsLeft: dto.seats_left as number,
+            presenceSeatsLeft:
+                (dto.seats_left as number) ?? dto.available_seats,
         }));
 
 export const getEventsWithSeats = (supabaseClient: SupabaseClient<Database>) =>
@@ -78,7 +79,7 @@ export const getEventsWithSeats = (supabaseClient: SupabaseClient<Database>) =>
         .then((dtos) =>
             dtos.map(({ seats_left, ...dto }) => ({
                 ...mapEventDto(dto),
-                presenceSeatsLeft: seats_left as number,
+                presenceSeatsLeft: (seats_left as number) ?? dto.available_seats,
             }))
         );
 
