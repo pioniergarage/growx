@@ -25,7 +25,7 @@ const GrowEvent = ({
 }) => {
     const event: GrowEventWithSeats = {
         ...mapEventDto(eventRaw),
-        presenceSeatsLeft: eventRaw.seats_left,
+        presenceSeatsLeft: eventRaw.seats_left ?? eventRaw.available_seats,
     };
     return (
         <VStack alignItems="stretch" gap={2}>
