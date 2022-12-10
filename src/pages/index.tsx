@@ -1,7 +1,6 @@
 import {
     Box,
     BoxProps,
-    Center,
     Divider,
     Flex,
     Heading,
@@ -138,28 +137,51 @@ const Home: React.FC<HomeProps> = ({
             <Divider my={24} />
 
             <Section>
-                <Center as={Flex} flexDir="column" gap={4} alignItems="center">
-                    <Flex maxH="20rem" gap={4} maxW="40rem">
-                        <Box>
+                <Flex alignItems="center" flexDir="column">
+                    <Heading mb={4}>Our Patrons</Heading>
+                    <Flex gap={10} flexDir="column" alignItems="center">
+                        <Flex flexDir="column" gap={1} alignItems="center">
+                            <Box maxW="30rem">
+                                <Image
+                                    src="/images/patron2.jpg"
+                                    alt="Bettina Stark-Watzinger"
+                                    objectFit="contain"
+                                />
+                                <Text
+                                    color="gray.400"
+                                    fontSize="xs"
+                                    textAlign="right"
+                                >
+                                    Quelle: Bundesregierung - Guido Bergmann
+                                </Text>
+                            </Box>
+                            <Box>
+                                <Text variant="info" lineHeight={1.1} textAlign="center">
+                                    Bettina Stark-Watzinger, Federal Minister of
+                                    Education and Research
+                                </Text>
+                            </Box>
+                        </Flex>
+                        <Flex flexDir="column" gap={3}>
                             <Image
+                                maxH="25rem"
                                 src="/images/patron.jpg"
-                                alt="Our patron"
+                                alt="Prof. Dr. Thomas Hirth"
                                 objectFit="contain"
                             />
-                        </Box>
-                        <Box>
-                            <Heading>Our Patron</Heading>
-                            <Text variant="info">
-                                Professor Dr. Thomas Hirth, Vice-President for
-                                Transfer and International Affairs, is
-                                supporting GROW as our patron.
-                            </Text>
-                        </Box>
+                            <Box>
+                                <Text variant="info" lineHeight={1.1} textAlign="center">
+                                    Professor Dr. Thomas Hirth, KIT
+                                    Vice-President for Transfer and
+                                    International Affairs
+                                </Text>
+                            </Box>
+                        </Flex>
                     </Flex>
-                </Center>
+                </Flex>
             </Section>
 
-            <Section my={20}>
+            <Section my={24}>
                 <Sponsors sponsors={sponsors} />
             </Section>
 
