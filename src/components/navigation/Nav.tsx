@@ -82,13 +82,12 @@ const TopNavBar: React.FC<PropsWithChildren & { alpha: number }> = ({
         <ChakraBox
             className="flex"
             justifyContent="center"
-            position="fixed"
+            position="sticky"
             top={0}
-            right={0}
             width="100%"
             zIndex={5}
             sx={{ backgroundColor: `rgba(0,0,0,${alpha})` }}
-            initial={{ y: '-100%' }}
+            initial={{ y: '-200%' }}
             animate={{ y: 0 }}
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore no problem in operation, although type error appears.

@@ -1,4 +1,5 @@
-import { Box } from '@chakra-ui/react';
+import AlertBanner from '@/components/AlertBanner';
+import { Box, Center, Link } from '@chakra-ui/react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import Footer from 'modules/landing/Footer';
@@ -32,6 +33,9 @@ export default function Layout({ children }: PropsWithChildren) {
 
             <SessionContextProvider supabaseClient={supabaseClient}>
                 <QueryClientProvider client={queryClient}>
+                    <AlertBanner>
+                        Sign up <Link textDecoration="underline" href="https://grow-x.eventbrite.de">here</Link> for the GROW X finals on Jan 21
+                    </AlertBanner>
                     <GrowNav />
                     <MainWrapper>{children}</MainWrapper>
                     <Footer />
