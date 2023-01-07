@@ -5,7 +5,6 @@ import {
     Flex,
     Heading,
     Image,
-    Show,
     Text,
 } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
@@ -24,11 +23,7 @@ import LongTimeline from 'modules/landing/Timeline';
 import WaitingForBlock from 'modules/landing/WaitingForBlock';
 import { getSponsors } from 'modules/sponsor/api';
 import { Sponsor } from 'modules/sponsor/types';
-import dynamic from 'next/dynamic';
 import { PropsWithChildren } from 'react';
-const ParticleBackground = dynamic(
-    () => import('@/components/ParticleBackground')
-);
 
 const minutesToSeconds = (minutes: number) => minutes * 60;
 
@@ -68,9 +63,6 @@ const Home: React.FC<HomeProps> = ({
     const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
     return (
         <>
-            <Show above="lg">
-                <ParticleBackground />
-            </Show>
             <Section position="relative" minH="80vh">
                 <Box
                     maxW="container.xl"
