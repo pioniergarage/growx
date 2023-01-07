@@ -1,7 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { PropsWithChildren } from 'react';
 
-type AlertBannerProps = {} & PropsWithChildren;
+type AlertBannerProps = PropsWithChildren;
 
 const AlertBanner: React.FC<AlertBannerProps> = ({ children }) => {
     return (
