@@ -1,17 +1,10 @@
-import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
-    VStack,
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
     Flex,
     Box,
     Heading,
     Text,
     Image,
 } from '@chakra-ui/react';
-import MentorList from 'modules/landing/MentorList';
-import Link from 'next/link';
 import { Finalist } from '../types';
 
 type FinalistProps = {
