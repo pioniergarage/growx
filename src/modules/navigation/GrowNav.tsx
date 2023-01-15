@@ -3,6 +3,7 @@ import { Profile } from 'modules/profile/types';
 import {
     FaCalendarAlt,
     FaCogs,
+    FaFile,
     FaHandsHelping,
     FaHome,
     FaMedal,
@@ -33,9 +34,14 @@ const navigationItems: NavigationItem[] = [
         icon: <FaHome />,
     },
     {
+        href: '/finalists',
+        label: 'Finalists',
+        icon: <FaMedal />
+    },
+    {
         href: '/startup_diploma',
         label: 'Startup Diploma',
-        icon: <FaMedal />,
+        icon: <FaFile />,
     },
     {
         href: '/mentor',

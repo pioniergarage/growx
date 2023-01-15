@@ -21,3 +21,10 @@ export type TeamWithMembers = {
         lastName: string;
     }[];
 };
+
+export type Finalist = {
+    name: string;
+    description: string;
+    logo: string;
+    hideName?: boolean;
+}

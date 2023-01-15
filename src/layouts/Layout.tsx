@@ -52,7 +52,7 @@ const MainWrapper: React.FC<PropsWithChildren> = ({ children }) => {
             as="main"
             maxW="container.xl"
             mx="auto"
-            pt={20}
+            pt={6}
             position="relative"
         >
             <GradientBackground />
