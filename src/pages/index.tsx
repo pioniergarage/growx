@@ -148,7 +148,11 @@ const Home: React.FC<HomeProps> = ({
                                 </Text>
                             </Box>
                             <Box>
-                                <Text variant="info" lineHeight={1.1} textAlign="center">
+                                <Text
+                                    variant="info"
+                                    lineHeight={1.1}
+                                    textAlign="center"
+                                >
                                     Bettina Stark-Watzinger, Federal Minister of
                                     Education and Research
                                 </Text>
@@ -162,7 +166,11 @@ const Home: React.FC<HomeProps> = ({
                                 objectFit="contain"
                             />
                             <Box>
-                                <Text variant="info" lineHeight={1.1} textAlign="center">
+                                <Text
+                                    variant="info"
+                                    lineHeight={1.1}
+                                    textAlign="center"
+                                >
                                     Professor Dr. Thomas Hirth, KIT
                                     Vice-President for Transfer and
                                     International Affairs

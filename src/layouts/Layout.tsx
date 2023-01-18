@@ -33,9 +33,6 @@ export default function Layout({ children }: PropsWithChildren) {
 
             <SessionContextProvider supabaseClient={supabaseClient}>
                 <QueryClientProvider client={queryClient}>
-                    <AlertBanner>
-                        Sign up <Link textDecoration="underline" href="https://grow-x.eventbrite.de">here</Link> for the GROW X finals on Jan 21
-                    </AlertBanner>
                     <GrowNav />
                     <MainWrapper>{children}</MainWrapper>
                     <Footer />
