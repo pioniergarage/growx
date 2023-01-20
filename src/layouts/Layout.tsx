@@ -45,13 +45,7 @@ export default function Layout({ children }: PropsWithChildren) {
 
 const MainWrapper: React.FC<PropsWithChildren> = ({ children }) => {
     return (
-        <Box
-            as="main"
-            maxW="container.xl"
-            mx="auto"
-            pt={6}
-            position="relative"
-        >
+        <Box as="main" maxW="container.xl" mx="auto" pt={6} position="relative">
             <GradientBackground />
             <Box px={{ base: 4, md: 6 }} maxW="100vw">
                 {children}

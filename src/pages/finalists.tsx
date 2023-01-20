@@ -19,17 +19,10 @@ const Finalists: React.FC = () => {
             logo: '/images/teams/artjom-eve.png',
         },
         {
-            name: 'Cellgrid',
+            name: 'Wehiculum',
             description:
-                "Our mission is to make the earth searchable. With Cellgrid we bundle all information about the Earth's surface and organize it in a unifiable way. This makes  complex geospatial search- and analysis queries achievable not only for experts anymore, but for everyone who benefits from additional insights about locations on Earth. Our software solution is designed as a B2B solution for stakeholders that want to make data-driven, efficient and well-informed decisions for their business.",
-            logo: '/images/teams/cellgrid.png',
-            hideName: true,
-        },
-        {
-            name: 'First Vision',
-            description:
-                "First Vision is not a company but an idea to bring all like-minded people together for the people. In the ever-changing time, we are committed to bring forward the best possible solutions that would not only minimize the safety risks of our front-line workers but also would help the people to make the world a more safer place with hassle-free technology. We are currently focusing on a way to upgrade firefighting technology. Our state-of-the-art Bird Eye surveillance drone have high-definition cameras, thermal imaging, and air quality monitoring sensors to provide firefighters a bird's-eye view of the fireground (city, forest). Not only that it also incorporates them with the capability to locate the victims even in remote and inaccessible areas.  even in inaccessible or isolated regions also. Our  Panzerwagen, on the other hand, is designed to swiftly and safely deploy essential equipment such as hoses and nozzles to the frontlines. These robots may be remotely operated by firefighters, allowing them to get rapid and safe access to the fireground despite the high temperatures and rough terrain. By supplying fire departments with the most cutting-edge and reliable equipment, we aim to improve public safety, save lives and minimize economic loss.",
-            logo: '/images/teams/first-vision.png',
+                'Wehiculum is a carpooling app that connects people driving to work or university. Our goal is to create an easy and sustainable way of daily commuting.',
+            logo: '/images/teams/wehiculum.svg',
             hideName: true,
         },
         {
@@ -59,6 +52,19 @@ const Finalists: React.FC = () => {
             hideName: true,
         },
         {
+            name: 'StraightUp',
+            description:
+                'StraightUp is a novel medical system built to prevent backpain caused by unhealthy posture throughout the day. The smart wearable measures the exact posture and gives realtime feedback to the user. ',
+            logo: '/images/teams/straight-up.svg',
+        },
+        {
+            name: 'Cellgrid',
+            description:
+                "Our mission is to make the earth searchable. With Cellgrid we bundle all information about the Earth's surface and organize it in a unifiable way. This makes  complex geospatial search- and analysis queries achievable not only for experts anymore, but for everyone who benefits from additional insights about locations on Earth. Our software solution is designed as a B2B solution for stakeholders that want to make data-driven, efficient and well-informed decisions for their business.",
+            logo: '/images/teams/cellgrid.png',
+            hideName: true,
+        },
+        {
             name: 'SPH1NX',
             description: `SPH1NX is the ultimate play-to-earn online riddle game, where players can compete for real money while getting smarter along the way. 
 
@@ -70,16 +76,10 @@ const Finalists: React.FC = () => {
             logo: '/images/teams/sph1nx.svg',
         },
         {
-            name: 'StraightUp',
+            name: 'First Vision',
             description:
-                'StraightUp is a novel medical system built to prevent backpain caused by unhealthy posture throughout the day. The smart wearable measures the exact posture and gives realtime feedback to the user. ',
-            logo: '/images/teams/straight-up.svg',
-        },
-        {
-            name: 'Wehiculum',
-            description:
-                'Wehiculum is a carpooling app that connects people driving to work or university. Our goal is to create an easy and sustainable way of daily commuting.',
-            logo: '/images/teams/wehiculum.svg',
+                "First Vision is not a company but an idea to bring all like-minded people together for the people. In the ever-changing time, we are committed to bring forward the best possible solutions that would not only minimize the safety risks of our front-line workers but also would help the people to make the world a more safer place with hassle-free technology. We are currently focusing on a way to upgrade firefighting technology. Our state-of-the-art Bird Eye surveillance drone have high-definition cameras, thermal imaging, and air quality monitoring sensors to provide firefighters a bird's-eye view of the fireground (city, forest). Not only that it also incorporates them with the capability to locate the victims even in remote and inaccessible areas.  even in inaccessible or isolated regions also. Our  Panzerwagen, on the other hand, is designed to swiftly and safely deploy essential equipment such as hoses and nozzles to the frontlines. These robots may be remotely operated by firefighters, allowing them to get rapid and safe access to the fireground despite the high temperatures and rough terrain. By supplying fire departments with the most cutting-edge and reliable equipment, we aim to improve public safety, save lives and minimize economic loss.",
+            logo: '/images/teams/first-vision.png',
             hideName: true,
         },
     ];
@@ -98,7 +98,7 @@ const Finalists: React.FC = () => {
                     </BreadcrumbItem>
                 </Breadcrumb>
             </VStack>
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
+            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
                 {finalists.map((finalist) => (
                     <FinalistCard key={finalist.name} finalist={finalist} />
                 ))}
