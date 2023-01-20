@@ -28,7 +28,7 @@ const Finalists: React.FC = () => {
         {
             name: 'First Vision',
             description:
-                'Responding to an emergency is a probability game. We strive to improve our odds by providing our front line workers with cutting edge technology',
+                "First Vision is not a company but an idea to bring all like-minded people together for the people. In the ever-changing time, we are committed to bring forward the best possible solutions that would not only minimize the safety risks of our front-line workers but also would help the people to make the world a more safer place with hassle-free technology. We are currently focusing on a way to upgrade firefighting technology. Our state-of-the-art Bird Eye surveillance drone have high-definition cameras, thermal imaging, and air quality monitoring sensors to provide firefighters a bird's-eye view of the fireground (city, forest). Not only that it also incorporates them with the capability to locate the victims even in remote and inaccessible areas.  even in inaccessible or isolated regions also. Our  Panzerwagen, on the other hand, is designed to swiftly and safely deploy essential equipment such as hoses and nozzles to the frontlines. These robots may be remotely operated by firefighters, allowing them to get rapid and safe access to the fireground despite the high temperatures and rough terrain. By supplying fire departments with the most cutting-edge and reliable equipment, we aim to improve public safety, save lives and minimize economic loss.",
             logo: '/images/teams/first-vision.png',
             hideName: true,
         },
@@ -60,7 +60,7 @@ const Finalists: React.FC = () => {
         },
         {
             name: 'SPH1NX',
-            description: `SPH1NX is the first ever play-to-earn online riddle game, where players can compete for real money while getting smarter along the way. 
+            description: `SPH1NX is the ultimate play-to-earn online riddle game, where players can compete for real money while getting smarter along the way. 
 
             We provide our users with free daily riddles to improve their cognitive abilities on a daily basis. Additionally, we offer regular riddle solving contests where players pay a small entry fee to compete with the chance to win thousands of euros just by solving riddles. 
             
