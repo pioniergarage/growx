@@ -91,8 +91,8 @@ export default function MainInfoBlock() {
                         w="100%"
                         mt={10}
                     >
-                        <Fact title="startups" amount="50+" />
-                        <Fact title="prizes" amount="20 000€" />
+                        <Fact title="startups" amount="70+" />
+                        <Fact title="prizes" amount="> 20 000€" />
                         <Fact title="workshops" amount="11" />
                     </Flex>
                 </Flex>
