@@ -54,7 +54,7 @@ export default function MainInfoBlock() {
                             your market.
                         </Text>
                     </Box>
-                    <Flex
+                    {/* <Flex
                         justifyContent={{
                             base: 'space-around',
                             lg: 'space-between',
@@ -65,6 +65,20 @@ export default function MainInfoBlock() {
                         <Fact title="startups" amount="50+" />
                         <Fact title="prizes" amount="20 000€" />
                         <Fact title="workshops" amount="11" />
+                    </Flex> */}
+                    <Flex
+                        justifyContent={{
+                            base: 'space-around',
+                            lg: 'space-between',
+                        }}
+                        w="100%"
+                        mt={10}
+                    >
+                        <Fact title="Start Kick-Off" amount="4.Nov 2023" />
+                        <Fact
+                            title="Finale in Karlsruhe"
+                            amount="20.Jan.2024"
+                        />
                     </Flex>
                 </Flex>
             </GridItem>
