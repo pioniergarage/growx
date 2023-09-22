@@ -8,6 +8,7 @@ import {
     Text,
 } from '@chakra-ui/react';
 import AnimatedLogo from './AnimatedLogo';
+import ParticipateButton from './ParticipateButton';
 
 function Fact({ amount, title }: { amount: string; title: string }) {
     return (
@@ -54,6 +55,7 @@ export default function MainInfoBlock() {
                             your market.
                         </Text>
                     </Box>
+                    <ParticipateButton />
                     {/* <Flex
                         justifyContent={{
                             base: 'space-around',
