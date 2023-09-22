@@ -1,10 +1,10 @@
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
-    VStack,
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbLink,
     SimpleGrid,
+    VStack,
 } from '@chakra-ui/react';
 import FinalistCard from 'modules/teams/components/FinalistCard';
 import { Finalist } from 'modules/teams/types';

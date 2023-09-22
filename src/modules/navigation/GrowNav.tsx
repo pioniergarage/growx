@@ -33,11 +33,6 @@ const navigationItems: NavigationItem[] = [
         icon: <FaHome />,
     },
     {
-        href: '/previous',
-        label: 'Previous',
-        icon: <FaCalendarAlt />,
-    },
-    {
         href: '/startup_diploma',
         label: 'Startup Diploma',
         icon: <FaFile />,
@@ -46,6 +41,11 @@ const navigationItems: NavigationItem[] = [
         href: '/mentor',
         label: 'Mentors',
         icon: <FaHandsHelping />,
+    },
+    {
+        href: '/previous',
+        label: 'Previous',
+        icon: <FaCalendarAlt />,
     },
     {
         href: '/connect',

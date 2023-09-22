@@ -61,14 +61,14 @@ const TimelineItem: React.FC<TimeLineItemProps> = ({
 export default function ShortTimeline() {
     const events: TimeLineItemProps[] = [
         {
-            date: '05. Nov 22',
+            date: '04. Nov 2023',
             title: 'Kickoff Event',
             description: `Pitch your idea, find a team or simply learn more about the contest. 
             The kickoff is where the fun starts, no matter whether you have already applied or you're up for a spontaneous adventure. `,
             image: 'notes.jpg',
         },
         {
-            date: '17. Dec 22',
+            date: '17. Dec 2023',
             title: 'Midterm Pitch',
             description: `Half time break! Teams pitch their first progress and fight about advancing to the final. 
             Pitch what you've accomplished in the last 5 weeks in front of a small audience and the jury. `,
@@ -76,8 +76,8 @@ export default function ShortTimeline() {
             objectPosition: '0 0',
         },
         {
-            date: '21. Jan 23',
-            title: 'Final',
+            date: '20. Jan 2024',
+            title: 'Finals',
             description: `Present your results to a huge crowd and show how far you have come. 
             Each participant will have learned a lot and gained a lot of experience by this point. 
             The groups with the greatest progress will receive prizes. This is what you've been working for!`,

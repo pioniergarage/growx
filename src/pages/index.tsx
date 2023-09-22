@@ -1,12 +1,4 @@
-import {
-    Box,
-    BoxProps,
-    Divider,
-    Flex,
-    Heading,
-    Image,
-    Text,
-} from '@chakra-ui/react';
+import { Box, BoxProps, Divider } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
 
 import { getEvents } from 'modules/events/api';
@@ -128,7 +120,8 @@ const Home: React.FC<HomeProps> = ({
 
             <Divider my={24} />
 
-            <Section>
+            {/*  REMOVED DUE TO MISSING PATRONS
+             <Section>
                 <Flex alignItems="center" flexDir="column">
                     <Heading mb={4}>Our Patrons</Heading>
                     <Flex gap={10} flexDir="column" alignItems="center">
@@ -180,7 +173,7 @@ const Home: React.FC<HomeProps> = ({
                     </Flex>
                 </Flex>
             </Section>
-
+ */}
             <Section my={24}>
                 <Sponsors sponsors={sponsors} />
             </Section>

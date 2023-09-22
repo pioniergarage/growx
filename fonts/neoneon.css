@@ -6,14 +6,17 @@
 }
 
 html {
-    --neon-text-color: rgb(179, 252, 255);
+    --neon-text-color: rgb(255, 53, 53);
 }
 
 .neon-text {
     font-family: 'Neoneon' !important;
-    text-shadow: -0.2rem -0.2rem 1rem rgba(255, 255, 255, 0.651),
-        0.2rem 0.2rem 1rem rgba(255, 255, 255, 0.555),
-        0 0 3rem var(--neon-text-color), 0 0 6rem var(--neon-text-color);
+    color: transparent;
+    /* text-shadow: 0.06rem 0.09rem 0.1rem rgba(255, 255, 255, 0.233),
+        0.2rem 0.2rem 1rem rgba(255, 0, 0, 0.555),
+        -0.2rem -0.2rem 1.5rem rgba(255, 255, 255, 0.333),
+        0 0 3rem var(--neon-text-color), 0 0 1.5rem var(--neon-text-color); */
+    text-shadow: 0 0.06rem 0.06rem #ff003c, 0 0 0 rgba(255, 255, 255, 0.63),
+        -0.06rem 0.06rem 0.06rem rgba(89, 3, 3, 0.63),
+        0.1rem 0.1rem 1rem rgba(255, 0, 60, 0.63);
 }
-
-

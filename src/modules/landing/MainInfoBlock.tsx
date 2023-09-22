@@ -41,7 +41,7 @@ export default function MainInfoBlock() {
                         className="neon-text"
                         lineHeight={1.0}
                         fontWeight="400"
-                        fontSize={{ base: '7rem', md: '10rem' }}
+                        fontSize={{ base: '5rem', md: '6.5rem' }}
                     >
                         Let it Grow
                     </Heading>
@@ -51,11 +51,10 @@ export default function MainInfoBlock() {
                         </Heading>
                         <Text variant="info" fontSize="lg">
                             Become an entrepreneur and advance your idea over 11
-                            weeks. Get support, build your prototype and test
-                            your market.
+                            weeks. <br></br> Get support, build your prototype
+                            and test your market.
                         </Text>
                     </Box>
-                    <ParticipateButton />
                     {/* <Flex
                         justifyContent={{
                             base: 'space-around',
@@ -74,7 +73,14 @@ export default function MainInfoBlock() {
                             lg: 'space-between',
                         }}
                         w="100%"
-                        mt={10}
+                        mt={{
+                            base: '5',
+                            lg: '20',
+                        }}
+                        flexFlow={{
+                            base: 'column',
+                            lg: 'row',
+                        }}
                     >
                         <Fact title="Start Kick-Off" amount="4.Nov 2023" />
                         <Fact
@@ -87,6 +93,7 @@ export default function MainInfoBlock() {
             <Show above="md">
                 <GridItem placeSelf="center" textAlign="center" rowSpan={2}>
                     <AnimatedLogo boxSize={250} />
+                    <ParticipateButton />
                 </GridItem>
             </Show>
         </Grid>
