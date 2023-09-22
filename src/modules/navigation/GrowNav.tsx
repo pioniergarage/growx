@@ -6,7 +6,6 @@ import {
     FaFile,
     FaHandsHelping,
     FaHome,
-    FaMedal,
     FaNewspaper,
     FaUserFriends,
 } from 'react-icons/fa';
@@ -34,9 +33,9 @@ const navigationItems: NavigationItem[] = [
         icon: <FaHome />,
     },
     {
-        href: '/finalists',
-        label: 'Finalists',
-        icon: <FaMedal />
+        href: '/previous',
+        label: 'Previous',
+        icon: <FaCalendarAlt />,
     },
     {
         href: '/startup_diploma',
