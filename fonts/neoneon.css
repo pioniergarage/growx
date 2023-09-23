@@ -16,7 +16,116 @@ html {
         0.2rem 0.2rem 1rem rgba(255, 0, 0, 0.555),
         -0.2rem -0.2rem 1.5rem rgba(255, 255, 255, 0.333),
         0 0 3rem var(--neon-text-color), 0 0 1.5rem var(--neon-text-color); */
-    text-shadow: 0 0.06rem 0.06rem #ff003c, 0 0 0 rgba(255, 255, 255, 0.63),
-        -0.06rem 0.06rem 0.06rem rgba(89, 3, 3, 0.63),
-        0.1rem 0.1rem 1rem rgba(255, 0, 60, 0.63);
+    text-shadow: 0rem 0rem 0rem rgba(216, 230, 148, 0.633),
+        0.1rem 0rem 0.6rem #ff0000, 0 0.06rem 0.09rem rgba(255, 255, 255, 0.63),
+        -0.2rem 0.6rem 0.43rem rgb(0, 0, 0),
+        0.2rem -0.1rem 1rem rgb(255, 210, 113);
+    -webkit-animation: blink 0.03s infinite alternate;
+    -moz-animation: blink 0.03s infinite alternate;
+    -o-animation: blink 0.03s infinite alternate;
+    animation: blink 0.03s infinite alternate;
+}
+
+.neon-text2 {
+    font-family: 'Neoneon' !important;
+    color: transparent;
+    text-shadow: 0rem 0rem 0rem rgba(216, 230, 148, 0.633),
+        0.1rem 0rem 0.6rem #ff0000, 0 0.06rem 0.09rem rgba(255, 255, 255, 0.63),
+        -0.2rem 0.6rem 0.43rem rgb(0, 0, 0),
+        0.2rem -0.1rem 1rem rgb(255, 210, 113);
+    -webkit-animation: fade 10s infinite alternate;
+    -moz-animation: fade 10s infinite alternate;
+    -o-animation: fade 10s infinite alternate;
+    animation: fade 10s infinite alternate;
+}
+@-moz-keyframes blink {
+    70% {
+        opacity: 0.79;
+    }
+}
+@-webkit-keyframes blink {
+    45% {
+        opacity: 0.79;
+    }
+}
+@-o-keyframes blink {
+    70% {
+        opacity: 0.79;
+    }
+}
+@keyframes blink {
+    70% {
+        opacity: 0.79;
+    }
+}
+@-moz-keyframes fade {
+    40% {
+        opacity: 0.8;
+    }
+    42% {
+        opacity: 0.1;
+    }
+    43% {
+        opacity: 0.8;
+    }
+    45% {
+        opacity: 0.1;
+    }
+    46% {
+        opacity: 0.8;
+    }
+}
+@-webkit-keyframes fade {
+    40% {
+        opacity: 0.8;
+    }
+    42% {
+        opacity: 0.1;
+    }
+    43% {
+        opacity: 0.8;
+    }
+    45% {
+        opacity: 0.1;
+    }
+    46% {
+        opacity: 0.8;
+    }
+}
+@-o-keyframes fade {
+    40% {
+        opacity: 0.8;
+    }
+    42% {
+        opacity: 0.1;
+    }
+    43% {
+        opacity: 0.8;
+    }
+    45% {
+        opacity: 0.1;
+    }
+    46% {
+        opacity: 0.8;
+    }
+}
+@keyframes fade {
+    40% {
+        opacity: 0.8;
+    }
+    42% {
+        opacity: 0.1;
+    }
+    43% {
+        opacity: 0.8;
+    }
+    45% {
+        opacity: 0.8;
+    }
+    46% {
+        opacity: 0.1;
+    }
+    47% {
+        opacity: 0.8;
+    }
 }

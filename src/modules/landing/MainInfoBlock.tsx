@@ -43,7 +43,7 @@ export default function MainInfoBlock() {
                         fontWeight="400"
                         fontSize={{ base: '5rem', md: '6.5rem' }}
                     >
-                        Let it Grow
+                        Let it <span className="neon-text2">Grow</span>
                     </Heading>
                     <Box>
                         <Heading size="lg">
