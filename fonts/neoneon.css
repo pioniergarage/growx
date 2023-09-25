@@ -13,11 +13,11 @@ html {
     font-family: 'Neoneon' !important;
     color: transparent;
     /* text-shadow: 0.06rem 0.09rem 0.1rem rgba(255, 255, 255, 0.233),
-        0.2rem 0.2rem 1rem rgba(255, 0, 0, 0.555),
+        0.2rem 0.2rem 1rem rgba(255, 0, 0, 0.73),
         -0.2rem -0.2rem 1.5rem rgba(255, 255, 255, 0.333),
         0 0 3rem var(--neon-text-color), 0 0 1.5rem var(--neon-text-color); */
     text-shadow: 0rem 0rem 0rem rgba(216, 230, 148, 0.633),
-        0.1rem 0rem 0.6rem #ff0000, 0 0.06rem 0.09rem rgba(255, 255, 255, 0.63),
+        0.1rem 0rem 0.6rem #ff0000, 0 0.06rem 0.09rem rgba(255, 255, 255, 0.73),
         -0.2rem 0.6rem 0.43rem rgb(0, 0, 0),
         0.2rem -0.1rem 1rem rgb(255, 210, 113);
     -webkit-animation: blink 0.03s infinite alternate;
@@ -30,13 +30,13 @@ html {
     font-family: 'Neoneon' !important;
     color: transparent;
     text-shadow: 0rem 0rem 0rem rgba(216, 230, 148, 0.633),
-        0.1rem 0rem 0.6rem #ff0000, 0 0.06rem 0.09rem rgba(255, 255, 255, 0.63),
+        0.1rem 0rem 0.6rem #ff0000, 0 0.06rem 0.09rem rgba(255, 255, 255, 0.93),
         -0.2rem 0.6rem 0.43rem rgb(0, 0, 0),
         0.2rem -0.1rem 1rem rgb(255, 210, 113);
-    -webkit-animation: fade 10s infinite alternate;
-    -moz-animation: fade 10s infinite alternate;
-    -o-animation: fade 10s infinite alternate;
-    animation: fade 10s infinite alternate;
+    -webkit-animation: fade 7s infinite alternate;
+    -moz-animation: fade 7s infinite alternate;
+    -o-animation: fade 7s infinite alternate;
+    animation: fade 7s infinite alternate;
 }
 @-moz-keyframes blink {
     70% {
@@ -69,9 +69,18 @@ html {
         opacity: 0.8;
     }
     45% {
-        opacity: 0.1;
+        opacity: 0.8;
     }
     46% {
+        opacity: 0.1;
+    }
+    47% {
+        opacity: 0.8;
+    }
+    48% {
+        opacity: 0.1;
+    }
+    49% {
         opacity: 0.8;
     }
 }
@@ -86,9 +95,18 @@ html {
         opacity: 0.8;
     }
     45% {
-        opacity: 0.1;
+        opacity: 0.8;
     }
     46% {
+        opacity: 0.1;
+    }
+    47% {
+        opacity: 0.8;
+    }
+    48% {
+        opacity: 0.1;
+    }
+    49% {
         opacity: 0.8;
     }
 }
@@ -103,9 +121,18 @@ html {
         opacity: 0.8;
     }
     45% {
-        opacity: 0.1;
+        opacity: 0.8;
     }
     46% {
+        opacity: 0.1;
+    }
+    47% {
+        opacity: 0.8;
+    }
+    48% {
+        opacity: 0.1;
+    }
+    49% {
         opacity: 0.8;
     }
 }
@@ -126,6 +153,12 @@ html {
         opacity: 0.1;
     }
     47% {
+        opacity: 0.8;
+    }
+    48% {
+        opacity: 0.1;
+    }
+    49% {
         opacity: 0.8;
     }
 }

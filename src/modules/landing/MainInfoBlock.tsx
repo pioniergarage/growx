@@ -41,7 +41,7 @@ export default function MainInfoBlock() {
                         className="neon-text"
                         lineHeight={1.0}
                         fontWeight="400"
-                        fontSize={{ base: '5rem', md: '6.5rem' }}
+                        fontSize={{ base: '6rem', md: '6.5rem' }}
                     >
                         Let it <span className="neon-text2">Grow</span>
                     </Heading>
@@ -92,8 +92,10 @@ export default function MainInfoBlock() {
             </GridItem>
             <Show above="md">
                 <GridItem placeSelf="center" textAlign="center" rowSpan={2}>
-                    <AnimatedLogo boxSize={250} />
-                    <ParticipateButton />
+                    <Flex className=" flex-col">
+                        <AnimatedLogo boxSize={250} />
+                        <ParticipateButton />
+                    </Flex>
                 </GridItem>
             </Show>
         </Grid>
