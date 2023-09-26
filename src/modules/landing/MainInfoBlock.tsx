@@ -94,10 +94,10 @@ export default function MainInfoBlock() {
                 <GridItem placeSelf="center" textAlign="center" rowSpan={2}>
                     <Flex className=" flex-col">
                         <AnimatedLogo boxSize={250} />
-                        <ParticipateButton />
                     </Flex>
                 </GridItem>
             </Show>
+            <ParticipateButton />
         </Grid>
     );
 }

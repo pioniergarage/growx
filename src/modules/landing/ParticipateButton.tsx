@@ -7,7 +7,7 @@ const ParticipateButton = (props: { isDisabled?: boolean }) => {
             <Box
                 as="button"
                 disabled
-                bgGradient="linear(to-r, secondary, primary)"
+                bgGradient="linear(to-r, primary, secondary)"
                 filter="brightness(0.5)"
                 px={4}
                 py={3}
@@ -24,7 +24,7 @@ const ParticipateButton = (props: { isDisabled?: boolean }) => {
         <PageLink href="/connect/signup">
             <Box
                 as="button"
-                bgGradient="linear(to-r, secondary, primary)"
+                bgGradient="linear(to-r, primary, secondary)"
                 px={4}
                 py={3}
                 borderRadius={4}

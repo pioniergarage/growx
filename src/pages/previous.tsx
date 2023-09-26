@@ -93,7 +93,7 @@ const Finalists: React.FC = () => {
                 >
                     <BreadcrumbItem isCurrentPage>
                         <Link href="/mentor" passHref>
-                            <BreadcrumbLink>Finalists</BreadcrumbLink>
+                            <BreadcrumbLink>Previous Finalists</BreadcrumbLink>
                         </Link>
                     </BreadcrumbItem>
                 </Breadcrumb>

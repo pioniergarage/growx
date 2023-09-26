@@ -162,7 +162,7 @@ export default SignUp;
 export const getServerSideProps = withPageAuth({
     authRequired: false,
     getServerSideProps: async (ctx, supabase) => {
-        const signupDisabled = true;
+        const signupDisabled = false;
         if (signupDisabled) {
             return {
                 redirect: {
