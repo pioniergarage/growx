@@ -3,6 +3,7 @@ import {
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbLink,
+    SimpleGrid,
     VStack,
 } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
@@ -11,6 +12,8 @@ import Link from 'next/link';
 
 import { getEvents } from 'modules/events/api';
 import { GrowEvent } from 'modules/events/types';
+import FinalistCard from 'modules/teams/components/FinalistCard';
+import { Finalist } from 'modules/teams/types';
 import React from 'react';
 const minutesToSeconds = (minutes: number) => minutes * 60;
 
@@ -37,8 +40,8 @@ interface PrevProps {
     events: (Omit<GrowEvent, 'date'> & { date: string })[];
 }
 
-{
-    /*const Finalists: React.FC = () => {
+const Prev: React.FC<PrevProps> = ({ events: jsonEvents = [] }) => {
+    const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
     const finalists: Finalist[] = [
         {
             name: 'Artjom & Eve',
@@ -55,8 +58,7 @@ interface PrevProps {
         },
         {
             name: 'MaDeCa',
-            description:
-                'Boosting the Circular Economy – with ALGAE at Sea',
+            description: 'Boosting the Circular Economy – with ALGAE at Sea',
             logo: '/images/teams/madeca.svg',
             hideName: true,
         },
@@ -111,12 +113,7 @@ interface PrevProps {
             logo: '/images/teams/first-vision.png',
             hideName: true,
         },
-    ]; */
-}
-
-const Prev: React.FC<PrevProps> = ({ events: jsonEvents = [] }) => {
-    const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
-
+    ];
     return (
         <>
             <div id="timeline" className="mt-4">
@@ -134,11 +131,11 @@ const Prev: React.FC<PrevProps> = ({ events: jsonEvents = [] }) => {
                     </BreadcrumbItem>
                 </Breadcrumb>
             </VStack>
-            {/*                 <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
-                    {finalists.map((finalist) => (
-                        <FinalistCard key={finalist.name} finalist={finalist} />
-                    ))}
-                </SimpleGrid> */}
+            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+                {finalists.map((finalist) => (
+                    <FinalistCard key={finalist.name} finalist={finalist} />
+                ))}
+            </SimpleGrid>
         </>
     );
 };
