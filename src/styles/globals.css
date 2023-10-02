@@ -37,3 +37,9 @@ body {
 .tap-highlight-transparent {
     -webkit-tap-highlight-color: transparent;
 }
+
+@media (max-width: 640px) {
+    .banner_bottom {
+        height: unset !important;
+    }
+}

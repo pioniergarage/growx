@@ -1,6 +1,5 @@
-import { Box, BoxProps, Divider } from '@chakra-ui/react';
+import { Box, BoxProps, Divider, Heading, VStack } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
-
 import { getEvents } from 'modules/events/api';
 import { GrowEvent } from 'modules/events/types';
 import { getFAQs } from 'modules/faq/api';
@@ -10,9 +9,8 @@ import GrowVideo from 'modules/landing/GrowVideo';
 import MainInfoBlock from 'modules/landing/MainInfoBlock';
 import MotivationBlock from 'modules/landing/MotivationBlock';
 import Timeline from 'modules/landing/ShortTimeline';
-import Sponsors from 'modules/landing/sponsor/Sponsors';
-import LongTimeline from 'modules/landing/Timeline';
 import WaitingForBlock from 'modules/landing/WaitingForBlock';
+import Sponsors from 'modules/landing/sponsor/Sponsors';
 import { getSponsors } from 'modules/sponsor/api';
 import { Sponsor } from 'modules/sponsor/types';
 import { PropsWithChildren } from 'react';
@@ -93,8 +91,12 @@ const Home: React.FC<HomeProps> = ({
                 <MotivationBlock />
             </Section>
 
-            <Section id="timeline" mt="4rem">
-                <LongTimeline events={events} />
+            <Section id="timeline" mt="4rem" my="12rem">
+                {/* <LongTimeline events={events} /> */}
+                <VStack gap={4}>
+                    <Heading>Timeline 23/24 </Heading>
+                    <p>coming soon...</p>
+                </VStack>
             </Section>
 
             <Section position="relative" my={24} px={0}>

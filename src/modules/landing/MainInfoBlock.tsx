@@ -8,7 +8,7 @@ import {
     Text,
 } from '@chakra-ui/react';
 import AnimatedLogo from './AnimatedLogo';
-import ParticipateButton from './ParticipateButton';
+import BottomBanner from './BottomBanner';
 
 function Fact({ amount, title }: { amount: string; title: string }) {
     return (
@@ -42,10 +42,13 @@ export default function MainInfoBlock() {
                         lineHeight={1.0}
                         fontWeight="400"
                         fontSize={{ base: '6rem', md: '6.5rem' }}
+                        mt={{
+                            lg: '10%',
+                        }}
                     >
                         Let it <span className="neon-text2">Grow</span>
                     </Heading>
-                    <Box>
+                    <Box className=" mt-3">
                         <Heading size="lg">
                             Germany&apos;s Largest Student Founding Contest
                         </Heading>
@@ -74,8 +77,8 @@ export default function MainInfoBlock() {
                         }}
                         w="100%"
                         mt={{
-                            base: '5',
-                            lg: '20',
+                            base: '6',
+                            lg: '30%',
                         }}
                         flexFlow={{
                             base: 'column',
@@ -97,7 +100,7 @@ export default function MainInfoBlock() {
                     </Flex>
                 </GridItem>
             </Show>
-            <ParticipateButton />
+            <BottomBanner />
         </Grid>
     );
 }

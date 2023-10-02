@@ -3,14 +3,42 @@ import {
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbLink,
-    SimpleGrid,
     VStack,
 } from '@chakra-ui/react';
-import FinalistCard from 'modules/teams/components/FinalistCard';
-import { Finalist } from 'modules/teams/types';
+import { createClient } from '@supabase/supabase-js';
+import LongTimeline from 'modules/landing/Timeline';
 import Link from 'next/link';
 
-const Finalists: React.FC = () => {
+import { getEvents } from 'modules/events/api';
+import { GrowEvent } from 'modules/events/types';
+import React from 'react';
+const minutesToSeconds = (minutes: number) => minutes * 60;
+
+export const getStaticProps = async () => {
+    const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
+    );
+    try {
+        const events = (await getEvents(supabase)).map((e) => ({
+            ...e,
+            date: e.date.toISOString(),
+        }));
+        return {
+            props: { events },
+            revalidate: minutesToSeconds(30),
+        };
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+interface PrevProps {
+    events: (Omit<GrowEvent, 'date'> & { date: string })[];
+}
+
+{
+    /*const Finalists: React.FC = () => {
     const finalists: Finalist[] = [
         {
             name: 'Artjom & Eve',
@@ -27,7 +55,8 @@ const Finalists: React.FC = () => {
         },
         {
             name: 'MaDeCa',
-            description: 'Boosting the Circular Economy – with ALGAE at Sea',
+            description:
+                'Boosting the Circular Economy – with ALGAE at Sea',
             logo: '/images/teams/madeca.svg',
             hideName: true,
         },
@@ -68,11 +97,11 @@ const Finalists: React.FC = () => {
             name: 'SPH1NX',
             description: `SPH1NX is the ultimate play-to-earn online riddle game, where players can compete for real money while getting smarter along the way. 
 
-            We provide our users with free daily riddles to improve their cognitive abilities on a daily basis. Additionally, we offer regular riddle solving contests where players pay a small entry fee to compete with the chance to win thousands of euros just by solving riddles. 
-            
-            SPH1NX is more than just a game, it's a chance for people to level the playing field and earn money based on their intelligence alone. 
-            
-            Our mission is “Empowerment and Equality through intellect”.`,
+        We provide our users with free daily riddles to improve their cognitive abilities on a daily basis. Additionally, we offer regular riddle solving contests where players pay a small entry fee to compete with the chance to win thousands of euros just by solving riddles. 
+        
+        SPH1NX is more than just a game, it's a chance for people to level the playing field and earn money based on their intelligence alone. 
+        
+        Our mission is “Empowerment and Equality through intellect”.`,
             logo: '/images/teams/sph1nx.svg',
         },
         {
@@ -82,10 +111,17 @@ const Finalists: React.FC = () => {
             logo: '/images/teams/first-vision.png',
             hideName: true,
         },
-    ];
+    ]; */
+}
+
+const Prev: React.FC<PrevProps> = ({ events: jsonEvents = [] }) => {
+    const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
 
     return (
         <>
+            <div id="timeline" className="mt-4">
+                <LongTimeline events={events} />
+            </div>
             <VStack alignItems="stretch" gap={4} mb={2}>
                 <Breadcrumb
                     color="gray.500"
@@ -98,13 +134,12 @@ const Finalists: React.FC = () => {
                     </BreadcrumbItem>
                 </Breadcrumb>
             </VStack>
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
-                {finalists.map((finalist) => (
-                    <FinalistCard key={finalist.name} finalist={finalist} />
-                ))}
-            </SimpleGrid>
+            {/*                 <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+                    {finalists.map((finalist) => (
+                        <FinalistCard key={finalist.name} finalist={finalist} />
+                    ))}
+                </SimpleGrid> */}
         </>
     );
 };
-
-export default Finalists;
+export default Prev;
