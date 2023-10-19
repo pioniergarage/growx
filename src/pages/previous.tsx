@@ -7,7 +7,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
-import LongTimeline from 'modules/landing/Timeline';
+import LongTimeline from 'modules/landing/Timeline_previous';
 import Link from 'next/link';
 
 import { getEvents } from 'modules/events/api';
@@ -23,12 +23,12 @@ export const getStaticProps = async () => {
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
     );
     try {
-        const events = (await getEvents(supabase)).map((e) => ({
+        const events_previous = (await getEvents(supabase)).map((e) => ({
             ...e,
             date: e.date.toISOString(),
         }));
         return {
-            props: { events },
+            props: { events_previous },
             revalidate: minutesToSeconds(30),
         };
     } catch (error) {
@@ -117,7 +117,7 @@ const Prev: React.FC<PrevProps> = ({ events: jsonEvents = [] }) => {
     return (
         <>
             <div id="timeline" className="mt-4">
-                <LongTimeline events={events} />
+                <LongTimeline events_previous={events} />
             </div>
             <VStack alignItems="stretch" gap={4} mb={2}>
                 <Breadcrumb
