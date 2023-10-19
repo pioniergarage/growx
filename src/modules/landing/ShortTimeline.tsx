@@ -68,7 +68,7 @@ export default function ShortTimeline() {
             image: 'notes.jpg',
         },
         {
-            date: '17. Dec 2023',
+            date: '16. Dec 2023',
             title: 'Midterm Pitch',
             description: `Half time break! Teams pitch their first progress and fight about advancing to the final. 
             Pitch what you've accomplished in the last 5 weeks in front of a small audience and the jury. `,
