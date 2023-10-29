@@ -85,10 +85,12 @@ const Home: React.FC<HomeProps> = ({
             <Divider my={20} />
 
             <Section>
+                {/*  das sind die 3 Blöcke mit Kick off, midterm und Final */}
                 <Timeline />
             </Section>
 
             <Section mt="8rem">
+                {/* Why Grow */}
                 <MotivationBlock />
             </Section>
 

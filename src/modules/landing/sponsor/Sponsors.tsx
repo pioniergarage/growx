@@ -39,7 +39,7 @@ const Sponsors = ({ sponsors }: SponsorsProps) => {
                     columns={3}
                 />
             </GridItem>
-            <GridItem>
+            {/* <GridItem>
                 <Heading size="lg" color="whiteAlpha.600" mb={2}>
                     Bronze Sponsors
                 </Heading>
@@ -47,7 +47,7 @@ const Sponsors = ({ sponsors }: SponsorsProps) => {
                     sponsors={sponsors.filter((s) => s.type === 'BRONZE')}
                     columns={3}
                 />
-            </GridItem>
+            </GridItem> */}
         </SimpleGrid>
     );
 };
