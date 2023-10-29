@@ -37,11 +37,11 @@ const navigationItems: NavigationItem[] = [
         label: 'Startup Diploma',
         icon: <FaFile />,
     },
-    {
-        href: '/mentor',
-        label: 'Mentors',
-        icon: <FaHandsHelping />,
-    },
+    //    {
+    //    href: '/mentor',
+    //    label: 'Mentors',
+    //    icon: <FaHandsHelping />,
+   //     },
     {
         href: '/previous',
         label: 'Previous',
