@@ -20,7 +20,7 @@ const GrowVideo = () => {
             <iframe
                 width={size?.width}
                 height={size?.height}
-                src="https://www.youtube.com/embed/rZ6Xj9aCsZk"
+                src="https://youtu.be/ScNQ2jE5UxA"
                 title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
