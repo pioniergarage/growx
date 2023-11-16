@@ -1,4 +1,3 @@
-import ParticipateButton from './ParticipateButton';
 export default function BottomBanner({
     height = '4rem',
     maxHeight = '6rem',
@@ -24,9 +23,9 @@ export default function BottomBanner({
                             <p className="mx-12">--&gt;</p>
                         </div>
                     </div>
-                    <div className="flex flex-col md:flex-row">
+                    {/* <div className="flex flex-col md:flex-row">
                         <ParticipateButton />
-                    </div>
+                    </div> */}
                     {/*                     <div
                         className="cursor-pointer px-1.5 mr-3"
                         onClick={() => (closeButtonClicked = 'true')}
