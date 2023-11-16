@@ -8,7 +8,6 @@ import {
     Text,
 } from '@chakra-ui/react';
 import AnimatedLogo from './AnimatedLogo';
-import BottomBanner from './BottomBanner';
 
 function Fact({ amount, title }: { amount: string; title: string }) {
     return (
@@ -100,7 +99,7 @@ export default function MainInfoBlock() {
                     </Flex>
                 </GridItem>
             </Show>
-            <BottomBanner />
+            {/* <BottomBanner /> */}
         </Grid>
     );
 }
