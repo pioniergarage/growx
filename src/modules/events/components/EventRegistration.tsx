@@ -109,9 +109,8 @@ const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
                     </Button>
                 </Alert>
             )}
-            <a href="https://docs.google.com/spreadsheets/d/1DemeQCLAOJyLVsRaXRPrW-1ILP1diyS_GQZ2eN7KFO8/edit?usp=sharing">
-                Sry, for register problems. Type your name here
-            </a>
+            
+            
             <SignUpDialog
                 isOfflineEnabled={
                     (event.type === 'Hybrid' || event.type === 'Offline') &&
