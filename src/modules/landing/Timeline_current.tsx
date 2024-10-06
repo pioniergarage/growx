@@ -1,4 +1,5 @@
 import { Heading, VStack } from '@chakra-ui/react';
+import { getCurrentSeason } from 'constants/Dates';
 import GrowEventCard from 'modules/events/components/GrowEventCard';
 
 import { GrowEvent } from 'modules/events/types';
@@ -10,7 +11,7 @@ interface LongTimelineProps {
 const LongTimeline: React.FC<LongTimelineProps> = ({ events }) => {
     return (
         <VStack gap={4}>
-            <Heading>Timeline 23/24 </Heading>
+            <Heading>Timeline {getCurrentSeason()}</Heading>
             <VStack gap={4} alignItems="stretch" maxW="3xl">
                 {events.map((event) => (
                     <GrowEventCard key={event.id} event={event} />

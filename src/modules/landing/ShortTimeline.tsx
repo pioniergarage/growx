@@ -1,5 +1,7 @@
 import { Box, Heading, SimpleGrid, Tag, Text, VStack } from '@chakra-ui/react';
+import { FINALE_DATE, KICKOFF_DATE, MIDTERM_DATE } from 'constants/Dates';
 import Image from 'next/image';
+import { growFormattedDate } from 'utils/formatters';
 
 type TimeLineItemProps = {
     date: string;
@@ -61,14 +63,14 @@ const TimelineItem: React.FC<TimeLineItemProps> = ({
 export default function ShortTimeline() {
     const events: TimeLineItemProps[] = [
         {
-            date: '04. Nov 2023',
+            date: growFormattedDate(KICKOFF_DATE),
             title: 'Kickoff Event',
             description: `Pitch your idea, find a team or simply learn more about the contest. 
-            The kickoff is where the fun starts, no matter whether you have already applied or you're up for a spontaneous adventure. `,
+            The kickoff is where the fun starts, whether you already applied or you're up for a spontaneous adventure. `,
             image: 'notes.jpg',
         },
         {
-            date: '16. Dec 2023',
+            date: growFormattedDate(MIDTERM_DATE),
             title: 'Midterm Pitch',
             description: `Half time break! Teams pitch their first progress and fight about advancing to the final. 
             Pitch what you've accomplished in the last 5 weeks in front of a small audience and the jury. `,
@@ -76,7 +78,7 @@ export default function ShortTimeline() {
             objectPosition: '0 0',
         },
         {
-            date: '20. Jan 2024',
+            date: growFormattedDate(FINALE_DATE),
             title: 'Finals',
             description: `Present your results to a huge crowd and show how far you have come. 
             Each participant will have learned a lot and gained a lot of experience by this point. 

@@ -1,5 +1,6 @@
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
+import { getCurrentSeason } from 'constants/Dates';
 import { getEvents } from 'modules/events/api';
 import { GrowEvent } from 'modules/events/types';
 import { getFAQs } from 'modules/faq/api';
@@ -10,6 +11,7 @@ import MainInfoBlock from 'modules/landing/MainInfoBlock';
 import MotivationBlock from 'modules/landing/MotivationBlock';
 import Timeline from 'modules/landing/ShortTimeline';
 import LongTimeline from 'modules/landing/Timeline_current';
+import TimelinePlaceholder from 'modules/landing/Timeline_placeholder';
 import WaitingForBlock from 'modules/landing/WaitingForBlock';
 import Sponsors from 'modules/landing/sponsor/Sponsors';
 import { getSponsors } from 'modules/sponsor/api';
@@ -95,7 +97,14 @@ const Home: React.FC<HomeProps> = ({
             </Section>
 
             <Section id="timeline" mt="4rem" my="12rem">
-                <LongTimeline events={events} />
+
+
+                {/** Workshops coming soon! This should be removed when they ared added. */}
+                {events.length > 3 ?
+                    <LongTimeline events={events} />
+                    :
+                    <TimelinePlaceholder season={getCurrentSeason()} />
+                }
             </Section>
 
             <Section position="relative" my={24} px={0}>
@@ -121,60 +130,6 @@ const Home: React.FC<HomeProps> = ({
 
             <Divider my={24} />
 
-            {/*  REMOVED DUE TO MISSING PATRONS
-             <Section>
-                <Flex alignItems="center" flexDir="column">
-                    <Heading mb={4}>Our Patrons</Heading>
-                    <Flex gap={10} flexDir="column" alignItems="center">
-                        <Flex flexDir="column" gap={1} alignItems="center">
-                            <Box maxW="30rem">
-                                <Image
-                                    src="/images/patron2.jpg"
-                                    alt="Bettina Stark-Watzinger"
-                                    objectFit="contain"
-                                />
-                                <Text
-                                    color="gray.400"
-                                    fontSize="xs"
-                                    textAlign="right"
-                                >
-                                    Quelle: Bundesregierung - Guido Bergmann
-                                </Text>
-                            </Box>
-                            <Box>
-                                <Text
-                                    variant="info"
-                                    lineHeight={1.1}
-                                    textAlign="center"
-                                >
-                                    Bettina Stark-Watzinger, Federal Minister of
-                                    Education and Research
-                                </Text>
-                            </Box>
-                        </Flex>
-                        <Flex flexDir="column" gap={3}>
-                            <Image
-                                maxH="25rem"
-                                src="/images/patron.jpg"
-                                alt="Prof. Dr. Thomas Hirth"
-                                objectFit="contain"
-                            />
-                            <Box>
-                                <Text
-                                    variant="info"
-                                    lineHeight={1.1}
-                                    textAlign="center"
-                                >
-                                    Professor Dr. Thomas Hirth, KIT
-                                    Vice-President for Transfer and
-                                    International Affairs
-                                </Text>
-                            </Box>
-                        </Flex>
-                    </Flex>
-                </Flex>
-            </Section>
- */}
             <Section my={24}>
                 <Sponsors sponsors={sponsors} />
             </Section>

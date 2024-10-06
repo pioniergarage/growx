@@ -7,6 +7,8 @@ import {
     Show,
     Text,
 } from '@chakra-ui/react';
+import { FINALE_DATE, KICKOFF_DATE } from 'constants/Dates';
+import { growFormattedDate } from 'utils/formatters';
 import AnimatedLogo from './AnimatedLogo';
 
 function Fact({ amount, title }: { amount: string; title: string }) {
@@ -84,10 +86,10 @@ export default function MainInfoBlock() {
                             lg: 'row',
                         }}
                     >
-                        <Fact title="Start Kick-Off" amount="4.Nov 2023" />
+                        <Fact title="Start Kick-Off" amount={growFormattedDate(KICKOFF_DATE)} />
                         <Fact
                             title="Finale in Karlsruhe"
-                            amount="20.Jan.2024"
+                            amount={growFormattedDate(FINALE_DATE)}
                         />
                     </Flex>
                 </Flex>
