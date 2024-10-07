@@ -1,14 +1,11 @@
-import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     Button,
-    Checkbox,
     Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
     Heading,
     Input,
-    Link,
     Radio,
     RadioGroup,
     VStack,
@@ -122,30 +119,6 @@ const UniversityForm = ({ onNext }: UniversityFormProps) => {
                             {formik.errors.country}
                         </FormErrorMessage>
                     </FormControl>
-                    {formik.values.atKIT && (
-                        <FormControl>
-                            <FormLabel mt={4}>KIT students only</FormLabel>
-                            <Checkbox
-                                onChange={(e) =>
-                                    formik.setFieldValue(
-                                        'isSQ',
-                                        e.target.checked
-                                    )
-                                }
-                                isChecked={formik.values.isSQ}
-                            >
-                                Binding registration as key and
-                                interdisciplinary qualifications. <br /> More
-                                info: &nbsp;
-                                <Link
-                                    href="https://www.hoc.kit.edu/startupdiploma.php"
-                                    isExternal
-                                >
-                                    HoC <ExternalLinkIcon mx="2px" />
-                                </Link>
-                            </Checkbox>
-                        </FormControl>
-                    )}
                 </VStack>
                 <Button type="submit">Next</Button>
             </VStack>

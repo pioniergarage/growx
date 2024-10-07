@@ -4,9 +4,6 @@ const nextConfig = {
     swcMinify: true,
     eslint: {
         ignoreDuringBuilds: true,
-    },
-    images: {
-        domains: ['www.hoc.kit.edu']
     }
 };
 
