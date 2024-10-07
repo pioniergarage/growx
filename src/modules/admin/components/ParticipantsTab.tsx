@@ -14,10 +14,8 @@ import {
     ModalHeader,
     ModalOverlay,
     SimpleGrid,
-    Switch,
     Table,
     TableContainer,
-    Tag,
     Tbody,
     Td,
     Th,
@@ -131,7 +129,6 @@ const ProfileRowUnmemod = ({
     matriculation,
     isHidden,
     onEdit,
-    sq,
     userId,
 }: {
     userId: string;
@@ -141,18 +138,12 @@ const ProfileRowUnmemod = ({
     phone?: string | null;
     matriculation?: string;
     isHidden: boolean;
-    sq: boolean;
     onEdit: (userId: string) => void;
 }) => {
     return (
         <Tr hidden={isHidden}>
             <Td>
                 {firstName} {lastName}
-                {sq && (
-                    <Tag ml={1} size="sm" fontSize="xs">
-                        SQ
-                    </Tag>
-                )}
             </Td>
             <Td>{email}</Td>
             <Td>{phone}</Td>
@@ -177,15 +168,13 @@ const ParticipantsTab = (props: { profiles: FullProfile[] }) => {
         [props.profiles]
     );
     const [searchTerm, setSearchTerm] = useState('');
-    const [sqOnly, setSQOnly] = useState(false);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [profileOnEdit, setProfileOnEdit] = useState<FullProfile>();
 
     const filter = useCallback(
-        (profile: FullProfile, term: string, sqOnly: boolean) => {
+        (profile: FullProfile, term: string) => {
             term = term.toLocaleLowerCase();
             return (
-                (!sqOnly || profile.keyQualification) &&
                 (profile.firstName.toLocaleLowerCase().includes(term) ||
                     profile.lastName.toLocaleLowerCase().includes(term) ||
                     profile.email.includes(term) ||
@@ -208,14 +197,6 @@ const ParticipantsTab = (props: { profiles: FullProfile[] }) => {
         <VStack as="ul" alignItems="stretch" overflow="scroll">
             <HStack>
                 <SearchInput onSearch={setSearchTerm} />
-                <Switch
-                    isChecked={sqOnly}
-                    onChange={() => setSQOnly(!sqOnly)}
-                    size="sm"
-                    w={36}
-                >
-                    SQ only
-                </Switch>
                 <Button
                     size="sm"
                     onClick={() => downloadProfiles(participants)}
@@ -244,9 +225,8 @@ const ParticipantsTab = (props: { profiles: FullProfile[] }) => {
                                 email={profile.email}
                                 phone={profile.phone}
                                 matriculation={profile.matriculation}
-                                isHidden={!filter(profile, searchTerm, sqOnly)}
+                                isHidden={!filter(profile, searchTerm)}
                                 onEdit={handleEdit}
-                                sq={profile.keyQualification}
                             />
                         ))}
                     </Tbody>

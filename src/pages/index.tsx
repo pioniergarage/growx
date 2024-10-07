@@ -1,6 +1,5 @@
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
-import { getCurrentSeason } from 'constants/Dates';
 import { getEvents } from 'modules/events/api';
 import { GrowEvent } from 'modules/events/types';
 import { getFAQs } from 'modules/faq/api';
@@ -17,6 +16,7 @@ import Sponsors from 'modules/landing/sponsor/Sponsors';
 import { getSponsors } from 'modules/sponsor/api';
 import { Sponsor } from 'modules/sponsor/types';
 import { PropsWithChildren } from 'react';
+import { getCurrentSeason } from 'utils/formatters';
 
 const minutesToSeconds = (minutes: number) => minutes * 60;
 
@@ -54,6 +54,9 @@ const Home: React.FC<HomeProps> = ({
     events: jsonEvents = [],
 }) => {
     const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
+    const kickoff = events.filter((e) => e.ref == 'kickoff')[0]
+    const midterm = events.filter((e) => e.ref == 'midterm')[0]
+    const final = events.filter((e) => e.ref == 'final')[0]
     return (
         <>
             <Section position="relative" minH="80vh">
@@ -75,7 +78,7 @@ const Home: React.FC<HomeProps> = ({
                         filter={{ base: 'blur(80px)', md: 'blur(150px)' }}
                     />
                 </Box>
-                <MainInfoBlock />
+                <MainInfoBlock kickoff={kickoff.date} final={final.date} />
             </Section>
 
             <Divider mb={20} />
@@ -88,7 +91,7 @@ const Home: React.FC<HomeProps> = ({
 
             <Section>
                 {/*  das sind die 3 Blöcke mit Kick off, midterm und Final */}
-                <Timeline />
+                <Timeline kickoff={kickoff.date} midterm={midterm.date} final={final.date} />
             </Section>
 
             <Section mt="8rem">
@@ -99,11 +102,10 @@ const Home: React.FC<HomeProps> = ({
             <Section id="timeline" mt="4rem" my="12rem">
 
 
-                {/** Workshops coming soon! This should be removed when they ared added. */}
                 {events.length > 3 ?
-                    <LongTimeline events={events} />
+                    <LongTimeline events={events} kickoffDate={kickoff.date} />
                     :
-                    <TimelinePlaceholder season={getCurrentSeason()} />
+                    <TimelinePlaceholder season={getCurrentSeason(kickoff.date)} />
                 }
             </Section>
 

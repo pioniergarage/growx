@@ -70,13 +70,6 @@ const EventInformationCard: React.FC<EventInformationCardProps> = ({
                     color="primary"
                 />
             )}
-            {event.sq_mandatory && (
-                <InfoRow
-                    label="Mandatory for SQ"
-                    icon={FaExclamation}
-                    color="primary"
-                />
-            )}
         </Card>
     );
 };

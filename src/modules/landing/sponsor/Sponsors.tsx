@@ -6,6 +6,8 @@ type SponsorsProps = {
     sponsors: Sponsor[];
 };
 
+//TODO Update "2023" to "2024" as soon as sponsors are available.
+
 const Sponsors = ({ sponsors }: SponsorsProps) => {
     if (!sponsors) return null;
 

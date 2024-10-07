@@ -50,7 +50,6 @@ export default function EventManagement() {
                             <Th>Seats</Th>
                             <Th>Type</Th>
                             <Th>Mandatory</Th>
-                            <Th>SQ-Mandatory</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -80,15 +79,6 @@ export default function EventManagement() {
                                         <CheckIcon
                                             visibility={
                                                 event.mandatory
-                                                    ? 'visible'
-                                                    : 'hidden'
-                                            }
-                                        />
-                                    </Td>
-                                    <Td>
-                                        <CheckIcon
-                                            visibility={
-                                                event.sq_mandatory
                                                     ? 'visible'
                                                     : 'hidden'
                                             }

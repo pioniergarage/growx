@@ -8,23 +8,24 @@ import {
     FaClock,
     FaCloud,
     FaExclamation,
+    FaInfo,
     FaMapMarkerAlt,
+    FaStar,
+    FaUser,
 } from 'react-icons/fa';
-import { EventType, GrowEvent } from '../types';
+import { EventCategory, EventType, GrowEvent } from '../types';
 import { formatEventTime } from '../utils';
 import EventTag from './EventTag';
 import { GrowEventCardProps } from './GrowEventCard';
 
 type EventTagListProps = FlexProps & {
     event: GrowEvent;
-    isSQTagVisible?: boolean;
     transparent?: boolean;
     registration?: GrowEventCardProps['registration'];
 };
 
 const EventTagList = ({
     event,
-    isSQTagVisible,
     transparent = false,
     registration,
     ...flexProps
@@ -65,6 +66,22 @@ const EventTagList = ({
                     Offline
                 </EventTag>
             )}
+
+            {event.eventCategory === EventCategory.Grow && (
+                <EventTag icon={FaStar} transparent={transparent} />
+            )}
+            {event.eventCategory === EventCategory.Info && (
+                <EventTag icon={FaInfo} transparent={transparent}>
+                    Info Session
+                </EventTag>
+            )}
+            {event.eventCategory === EventCategory.Workshop && (
+                <EventTag icon={FaUser} transparent={transparent}>
+                    Workshop
+                </EventTag>
+            )}
+
+
             {registration && (
                 <EventTag
                     icon={FaCheck}
@@ -72,11 +89,6 @@ const EventTagList = ({
                     colorScheme="green"
                 >
                     Signed up
-                </EventTag>
-            )}
-            {event.sq_mandatory && isSQTagVisible && (
-                <EventTag icon={FaExclamation} transparent={transparent}>
-                    Mandatory for SQ
                 </EventTag>
             )}
             {event.mandatory && (

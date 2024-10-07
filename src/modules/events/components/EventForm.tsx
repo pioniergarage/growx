@@ -116,7 +116,7 @@ export default function EventForm({
                                 value={formik.values.title}
                                 borderColor={
                                     formik.values.title !==
-                                    initialFormValue.title
+                                        initialFormValue.title
                                         ? 'green.200'
                                         : undefined
                                 }
@@ -177,7 +177,7 @@ export default function EventForm({
                                 placeholder="0"
                                 borderColor={
                                     formik.values.duration !==
-                                    initialFormValue.duration
+                                        initialFormValue.duration
                                         ? 'green.200'
                                         : undefined
                                 }
@@ -198,7 +198,7 @@ export default function EventForm({
                                 value={formik.values.location}
                                 borderColor={
                                     formik.values.location !==
-                                    initialFormValue.location
+                                        initialFormValue.location
                                         ? 'green.200'
                                         : undefined
                                 }
@@ -215,7 +215,7 @@ export default function EventForm({
                                 value={formik.values.availableSeats}
                                 borderColor={
                                     formik.values.availableSeats !==
-                                    initialFormValue.availableSeats
+                                        initialFormValue.availableSeats
                                         ? 'green.200'
                                         : undefined
                                 }
@@ -251,15 +251,6 @@ export default function EventForm({
                                 Mandatory
                             </Switch>
                         </FormControl>
-                        <FormControl isDisabled={isLoading}>
-                            <Switch
-                                id="sq_mandatory"
-                                isChecked={formik.values.sq_mandatory}
-                                onChange={formik.handleChange}
-                            >
-                                Mandatory for SQ
-                            </Switch>
-                        </FormControl>
                     </HStack>
                     <FormControl isDisabled={isLoading}>
                         <FormLabel htmlFor="description">Description</FormLabel>
@@ -270,7 +261,7 @@ export default function EventForm({
                             value={formik.values.description}
                             borderColor={
                                 formik.values.description !==
-                                initialFormValue.description
+                                    initialFormValue.description
                                     ? 'green.200'
                                     : undefined
                             }

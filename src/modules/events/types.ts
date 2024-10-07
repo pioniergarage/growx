@@ -5,9 +5,9 @@ export enum EventType {
 }
 
 export enum EventCategory {
-    Grow = 'GROW',
+    Grow = 'Grow',
     Workshop = 'Workshop',
-    Info = 'Info Session',
+    Info = 'Info',
 }
 
 export type GrowEvent = {

@@ -1,7 +1,5 @@
 import Card from '@/components/Card';
 import { Box, Grid, GridItem, Heading, Text } from '@chakra-ui/react';
-
-import { useProfile } from 'modules/profile/hooks';
 import Link from 'next/link';
 import { useMemo } from 'react';
 import { GrowEvent } from '../types';
@@ -16,7 +14,6 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
     event,
     registration,
 }) => {
-    const { profile } = useProfile();
     const over = useMemo(() => new Date() > event.date, [event.date]);
 
     return (
@@ -60,7 +57,6 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
                     </Heading>
                     <EventTagList
                         event={event}
-                        isSQTagVisible={profile?.keyQualification}
                         registration={over ? undefined : registration}
                         transparent
                         gap={0}

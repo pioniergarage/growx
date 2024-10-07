@@ -19,7 +19,6 @@ type UniversityFormProps = {
     onNext: (info: {
         university: string;
         country: string;
-        isSQ: boolean;
     }) => void;
 };
 
@@ -28,11 +27,10 @@ const UniversityForm = ({ onNext }: UniversityFormProps) => {
         initialValues: {
             atKIT: false,
             university: '',
-            country: '',
-            isSQ: false,
+            country: ''
         },
-        onSubmit: ({ university, country, isSQ, atKIT }) => {
-            onNext({ university, country, isSQ: isSQ && atKIT });
+        onSubmit: ({ university, country }) => {
+            onNext({ university, country });
         },
         validate: ({ university, country }) => {
             const errors: Record<string, string> = {};

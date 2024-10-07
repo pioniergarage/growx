@@ -1,5 +1,4 @@
 import { Box, Heading, SimpleGrid, Tag, Text, VStack } from '@chakra-ui/react';
-import { FINALE_DATE, KICKOFF_DATE, MIDTERM_DATE } from 'constants/Dates';
 import Image from 'next/image';
 import { growFormattedDate } from 'utils/formatters';
 
@@ -9,6 +8,12 @@ type TimeLineItemProps = {
     description: string;
     image: string;
     objectPosition?: string;
+};
+
+type ShortTimeLineProps = {
+    kickoff: Date;
+    midterm: Date;
+    final: Date;
 };
 
 const TimelineItem: React.FC<TimeLineItemProps> = ({
@@ -60,17 +65,21 @@ const TimelineItem: React.FC<TimeLineItemProps> = ({
     );
 };
 
-export default function ShortTimeline() {
+const ShortTimeline: React.FC<ShortTimeLineProps> = ({
+    kickoff,
+    midterm,
+    final
+}) => {
     const events: TimeLineItemProps[] = [
         {
-            date: growFormattedDate(KICKOFF_DATE),
+            date: growFormattedDate(kickoff),
             title: 'Kickoff Event',
             description: `Pitch your idea, find a team or simply learn more about the contest. 
             The kickoff is where the fun starts, whether you already applied or you're up for a spontaneous adventure. `,
             image: 'notes.jpg',
         },
         {
-            date: growFormattedDate(MIDTERM_DATE),
+            date: growFormattedDate(midterm),
             title: 'Midterm Pitch',
             description: `Half time break! Teams pitch their first progress and fight about advancing to the final. 
             Pitch what you've accomplished in the last 5 weeks in front of a small audience and the jury. `,
@@ -78,7 +87,7 @@ export default function ShortTimeline() {
             objectPosition: '0 0',
         },
         {
-            date: growFormattedDate(FINALE_DATE),
+            date: growFormattedDate(final),
             title: 'Finals',
             description: `Present your results to a huge crowd and show how far you have come. 
             Each participant will have learned a lot and gained a lot of experience by this point. 
@@ -99,3 +108,5 @@ export default function ShortTimeline() {
         </VStack>
     );
 }
+
+export default ShortTimeline;

@@ -7,9 +7,13 @@ import {
     Show,
     Text,
 } from '@chakra-ui/react';
-import { FINALE_DATE, KICKOFF_DATE } from 'constants/Dates';
 import { growFormattedDate } from 'utils/formatters';
 import AnimatedLogo from './AnimatedLogo';
+
+type InfoBlockProps = {
+    kickoff: Date;
+    final: Date;
+};
 
 function Fact({ amount, title }: { amount: string; title: string }) {
     return (
@@ -22,7 +26,10 @@ function Fact({ amount, title }: { amount: string; title: string }) {
     );
 }
 
-export default function MainInfoBlock() {
+const MainInfoBlock: React.FC<InfoBlockProps> = ({
+    kickoff,
+    final
+}) => {
     return (
         <Grid
             templateColumns={{ base: '1fr', lg: '1fr 1fr' }}
@@ -86,10 +93,10 @@ export default function MainInfoBlock() {
                             lg: 'row',
                         }}
                     >
-                        <Fact title="Start Kick-Off" amount={growFormattedDate(KICKOFF_DATE)} />
+                        <Fact title="Start Kick-Off" amount={growFormattedDate(kickoff)} />
                         <Fact
                             title="Finale in Karlsruhe"
-                            amount={growFormattedDate(FINALE_DATE)}
+                            amount={growFormattedDate(final)}
                         />
                     </Flex>
                 </Flex>
@@ -101,7 +108,9 @@ export default function MainInfoBlock() {
                     </Flex>
                 </GridItem>
             </Show>
-            {/* <BottomBanner /> */}
         </Grid>
     );
 }
+
+
+export default MainInfoBlock;

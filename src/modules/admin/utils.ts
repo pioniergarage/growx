@@ -16,7 +16,6 @@ export function downloadProfiles(profiles: FullProfile[]) {
             'Studies',
             'Uni',
             'Country of uni',
-            'SQ',
             'skills',
         ],
         profiles.map((p) =>
@@ -50,7 +49,7 @@ export const allowOrga = async (
         const { role } = await supabase
             .from('profiles')
             .select('role')
-            .eq('user_id', data.session?.user.id)
+            .eq('user_id', data.session?.user.id as string)
             .single()
             .then(handleSingleResponse);
 

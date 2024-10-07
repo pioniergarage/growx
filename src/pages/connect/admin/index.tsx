@@ -24,13 +24,6 @@ const AdminPage: React.FC = () => {
         () => profiles.filter((p) => p.role === 'PARTICIPANT'),
         [profiles]
     );
-    const signedUpSq = useMemo(
-        () =>
-            profiles.filter(
-                (p) => p.role === 'PARTICIPANT' && p.keyQualification
-            ),
-        [profiles]
-    );
 
     return (
         <Flex flexDir="column" gap={4}>
@@ -47,9 +40,6 @@ const AdminPage: React.FC = () => {
             <Divider />
             <Flex wrap="wrap" gap={4}>
                 <InsertedStats data={participants}>Participants</InsertedStats>
-                <InsertedStats data={signedUpSq}>
-                    Signed up for SQ
-                </InsertedStats>
                 <InsertedStats data={teamsWithDates}>Teams</InsertedStats>
             </Flex>
         </Flex>

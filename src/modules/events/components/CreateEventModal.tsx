@@ -13,11 +13,10 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    Select,
 } from '@chakra-ui/react';
 
 import { useState } from 'react';
-import { EventType, GrowEvent } from '../types';
+import { GrowEvent } from '../types';
 
 interface EventModalProps {
     isOpen: boolean;
@@ -39,7 +38,6 @@ const emptyEvent = {
 const CreateEventModal: React.FC<EventModalProps> = ({
     isOpen,
     onClose,
-    onCreate,
     initialValue,
 }) => {
     const [event, setEvent] = useState({ ...emptyEvent, ...initialValue });
@@ -87,24 +85,6 @@ const CreateEventModal: React.FC<EventModalProps> = ({
                         </Checkbox>
                     </FormControl>
 
-                    <FormControl mt={2}>
-                        <Checkbox
-                            isChecked={event.sq_mandatory}
-                            onChange={(e) =>
-                                setEvent({
-                                    ...event,
-                                    sq_mandatory: e.target.checked,
-                                })
-                            }
-                        >
-                            Mandatory for Schlüsselqualifikation
-                        </Checkbox>
-                        <FormHelperText>
-                            Some events are mandatory for Schlüsselqualifikation
-                            qualification
-                        </FormHelperText>
-                    </FormControl>
-
                     <FormControl mt={6}>
                         <FormLabel>Location</FormLabel>
                         <Input
@@ -121,31 +101,10 @@ const CreateEventModal: React.FC<EventModalProps> = ({
 
                     <FormControl mt={6}>
                         <FormLabel>How to participate</FormLabel>
-                        <Select
-                            name="SelectEventSQMandatory"
-                            value={event.type}
-                            onChange={(e) =>
-                                setEvent({
-                                    ...event,
-                                    type: e.target.value as EventType,
-                                })
-                            }
-                        >
-                            <option value={EventType.Online}>
-                                {EventType.Online}
-                            </option>
-                            <option value={EventType.Offline}>
-                                {EventType.Offline}
-                            </option>
-                            <option value={EventType.Hybrid}>
-                                {EventType.Hybrid}
-                            </option>
-                        </Select>
                     </FormControl>
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button onClick={() => onCreate(event)}>Create</Button>
                     <Button onClick={onClose} ml={3}>
                         Cancel
                     </Button>
