@@ -13,7 +13,7 @@ const Sponsors = ({ sponsors }: SponsorsProps) => {
         <SimpleGrid columns={{ base: 1, md: 2 }} gap={10} alignItems="start">
             <GridItem>
                 <Heading size="lg" color="whiteAlpha.600" mb={2}>
-                    Flagship Sponsors
+                    Flagship Sponsors 2023
                 </Heading>
                 <SponsorGrid
                     sponsors={sponsors.filter((s) => s.type === 'FLAGSHIP')}
@@ -23,7 +23,7 @@ const Sponsors = ({ sponsors }: SponsorsProps) => {
 
             <GridItem>
                 <Heading size="lg" color="whiteAlpha.600" mb={2}>
-                    Gold Sponsors
+                    Gold Sponsors 2023
                 </Heading>
                 <SponsorGrid
                     sponsors={sponsors.filter((s) => s.type === 'GOLD')}
@@ -32,7 +32,7 @@ const Sponsors = ({ sponsors }: SponsorsProps) => {
             </GridItem>
             <GridItem>
                 <Heading size="lg" color="whiteAlpha.600" mb={2}>
-                    Silver Sponsors
+                    Silver Sponsors 2023
                 </Heading>
                 <SponsorGrid
                     sponsors={sponsors.filter((s) => s.type === 'SILVER')}

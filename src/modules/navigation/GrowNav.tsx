@@ -3,11 +3,9 @@ import { Profile } from 'modules/profile/types';
 import {
     FaCalendarAlt,
     FaCogs,
-    FaFile,
-    FaHandsHelping,
     FaHome,
     FaNewspaper,
-    FaUserFriends,
+    FaUserFriends
 } from 'react-icons/fa';
 import { DesktopMenu } from '../../components/navigation/DesktopMenu';
 import MobileMenu from '../../components/navigation/MobileMenu';
@@ -32,16 +30,6 @@ const navigationItems: NavigationItem[] = [
         label: 'Home',
         icon: <FaHome />,
     },
-    {
-        href: '/startup_diploma',
-        label: 'Startup Diploma',
-        icon: <FaFile />,
-    },
-    //    {
-    //    href: '/mentor',
-    //    label: 'Mentors',
-    //    icon: <FaHandsHelping />,
-   //     },
     {
         href: '/previous',
         label: 'Previous',

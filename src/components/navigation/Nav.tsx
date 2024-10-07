@@ -1,12 +1,10 @@
-import { Button } from '@chakra-ui/button';
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import {
-    BoxProps,
-    ButtonProps,
+    BoxProps, Button, ButtonProps,
     chakra,
     Flex,
     shouldForwardProp,
-    useBreakpointValue,
+    useBreakpointValue
 } from '@chakra-ui/react';
 import { isValidMotionProp, motion } from 'framer-motion';
 import Image from 'next/image';
@@ -158,4 +156,5 @@ const DesktopMenuButton = (props: PropsWithChildren & { href: string }) => {
     );
 };
 
-export { TopNavBar, MenuToggle, GrowLogo, MobileMenuButton, DesktopMenuButton };
+export { DesktopMenuButton, GrowLogo, MenuToggle, MobileMenuButton, TopNavBar };
+
