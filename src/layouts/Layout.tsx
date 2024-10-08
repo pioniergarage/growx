@@ -21,7 +21,7 @@ export default function Layout({ children }: PropsWithChildren) {
         <>
             <Head>
                 <title>
-                    GROW X - Germany&apos;s Largest Student Founding Contest
+                    GROW - Germany&apos;s Largest Student Founding Contest
                 </title>
                 <meta
                     name="description"
