@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Icon, Image, Link } from '@chakra-ui/react';
+import { Box, Divider, Flex, Icon, Image, Link, Spacer } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { FaGithub } from 'react-icons/fa';
 
@@ -52,6 +52,14 @@ export default function Footer() {
                         <Link href="https://github.com/JonasDeipenbrock">
                             <Icon as={FaGithub} mr={1} />
                             Jonas
+                        </Link>
+                    </Flex>
+                    <Spacer mb={2} />
+                    <Box color="primary">{"GROW '24"}</Box>
+                    <Flex ml={4} gap={3}>
+                        <Link href="https://github.com/hudmarc">
+                            <Icon as={FaGithub} mr={1} />
+                            Marc
                         </Link>
                     </Flex>
                 </Flex>

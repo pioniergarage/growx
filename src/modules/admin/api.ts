@@ -31,17 +31,17 @@ const adminApi: AdminApi = {
             .then((dtos) =>
                 dtos.map(({ contact_information, matriculation, ...rest }) => ({
                     profile: rest,
-                    contact_informations:
-                        contact_information as ContactInformation[],
+                    contact_information:
+                        contact_information as ContactInformation,
                     matriculation:
-                        matriculation as Database['public']['Tables']['matriculation']['Row'][],
+                        matriculation as Database['public']['Tables']['matriculation']['Row'],
                 }))
             )
             .then((dtos) => {
                 return dtos.map((dto) => ({
                     ...mapProfileDto(dto.profile),
-                    ...(dto.contact_informations.pop() as ContactInformation),
-                    matriculation: dto.matriculation.pop()?.Id,
+                    ...(dto.contact_information as ContactInformation),
+                    matriculation: dto.matriculation?.Id,
                 }));
             });
         return profiles;
