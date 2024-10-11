@@ -116,6 +116,13 @@ export type Database = {
             foreignKeyName: "registrations_event_id_fkey"
             columns: ["event_id"]
             isOneToOne: false
+            referencedRelation: "event_with_seats"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "registrations_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
             referencedRelation: "events"
             referencedColumns: ["id"]
           },
@@ -672,6 +679,25 @@ export type Database = {
       }
     }
     Views: {
+      event_with_seats: {
+        Row: {
+          available_seats: number | null
+          date: string | null
+          description: string | null
+          duration: number | null
+          event_category: Database["public"]["Enums"]["event_category"] | null
+          id: number | null
+          inserted_at: string | null
+          location: string | null
+          mandatory: boolean | null
+          ref: string | null
+          seats_left: number | null
+          title: string | null
+          type: Database["public"]["Enums"]["enum_event_type"] | null
+          updated_at: string | null
+        }
+        Relationships: []
+      }
       team_leads: {
         Row: {
           team_id: number | null

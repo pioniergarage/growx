@@ -41,14 +41,12 @@ export const getEvent = (
         .then(handleSingleResponse)
         .then(mapEventDto);
 
-//TODO: These are broken until the Views can be restored on the database.
-
 export const getEventWithSeats = (
     supabaseClient: SupabaseClient<Database>,
     eventId: number
 ) =>
     supabaseClient
-        .from('events') //This should be 'event_with_seats'!
+        .from('event_with_seats')
         .select('*')
         .match({ id: eventId })
         .single()
@@ -67,7 +65,7 @@ export const getEventWithSeats = (
 
 export const getEventsWithSeats = (supabaseClient: SupabaseClient<Database>) =>
     supabaseClient
-        .from('events') //This should be 'event_with_seats'!
+        .from('event_with_seats')
         .select('*')
         .order('date')
         .then(handleResponse)
