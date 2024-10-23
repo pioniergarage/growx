@@ -22,6 +22,7 @@ export type GrowEvent = {
     duration: number;
     availableSeats: number;
     eventCategory: EventCategory;
+    href: string | null;
 };
 
 export type GrowEventWithSeats = GrowEvent & {

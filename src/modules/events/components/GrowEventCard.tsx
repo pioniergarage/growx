@@ -1,5 +1,6 @@
 import Card from '@/components/Card';
-import { Box, Grid, GridItem, Heading, Text } from '@chakra-ui/react';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { Box, Button, Flex, Grid, GridItem, Heading, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useMemo } from 'react';
 import { GrowEvent } from '../types';
@@ -52,9 +53,22 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
                     </Heading>
                 </GridItem>
                 <Box>
-                    <Heading size={{ base: 'xs', sm: 'md' }}>
-                        {event.title}
-                    </Heading>
+
+                    <Flex
+                        mt={1}
+                        flexWrap="wrap"
+                        gap={8}
+                        flexDir={{ base: 'column', sm: 'row' }}
+                        alignItems="center"
+                    >
+                        <Heading size={{ base: 'xs', sm: 'md' }}>
+                            {event.title}
+                        </Heading>
+
+                        {event.href &&
+                            <Button leftIcon={<ExternalLinkIcon />} size='xs' onClick={() => { window.location.href = event.href as string }}>Link</Button>
+                        }
+                    </Flex>
                     <EventTagList
                         event={event}
                         registration={over ? undefined : registration}
@@ -63,7 +77,7 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
                     />
                 </Box>
             </Card>
-        </Link>
+        </Link >
     );
 };
 

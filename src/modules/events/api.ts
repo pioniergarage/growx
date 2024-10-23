@@ -17,7 +17,8 @@ export const mapEventDto: (
     type: dto.type as EventType,
     duration: dto.duration,
     availableSeats: dto.available_seats,
-    eventCategory: dto.event_category as EventCategory
+    eventCategory: dto.event_category as EventCategory,
+    href: dto.href
 });
 
 export const getEvents = (supabaseClient: SupabaseClient<Database>) =>
