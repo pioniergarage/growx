@@ -67,7 +67,7 @@ const navigationItems: NavigationItem[] = [
         icon: <FaCogs />,
     },
     {
-        href: 'https://lnkd.in/du4K9aFg',
+        href: 'https://form.jotform.com/242815674829065', //TODO remove this after kickoff is over!
         label: 'KICKOFF SIGNUP',
         icon: <FaExternalLinkAlt />,
     },
