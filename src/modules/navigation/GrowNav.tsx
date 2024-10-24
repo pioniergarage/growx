@@ -3,6 +3,7 @@ import { Profile } from 'modules/profile/types';
 import {
     FaCalendarAlt,
     FaCogs,
+    FaExternalLinkAlt,
     FaHome,
     FaNewspaper,
     FaUserFriends
@@ -64,6 +65,11 @@ const navigationItems: NavigationItem[] = [
         label: 'Admin',
         isHidden: (profile) => !profile || profile.role != 'ORGA',
         icon: <FaCogs />,
+    },
+    {
+        href: 'https://lnkd.in/du4K9aFg',
+        label: 'KICKOFF SIGNUP',
+        icon: <FaExternalLinkAlt />,
     },
 ];
 
