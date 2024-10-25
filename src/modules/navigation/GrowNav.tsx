@@ -3,7 +3,6 @@ import { Profile } from 'modules/profile/types';
 import {
     FaCalendarAlt,
     FaCogs,
-    FaExternalLinkAlt,
     FaHome,
     FaNewspaper,
     FaUserFriends
@@ -66,11 +65,11 @@ const navigationItems: NavigationItem[] = [
         isHidden: (profile) => !profile || profile.role != 'ORGA',
         icon: <FaCogs />,
     },
-    {
-        href: 'https://form.jotform.com/242815674829065', //TODO remove this after kickoff is over!
-        label: 'KICKOFF SIGNUP',
-        icon: <FaExternalLinkAlt />,
-    },
+    // {
+    //     href: 'https://form.jotform.com/242815674829065', //TODO remove this after kickoff is over!
+    //     label: 'KICKOFF SIGNUP',
+    //     icon: <FaExternalLinkAlt />,
+    // },
 ];
 
 export default function GrowNav() {

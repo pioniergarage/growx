@@ -81,7 +81,7 @@ const Home: React.FC<HomeProps> = ({
                 <MainInfoBlock kickoff={kickoff.date} final={final.date} />
             </Section>
 
-            <Divider mb={20} />
+            <Divider mb={12} />
 
             <Section>
                 <GrowVideo />
