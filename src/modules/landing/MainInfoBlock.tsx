@@ -69,7 +69,10 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                             and test your market.
                         </Text>
                         <Spacer mb='8' />
-                        <Button leftIcon={<ExternalLinkIcon />} onClick={() => { window.location.href = "https://form.jotform.com/242815674829065" }}>Sign Up for the Kickoff!</Button>
+                        {new Date() < kickoff &&
+                            <Button leftIcon={<ExternalLinkIcon />} onClick={() => { window.location.href = "https://form.jotform.com/242815674829065" }}>Sign Up for the Kickoff!</Button>
+                        }
+
                     </Box>
                     <Flex
                         justifyContent={{
@@ -86,7 +89,10 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                             lg: 'row',
                         }}
                     >
-                        <Fact title="Start Kick-Off" amount={growFormattedDate(kickoff)} />
+                        <Fact
+                            title="Start Kick-Off"
+                            amount={growFormattedDate(kickoff)}
+                        />
                         <Fact
                             title="Finale in Karlsruhe"
                             amount={growFormattedDate(final)}
