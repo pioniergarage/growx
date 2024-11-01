@@ -109,6 +109,7 @@ const SponsorModal: React.FC<SponsorModalProps> = ({
 
                     <FormControl mt={4}>
                         <FormLabel>Type</FormLabel>
+                        {/** TODO Why is this hardcoded? Can this be automatically generated from the Supabase types? */}
                         <Select
                             onChange={(e) =>
                                 setSponsor({
@@ -116,12 +117,13 @@ const SponsorModal: React.FC<SponsorModalProps> = ({
                                     type: e.target.value as Sponsor['type'],
                                 })
                             }
-                            defaultValue="BRONZE"
-                        >
+                            defaultValue="BRONZE">
                             <option value="BRONZE">Bronze</option>
                             <option value="SILVER">Silver</option>
                             <option value="GOLD">Gold</option>
                             <option value="FLAGSHIP">Flagship</option>
+                            <option value="SUPPORTER">Supporter</option>
+                            <option value="PATRON">Patron</option>
                         </Select>
                     </FormControl>
                 </ModalBody>

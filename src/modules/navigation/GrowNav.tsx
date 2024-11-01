@@ -30,11 +30,13 @@ const navigationItems: NavigationItem[] = [
         label: 'Home',
         icon: <FaHome />,
     },
-    {
-        href: '/previous',
-        label: 'Previous',
-        icon: <FaCalendarAlt />,
-    },
+    //TODO: Update this webpage!
+
+    // {
+    //     href: '/previous',
+    //     label: 'Previous',
+    //     icon: <FaCalendarAlt />,
+    // },
     {
         href: '/connect',
         label: 'News',
@@ -64,12 +66,7 @@ const navigationItems: NavigationItem[] = [
         label: 'Admin',
         isHidden: (profile) => !profile || profile.role != 'ORGA',
         icon: <FaCogs />,
-    },
-    // {
-    //     href: 'https://form.jotform.com/242815674829065', //TODO remove this after kickoff is over!
-    //     label: 'KICKOFF SIGNUP',
-    //     icon: <FaExternalLinkAlt />,
-    // },
+    }
 ];
 
 export default function GrowNav() {

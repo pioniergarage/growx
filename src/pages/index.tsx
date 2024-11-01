@@ -12,7 +12,7 @@ import Timeline from 'modules/landing/ShortTimeline';
 import LongTimeline from 'modules/landing/Timeline_current';
 import TimelinePlaceholder from 'modules/landing/Timeline_placeholder';
 import WaitingForBlock from 'modules/landing/WaitingForBlock';
-import Sponsors from 'modules/landing/sponsor/Sponsors';
+import SponsorsAndSupporters from 'modules/landing/sponsor/Sponsors';
 import { getSponsors } from 'modules/sponsor/api';
 import { Sponsor } from 'modules/sponsor/types';
 import { PropsWithChildren } from 'react';
@@ -133,7 +133,7 @@ const Home: React.FC<HomeProps> = ({
             <Divider my={24} />
 
             <Section my={24}>
-                <Sponsors sponsors={sponsors} />
+                <SponsorsAndSupporters sponsors={sponsors} />
             </Section>
 
             <Section id="faqs" my={24}>
