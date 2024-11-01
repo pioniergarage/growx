@@ -82,7 +82,7 @@ const SponsorsAndSupporters = ({ sponsors }: SponsorAndSupporterProps) => {
                 {supporters.length > 0 &&
                     <GridItem>
                         <Heading size="lg" color="whiteAlpha.600" mb={2}>
-                            Supporters
+                            Support
                         </Heading>
                         <SponsorGrid
                             sponsors={supporters}
