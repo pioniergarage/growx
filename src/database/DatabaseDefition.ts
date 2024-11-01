@@ -753,7 +753,13 @@ export type Database = {
       event_category: "Grow" | "Workshop" | "Info"
       event_type: "Online" | "Offline" | "Hybrid"
       gender: "MALE" | "FEMALE" | "OTHER"
-      sponsor_type: "GOLD" | "SILVER" | "BRONZE" | "FLAGSHIP" | "SUPPORTER"
+      sponsor_type:
+        | "GOLD"
+        | "SILVER"
+        | "BRONZE"
+        | "FLAGSHIP"
+        | "SUPPORTER"
+        | "PATRON"
       user_role: "PARTICIPANT" | "BUDDY" | "MENTOR" | "EXPERT" | "ORGA"
     }
     CompositeTypes: {
