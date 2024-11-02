@@ -17,7 +17,7 @@ export default function Footer() {
                 <Flex gap={6}>
                     <Link href="https://pioniergarage.de">
                         <Image
-                            src="https://pioniergarage.de/wp-content/uploads/2020/07/LogoMitNameUndSlogan-wei%C3%9F-e1597431426811.png"
+                            src="/images/pg.webp"
                             alt="Grow Pioniergarage"
                             width="12rem"
                             objectFit="contain"

@@ -13,7 +13,7 @@ const LongTimeline: React.FC<LongTimelineProps> = ({ events, kickoffDate }) => {
     return (
         <VStack gap={4}>
             <Heading>Timeline {getCurrentSeason(kickoffDate)}</Heading>
-            <p>New for 2024: All workshops will be open to the public!</p>
+            <p>New for 2024: All workshops are now open to the public!</p>
             <VStack gap={4} alignItems="stretch" maxW="3xl">
                 {events.map((event) => (
                     <GrowEventCard key={event.id} event={event} />

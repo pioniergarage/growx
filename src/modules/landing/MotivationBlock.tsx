@@ -58,17 +58,17 @@ export default function MotivationBlock() {
                     icon={FaRocket}
                     heading="Kickstart Your Business"
                 >
-                    Offering numerous workshops about multiple topics as well as
-                    the chance to win funding, GROW is the perfect
-                    opportunity to start your own company.
+                    With numerous workshops geared towards founders
+                    as well as the opportunity to win funding, GROW is
+                    your chance to turn your vision into reality.
                 </MotivationItem>
                 <MotivationItem
                     icon={FaRegComments}
                     heading="Learn Through Mentorship"
                 >
                     Each team will receive support from our experienced mentors
-                    and buddies. This will help your business to grow beyond its
-                    limits.
+                    and buddies, who will guide you along your journey as you
+                    GROW your business to its full potential.
                 </MotivationItem>
             </SimpleGrid>
         </VStack>
