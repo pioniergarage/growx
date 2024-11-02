@@ -1,9 +1,11 @@
 import { Box, Heading, SimpleGrid, Tag, Text, VStack } from '@chakra-ui/react';
+import EventTagList from 'modules/events/components/EventTagList';
+import { GrowEvent } from 'modules/events/types';
 import Image from 'next/image';
 import { growFormattedDate } from 'utils/formatters';
 
 type TimeLineItemProps = {
-    date: string;
+    event: GrowEvent;
     title: string;
     description: string;
     image: string;
@@ -11,13 +13,13 @@ type TimeLineItemProps = {
 };
 
 type ShortTimeLineProps = {
-    kickoff: Date;
-    midterm: Date;
-    final: Date;
+    kickoff: GrowEvent;
+    midterm: GrowEvent;
+    final: GrowEvent;
 };
 
 const TimelineItem: React.FC<TimeLineItemProps> = ({
-    date,
+    event,
     title,
     description,
     image,
@@ -55,10 +57,16 @@ const TimelineItem: React.FC<TimeLineItemProps> = ({
                     bgGradient="linear(to-t, #000000cc 30%, #00000000 100%)"
                 >
                     <Tag bgColor="blackAlpha.600" mb={2}>
-                        {date}
+                        {growFormattedDate(event.date)}
                     </Tag>
                     <Heading size="md">{title}</Heading>
                     <Text mt={2}>{description}</Text>
+                    <EventTagList
+                        event={event}
+                        transparent
+                        hide_category
+                        gap={0}
+                    />
                 </Box>
             </Box>
         </Box>
@@ -72,14 +80,14 @@ const ShortTimeline: React.FC<ShortTimeLineProps> = ({
 }) => {
     const events: TimeLineItemProps[] = [
         {
-            date: growFormattedDate(kickoff),
+            event: kickoff,
             title: 'Kickoff Event',
             description: `Pitch your idea, find a team or simply learn more about the contest. 
             The kickoff is where the fun starts, whether you already applied or you're up for a spontaneous adventure. `,
             image: 'notes.jpg',
         },
         {
-            date: growFormattedDate(midterm),
+            event: midterm,
             title: 'Midterm Pitch',
             description: `Half time break! Teams pitch their first progress and fight about advancing to the final. 
             Pitch what you've accomplished in the last 5 weeks in front of a small audience and the jury. `,
@@ -87,7 +95,7 @@ const ShortTimeline: React.FC<ShortTimeLineProps> = ({
             objectPosition: '0 0',
         },
         {
-            date: growFormattedDate(final),
+            event: final,
             title: 'Finals',
             description: `Present your results to a huge crowd and show how far you have come. 
             Each participant will have learned a lot and gained a lot of experience by this point. 
@@ -98,7 +106,7 @@ const ShortTimeline: React.FC<ShortTimeLineProps> = ({
     return (
         <VStack alignItems={{ base: 'center', md: 'start' }} spacing={8}>
             <Heading size="lg" textAlign="center">
-                From the ideation to the launch in 11 weeks
+                From idea to launch in 11 weeks
             </Heading>
             <SimpleGrid columns={[1, 1, 1, 3]} gap={8} width="100%">
                 {events.map((event) => (

@@ -49,8 +49,8 @@ export default function MotivationBlock() {
                 textAlign="left"
             >
                 <MotivationItem icon={FaUserFriends} heading="Find Your Team">
-                    You don&apos;t have a team yet? GROW is the perfect
-                    opportunity to find team mates! At the kickoff event, you
+                    Don&apos;t have a team yet? GROW is the perfect
+                    opportunity to find teammates! At the kickoff event, you
                     can pitch your idea or just ask other teams whether they
                     still need Co-Founders.
                 </MotivationItem>
@@ -59,7 +59,7 @@ export default function MotivationBlock() {
                     heading="Kickstart Your Business"
                 >
                     Offering numerous workshops about multiple topics as well as
-                    the opportunity to win funding, GROW is the perfect
+                    the chance to win funding, GROW is the perfect
                     opportunity to start your own company.
                 </MotivationItem>
                 <MotivationItem

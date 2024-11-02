@@ -91,7 +91,7 @@ const Home: React.FC<HomeProps> = ({
 
             <Section>
                 {/*  das sind die 3 Blöcke mit Kick off, midterm und Final */}
-                <Timeline kickoff={kickoff.date} midterm={midterm.date} final={final.date} />
+                <Timeline kickoff={kickoff} midterm={midterm} final={final} />
             </Section>
 
             <Section mt="8rem">

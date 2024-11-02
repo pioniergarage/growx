@@ -21,12 +21,14 @@ import { GrowEventCardProps } from './GrowEventCard';
 type EventTagListProps = FlexProps & {
     event: GrowEvent;
     transparent?: boolean;
+    hide_category?: boolean;
     registration?: GrowEventCardProps['registration'];
 };
 
 const EventTagList = ({
     event,
     transparent = false,
+    hide_category = false,
     registration,
     ...flexProps
 }: EventTagListProps) => {
@@ -67,19 +69,24 @@ const EventTagList = ({
                 </EventTag>
             )}
 
-            {event.eventCategory === EventCategory.Grow && (
-                <EventTag icon={FaStar} transparent={transparent} />
-            )}
-            {event.eventCategory === EventCategory.Info && (
-                <EventTag icon={FaInfo} transparent={transparent}>
-                    Info Session
-                </EventTag>
-            )}
-            {event.eventCategory === EventCategory.Workshop && (
-                <EventTag icon={FaUser} transparent={transparent}>
-                    Workshop
-                </EventTag>
-            )}
+            {!hide_category &&
+                <>
+                    {event.eventCategory === EventCategory.Grow && (
+                        <EventTag icon={FaStar} transparent={transparent} />
+                    )}
+                    {event.eventCategory === EventCategory.Info && (
+                        <EventTag icon={FaInfo} transparent={transparent}>
+                            Info Session
+                        </EventTag>
+                    )}
+                    {event.eventCategory === EventCategory.Workshop && (
+                        <EventTag icon={FaUser} transparent={transparent}>
+                            Workshop
+                        </EventTag>
+                    )}
+                </>
+            }
+
 
 
             {registration && (
