@@ -18,7 +18,22 @@ const SponsorsAndSupporters = ({ sponsors }: SponsorAndSupporterProps) => {
 
     return (
         <>
+            <SimpleGrid columns={{ base: 1, md: 2 }} gap={10} alignItems="start">
+                {patrons.length > 0 &&
+                    <GridItem>
+                        <Heading size="lg" color="whiteAlpha.600" mb={2}>
+                            Förderer
+                        </Heading>
+                        <SponsorGrid
+                            sponsors={patrons}
+                            columns={3}
+                        />
+                    </GridItem>
+                }
 
+            </SimpleGrid>
+
+            <Divider my={12} />
 
             <SimpleGrid columns={{ base: 1, md: 2 }} gap={10} alignItems="start">
                 {flagship_sponsors.length > 0 &&
@@ -61,20 +76,6 @@ const SponsorsAndSupporters = ({ sponsors }: SponsorAndSupporterProps) => {
                         </Heading>
                         <SponsorGrid
                             sponsors={bronze_sponsors}
-                            columns={3}
-                        />
-                    </GridItem>
-                }
-            </SimpleGrid>
-            <Divider my={12} />
-            <SimpleGrid columns={{ base: 1, md: 2 }} gap={10} alignItems="start">
-                {patrons.length > 0 &&
-                    <GridItem>
-                        <Heading size="lg" color="whiteAlpha.600" mb={2}>
-                            Förderer
-                        </Heading>
-                        <SponsorGrid
-                            sponsors={patrons}
                             columns={3}
                         />
                     </GridItem>
