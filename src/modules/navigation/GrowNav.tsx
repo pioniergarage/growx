@@ -4,7 +4,6 @@ import {
     FaCalendarAlt,
     FaCogs,
     FaHome,
-    FaNewspaper,
     FaUserFriends
 } from 'react-icons/fa';
 import { DesktopMenu } from '../../components/navigation/DesktopMenu';
@@ -25,11 +24,11 @@ export type NavigationItem = {
 };
 
 const navigationItems: NavigationItem[] = [
-    {
-        href: '/',
-        label: 'Home',
-        icon: <FaHome />,
-    },
+    // {
+    //     href: '/',
+    //     label: 'Home',
+    //     icon: <FaHome />,
+    // },
     //TODO: Update this webpage!
 
     // {
@@ -39,9 +38,9 @@ const navigationItems: NavigationItem[] = [
     // },
     {
         href: '/connect',
-        label: 'News',
+        label: 'Dashboard',
         isHidden: (profile) => !profile,
-        icon: <FaNewspaper />,
+        icon: < FaHome />,
     },
     {
         href: '/connect/teams',
