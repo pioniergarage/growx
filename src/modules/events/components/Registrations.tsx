@@ -20,12 +20,12 @@ import { downloadCSV } from 'utils/csv';
 import { useRegistrationsToEvent } from '../hooks';
 import { GrowEvent } from '../types';
 
-type RegistraionsProps = {
+type RegistrationsProps = {
     eventId: GrowEvent["id"];
     eventName: string;
 };
 
-const Registrations: React.FC<RegistraionsProps> = ({ eventId, eventName }) => {
+const Registrations: React.FC<RegistrationsProps> = ({ eventId, eventName }) => {
     const { registrations } = useRegistrationsToEvent(eventId);
 
     function downloadRegistrations(
@@ -89,7 +89,7 @@ const Registrations: React.FC<RegistraionsProps> = ({ eventId, eventName }) => {
                                         </Tag>
                                     )}
                                 </Td>
-                                <Td>{r.present ? <FaLaptop /> : undefined}</Td>
+                                <Td>{r.present ? undefined : <FaLaptop />}</Td>
                                 <Td>{r.contact_information.email}</Td>
                             </Tr>
                         ))}
