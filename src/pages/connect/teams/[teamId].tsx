@@ -46,7 +46,7 @@ interface TeamDetails {
 
 const TeamDetails: React.FC<TeamDetails> = ({ team: serverSideTeam }) => {
     const toast = useToast();
-    const teamId = serverSideTeam.id;
+    const teamId = serverSideTeam.id; //This fails with error - TypeError: Cannot read properties of undefined (reading 'id')
     const { team, isLoading } = useTeam(serverSideTeam.id, serverSideTeam);
     const { members } = useTeamMembers(teamId);
 

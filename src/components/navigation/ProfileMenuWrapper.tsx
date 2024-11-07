@@ -34,12 +34,12 @@ const ProfileMenu = (props: { profile: Profile; handleLogout: () => void }) => {
                         {['PARTICIPANT', 'ORGA'].includes(
                             props.profile.role
                         ) && (
-                            <Link href="/connect/team">
-                                <MenuItem icon={<FaUsers />}>
-                                    Your Team
-                                </MenuItem>
-                            </Link>
-                        )}
+                                <Link href="/connect/team">
+                                    <MenuItem icon={<FaUsers />}>
+                                        Your Team
+                                    </MenuItem>
+                                </Link>
+                            )}
                         <MenuItem
                             onClick={props.handleLogout}
                             icon={<FaSignOutAlt />}
@@ -72,6 +72,11 @@ const ProfileMenuWrapper: React.FC<{ profile?: Profile }> = ({ profile }) => {
                 <Link href="/connect/login">
                     <a>
                         <Button>Sign in</Button>
+                    </a>
+                </Link>
+                <Link href="/connect/signup">
+                    <a>
+                        <Button>Sign up</Button> {/** TODO Decide if this should be removed */}
                     </a>
                 </Link>
             </>
