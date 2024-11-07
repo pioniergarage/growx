@@ -69,14 +69,14 @@ const ProfileMenuWrapper: React.FC<{ profile?: Profile }> = ({ profile }) => {
     } else {
         return (
             <>
-                <Link href="/connect/login">
-                    <a>
-                        <Button>Sign in</Button>
-                    </a>
-                </Link>
                 <Link href="/connect/signup">
                     <a>
                         <Button>Sign up</Button> {/** TODO Decide if this should be removed */}
+                    </a>
+                </Link>
+                <Link href="/connect/login">
+                    <a>
+                        <Button>Sign in</Button>
                     </a>
                 </Link>
             </>
