@@ -14,15 +14,57 @@ export default function Footer() {
                 maxW="container.xl"
             >
                 <Divider mb={8} />
-                <Flex gap={6}>
+                <Flex gap={6} alignItems="center">
                     <Link href="https://pioniergarage.de">
                         <Image
                             src="/images/pg.webp"
-                            alt="Grow Pioniergarage"
-                            width="12rem"
+                            alt="Pioniergarage"
+                            height="3rem"
                             objectFit="contain"
                         />
                     </Link>
+
+
+
+                    <Flex
+                        gap={6}
+                        alignItems="center"
+                        height="2rem"
+                        position="relative"
+                        justifyContent="center"
+                    >
+                        <h3 style={{ position: "absolute", top: "-1.5rem", width: "100%", textAlign: "center" }}>
+                            Follow us!
+                        </h3>
+                        <Link href="https://www.instagram.com/pioniergarage_ev/">
+                            <Image
+                                height="2rem"
+                                src="/images/icons/instagram.svg"
+                                alt="Pioniergarage Instagram"
+                                objectFit="contain"
+                            />
+                        </Link>
+                        <Link href="https://linkedin.com/company/pioniergarage">
+                            <Image
+                                height="2rem"
+                                src="/images/icons/linkedin.png"
+                                alt="Pioniergarage LinkedIn"
+                                objectFit="contain"
+                            />
+                        </Link>
+                        <Link href="https://chat.whatsapp.com/GuhNZppcwLz3ngxY79LcWb">
+                            <Image
+                                height="2rem"
+                                src="/images/icons/whatsapp.svg"
+                                alt="Pioniergarage WhatsApp"
+                                objectFit="contain"
+                            />
+                        </Link>
+                    </Flex>
+
+
+
+
                     <Flex flexDir="column" color="gray.300">
                         <NextLink href="/#faqs">
                             <Link>FAQ</Link>
@@ -32,6 +74,9 @@ export default function Footer() {
                             Impressum
                         </Link>
                     </Flex>
+
+
+
                 </Flex>
                 <Flex
                     flexDir="column"

@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react';
 
 // Sample link data
 const links = [
-    { id: 1, title: 'GROW Sign Up', href: '/connect/signup', img: "/images/GROW.png" },
+    { id: 1, title: 'GROW Sign Up', href: '/connect/signup', img: "/images/icons/grow.png" },
     { id: 1, title: 'PionierGarage Site', href: 'https://www.pioniergarage.de/', img: "/images/icons/pg.png" },
     { id: 2, title: 'PionierGarage WhatsApp Group', href: 'https://chat.whatsapp.com/GuhNZppcwLz3ngxY79LcWb', img: "/images/icons/whatsapp.svg" },
     { id: 3, title: 'PionierGarage On LinkedIn', href: 'https://linkedin.com/company/pioniergarage', img: "/images/icons/linkedin.png" },
@@ -71,7 +71,7 @@ const LinkListPage = () => {
                                     <Image
                                         src={link.img}
                                         alt="Grow Pioniergarage"
-                                        maxWidth="4rem"
+                                        width="3rem"
                                         objectFit="contain"
                                     />
                                     <Box>
