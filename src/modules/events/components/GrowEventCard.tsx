@@ -3,7 +3,7 @@ import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex, Grid, GridItem, Heading, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useMemo } from 'react';
-import { GrowEvent } from '../types';
+import { EventCategory, GrowEvent } from '../types';
 import EventTagList from './EventTagList';
 
 export type GrowEventCardProps = {
@@ -27,10 +27,11 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
                 pt={4}
                 pb={3}
                 columnGap={{ base: 2, md: 4 }}
-                opacity={over ? 0.5 : 1}
+                opacity={over ? 0.33 : 1}
                 cursor="pointer"
-                _hover={{ bgColor: 'whiteAlpha.100' }}
-                _focus={{ bgColor: 'whiteAlpha.200' }}
+                bgColor={event.eventCategory === EventCategory.Grow ? "rgba(211, 77, 188, 0.25)" : "whiteAlpha.50"}
+                _hover={{ bgColor: event.eventCategory === EventCategory.Grow ? "rgba(211, 77, 188, 0.5)" : "whiteAlpha.100" }}
+                _focus={{ bgColor: event.eventCategory === EventCategory.Grow ? "rgba(211, 77, 188, 0.75)" : "whiteAlpha.200" }}
             >
                 <GridItem rowSpan={{ base: undefined, md: 3 }}>
                     <Heading
