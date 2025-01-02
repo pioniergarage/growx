@@ -72,7 +72,9 @@ const EventTagList = ({
             {!hide_category &&
                 <>
                     {event.eventCategory === EventCategory.Grow && (
-                        <EventTag icon={FaStar} transparent={transparent} />
+                        <EventTag icon={FaStar} transparent={transparent} >
+                            GROW
+                        </EventTag>
                     )}
                     {event.eventCategory === EventCategory.Info && (
                         <EventTag icon={FaInfo} transparent={transparent}>

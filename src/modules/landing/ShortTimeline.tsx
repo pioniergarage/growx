@@ -96,7 +96,7 @@ const ShortTimeline: React.FC<ShortTimeLineProps> = ({
         },
         {
             event: final,
-            title: 'Finals',
+            title: 'Grand Final',
             description: `Present your results to a huge crowd and show how far you have come. 
             Each participant will have learned a lot and gained a lot of experience by this point. 
             The groups with the greatest progress will receive prizes. This is what you've been working for!`,
