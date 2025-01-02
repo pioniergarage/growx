@@ -2,7 +2,6 @@ import Card from '@/components/Card';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex, Grid, GridItem, Heading, Link, Text } from '@chakra-ui/react';
 import { useMemo, useState } from 'react';
-import { FaUsersCog } from 'react-icons/fa';
 import { EventCategory, GrowEvent } from '../types';
 import EventTagList from './EventTagList';
 
@@ -100,7 +99,7 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
                             </Button>
                             :
                             <Link href={'/connect/events/' + event.id} mt={2}>
-                                <Button leftIcon={<FaUsersCog />}>Visit Event</Button>
+                                <Button>Visit Event</Button>
                             </Link>
                         }
                     </Flex>
