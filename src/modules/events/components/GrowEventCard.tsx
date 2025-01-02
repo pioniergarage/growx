@@ -71,15 +71,6 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
                     <Heading size={{ base: 'xs', sm: 'md' }}>
                         {event.title}
                     </Heading>
-
-                    {event.href &&
-                        <Button leftIcon={<ExternalLinkIcon />} size='xs' onClick={(e) => {
-                            e.stopPropagation(); // Prevent the click event from triggering the card click
-                            window.location.href = event.href as string;
-                        }}>
-                            Link
-                        </Button>
-                    }
                 </Flex>
 
                 <EventTagList
@@ -99,10 +90,19 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
                         alignItems="center"
                     >
                         <Text>{event.description}</Text>
-                        <Link href={'/connect/events/' + event.id} mt={2}>
-                            <Button leftIcon={<FaUsersCog />}>Go to Event</Button>
-                        </Link>
 
+                        {event.href ?
+                            <Button leftIcon={<ExternalLinkIcon />} onClick={(e) => {
+                                e.stopPropagation(); // Prevent the click event from triggering the card click
+                                window.location.href = event.href as string;
+                            }}>
+                                Link to Event
+                            </Button>
+                            :
+                            <Link href={'/connect/events/' + event.id} mt={2}>
+                                <Button leftIcon={<FaUsersCog />}>Visit Event</Button>
+                            </Link>
+                        }
                     </Flex>
                 )}
             </Box>
