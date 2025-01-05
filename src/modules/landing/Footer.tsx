@@ -100,7 +100,7 @@ export default function Footer() {
                         </Link>
                     </Flex>
                     <Spacer mb={2} />
-                    <Box color="primary">{"GROW '24"}</Box>
+                    <Box color="primary">{"GROW 24/25"}</Box>
                     <Flex ml={4} gap={3}>
                         <Link href="https://github.com/hudmarc">
                             <Icon as={FaGithub} mr={1} />

@@ -79,8 +79,7 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
                     gap={0}
                 />
 
-                {(isExpanded && event.description != undefined && event.description.length > 0) && (
-
+                {isExpanded && (
                     <Flex
                         mt={1}
                         flexWrap="wrap"
@@ -88,7 +87,9 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
                         flexDir={{ base: 'column', sm: 'row' }}
                         alignItems="center"
                     >
-                        <Text>{event.description}</Text>
+                        {event.description != undefined && event.description.length > 0 &&
+                            <Text>{event.description}</Text>
+                        }
 
                         {event.href ?
                             <Button leftIcon={<ExternalLinkIcon />} onClick={(e) => {
