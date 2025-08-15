@@ -1,8 +1,7 @@
 export default function BottomBanner({
     height = '4rem',
     maxHeight = '6rem',
-    backgroundColor = 'rgba(0,0,0,0.7)',
-    closeButtonClicked = 'false',
+    backgroundColor = 'rgba(0,0,0,0.7)'
 }) {
     return (
         <div
