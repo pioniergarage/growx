@@ -76,7 +76,7 @@ const ProfileMenuWrapper: React.FC<{ profile?: Profile }> = ({ profile }) => {
                 </Link> */}
                 <Link href="/connect/login" legacyBehavior>
 
-                    <Button>Sign in</Button>
+                    <Button>Competition Sign in</Button>
 
                 </Link>
             </>

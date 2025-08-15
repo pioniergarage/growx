@@ -1,5 +1,5 @@
 import PageLink from '@/components/navigation/PageLink';
-import { Alert, AlertIcon, Flex, VStack } from '@chakra-ui/react';
+import { Alert, AlertIcon, Flex, Spacer, VStack } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import LoginLayout from 'layouts/LoginLayout';
@@ -44,6 +44,7 @@ const LoginPage: NextPageWithLayout = () => {
                 width={128}
                 height={27}
             />
+            <Spacer></Spacer>
             <LogInForm onSubmit={handleLogin} loading={loading} />
             {loginError && (
                 <Alert status="error" width="16rem">
@@ -60,7 +61,16 @@ const LoginPage: NextPageWithLayout = () => {
                     Forgot your password?
                 </PageLink>
             </Flex>
-        </VStack>
+            <Spacer />
+            <PageLink
+                color="primary"
+                textAlign="center"
+                href="mailto:vorstand@pioniergarage.de"
+            >
+                Not a participant yet or missed the kickoff? Email us!
+            </PageLink>
+
+        </VStack >
     );
 };
 LoginPage.getLayout = (page) => <LoginLayout>{page}</LoginLayout>;
