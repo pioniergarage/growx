@@ -1,7 +1,7 @@
 import { Box, Heading, SimpleGrid, Tag, Text, VStack } from '@chakra-ui/react';
 import EventTagList from 'modules/events/components/EventTagList';
 import { GrowEvent } from 'modules/events/types';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { growFormattedDate } from 'utils/formatters';
 
 type TimeLineItemProps = {

@@ -15,7 +15,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { useEffect } from 'react';
 import rules from 'utils/rules';
 
