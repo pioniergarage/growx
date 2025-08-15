@@ -148,10 +148,8 @@ const MobileMenuButton = (
 
 const DesktopMenuButton = (props: PropsWithChildren & { href: string }) => {
     return (
-        <Link href={props.href} passHref>
-
+        <Link href={props.href} passHref legacyBehavior>
             <Button variant="ghost">{props.children}</Button>
-
         </Link>
     );
 };
