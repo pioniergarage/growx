@@ -18,7 +18,7 @@ type ShortTimeLineProps = {
     final: GrowEvent;
 };
 
-const TimelineItem: React.FC<TimeLineItemProps> = ({
+export const TimelineItem: React.FC<TimeLineItemProps> = ({
     event,
     title,
     description,

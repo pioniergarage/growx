@@ -10,9 +10,10 @@ interface LongTimelineProps {
 }
 
 const LongTimeline: React.FC<LongTimelineProps> = ({ events, kickoffDate }) => {
+    const season = getCurrentSeason(kickoffDate);
     return (
         <VStack gap={4}>
-            <Heading>Timeline {getCurrentSeason(kickoffDate)}</Heading>
+            <Heading>Timeline {season}</Heading>
             <p>New for 2024: All workshops are now open to the public!</p>
             <VStack gap={4} alignItems="stretch" maxW="3xl">
                 {events.map((event) => (

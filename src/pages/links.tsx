@@ -1,13 +1,6 @@
-import { ExternalLinkIcon } from '@chakra-ui/icons';
+import LinkListItem from '@/components/LinkListItem';
 import {
-    Box,
-    Button,
-    Card,
-    Flex,
-    Grid,
-    GridItem,
     Heading,
-    Image,
     SimpleGrid,
     Spacer,
     VStack
@@ -15,10 +8,9 @@ import {
 import GrowEventCard from 'modules/events/components/GrowEventCard';
 import { useGrowEvents } from 'modules/events/hooks';
 import { GrowEvent } from 'modules/events/types';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-// Sample link data
+// TODO: this should fetch the link to the final by index from a "Links" table on the database.
 const links = [
     { id: 1, title: 'GROW Final 24/25', href: 'https://pretix.eu/GROW/Final/', img: "/images/icons/grow.png" },
     { id: 1, title: 'PionierGarage Site', href: 'https://www.pioniergarage.de/', img: "/images/icons/pg.png" },
@@ -52,47 +44,11 @@ const LinkListPage = () => {
             </VStack>
             <VStack alignItems="stretch" spacing={4}>
                 <SimpleGrid columns={{ base: 1 }} spacing={12}>
-                    {links.map((link) => (
-                        <Link href={link.href} passHref key={link.id}>
-                            <Card
-                                as={Grid}
-                                alignItems="left"
-                                gridTemplateColumns={{ base: '1fr 2fr', md: '10rem 2fr' }}
-                                px={3}
-                                pt={4}
-                                pb={3}
-                                columnGap={{ base: 2, md: 4 }}
-                                opacity={1}
-                                cursor="pointer"
-                                _hover={{ bgColor: 'whiteAlpha.100' }}
-                                _focus={{ bgColor: 'whiteAlpha.200' }}
-                            >
-                                <Flex flexDir={{ base: 'column', md: 'row' }} gap={4}>
-                                    <Image
-                                        src={link.img}
-                                        alt="Grow Pioniergarage"
-                                        width="3rem"
-                                        objectFit="contain"
-                                    />
-                                    <Box>
-                                        <GridItem>
-                                            <Heading size="md">{link.title}</Heading>
-                                        </GridItem>
-                                        <GridItem>
-                                            <Button
-                                                leftIcon={<ExternalLinkIcon />}
-                                                size="sm"
-                                                variant="link"
-                                                onClick={() => { window.location.href = link.href }}
-                                            >
-                                                Go to Link
-                                            </Button>
-                                        </GridItem>
-                                    </Box>
-                                </Flex>
-
-                            </Card>
-                        </Link>
+                    {links.map((link, index) => (
+                        <LinkListItem
+                            link={link}
+                            key={index}
+                        />
                     ))}
                 </SimpleGrid>
 
