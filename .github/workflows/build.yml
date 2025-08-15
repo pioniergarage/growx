@@ -34,7 +34,7 @@ jobs:
       run: npm run build --if-present
 
     - name: List
-    - run: ls -a
+      run: ls -a
     
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4
