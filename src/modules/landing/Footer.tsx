@@ -66,7 +66,7 @@ export default function Footer() {
 
 
                     <Flex flexDir="column" color="gray.300">
-                        <NextLink href="/#faqs">
+                        <NextLink href="/#faqs" legacyBehavior>
                             <Link>FAQ</Link>
                         </NextLink>
                         <Link href="mailto:grow@pioniergarage.de">Contact</Link>

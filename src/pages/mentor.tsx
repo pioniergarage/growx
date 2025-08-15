@@ -36,7 +36,7 @@ const MentorPage = ({ mentors }: MentorPageProps) => {
                 separator={<ChevronRightIcon color="gray.500" />}
             >
                 <BreadcrumbItem isCurrentPage>
-                    <Link href="/mentor" passHref>
+                    <Link href="/mentor" passHref legacyBehavior>
                         <BreadcrumbLink>Our mentors</BreadcrumbLink>
                     </Link>
                 </BreadcrumbItem>

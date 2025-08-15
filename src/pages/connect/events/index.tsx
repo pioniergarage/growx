@@ -26,7 +26,7 @@ const EventsPage = () => {
                 mb={4}
             >
                 <BreadcrumbItem isCurrentPage>
-                    <Link href="/connect/events" passHref>
+                    <Link href="/connect/events" passHref legacyBehavior>
                         <BreadcrumbLink>Events</BreadcrumbLink>
                     </Link>
                 </BreadcrumbItem>

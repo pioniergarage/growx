@@ -22,13 +22,12 @@ const TeamsPage = () => {
                 separator={<ChevronRightIcon color="gray.500" />}
             >
                 <BreadcrumbItem isCurrentPage>
-                    <Link href="/connect" passHref>
+                    <Link href="/connect" passHref legacyBehavior>
                         <BreadcrumbLink>Teams</BreadcrumbLink>
                     </Link>
                     <BreadcrumbSeparator />
                 </BreadcrumbItem>
             </Breadcrumb>
-
             <SimpleGrid gap={4} columns={{ base: 1, sm: 2, lg: 3, xl: 4 }}>
                 {(teams ?? [])
                     .filter((t) => !t.archived)

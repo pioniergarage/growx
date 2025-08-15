@@ -29,7 +29,7 @@ export default function TeamCard(team: Team) {
                     flexGrow={1}
                     gap={0}
                 >
-                    <Link href={`/connect/teams/${team.id}`} passHref>
+                    <Link href={`/connect/teams/${team.id}`} passHref legacyBehavior>
                         <LinkOverlay>
                             <Heading size="sm">{team.name}</Heading>
                         </LinkOverlay>

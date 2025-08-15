@@ -26,7 +26,7 @@ export default function YourTeamCard() {
                     flexGrow={1}
                     gap={0}
                 >
-                    <Link href={`/connect/`} passHref>
+                    <Link href={`/connect/`} passHref legacyBehavior>
                         <LinkOverlay>
                             <Heading size="sm">Your Team</Heading>
                         </LinkOverlay>

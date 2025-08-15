@@ -28,7 +28,7 @@ const GrowLogo = (boxProps: BoxProps) => {
         },
     });
     return (
-        <Link href="/" passHref>
+        <Link href="/" passHref legacyBehavior>
             <Flex as="a" {...boxProps}>
                 <Image
                     alt="Grow Logo"
@@ -116,7 +116,7 @@ const MobileMenuButton = (
     const router = useRouter();
 
     return (
-        <Link href={props.href} passHref>
+        <Link href={props.href} passHref legacyBehavior>
             <Flex
                 as="a"
                 _hover={{
@@ -149,9 +149,9 @@ const MobileMenuButton = (
 const DesktopMenuButton = (props: PropsWithChildren & { href: string }) => {
     return (
         <Link href={props.href} passHref>
-            <a>
-                <Button variant="ghost">{props.children}</Button>
-            </a>
+
+            <Button variant="ghost">{props.children}</Button>
+
         </Link>
     );
 };

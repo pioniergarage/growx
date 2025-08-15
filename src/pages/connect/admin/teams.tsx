@@ -77,7 +77,7 @@ const TeamRow: React.FC<TeamRowProps> = ({ team, mentor }) => {
                             href={'/connect/teams/' + team.id}
                             passHref
                             prefetch={false}
-                        >
+                            legacyBehavior>
                             <LinkOverlay>{team.name}</LinkOverlay>
                         </Link>
                         {team.isArchived && (

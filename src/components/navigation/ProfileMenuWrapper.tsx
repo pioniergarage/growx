@@ -28,13 +28,13 @@ const ProfileMenu = (props: { profile: Profile; handleLogout: () => void }) => {
                         icon={<UserAvatar profile={props.profile} size="sm" />}
                     />
                     <MenuList>
-                        <Link href="/connect/profile">
+                        <Link href="/connect/profile" legacyBehavior>
                             <MenuItem icon={<FaUser />}>Profile</MenuItem>
                         </Link>
                         {['PARTICIPANT', 'ORGA'].includes(
                             props.profile.role
                         ) && (
-                                <Link href="/connect/team">
+                                <Link href="/connect/team" legacyBehavior>
                                     <MenuItem icon={<FaUsers />}>
                                         Your Team
                                     </MenuItem>
@@ -75,9 +75,9 @@ const ProfileMenuWrapper: React.FC<{ profile?: Profile }> = ({ profile }) => {
                     </a>
                 </Link> */}
                 <Link href="/connect/login">
-                    <a>
-                        <Button>Sign in</Button>
-                    </a>
+
+                    <Button>Sign in</Button>
+
                 </Link>
             </>
         );

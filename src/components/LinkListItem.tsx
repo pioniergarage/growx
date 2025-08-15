@@ -18,7 +18,7 @@ interface LinkListItemProps {
 
 function LinkListItem({ link }: LinkListItemProps) {
     return (
-        <Link href={link.href} passHref key={link.id}>
+        <Link href={link.href} passHref key={link.id} legacyBehavior>
             <Card
                 as={Grid}
                 alignItems="left"

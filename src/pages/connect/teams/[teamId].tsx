@@ -124,7 +124,7 @@ const TeamDetails: React.FC<TeamDetails> = ({ team: serverSideTeam }) => {
                 separator={<ChevronRightIcon color="gray.500" />}
             >
                 <BreadcrumbItem>
-                    <Link href="/connect/teams" passHref>
+                    <Link href="/connect/teams" passHref legacyBehavior>
                         <BreadcrumbLink>Teams</BreadcrumbLink>
                     </Link>
                 </BreadcrumbItem>

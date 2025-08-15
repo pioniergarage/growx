@@ -125,7 +125,7 @@ const Prev: React.FC<PrevProps> = ({ events: jsonEvents = [] }) => {
                     separator={<ChevronRightIcon color="gray.500" />}
                 >
                     <BreadcrumbItem isCurrentPage>
-                        <Link href="/mentor" passHref>
+                        <Link href="/mentor" passHref legacyBehavior>
                             <BreadcrumbLink>Previous Finalists</BreadcrumbLink>
                         </Link>
                     </BreadcrumbItem>

@@ -46,7 +46,7 @@ const RequestItem: React.FC<RequestItemProps> = ({
                     <UserAvatar {...profile} />
                 </GridItem>
                 <GridItem fontWeight="bold">
-                    <Link href={'/connect/profiles/' + profile.userId} passHref>
+                    <Link href={'/connect/profiles/' + profile.userId} passHref legacyBehavior>
                         <LinkOverlay>
                             {profile.firstName + profile.lastName}
                         </LinkOverlay>
