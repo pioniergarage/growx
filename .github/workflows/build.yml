@@ -32,6 +32,9 @@ jobs:
      
     - name: Build 
       run: npm run build --if-present
+
+    - name: List build files
+      run: ls -a .next
     
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4
