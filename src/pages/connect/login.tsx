@@ -67,7 +67,7 @@ const LoginPage: NextPageWithLayout = () => {
                 textAlign="center"
                 href="mailto:vorstand@pioniergarage.de"
             >
-                Not a participant yet or missed the kickoff? Email us!
+                Want to participate? Missed the kickoff? Email us!
             </PageLink>
 
         </VStack >
