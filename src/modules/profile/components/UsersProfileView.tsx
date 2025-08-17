@@ -18,7 +18,6 @@ const ProfilePropertyRow = ({
 export default function UsersProfileView(props: {
     profile: Profile;
     contact: ContactInformation;
-    matriculation?: string;
 }) {
     return (
         <Grid
@@ -55,7 +54,6 @@ export default function UsersProfileView(props: {
                 props.profile.keyQualification && (
                     <ProfilePropertyRow
                         name="Matriculation"
-                        value={props.matriculation}
                     />
                 )}
         </Grid>

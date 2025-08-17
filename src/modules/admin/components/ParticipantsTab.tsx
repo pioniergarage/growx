@@ -64,17 +64,6 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
                                     {profile.firstName + ' ' + profile.lastName}
                                 </Box>
                                 <Box>{profile.email}</Box>
-                                {/* <GridItem colSpan={2}>
-                                    <FormControl>
-                                        <FormLabel>Matriculation</FormLabel>
-                                        <Input
-                                            value={matriculation}
-                                            onChange={(e) =>
-                                                setMatriculation(e.target.value)
-                                            }
-                                        />
-                                    </FormControl>
-                                </GridItem> */}
                             </SimpleGrid>
                         </ModalBody>
                         <ModalFooter>
@@ -111,7 +100,6 @@ const ProfileRowUnmemod = ({
     lastName,
     email,
     phone,
-    matriculation,
     isHidden,
     onEdit,
     userId,
@@ -121,7 +109,6 @@ const ProfileRowUnmemod = ({
     lastName: string;
     email: string;
     phone?: string | null;
-    matriculation?: string;
     isHidden: boolean;
     onEdit: (userId: string) => void;
 }) => {
@@ -132,7 +119,6 @@ const ProfileRowUnmemod = ({
             </Td>
             <Td>{email}</Td>
             <Td>{phone}</Td>
-            <Td>{matriculation}</Td>
             <Td>
                 <IconButton
                     onClick={() => onEdit(userId)}
@@ -196,7 +182,6 @@ const ParticipantsTab = (props: { profiles: FullProfile[] }) => {
                             <Th>Name</Th>
                             <Th>Email</Th>
                             <Th>Phone</Th>
-                            <Th>Matr.</Th>
                             <Th></Th>
                         </Tr>
                     </Thead>
@@ -209,7 +194,6 @@ const ParticipantsTab = (props: { profiles: FullProfile[] }) => {
                                 lastName={profile.lastName}
                                 email={profile.email}
                                 phone={profile.phone}
-                                matriculation={profile.matriculation}
                                 isHidden={!filter(profile, searchTerm)}
                                 onEdit={handleEdit}
                             />

@@ -27,16 +27,13 @@ const adminApi: AdminApi = {
                 dtos.map(({ contact_information, ...rest }) => ({
                     profile: rest,
                     contact_information:
-                        contact_information as ContactInformation,
-                    matriculation:
-                        '', //matriculation as Database['public']['Tables']['matriculation']['Row']
+                        contact_information as ContactInformation
                 }))
             )
             .then((dtos) => {
                 return dtos.map((dto) => ({
                     ...mapProfileDto(dto.profile),
-                    ...(dto.contact_information as ContactInformation),
-                    matriculation: '',
+                    ...(dto.contact_information as ContactInformation)
                 }));
             });
         return profiles;
