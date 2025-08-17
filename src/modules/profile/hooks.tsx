@@ -7,8 +7,7 @@ import {
     fetchProfile,
     getProfiles,
     insertSignupInfo,
-    updateProfile,
-    upsertMatriculation,
+    updateProfile
 } from 'modules/profile/api';
 import { FurtherProfileInfo, Profile } from './types';
 
@@ -69,27 +68,6 @@ export function useMatriculation() {
         { enabled: !!user }
     );
     return { ...query, matriculation: query.data };
-}
-
-export function useUpsertMatriculation() {
-    const supabaseClient = useSupabaseClient<Database>();
-    const user = useUser();
-    const queryClient = useQueryClient();
-    const mutation = useMutation(
-        async (matriculation: string) => {
-            if (!user) {
-                throw new Error('User not available');
-            }
-            await upsertMatriculation(supabaseClient, user.id, matriculation);
-            return matriculation;
-        },
-        {
-            onSuccess(matriculation) {
-                queryClient.setQueryData('matriculation', matriculation);
-            },
-        }
-    );
-    return { ...mutation, upsertMatriculation: mutation.mutateAsync };
 }
 
 export function useProfiles() {

@@ -15,33 +15,28 @@ interface AdminApi {
     getActiveTeamsWithDates(
         supabase: SupabaseClient<Database>
     ): Promise<(Team & { insertedAt: Date })[]>;
-    upsertMatriculation(
-        supabase: SupabaseClient<Database>,
-        userId: string,
-        matriculation: string
-    ): Promise<void>;
 }
 
 const adminApi: AdminApi = {
     getFullProfiles: async (supabase) => {
         const profiles = await supabase
             .from('profiles')
-            .select('*, contact_information(*), matriculation(*)')
+            .select('*, contact_information(*)')
             .then(handleResponse)
             .then((dtos) =>
-                dtos.map(({ contact_information, matriculation, ...rest }) => ({
+                dtos.map(({ contact_information, ...rest }) => ({
                     profile: rest,
                     contact_information:
                         contact_information as ContactInformation,
                     matriculation:
-                        matriculation as Database['public']['Tables']['matriculation']['Row'],
+                        '', //matriculation as Database['public']['Tables']['matriculation']['Row']
                 }))
             )
             .then((dtos) => {
                 return dtos.map((dto) => ({
                     ...mapProfileDto(dto.profile),
                     ...(dto.contact_information as ContactInformation),
-                    matriculation: dto.matriculation?.Id,
+                    matriculation: '',
                 }));
             });
         return profiles;
@@ -72,14 +67,7 @@ const adminApi: AdminApi = {
                     insertedAt: new Date(dto.inserted_at),
                 }))
             );
-    },
-
-    upsertMatriculation: async (supabase, userId, matriculation) => {
-        await supabase.from('matriculation').upsert({
-            Id: matriculation,
-            user_id: userId,
-        });
-    },
+    }
 };
 
 export default adminApi;

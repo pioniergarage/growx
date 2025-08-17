@@ -1,9 +1,6 @@
 import {
     Box,
     Button,
-    FormControl,
-    FormLabel,
-    GridItem,
     HStack,
     IconButton,
     Input,
@@ -22,20 +19,18 @@ import {
     Thead,
     Tr,
     useDisclosure,
-    VStack,
+    VStack
 } from '@chakra-ui/react';
 import { FullProfile } from 'modules/profile/types';
 import {
     FocusEventHandler,
     memo,
     useCallback,
-    useEffect,
     useMemo,
-    useState,
+    useState
 } from 'react';
 import { FaEllipsisH } from 'react-icons/fa';
 import debounce from 'utils/debounce';
-import { useUpsertMatriculation } from '../hooks';
 import { downloadProfiles } from '../utils';
 
 type ProfileModalProps = {
@@ -49,21 +44,11 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
     isOpen,
     profile,
 }) => {
-    const [matriculation, setMatriculation] = useState(
-        profile?.matriculation || ''
-    );
-    const { upsertMatriculation } = useUpsertMatriculation();
-    useEffect(
-        () => setMatriculation(profile?.matriculation || ''),
-        [profile?.matriculation]
-    );
 
     const handleSave = async () => {
         if (!profile) {
             return;
         }
-        const { userId } = profile;
-        await upsertMatriculation({ userId, matriculation });
         onClose();
     };
     return (
@@ -79,7 +64,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
                                     {profile.firstName + ' ' + profile.lastName}
                                 </Box>
                                 <Box>{profile.email}</Box>
-                                <GridItem colSpan={2}>
+                                {/* <GridItem colSpan={2}>
                                     <FormControl>
                                         <FormLabel>Matriculation</FormLabel>
                                         <Input
@@ -89,7 +74,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
                                             }
                                         />
                                     </FormControl>
-                                </GridItem>
+                                </GridItem> */}
                             </SimpleGrid>
                         </ModalBody>
                         <ModalFooter>
