@@ -50,12 +50,6 @@ export default function UsersProfileView(props: {
                     <ProfilePropertyRow name="Bio" value={props.profile.bio} />
                 </>
             )}
-            {props.profile.role === 'PARTICIPANT' &&
-                props.profile.keyQualification && (
-                    <ProfilePropertyRow
-                        name="Matriculation"
-                    />
-                )}
         </Grid>
     );
 }
