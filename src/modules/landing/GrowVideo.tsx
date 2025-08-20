@@ -22,9 +22,9 @@ const GrowVideo = () => {
                 height={size?.height}
                 src="https://www.youtube.com/embed/ScNQ2jE5UxA"
                 title="YouTube video player"
-                frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
+                loading='lazy'
             ></iframe>
         </Center>
     );
