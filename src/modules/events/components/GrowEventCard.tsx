@@ -1,6 +1,6 @@
 import Card from '@/components/Card';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { Box, Button, Flex, Grid, GridItem, Heading, Link, Text } from '@chakra-ui/react';
+import { Box, Button, Collapse, Flex, Grid, GridItem, Heading, Link, Text } from '@chakra-ui/react';
 import { useMemo, useState } from 'react';
 import { EventCategory, GrowEvent } from '../types';
 import EventTagList from './EventTagList';
@@ -78,33 +78,37 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
                     transparent
                     gap={0}
                 />
-
-                {isExpanded && (
+                <Collapse in={isExpanded} animateOpacity>
                     <Flex
-                        mt={1}
+                        mt={2}
                         flexWrap="wrap"
                         gap={2}
                         flexDir={{ base: 'column', sm: 'row' }}
                         alignItems="center"
+                        mr='4em'
                     >
-                        {event.description != undefined && event.description.length > 0 &&
-                            <Text>{event.description}</Text>
-                        }
+                        {event.description && <Text>{event.description}</Text>}
 
-                        {event.href ?
-                            <Button leftIcon={<ExternalLinkIcon />} onClick={(e) => {
-                                e.stopPropagation(); // Prevent the click event from triggering the card click
-                                window.location.href = event.href as string;
-                            }}>
+
+
+                        {event.href ? (
+                            <Button
+                                leftIcon={<ExternalLinkIcon />}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    window.location.href = event.href as string;
+                                }}
+                            >
                                 Link to Event
                             </Button>
-                            :
-                            <Link href={'/connect/events/' + event.id} mt={2}>
-                                <Button>Visit Event</Button>
+                        ) : (
+                            <Link href={`/connect/events/${event.id}`}>
+                                <Button
+                                    onClick={(e) => { e.stopPropagation(); }}>Visit Event</Button>
                             </Link>
-                        }
+                        )}
                     </Flex>
-                )}
+                </Collapse>
             </Box>
         </Card>
     );

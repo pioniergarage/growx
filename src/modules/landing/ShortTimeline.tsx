@@ -57,7 +57,7 @@ export const TimelineItem: React.FC<TimeLineItemProps> = ({
                     bgGradient="linear(to-t, #000000cc 30%, #00000000 100%)"
                 >
                     <Tag bgColor="blackAlpha.600" mb={2}>
-                        {growFormattedDate(event.date)}
+                        {growFormattedDate(event.date, new Date())}
                     </Tag>
                     <Heading size="md">{title}</Heading>
                     <Text mt={2}>{description}</Text>

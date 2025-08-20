@@ -54,9 +54,9 @@ const Home: React.FC<HomeProps> = ({
     events: jsonEvents = [],
 }) => {
     const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
-    const kickoff = events.filter((e) => e.ref == 'kickoff')[0]
-    const midterm = events.filter((e) => e.ref == 'midterm')[0]
-    const final = events.filter((e) => e.ref == 'final')[0]
+    const kickoff: GrowEvent = events.filter((e) => e.ref == 'kickoff')[0]
+    const midterm: GrowEvent = events.filter((e) => e.ref == 'midterm')[0]
+    const final: GrowEvent = events.filter((e) => e.ref == 'final')[0]
     return (
         <>
             <Section position="relative" minH="80vh">
@@ -78,7 +78,7 @@ const Home: React.FC<HomeProps> = ({
                         filter={{ base: 'blur(80px)', md: 'blur(150px)' }}
                     />
                 </Box>
-                <MainInfoBlock kickoff={kickoff.date} final={final.date} />
+                <MainInfoBlock kickoff={kickoff} final={final} />
             </Section>
 
             <Divider mb={12} />

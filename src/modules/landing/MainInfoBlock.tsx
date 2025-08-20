@@ -10,12 +10,13 @@ import {
     Spacer,
     Text
 } from '@chakra-ui/react';
+import { GrowEvent } from 'modules/events/types';
 import { growFormattedDate } from 'utils/formatters';
 import AnimatedLogo from './AnimatedLogo';
 
 type InfoBlockProps = {
-    kickoff: Date;
-    final: Date;
+    kickoff: GrowEvent;
+    final: GrowEvent;
 };
 
 function Fact({ amount, title }: { amount: string; title: string }) {
@@ -33,6 +34,7 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
     kickoff,
     final
 }) => {
+    const today = new Date();
     return (
         <Grid
             templateColumns={{ base: '1fr', lg: '1fr 1fr' }}
@@ -68,11 +70,13 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                             weeks. <br></br> Get support, build your prototype
                             and test your market.
                         </Text>
-                        <Spacer mb='8' />
-                        {new Date() < kickoff &&
-                            <Button leftIcon={<ExternalLinkIcon />} onClick={() => { window.location.href = "https://form.jotform.com/242815674829065" }}>Sign Up for the Kickoff!</Button>
-                        }
 
+                        {(today < kickoff.date && kickoff.href && URL.canParse(kickoff.href)) &&
+                            <>
+                                <Spacer mb='8' />
+                                <Button leftIcon={<ExternalLinkIcon />} onClick={() => { if (kickoff.href) window.location.href = kickoff.href }}>Sign Up for the Kickoff!</Button>
+                            </>
+                        }
                     </Box>
                     <Flex
                         justifyContent={{
@@ -91,11 +95,11 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                     >
                         <Fact
                             title="Start Kick-Off"
-                            amount={growFormattedDate(kickoff)}
+                            amount={growFormattedDate(kickoff.date, today)}
                         />
                         <Fact
                             title="Finale in Karlsruhe"
-                            amount={growFormattedDate(final)}
+                            amount={growFormattedDate(final.date, today)}
                         />
                     </Flex>
                 </Flex>

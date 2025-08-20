@@ -11,7 +11,7 @@ interface Props {
 const TimelinePlaceholder: React.FC<Props> = ({ season }) => {
     return (
         <VStack gap={4}>
-            <Heading>Timeline {season}</Heading>
+            <Heading>{season}</Heading>
             <VStack gap={4} alignItems="stretch" maxW="3xl">
                 <Heading size={{ base: 'xs', sm: 'md' }}>
                     Coming soon!
