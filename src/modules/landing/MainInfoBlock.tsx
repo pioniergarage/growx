@@ -71,7 +71,7 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                             and test your market.
                         </Text>
 
-                        {(today < kickoff.date && kickoff.href && URL.canParse(kickoff.href)) &&
+                        {(today < kickoff.date && kickoff.href && kickoff.href.length > 0) &&
                             <>
                                 <Spacer mb='8' />
                                 <Button leftIcon={<ExternalLinkIcon />} onClick={() => { if (kickoff.href) window.location.href = kickoff.href }}>Sign Up for the Kickoff!</Button>
