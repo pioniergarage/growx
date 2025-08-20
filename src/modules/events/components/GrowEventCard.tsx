@@ -1,6 +1,6 @@
 import Card from '@/components/Card';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { Box, Button, Collapse, Flex, Grid, GridItem, Heading, Link, Text } from '@chakra-ui/react';
+import { Box, Button, Fade, Flex, Grid, GridItem, Heading, Link, Text } from '@chakra-ui/react';
 import { useMemo, useState } from 'react';
 import { EventCategory, GrowEvent } from '../types';
 import EventTagList from './EventTagList';
@@ -78,37 +78,38 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
                     transparent
                     gap={0}
                 />
-                <Collapse in={isExpanded} animateOpacity>
-                    <Flex
-                        mt={2}
-                        flexWrap="wrap"
-                        gap={2}
-                        flexDir={{ base: 'column', sm: 'row' }}
-                        alignItems="center"
-                        mr='4em'
-                    >
-                        {event.description && <Text>{event.description}</Text>}
+                {isExpanded && (
+                    <Fade in={true}>
+                        <Flex
+                            mt={1}
+                            flexWrap="wrap"
+                            gap={2}
+                            flexDir={{ base: 'column', sm: 'row' }}
+                            alignItems="center"
+                        >
+                            {event.description && event.description.length > 0 && (
+                                <Text>{event.description}</Text>
+                            )}
 
-
-
-                        {event.href ? (
-                            <Button
-                                leftIcon={<ExternalLinkIcon />}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    window.location.href = event.href as string;
-                                }}
-                            >
-                                Link to Event
-                            </Button>
-                        ) : (
-                            <Link href={`/connect/events/${event.id}`}>
+                            {event.href ? (
                                 <Button
-                                    onClick={(e) => { e.stopPropagation(); }}>Visit Event</Button>
-                            </Link>
-                        )}
-                    </Flex>
-                </Collapse>
+                                    leftIcon={<ExternalLinkIcon />}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        window.location.href = event.href as string;
+                                    }}
+                                >
+                                    Link to Event
+                                </Button>
+                            ) : (
+                                <Link href={`/connect/events/${event.id}`} mt={2}>
+                                    <Button>Visit Event</Button>
+                                </Link>
+                            )}
+                        </Flex>
+                    </Fade>
+
+                )}
             </Box>
         </Card>
     );
