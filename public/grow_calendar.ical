@@ -1,0 +1,222 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//sebbo.net//ical-generator//EN
+METHOD:REQUEST
+NAME:PionierGarage GROW Events
+X-WR-CALNAME:PionierGarage GROW Events
+BEGIN:VEVENT
+UID:f9be210d-76c4-40ea-89f6-680d9196b6d7
+SEQUENCE:0
+DTSTAMP:20250821T093923Z
+DTSTART:20241104T180000Z
+DTEND:20241104T190000Z
+SUMMARY:Board Games and Pitching Night
+LOCATION:KIT CUBE (Building 30.29)
+DESCRIPTION:Join us for Ideation Board Game Night\, hosted by Entechnon. E
+ njoy food and drinks while participating in our Ideation Workshop\, the pe
+ rfect opportunity to spark your entrepreneurial spirit and learn how to de
+ velop innovative ideas for your startup. Network with fellow attendees and
+  take part in a fun board game with a chance to win prizes. Don’t miss t
+ his exciting event!
+URL;VALUE=URI:https://grow.pioniergarage.de/
+END:VEVENT
+BEGIN:VEVENT
+UID:6169418d-b1c9-4bc3-bf35-fcbe06bcd51f
+SEQUENCE:0
+DTSTAMP:20250821T093923Z
+DTSTART:20241107T080000Z
+DTEND:20241107T090000Z
+SUMMARY:Creating a Product Profile
+LOCATION:KIT Building 10.23 Room 504
+DESCRIPTION:We’ll guide you through the theory and practical application
+  of creating a Product Profile—a powerful tool that helps you assess you
+ r product’s core features\, validate them for a functional system\, and 
+ pinpoint what makes your product truly exciting for customers. Work hands-
+ on with expert product engineering researchers to build a product profile 
+ tailored to your innovative idea and gain invaluable insights into boostin
+ g your product’s value.
+URL;VALUE=URI:https://grow.pioniergarage.de/
+END:VEVENT
+BEGIN:VEVENT
+UID:3d503af6-af57-428c-9d8f-bb53efc4e7ec
+SEQUENCE:0
+DTSTAMP:20250821T093923Z
+DTSTART:20241114T150000Z
+DTEND:20241114T160000Z
+SUMMARY:Project Management
+LOCATION:KIT Bldg. 01.85 SIL Room (6. OG)
+DESCRIPTION:Join us for a workshop focused on understanding scalability an
+ d its vital role in building successful start-ups. Delve into what it mean
+ s to create scalable projects and why this is crucial for your business's 
+ growth. Explore a range of practical tools and techniques for effective pr
+ oject management\, particularly as your projects increase in complexity. P
+ articipate in hands-on exercises tailored to help you directly apply these
+  skills to your start-up ideas\, ensuring you leave with actionable insigh
+ ts and strategies.
+URL;VALUE=URI:https://grow.pioniergarage.de/
+END:VEVENT
+BEGIN:VEVENT
+UID:08160592-9188-45be-bce8-0c9d1c111111
+SEQUENCE:0
+DTSTAMP:20250821T093923Z
+DTSTART:20241125T180000Z
+DTEND:20241125T190000Z
+SUMMARY:Board Games and Pitching Night Pt. 2
+LOCATION:KIT Bldg. 01.85 SIL Room (6. OG)
+DESCRIPTION:Ideation Board Game Night is back\, now with pitching advice f
+ or the midterm! Enjoy food and drinks while participating in our Ideation 
+ Workshop. Hosted by Entechnon\, at the SIL Room\, it’s the perfect oppor
+ tunity to spark your entrepreneurial spirit and learn how to develop innov
+ ative ideas for your startup. Network with fellow attendees and take part 
+ in a fun board game with a chance to win prizes.  Did you miss the last Bo
+ ard Game Night\, or did you like it so much you want to go again? Don’t 
+ miss this exciting event and join now!
+URL;VALUE=URI:https://grow.pioniergarage.de/
+END:VEVENT
+BEGIN:VEVENT
+UID:17bf44f5-0ab3-4daa-a993-5b2d4adc97dd
+SEQUENCE:0
+DTSTAMP:20250821T093923Z
+DTSTART:20241128T140000Z
+DTEND:20241128T150000Z
+SUMMARY:Business Modelling
+LOCATION:11.40 S152 WiWi-Pool II
+DESCRIPTION:A strong business plan is the foundation of every successful s
+ tartup. This workshop will guide you through the process of creating a com
+ prehensive plan that includes defining your vision\, outlining market stra
+ tegies\, estimating financial forecasts\, and mapping operational goals. G
+ ain clarity on how to turn your ideas into actionable steps toward buildin
+ g a sustainable business.
+URL;VALUE=URI:https://grow.pioniergarage.de/
+END:VEVENT
+BEGIN:VEVENT
+UID:94317b55-c8d8-4fa5-b3d0-2442dde3f545
+SEQUENCE:0
+DTSTAMP:20250821T093923Z
+DTSTART:20241203T170000Z
+DTEND:20241203T180000Z
+SUMMARY:Risk Management
+LOCATION:Allianz Office @ Steinhäuserstraße 10a\, Karlsruhe
+DESCRIPTION:Every startup faces uncertainties\, but the key to success is 
+ being prepared. This workshop will teach you how to identify potential ris
+ ks\, assess their impact\, and develop strategies to mitigate them. By the
+  end\, you'll be equipped with practical tools and frameworks to ensure yo
+ ur business remains resilient and adaptable in the face of challenges.
+URL;VALUE=URI:https://grow.pioniergarage.de/
+END:VEVENT
+BEGIN:VEVENT
+UID:b29bca27-60f7-42a7-a5da-948291741809
+SEQUENCE:0
+DTSTAMP:20250821T093923Z
+DTSTART:20241204T180000Z
+DTEND:20241204T190000Z
+SUMMARY:Pitching 101
+LOCATION:KIT CUBE (Building 30.29)
+DESCRIPTION:A great pitch can make or break your startup’s journey. In t
+ his session\, you'll dive into the fundamentals of crafting a persuasive p
+ itch\, including structuring your narrative\, highlighting your unique val
+ ue proposition\, and connecting with your audience. Learn proven technique
+ s to grab attention and leave a lasting impression on potential investors 
+ and stakeholders.
+URL;VALUE=URI:https://grow.pioniergarage.de/
+END:VEVENT
+BEGIN:VEVENT
+UID:5a41abc3-fbd2-4e14-bb52-f97ace6e3b36
+SEQUENCE:0
+DTSTAMP:20250821T093923Z
+DTSTART:20241209T180000Z
+DTEND:20241209T190000Z
+SUMMARY:Midterm Pitch Practice and Feedback
+LOCATION:TBA
+DESCRIPTION:Refine your pitch with hands-on feedback from experienced ment
+ ors and peers. In this interactive session\, you’ll present your pitch a
+ nd receive constructive input on your content\, delivery\, and presentatio
+ n style. By the end of the workshop\, you’ll have a polished pitch that
+ ’s ready to impress investors and partners.\n\nNote: Limited to 15 teams
+URL;VALUE=URI:https://grow.pioniergarage.de/
+END:VEVENT
+BEGIN:VEVENT
+UID:0f271fe1-e77b-4de3-8ebe-f5e40ee17467
+SEQUENCE:0
+DTSTAMP:20250821T093923Z
+DTSTART:20241213T180000Z
+DTEND:20241213T190000Z
+SUMMARY:GROW Midterm Pitch
+LOCATION:Church @ CyberForum Karlsruhe 
+DESCRIPTION:Half time break! Teams pitch their progress and fight to advan
+ ce to the final. Pitch what you've accomplished in the last 5 weeks in fro
+ nt of a small audience and the jury. 
+URL;VALUE=URI:https://grow.pioniergarage.de/
+END:VEVENT
+BEGIN:VEVENT
+UID:71d32d24-89c6-48f1-9326-9c8b2ad5e4cf
+SEQUENCE:0
+DTSTAMP:20250821T093923Z
+DTSTART:20241217T180000Z
+DTEND:20241217T190000Z
+SUMMARY:Stakeholder management
+DESCRIPTION:Successful startups thrive on strong relationships with stakeh
+ olders\, from investors and employees to customers and partners. This work
+ shop explores how to identify key stakeholders\, align their interests wit
+ h your business goals\, and manage expectations effectively. Develop the s
+ kills to foster collaboration and ensure long-term support for your ventur
+ e.
+URL;VALUE=URI:https://grow.pioniergarage.de/
+END:VEVENT
+BEGIN:VEVENT
+UID:85e0063d-ba06-4292-9e85-499de90ee542
+SEQUENCE:0
+DTSTAMP:20250821T093923Z
+DTSTART:20250109T180000Z
+DTEND:20250109T190000Z
+SUMMARY:Financing and Fundraising
+LOCATION:Kaiserstraße 89\, KIT Building 05.20 1C-02
+DESCRIPTION:Securing funding is often one of the biggest challenges for en
+ trepreneurs. This workshop provides an in-depth look at financing options\
+ , from bootstrapping to venture capital. Learn how to prepare for investor
+  meetings\, understand term sheets\, and craft compelling fundraising stra
+ tegies to fuel your startup’s growth.
+URL;VALUE=URI:https://grow.pioniergarage.de/
+END:VEVENT
+BEGIN:VEVENT
+UID:aeb39586-8aa7-4e09-bd3f-c081951392ed
+SEQUENCE:0
+DTSTAMP:20250821T093923Z
+DTSTART:20250113T180000Z
+DTEND:20250113T190000Z
+SUMMARY:Building the Perfect Pitch Deck
+LOCATION:Kaiserstraße 89\, KIT Building 05.20 1C-02
+DESCRIPTION:In this hands-on workshop you will learn how to create a pitch
+  deck that stands out and tells your story in the best way possible. In th
+ is interactive session\, teams will present their pitches and receive pers
+ onalized feedback to fine-tune their messaging and delivery. It’s all ab
+ out practical insights\, real-time improvements\, and helping you feel con
+ fident presenting your ideas to investors\, clients\, or stakeholders.
+URL;VALUE=URI:https://grow.pioniergarage.de/
+END:VEVENT
+BEGIN:VEVENT
+UID:6dc77012-94a1-4049-8b41-86aac12c45a5
+SEQUENCE:0
+DTSTAMP:20250821T093923Z
+DTSTART:20250118T180000Z
+DTEND:20250118T190000Z
+SUMMARY:Grand Final
+LOCATION:KIT Audimax
+DESCRIPTION:Present your results to a huge crowd and show how far you have
+  come. Each participant will have learned a lot and gained a lot of experi
+ ence by this point. The groups with the greatest progress will receive pri
+ zes. This is what you've been working for!
+URL;VALUE=URI:https://pretix.eu/GROW/Final/
+END:VEVENT
+BEGIN:VEVENT
+UID:4e52145b-2b94-4d43-b15c-3490746aea84
+SEQUENCE:0
+DTSTAMP:20250821T093923Z
+DTSTART:20251106T190000Z
+DTEND:20251106T200000Z
+SUMMARY:GROW Kick-Off
+DESCRIPTION:Pitch your idea\, find a team or simply learn more about the c
+ ontest. The kickoff is where the fun starts\, whether you already applied 
+ or you're up for a spontaneous adventure.
+END:VEVENT
+END:VCALENDAR

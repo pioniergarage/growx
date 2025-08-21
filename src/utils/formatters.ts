@@ -25,10 +25,13 @@ export const growFormattedDate = (date: Date, today?: Date, placeholder?: string
 /**
  * Gets the current GROW season as a string based off the kickoff date (i.e. if 'kickoff' is in 2024, the season is '24/25')
  * @param kickoff The kickoff date.
+ * @param offset Years to subtract from the kickoff year.
  * @returns The current GROW year, formatted.
  */
-export const getCurrentSeason = (kickoff: Date) => {
-    const year_number = kickoff.getFullYear();
+export const getSeason = (kickoff: Date, offset?: number) => {
+    if (!offset)
+        offset = 0
+    const year_number = kickoff.getFullYear() - offset;
     const start_year = year_number.toString();
     const end_year = (year_number + 1).toString();
 
