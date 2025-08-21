@@ -41,4 +41,4 @@ yarn-error.log*
 /backups
 
 # calendar
-*.ics
+/public/grow_calendar.ics

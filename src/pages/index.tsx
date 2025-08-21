@@ -55,7 +55,7 @@ export const getStaticProps = async () => {
 
     // Save events to .json file (for calendar api)
     fs.writeFileSync(
-        path.join(process.cwd(), 'public', "grow_calendar.ical"),
+        path.join(process.cwd(), 'public', "grow_calendar.ics"),
         createCalendar(events)
     );
 

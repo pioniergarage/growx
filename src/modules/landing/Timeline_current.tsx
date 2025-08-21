@@ -1,4 +1,4 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Divider, Flex, Heading, HStack, Link, Text, VStack } from '@chakra-ui/react';
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Divider, Flex, Heading, Link, Stack, Text, VStack } from '@chakra-ui/react';
 import GrowEventCard from 'modules/events/components/GrowEventCard';
 
 import { GrowEvent } from 'modules/events/types';
@@ -25,19 +25,26 @@ const LongTimeline: React.FC<LongTimelineProps> = ({ events, kickoffDate }) => {
     return (
         <Box>
             <VStack maxW="3xl" alignItems='stretch' mx="auto">
-                <HStack w="full" justifyContent="center" position="relative" mb={4}>
-                    <Text textAlign="center" flex="1">
-                        <Heading>Timeline {season} </Heading>
-                        All workshops open to the public!
-                    </Text>
+                <Stack
+                    w="full"
+                    direction={{ base: "column", md: "row" }}
+                    align={{ base: "center", md: "center" }}
+                    justify="space-around"
+                    mb={4}
+                    spacing={{ base: 2, md: 0 }}
+                >
+                    <Heading>Timeline {season}</Heading>
+                    <Box textAlign="center" flex="1">
+                        <Text>All workshops open to the public!</Text>
+                    </Box>
 
-                    <Link href="webcal://grow.pioniergarage.de/grow_calendar.ics" position="absolute" right="0">
+                    <Link href="webcal://grow.pioniergarage.de/grow_calendar.ics">
                         <Button className="flex items-center gap-2">
                             <FaRegCalendarPlus />
-                            <span>Add to Calendar</span>
+                            Add to Calendar
                         </Button>
                     </Link>
-                </HStack>
+                </Stack>
                 <VStack gap={4} alignItems="stretch" mb={4}>
                     {currentEvents.map(event => (
                         <GrowEventCard key={event.id} event={event} />
@@ -53,14 +60,12 @@ const LongTimeline: React.FC<LongTimelineProps> = ({ events, kickoffDate }) => {
                 <Accordion allowToggle pb='0'>
                     <AccordionItem border="none">
                         <VStack alignItems='center'>
-                            <h2>
-                                <AccordionButton>
-                                    <Box as="span" flex="1" textAlign="left" maxWidth='1xl'>
-                                        Past Events: {past_season}
-                                    </Box>
-                                    <AccordionIcon />
-                                </AccordionButton>
-                            </h2>
+                            <AccordionButton>
+                                <Box as="span" flex="1" textAlign="left" maxWidth='1xl'>
+                                    Past Events: {past_season}
+                                </Box>
+                                <AccordionIcon />
+                            </AccordionButton>
                         </VStack>
                         <AccordionPanel padding='0'>
                             <VStack gap={4} alignItems="stretch" pb='8'>
