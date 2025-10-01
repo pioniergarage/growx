@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 
 import { useState } from 'react';
-import { GrowEvent } from '../types';
+import { EventCategory, GrowEvent } from '../types';
 
 interface EventModalProps {
     isOpen: boolean;
@@ -25,7 +25,7 @@ interface EventModalProps {
     initialValue?: Partial<GrowEvent>;
 }
 
-const emptyEvent = {
+const emptyEvent: Omit<GrowEvent, 'id'> = {
     title: '',
     description: '',
     mandatory: false,
@@ -33,11 +33,14 @@ const emptyEvent = {
     date: new Date(),
     duration: 0,
     availableSeats: 0,
+    eventCategory: EventCategory.Grow,
+    href: null
 };
 
 const CreateEventModal: React.FC<EventModalProps> = ({
     isOpen,
     onClose,
+    onCreate,
     initialValue,
 }) => {
     const [event, setEvent] = useState({ ...emptyEvent, ...initialValue });
@@ -68,7 +71,7 @@ const CreateEventModal: React.FC<EventModalProps> = ({
                                     description: e.target.value,
                                 })
                             }
-                            placeholder="Discribe the event here"
+                            placeholder="Describe the event here"
                         />
                     </FormControl>
                     <FormControl mt={6}>
@@ -92,7 +95,7 @@ const CreateEventModal: React.FC<EventModalProps> = ({
                             onChange={(e) =>
                                 setEvent({ ...event, location: e.target.value })
                             }
-                            placeholder="Launchpad"
+                            placeholder="CUBE"
                         />
                         <FormHelperText>
                             The place where the event takes place
@@ -100,11 +103,28 @@ const CreateEventModal: React.FC<EventModalProps> = ({
                     </FormControl>
 
                     <FormControl mt={6}>
-                        <FormLabel>How to participate</FormLabel>
+                        <FormLabel>External Link</FormLabel>
+                        <Input
+                            value={event.href ?? ""}
+                            onChange={(e) => {
+                                if (e.target.value != "") {
+                                    setEvent({ ...event, href: e.target.value })
+                                }
+                                setEvent({ ...event, href: null })
+                            }
+                            }
+                            placeholder="None, for GROW participants only"
+                        />
+                        <FormHelperText>
+                            The external link to the event sign-up (visible to non-GROW participants also)
+                        </FormHelperText>
                     </FormControl>
                 </ModalBody>
 
                 <ModalFooter>
+                    <Button onClick={() => onCreate(event)} ml={3}>
+                        Create Event
+                    </Button>
                     <Button onClick={onClose} ml={3}>
                         Cancel
                     </Button>

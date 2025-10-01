@@ -25,8 +25,11 @@ type RegistrationsProps = {
     eventName: string;
 };
 
+// TODO: Implement register users
 const Registrations: React.FC<RegistrationsProps> = ({ eventId, eventName }) => {
     const { registrations } = useRegistrationsToEvent(eventId);
+    // const { unregisterUser, isLoading: isUnregistering } =
+    //     useUnregisterUserFromEvent();
 
     function downloadRegistrations(
         registrations: {
@@ -48,6 +51,11 @@ const Registrations: React.FC<RegistrationsProps> = ({ eventId, eventName }) => 
         );
     }
 
+    // function unregisterUsers() {
+    //     if (registrations)
+    //         unregisterUsers();
+    // }
+
     return (
         <Box>
             <Flex justifyContent="space-between">
@@ -62,6 +70,15 @@ const Registrations: React.FC<RegistrationsProps> = ({ eventId, eventName }) => 
                 >
                     Download as CSV
                 </Button>
+                {/* <Button
+                    ml={2}
+                    color="red"
+                    size="sm"
+                    onClick={unregisterUsers}
+                    isLoading={}
+                >
+                    Reset Registrations
+                </Button> */}
             </Flex>
             <TableContainer>
                 <Table variant="simple">

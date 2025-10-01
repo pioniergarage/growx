@@ -28,8 +28,9 @@ export default function EventManagement() {
     const [modalOpen, setModalOpen] = useState(false);
 
     async function createEvent(event: Omit<GrowEvent, 'id'>) {
-        await insertEvent(event);
+        const createdEvent = await insertEvent(event);
         setModalOpen(false);
+        location.href = `/connect/admin/events/${createdEvent.id}`;
     }
 
     return (
