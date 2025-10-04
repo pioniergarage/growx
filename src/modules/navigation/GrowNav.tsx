@@ -3,11 +3,8 @@ import { Profile } from 'modules/profile/types';
 import {
     FaCalendarAlt,
     FaCogs,
-    FaFile,
-    FaHandsHelping,
     FaHome,
-    FaNewspaper,
-    FaUserFriends,
+    FaUserFriends
 } from 'react-icons/fa';
 import { DesktopMenu } from '../../components/navigation/DesktopMenu';
 import MobileMenu from '../../components/navigation/MobileMenu';
@@ -27,31 +24,23 @@ export type NavigationItem = {
 };
 
 const navigationItems: NavigationItem[] = [
-    {
-        href: '/',
-        label: 'Home',
-        icon: <FaHome />,
-    },
-    {
-        href: '/startup_diploma',
-        label: 'Startup Diploma',
-        icon: <FaFile />,
-    },
-    //    {
-    //    href: '/mentor',
-    //    label: 'Mentors',
-    //    icon: <FaHandsHelping />,
-   //     },
-    {
-        href: '/previous',
-        label: 'Previous',
-        icon: <FaCalendarAlt />,
-    },
+    // {
+    //     href: '/',
+    //     label: 'Home',
+    //     icon: <FaHome />,
+    // },
+    //TODO: Update this webpage!
+
+    // {
+    //     href: '/previous',
+    //     label: 'Previous',
+    //     icon: <FaCalendarAlt />,
+    // },
     {
         href: '/connect',
-        label: 'News',
+        label: 'Dashboard',
         isHidden: (profile) => !profile,
-        icon: <FaNewspaper />,
+        icon: < FaHome />,
     },
     {
         href: '/connect/teams',
@@ -76,7 +65,7 @@ const navigationItems: NavigationItem[] = [
         label: 'Admin',
         isHidden: (profile) => !profile || profile.role != 'ORGA',
         icon: <FaCogs />,
-    },
+    }
 ];
 
 export default function GrowNav() {

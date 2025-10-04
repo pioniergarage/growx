@@ -22,7 +22,7 @@ const TeamsPage = () => {
                 separator={<ChevronRightIcon color="gray.500" />}
             >
                 <BreadcrumbItem isCurrentPage>
-                    <Link href="/connect/teams" passHref>
+                    <Link href="/connect" passHref legacyBehavior>
                         <BreadcrumbLink>Teams</BreadcrumbLink>
                     </Link>
                     <BreadcrumbSeparator />

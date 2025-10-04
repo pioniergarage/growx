@@ -9,7 +9,7 @@ type PageLinkProps = LinkProps & {
 
 const PageLink: React.FC<PageLinkProps> = ({ href, children, ...rest }) => {
     return (
-        <NextLink href={href} passHref>
+        <NextLink href={href} passHref legacyBehavior>
             <Link {...rest}>{children}</Link>
         </NextLink>
     );

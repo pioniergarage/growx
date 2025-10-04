@@ -2,21 +2,23 @@ import { SupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from 'database/DatabaseDefition';
 import { handleResponse, handleSingleResponse } from '../../database/utils';
 import { mapProfileDto } from '../profile/api';
-import { EventType, GrowEvent, GrowEventWithSeats } from './types';
+import { EventCategory, EventType, GrowEvent, GrowEventWithSeats } from './types';
 
 export const mapEventDto: (
     dto: Database['public']['Tables']['events']['Row']
 ) => GrowEvent = (dto) => ({
-    date: new Date(dto.date + 'Z'),
     id: dto.id,
+    ref: dto.ref as string,
+    location: dto.location,
     title: dto.title,
+    date: new Date(dto.date + 'Z'),
     description: dto.description,
     mandatory: dto.mandatory,
-    location: dto.location,
-    sq_mandatory: dto.sq_mandatory,
     type: dto.type as EventType,
     duration: dto.duration,
     availableSeats: dto.available_seats,
+    eventCategory: dto.event_category as EventCategory,
+    href: dto.href
 });
 
 export const getEvents = (supabaseClient: SupabaseClient<Database>) =>
@@ -94,7 +96,6 @@ export const insertEvent = (
             description: event.description,
             mandatory: event.mandatory,
             location: event.location ?? '',
-            sq_mandatory: event.sq_mandatory,
             type: event.type,
             duration: event.duration,
         })
@@ -131,7 +132,6 @@ export const updateEvent = (
             description: growEvent.description,
             mandatory: growEvent.mandatory,
             location: growEvent.location,
-            sq_mandatory: growEvent.sq_mandatory,
             type: growEvent.type,
             duration: growEvent.duration,
             available_seats: growEvent.availableSeats,
@@ -195,7 +195,7 @@ export const getRegistrationsTo = async (
                 present,
                 profile:
                     profiles as Database['public']['Tables']['profiles']['Row'] & {
-                        contact_information: Database['public']['Tables']['contact_information']['Row'][];
+                        contact_information: Database['public']['Tables']['contact_information']['Row'];
                     },
             }))
         )
@@ -203,7 +203,7 @@ export const getRegistrationsTo = async (
             dtos.map(({ present, profile }) => ({
                 present,
                 profile: mapProfileDto(profile),
-                contact_information: profile.contact_information[0],
+                contact_information: profile.contact_information,
             }))
         );
     return result;

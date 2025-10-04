@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import LoginLayout from 'layouts/LoginLayout';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { FormEventHandler, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
 

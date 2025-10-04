@@ -55,7 +55,6 @@ const SignUp: NextPageWithLayout = () => {
     async function createAccount(
         emailAndPassword: SignUpInfo,
         personalInfo: PersonalInfo,
-        isSQ: boolean,
         university?: string,
         universityCountry?: string
     ) {
@@ -72,8 +71,7 @@ const SignUp: NextPageWithLayout = () => {
                 ...personalInfo,
                 userId: user.id,
                 university,
-                universityCountry,
-                keyQualification: isSQ,
+                universityCountry
             });
             router.replace('/connect');
         } catch (error) {
@@ -117,7 +115,6 @@ const SignUp: NextPageWithLayout = () => {
                             createAccount(
                                 emailAndPassword,
                                 personalInfo,
-                                false,
                                 undefined,
                                 undefined
                             );
@@ -126,12 +123,11 @@ const SignUp: NextPageWithLayout = () => {
                 />
             ) : step === 4 ? (
                 <UniversityForm
-                    onNext={({ university, country, isSQ }) => {
+                    onNext={({ university, country }) => {
                         setStep(step + 1);
                         createAccount(
                             emailAndPassword,
                             personalInfo,
-                            isSQ,
                             university,
                             country
                         );

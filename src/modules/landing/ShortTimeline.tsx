@@ -1,16 +1,25 @@
 import { Box, Heading, SimpleGrid, Tag, Text, VStack } from '@chakra-ui/react';
-import Image from 'next/image';
+import EventTagList from 'modules/events/components/EventTagList';
+import { GrowEvent } from 'modules/events/types';
+import Image from "next/legacy/image";
+import { growFormattedDate } from 'utils/formatters';
 
 type TimeLineItemProps = {
-    date: string;
+    event: GrowEvent;
     title: string;
     description: string;
     image: string;
     objectPosition?: string;
 };
 
-const TimelineItem: React.FC<TimeLineItemProps> = ({
-    date,
+type ShortTimeLineProps = {
+    kickoff: GrowEvent;
+    midterm: GrowEvent;
+    final: GrowEvent;
+};
+
+export const TimelineItem: React.FC<TimeLineItemProps> = ({
+    event,
     title,
     description,
     image,
@@ -48,27 +57,37 @@ const TimelineItem: React.FC<TimeLineItemProps> = ({
                     bgGradient="linear(to-t, #000000cc 30%, #00000000 100%)"
                 >
                     <Tag bgColor="blackAlpha.600" mb={2}>
-                        {date}
+                        {growFormattedDate(event.date, new Date())}
                     </Tag>
                     <Heading size="md">{title}</Heading>
                     <Text mt={2}>{description}</Text>
+                    <EventTagList
+                        event={event}
+                        transparent
+                        hide_category
+                        gap={0}
+                    />
                 </Box>
             </Box>
         </Box>
     );
 };
 
-export default function ShortTimeline() {
+const ShortTimeline: React.FC<ShortTimeLineProps> = ({
+    kickoff,
+    midterm,
+    final
+}) => {
     const events: TimeLineItemProps[] = [
         {
-            date: '04. Nov 2023',
+            event: kickoff,
             title: 'Kickoff Event',
             description: `Pitch your idea, find a team or simply learn more about the contest. 
-            The kickoff is where the fun starts, no matter whether you have already applied or you're up for a spontaneous adventure. `,
+            The kickoff is where the fun starts, whether you already applied or you're up for a spontaneous adventure. `,
             image: 'notes.jpg',
         },
         {
-            date: '16. Dec 2023',
+            event: midterm,
             title: 'Midterm Pitch',
             description: `Half time break! Teams pitch their first progress and fight about advancing to the final. 
             Pitch what you've accomplished in the last 5 weeks in front of a small audience and the jury. `,
@@ -76,8 +95,8 @@ export default function ShortTimeline() {
             objectPosition: '0 0',
         },
         {
-            date: '20. Jan 2024',
-            title: 'Finals',
+            event: final,
+            title: 'Grand Final',
             description: `Present your results to a huge crowd and show how far you have come. 
             Each participant will have learned a lot and gained a lot of experience by this point. 
             The groups with the greatest progress will receive prizes. This is what you've been working for!`,
@@ -87,7 +106,7 @@ export default function ShortTimeline() {
     return (
         <VStack alignItems={{ base: 'center', md: 'start' }} spacing={8}>
             <Heading size="lg" textAlign="center">
-                From the ideation to the launch in 11 weeks
+                From idea to launch in 11 weeks
             </Heading>
             <SimpleGrid columns={[1, 1, 1, 3]} gap={8} width="100%">
                 {events.map((event) => (
@@ -97,3 +116,5 @@ export default function ShortTimeline() {
         </VStack>
     );
 }
+
+export default ShortTimeline;

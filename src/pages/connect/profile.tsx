@@ -21,10 +21,8 @@ import { ContactInformation } from 'modules/contactInformation/types';
 import ProfileForm from 'modules/profile/components/ProfileForm';
 import UsersProfileView from 'modules/profile/components/UsersProfileView';
 import {
-    useMatriculation,
     useProfile,
-    useUpdateProfile,
-    useUpsertMatriculation,
+    useUpdateProfile
 } from 'modules/profile/hooks';
 import { Profile } from 'modules/profile/types';
 import { useMemo, useState } from 'react';
@@ -99,17 +97,14 @@ function AvatarControl() {
 function ProfileDetailsControl() {
     const [isEditing, setEditing] = useState(false);
     const { profile, isLoading: loading } = useProfile();
-    const { matriculation } = useMatriculation();
     const { updateProfile } = useUpdateProfile();
-    const { upsertMatriculation } = useUpsertMatriculation();
     const { contactInformation } = useContactInformation();
     const { updateContactInformation } = useUpdateContactInformation();
     const toast = useToast();
 
     async function handleSave(
         profile: Profile,
-        contactInformation: ContactInformation,
-        matriculation?: string
+        contactInformation: ContactInformation
     ) {
         try {
             await updateProfile(profile);
@@ -117,9 +112,6 @@ function ProfileDetailsControl() {
                 userId: profile.userId,
                 info: contactInformation,
             });
-            if (matriculation) {
-                await upsertMatriculation(matriculation);
-            }
             toast({
                 title: 'Profile updated.',
                 status: 'success',
@@ -145,7 +137,6 @@ function ProfileDetailsControl() {
                         <UsersProfileView
                             profile={profile}
                             contact={contactInformation}
-                            matriculation={matriculation}
                         />
                         <Button
                             onClick={() => setEditing(true)}
@@ -162,7 +153,6 @@ function ProfileDetailsControl() {
                 <ProfileForm
                     profile={profile}
                     contactInformation={contactInformation}
-                    matriculation={matriculation}
                     onSave={handleSave}
                     loading={loading}
                     onCancel={() => setEditing(false)}

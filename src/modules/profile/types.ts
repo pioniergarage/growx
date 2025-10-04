@@ -62,7 +62,4 @@ export type FurtherProfileInfo = {
     source: string;
 };
 
-export type FullProfile = Profile &
-    ContactInformation & {
-        matriculation?: string;
-    };
+export type FullProfile = Profile & ContactInformation;

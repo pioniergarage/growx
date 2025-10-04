@@ -66,11 +66,11 @@ export default function SponsorAdmin() {
 
     const image = (sponsor: Sponsor) => (
         // eslint-disable-next-line @next/next/no-img-element
-        <img
+        (<img
             src={sponsor.logo}
             alt={sponsor.name}
             style={{ maxHeight: '2rem' }}
-        />
+        />)
     );
 
     return (

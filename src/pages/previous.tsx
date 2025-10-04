@@ -7,7 +7,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
-import LongTimeline from 'modules/landing/Timeline_previous';
+// import LongTimeline from 'modules/landing/Timeline_previous';
 import Link from 'next/link';
 
 import { getEvents } from 'modules/events/api';
@@ -40,8 +40,9 @@ interface PrevProps {
     events: (Omit<GrowEvent, 'date'> & { date: string })[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Prev: React.FC<PrevProps> = ({ events: jsonEvents = [] }) => {
-    const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
+    // const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
     const finalists: Finalist[] = [
         {
             name: 'Artjom & Eve',
@@ -116,16 +117,16 @@ const Prev: React.FC<PrevProps> = ({ events: jsonEvents = [] }) => {
     ];
     return (
         <>
-            <div id="timeline" className="mt-4">
+            {/* <div id="timeline" className="mt-4">
                 <LongTimeline events_previous={events} />
-            </div>
+            </div> */}
             <VStack alignItems="stretch" gap={4} mb={2}>
                 <Breadcrumb
                     color="gray.500"
                     separator={<ChevronRightIcon color="gray.500" />}
                 >
                     <BreadcrumbItem isCurrentPage>
-                        <Link href="/mentor" passHref>
+                        <Link href="/mentor" passHref legacyBehavior>
                             <BreadcrumbLink>Previous Finalists</BreadcrumbLink>
                         </Link>
                     </BreadcrumbItem>

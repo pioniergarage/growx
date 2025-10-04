@@ -21,13 +21,11 @@ import { availableSkills, Profile } from '../types';
 interface ProflieFormProps {
     onSave: (
         profile: Profile,
-        contactInformation: ContactInformation,
-        matriculation?: string
+        contactInformation: ContactInformation
     ) => void;
     loading: boolean;
     profile: Profile;
     contactInformation: ContactInformation;
-    matriculation?: string;
     onCancel?: () => void;
 }
 
@@ -36,15 +34,14 @@ const ProfileForm: React.FC<ProflieFormProps> = ({
     loading,
     profile,
     contactInformation,
-    onCancel,
-    matriculation,
+    onCancel
 }) => {
     const { skills: initialSkills, ...restProfile } = profile;
     const [skills, setSkills] = useState(initialSkills);
     const formik = useFormik({
-        initialValues: { ...restProfile, ...contactInformation, matriculation },
-        onSubmit: ({ email, phone, matriculation, ...rest }) =>
-            onSave({ ...rest, skills }, { email, phone }, matriculation),
+        initialValues: { ...restProfile, ...contactInformation },
+        onSubmit: ({ email, phone, ...rest }) =>
+            onSave({ ...rest, skills }, { email, phone }),
         validate: (values) => {
             const errors: Record<string, string> = {};
             if (!values.firstName) errors.firstName = 'Required';
@@ -177,17 +174,6 @@ const ProfileForm: React.FC<ProflieFormProps> = ({
                             value={formik.values.homeland || ''}
                         />
                     </FormControl>
-                    {profile.role === 'PARTICIPANT' && profile.keyQualification && (
-                        <FormControl isDisabled={loading}>
-                            <FormLabel>Matriculation</FormLabel>
-                            <Input
-                                name="matriculation"
-                                id="matriculation"
-                                onChange={formik.handleChange}
-                                value={formik.values.matriculation || ''}
-                            />
-                        </FormControl>
-                    )}
                     {['MENTOR', 'EXPERT', 'ORGA'].includes(profile.role) && (
                         <>
                             <GridItem colSpan={2}>

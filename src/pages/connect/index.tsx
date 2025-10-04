@@ -3,10 +3,10 @@ import {
     Alert,
     AlertIcon,
     Box,
-    Flex,
     Heading,
+    Spacer,
     Text,
-    VStack,
+    VStack
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useUser } from '@supabase/auth-helpers-react';
@@ -42,8 +42,9 @@ const ConnectIndex: React.FC = () => {
     }
 
     return (
-        <Flex wrap="wrap">
-            <VStack flexGrow={1} alignItems="start" gap={6}>
+
+        <VStack flexGrow={1} alignItems="center">
+            <VStack flexGrow={1} alignItems="stretch" gap={6}>
                 <Heading size="md">
                     <Text as="span" color="gray.400">
                         Welcome back,
@@ -80,7 +81,7 @@ const ConnectIndex: React.FC = () => {
                     <YourTeam userId={profile.userId} />
                 )}
             </VStack>
-        </Flex>
+        </VStack>
     );
 };
 
@@ -102,8 +103,13 @@ const YourTeam = ({ userId }: { userId: string }) => {
                         browse
                     </PageLink>{' '}
                     existing teams or you can create a new one.{' '}
-                    <CreateTeamButton size="sm" ml={2} />
+
                 </Box>
+
+                <VStack>
+                    <Spacer mb={2} />
+                    <CreateTeamButton size="sm" ml={2} />
+                </VStack>
             </Box>
         );
     } else if (team) {

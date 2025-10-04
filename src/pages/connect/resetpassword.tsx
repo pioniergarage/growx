@@ -11,7 +11,7 @@ import {
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useFormik } from 'formik';
 import LoginLayout from 'layouts/LoginLayout';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import rules from 'utils/rules';

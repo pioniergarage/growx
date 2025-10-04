@@ -1,55 +1,100 @@
-import { GridItem, Heading, SimpleGrid } from '@chakra-ui/react';
+import { Divider, GridItem, Heading, SimpleGrid } from '@chakra-ui/react';
 import { Sponsor } from 'modules/sponsor/types';
 import SponsorGrid from './SponsorGrid';
 
-type SponsorsProps = {
+type SponsorAndSupporterProps = {
     sponsors: Sponsor[];
 };
 
-const Sponsors = ({ sponsors }: SponsorsProps) => {
+const SponsorsAndSupporters = ({ sponsors }: SponsorAndSupporterProps) => {
     if (!sponsors) return null;
 
-    return (
-        <SimpleGrid columns={{ base: 1, md: 2 }} gap={10} alignItems="start">
-            <GridItem>
-                <Heading size="lg" color="whiteAlpha.600" mb={2}>
-                    Flagship Sponsors
-                </Heading>
-                <SponsorGrid
-                    sponsors={sponsors.filter((s) => s.type === 'FLAGSHIP')}
-                    columns={{ base: 1, md: 2 }}
-                />
-            </GridItem>
+    const flagship_sponsors = sponsors.filter((s) => s.type === 'FLAGSHIP');
+    const gold_sponsors = sponsors.filter((s) => s.type === 'GOLD');
+    const silver_sponsors = sponsors.filter((s) => s.type === 'SILVER');
+    const bronze_sponsors = sponsors.filter((s) => s.type === 'BRONZE');
+    const patrons = sponsors.filter((s) => s.type === 'PATRON'); //TODO What is the exact legal translation for "Förderer?"
+    const supporters = sponsors.filter((s) => s.type === 'SUPPORTER');
 
-            <GridItem>
-                <Heading size="lg" color="whiteAlpha.600" mb={2}>
-                    Gold Sponsors
-                </Heading>
-                <SponsorGrid
-                    sponsors={sponsors.filter((s) => s.type === 'GOLD')}
-                    columns={{ base: 2, md: 3 }}
-                />
-            </GridItem>
-            <GridItem>
-                <Heading size="lg" color="whiteAlpha.600" mb={2}>
-                    Silver Sponsors
-                </Heading>
-                <SponsorGrid
-                    sponsors={sponsors.filter((s) => s.type === 'SILVER')}
-                    columns={3}
-                />
-            </GridItem>
-            {/* <GridItem>
-                <Heading size="lg" color="whiteAlpha.600" mb={2}>
-                    Bronze Sponsors
-                </Heading>
-                <SponsorGrid
-                    sponsors={sponsors.filter((s) => s.type === 'BRONZE')}
-                    columns={3}
-                />
-            </GridItem> */}
-        </SimpleGrid>
+    return (
+        <>
+            <SimpleGrid columns={{ base: 1, md: 2 }} gap={10} alignItems="start">
+                {patrons.length > 0 &&
+                    <GridItem>
+                        <Heading size="lg" color="whiteAlpha.600" mb={2}>
+                            Förderer
+                        </Heading>
+                        <SponsorGrid
+                            sponsors={patrons}
+                            columns={3}
+                        />
+                    </GridItem>
+                }
+
+            </SimpleGrid>
+
+            <Divider my={12} />
+
+            <SimpleGrid columns={{ base: 1, md: 2 }} gap={10} alignItems="start">
+                {flagship_sponsors.length > 0 &&
+                    <GridItem>
+                        <Heading size="lg" color="whiteAlpha.600" mb={2}>
+                            Flagship Sponsors
+                        </Heading>
+                        <SponsorGrid
+                            sponsors={flagship_sponsors}
+                            columns={{ base: 1, md: 2 }}
+                        />
+                    </GridItem>
+                }
+                {gold_sponsors.length > 0 &&
+                    <GridItem>
+                        <Heading size="lg" color="whiteAlpha.600" mb={2}>
+                            Gold Sponsors
+                        </Heading>
+                        <SponsorGrid
+                            sponsors={gold_sponsors}
+                            columns={{ base: 2, md: 3 }}
+                        />
+                    </GridItem>
+                }
+                {silver_sponsors.length > 0 &&
+                    <GridItem>
+                        <Heading size="lg" color="whiteAlpha.600" mb={2}>
+                            Silver Sponsors
+                        </Heading>
+                        <SponsorGrid
+                            sponsors={silver_sponsors}
+                            columns={3}
+                        />
+                    </GridItem>
+                }
+                {bronze_sponsors.length > 0 &&
+                    <GridItem>
+                        <Heading size="lg" color="whiteAlpha.600" mb={2}>
+                            Bronze Sponsors
+                        </Heading>
+                        <SponsorGrid
+                            sponsors={bronze_sponsors}
+                            columns={3}
+                        />
+                    </GridItem>
+                }
+                {supporters.length > 0 &&
+                    <GridItem>
+                        <Heading size="lg" color="whiteAlpha.600" mb={2}>
+                            Support
+                        </Heading>
+                        <SponsorGrid
+                            sponsors={supporters}
+                            columns={3}
+                        />
+                    </GridItem>
+                }
+            </SimpleGrid>
+        </>
+
     );
 };
 
-export default Sponsors;
+export default SponsorsAndSupporters;

@@ -1,9 +1,6 @@
 import {
     Box,
     Button,
-    FormControl,
-    FormLabel,
-    GridItem,
     HStack,
     IconButton,
     Input,
@@ -14,30 +11,26 @@ import {
     ModalHeader,
     ModalOverlay,
     SimpleGrid,
-    Switch,
     Table,
     TableContainer,
-    Tag,
     Tbody,
     Td,
     Th,
     Thead,
     Tr,
     useDisclosure,
-    VStack,
+    VStack
 } from '@chakra-ui/react';
 import { FullProfile } from 'modules/profile/types';
 import {
     FocusEventHandler,
     memo,
     useCallback,
-    useEffect,
     useMemo,
-    useState,
+    useState
 } from 'react';
 import { FaEllipsisH } from 'react-icons/fa';
 import debounce from 'utils/debounce';
-import { useUpsertMatriculation } from '../hooks';
 import { downloadProfiles } from '../utils';
 
 type ProfileModalProps = {
@@ -51,21 +44,11 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
     isOpen,
     profile,
 }) => {
-    const [matriculation, setMatriculation] = useState(
-        profile?.matriculation || ''
-    );
-    const { upsertMatriculation } = useUpsertMatriculation();
-    useEffect(
-        () => setMatriculation(profile?.matriculation || ''),
-        [profile?.matriculation]
-    );
 
     const handleSave = async () => {
         if (!profile) {
             return;
         }
-        const { userId } = profile;
-        await upsertMatriculation({ userId, matriculation });
         onClose();
     };
     return (
@@ -81,17 +64,6 @@ const ProfileModal: React.FC<ProfileModalProps> = ({
                                     {profile.firstName + ' ' + profile.lastName}
                                 </Box>
                                 <Box>{profile.email}</Box>
-                                <GridItem colSpan={2}>
-                                    <FormControl>
-                                        <FormLabel>Matriculation</FormLabel>
-                                        <Input
-                                            value={matriculation}
-                                            onChange={(e) =>
-                                                setMatriculation(e.target.value)
-                                            }
-                                        />
-                                    </FormControl>
-                                </GridItem>
                             </SimpleGrid>
                         </ModalBody>
                         <ModalFooter>
@@ -128,10 +100,8 @@ const ProfileRowUnmemod = ({
     lastName,
     email,
     phone,
-    matriculation,
     isHidden,
     onEdit,
-    sq,
     userId,
 }: {
     userId: string;
@@ -139,24 +109,16 @@ const ProfileRowUnmemod = ({
     lastName: string;
     email: string;
     phone?: string | null;
-    matriculation?: string;
     isHidden: boolean;
-    sq: boolean;
     onEdit: (userId: string) => void;
 }) => {
     return (
         <Tr hidden={isHidden}>
             <Td>
                 {firstName} {lastName}
-                {sq && (
-                    <Tag ml={1} size="sm" fontSize="xs">
-                        SQ
-                    </Tag>
-                )}
             </Td>
             <Td>{email}</Td>
             <Td>{phone}</Td>
-            <Td>{matriculation}</Td>
             <Td>
                 <IconButton
                     onClick={() => onEdit(userId)}
@@ -177,15 +139,13 @@ const ParticipantsTab = (props: { profiles: FullProfile[] }) => {
         [props.profiles]
     );
     const [searchTerm, setSearchTerm] = useState('');
-    const [sqOnly, setSQOnly] = useState(false);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [profileOnEdit, setProfileOnEdit] = useState<FullProfile>();
 
     const filter = useCallback(
-        (profile: FullProfile, term: string, sqOnly: boolean) => {
+        (profile: FullProfile, term: string) => {
             term = term.toLocaleLowerCase();
             return (
-                (!sqOnly || profile.keyQualification) &&
                 (profile.firstName.toLocaleLowerCase().includes(term) ||
                     profile.lastName.toLocaleLowerCase().includes(term) ||
                     profile.email.includes(term) ||
@@ -208,14 +168,6 @@ const ParticipantsTab = (props: { profiles: FullProfile[] }) => {
         <VStack as="ul" alignItems="stretch" overflow="scroll">
             <HStack>
                 <SearchInput onSearch={setSearchTerm} />
-                <Switch
-                    isChecked={sqOnly}
-                    onChange={() => setSQOnly(!sqOnly)}
-                    size="sm"
-                    w={36}
-                >
-                    SQ only
-                </Switch>
                 <Button
                     size="sm"
                     onClick={() => downloadProfiles(participants)}
@@ -230,7 +182,6 @@ const ParticipantsTab = (props: { profiles: FullProfile[] }) => {
                             <Th>Name</Th>
                             <Th>Email</Th>
                             <Th>Phone</Th>
-                            <Th>Matr.</Th>
                             <Th></Th>
                         </Tr>
                     </Thead>
@@ -243,10 +194,8 @@ const ParticipantsTab = (props: { profiles: FullProfile[] }) => {
                                 lastName={profile.lastName}
                                 email={profile.email}
                                 phone={profile.phone}
-                                matriculation={profile.matriculation}
-                                isHidden={!filter(profile, searchTerm, sqOnly)}
+                                isHidden={!filter(profile, searchTerm)}
                                 onEdit={handleEdit}
-                                sq={profile.keyQualification}
                             />
                         ))}
                     </Tbody>

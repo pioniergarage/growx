@@ -1,5 +1,7 @@
 import { Box, BoxProps, Divider } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
+import fs from "fs";
+import ical, { ICalCalendarMethod } from 'ical-generator';
 import { getEvents } from 'modules/events/api';
 import { GrowEvent } from 'modules/events/types';
 import { getFAQs } from 'modules/faq/api';
@@ -10,48 +12,74 @@ import MainInfoBlock from 'modules/landing/MainInfoBlock';
 import MotivationBlock from 'modules/landing/MotivationBlock';
 import Timeline from 'modules/landing/ShortTimeline';
 import LongTimeline from 'modules/landing/Timeline_current';
+import TimelinePlaceholder from 'modules/landing/Timeline_placeholder';
 import WaitingForBlock from 'modules/landing/WaitingForBlock';
-import Sponsors from 'modules/landing/sponsor/Sponsors';
+import SponsorsAndSupporters from 'modules/landing/sponsor/Sponsors';
 import { getSponsors } from 'modules/sponsor/api';
 import { Sponsor } from 'modules/sponsor/types';
+import path from "path";
 import { PropsWithChildren } from 'react';
+import { getSeason } from 'utils/formatters';
 
-const minutesToSeconds = (minutes: number) => minutes * 60;
+export const createCalendar = (events: GrowEvent[]) => {
+
+    const calendar = ical({ name: "PionierGarage GROW Events" });
+    calendar.method(ICalCalendarMethod.REQUEST);
+
+    for (const e of events) {
+        calendar.createEvent({
+            start: new Date(e.date),
+            end: new Date(new Date(e.date).getTime() + 60 * 60 * 1000),
+            summary: e.title,
+            description: e.description,
+            location: e.location ?? "",
+            url: e.href ?? "https://grow.pioniergarage.de/",
+        });
+    }
+
+    return calendar.toString()
+}
 
 export const getStaticProps = async () => {
     const supabase = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL as string,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
     );
-    try {
-        const sponsors = await getSponsors(supabase);
-        const faqs = await getFAQs(supabase);
-        const events = (await getEvents(supabase)).map((e) => ({
-            ...e,
-            date: e.date.toISOString(),
-        }));
-        return {
-            props: { sponsors, faqs, events },
-            revalidate: minutesToSeconds(30),
-        };
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
+    const sponsors = await getSponsors(supabase);
+    const faqs = await getFAQs(supabase);
+    const events = (await getEvents(supabase));
+    const jsonEvents = events.map((e) => ({
+        ...e,
+        date: e.date.toISOString(),
+    }));
+
+    // Save events to .json file (for calendar api)
+    fs.writeFileSync(
+        path.join(process.cwd(), 'public', "grow_calendar.ics"),
+        createCalendar(events)
+    );
+
+    return {
+        props: { sponsors, faqs, jsonEvents },
+        revalidate: 60 * 30,
+    };
 };
 
 interface HomeProps {
     sponsors: Sponsor[];
     faqs: FAQ[];
-    events: (Omit<GrowEvent, 'date'> & { date: string })[];
+    jsonEvents: (Omit<GrowEvent, 'date'> & { date: string })[];
 }
 
 const Home: React.FC<HomeProps> = ({
     sponsors = [],
     faqs = [],
-    events: jsonEvents = [],
+    jsonEvents = [],
 }) => {
     const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
+    const kickoff: GrowEvent = events.filter((e) => e.ref == 'kickoff')[0]
+    const midterm: GrowEvent = events.filter((e) => e.ref == 'midterm')[0]
+    const final: GrowEvent = events.filter((e) => e.ref == 'final')[0]
     return (
         <>
             <Section position="relative" minH="80vh">
@@ -73,10 +101,10 @@ const Home: React.FC<HomeProps> = ({
                         filter={{ base: 'blur(80px)', md: 'blur(150px)' }}
                     />
                 </Box>
-                <MainInfoBlock />
+                <MainInfoBlock kickoff={kickoff} final={final} />
             </Section>
 
-            <Divider mb={20} />
+            <Divider mb={12} />
 
             <Section>
                 <GrowVideo />
@@ -86,7 +114,7 @@ const Home: React.FC<HomeProps> = ({
 
             <Section>
                 {/*  das sind die 3 Blöcke mit Kick off, midterm und Final */}
-                <Timeline />
+                <Timeline kickoff={kickoff} midterm={midterm} final={final} />
             </Section>
 
             <Section mt="8rem">
@@ -95,7 +123,13 @@ const Home: React.FC<HomeProps> = ({
             </Section>
 
             <Section id="timeline" mt="4rem" my="12rem">
-                <LongTimeline events={events} />
+
+
+                {events.length > 3 ?
+                    <LongTimeline events={events} kickoffDate={kickoff.date} />
+                    :
+                    <TimelinePlaceholder season={getSeason(kickoff.date)} />
+                }
             </Section>
 
             <Section position="relative" my={24} px={0}>
@@ -121,62 +155,8 @@ const Home: React.FC<HomeProps> = ({
 
             <Divider my={24} />
 
-            {/*  REMOVED DUE TO MISSING PATRONS
-             <Section>
-                <Flex alignItems="center" flexDir="column">
-                    <Heading mb={4}>Our Patrons</Heading>
-                    <Flex gap={10} flexDir="column" alignItems="center">
-                        <Flex flexDir="column" gap={1} alignItems="center">
-                            <Box maxW="30rem">
-                                <Image
-                                    src="/images/patron2.jpg"
-                                    alt="Bettina Stark-Watzinger"
-                                    objectFit="contain"
-                                />
-                                <Text
-                                    color="gray.400"
-                                    fontSize="xs"
-                                    textAlign="right"
-                                >
-                                    Quelle: Bundesregierung - Guido Bergmann
-                                </Text>
-                            </Box>
-                            <Box>
-                                <Text
-                                    variant="info"
-                                    lineHeight={1.1}
-                                    textAlign="center"
-                                >
-                                    Bettina Stark-Watzinger, Federal Minister of
-                                    Education and Research
-                                </Text>
-                            </Box>
-                        </Flex>
-                        <Flex flexDir="column" gap={3}>
-                            <Image
-                                maxH="25rem"
-                                src="/images/patron.jpg"
-                                alt="Prof. Dr. Thomas Hirth"
-                                objectFit="contain"
-                            />
-                            <Box>
-                                <Text
-                                    variant="info"
-                                    lineHeight={1.1}
-                                    textAlign="center"
-                                >
-                                    Professor Dr. Thomas Hirth, KIT
-                                    Vice-President for Transfer and
-                                    International Affairs
-                                </Text>
-                            </Box>
-                        </Flex>
-                    </Flex>
-                </Flex>
-            </Section>
- */}
             <Section my={24}>
-                <Sponsors sponsors={sponsors} />
+                <SponsorsAndSupporters sponsors={sponsors} />
             </Section>
 
             <Section id="faqs" my={24}>

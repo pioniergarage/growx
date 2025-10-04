@@ -28,8 +28,9 @@ export default function EventManagement() {
     const [modalOpen, setModalOpen] = useState(false);
 
     async function createEvent(event: Omit<GrowEvent, 'id'>) {
-        await insertEvent(event);
+        const createdEvent = await insertEvent(event);
         setModalOpen(false);
+        location.href = `/connect/admin/events/${createdEvent.id}`;
     }
 
     return (
@@ -50,7 +51,6 @@ export default function EventManagement() {
                             <Th>Seats</Th>
                             <Th>Type</Th>
                             <Th>Mandatory</Th>
-                            <Th>SQ-Mandatory</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -80,15 +80,6 @@ export default function EventManagement() {
                                         <CheckIcon
                                             visibility={
                                                 event.mandatory
-                                                    ? 'visible'
-                                                    : 'hidden'
-                                            }
-                                        />
-                                    </Td>
-                                    <Td>
-                                        <CheckIcon
-                                            visibility={
-                                                event.sq_mandatory
                                                     ? 'visible'
                                                     : 'hidden'
                                             }

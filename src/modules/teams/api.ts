@@ -103,7 +103,7 @@ export async function updateTeam(
     return supabaseClient
         .from('teams')
         .update(team)
-        .eq('id', team.id)
+        .eq('id', team.id || -1) //FIXME This could break if team ID's are allowed to go into the negatives, but they should only be positive.
         .select()
         .single()
         .then(handleSingleResponse)
@@ -208,8 +208,8 @@ export async function getTeamRequestedToJoin(
         .then((dto) =>
             dto
                 ? mapTeamDto(
-                      dto.teams as Database['public']['Tables']['teams']['Row']
-                  )
+                    dto.teams as Database['public']['Tables']['teams']['Row']
+                )
                 : null
         );
 }

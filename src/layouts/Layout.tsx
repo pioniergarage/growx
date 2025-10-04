@@ -1,5 +1,4 @@
-import AlertBanner from '@/components/AlertBanner';
-import { Box, Center, Link } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import Footer from 'modules/landing/Footer';
@@ -22,7 +21,7 @@ export default function Layout({ children }: PropsWithChildren) {
         <>
             <Head>
                 <title>
-                    GROW X - Germany&apos;s Largest Student Founding Contest
+                    GROW - Germany&apos;s Largest Student Founding Contest
                 </title>
                 <meta
                     name="description"

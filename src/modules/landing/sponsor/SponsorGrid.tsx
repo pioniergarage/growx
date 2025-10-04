@@ -9,7 +9,7 @@ interface SponsorGridProps {
 
 const SponsorGrid: React.FC<SponsorGridProps> = ({ sponsors, columns }) => {
     return (
-        <SimpleGrid columns={columns} gap={4} placeItems="center">
+        <SimpleGrid columns={columns} gap={4} placeItems="space-around">
             {sponsors.map((sponsor) => (
                 <SponsorItem
                     key={sponsor.name}

@@ -4,17 +4,25 @@ export enum EventType {
     Hybrid = 'Hybrid',
 }
 
+export enum EventCategory {
+    Grow = 'Grow',
+    Workshop = 'Workshop',
+    Info = 'Info',
+}
+
 export type GrowEvent = {
-    date: Date;
     id: number;
+    ref?: string;
+    location: string;
     title: string;
+    date: Date;
     description?: string;
     mandatory?: boolean;
-    location: string;
-    sq_mandatory?: boolean;
     type?: EventType;
     duration: number;
     availableSeats: number;
+    eventCategory: EventCategory;
+    href: string | null;
 };
 
 export type GrowEventWithSeats = GrowEvent & {

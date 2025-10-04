@@ -20,13 +20,16 @@ import { downloadCSV } from 'utils/csv';
 import { useRegistrationsToEvent } from '../hooks';
 import { GrowEvent } from '../types';
 
-type RegistraionsProps = {
+type RegistrationsProps = {
     eventId: GrowEvent["id"];
     eventName: string;
 };
 
-const Registrations: React.FC<RegistraionsProps> = ({ eventId, eventName }) => {
+// TODO: Implement register users
+const Registrations: React.FC<RegistrationsProps> = ({ eventId, eventName }) => {
     const { registrations } = useRegistrationsToEvent(eventId);
+    // const { unregisterUser, isLoading: isUnregistering } =
+    //     useUnregisterUserFromEvent();
 
     function downloadRegistrations(
         registrations: {
@@ -48,6 +51,11 @@ const Registrations: React.FC<RegistraionsProps> = ({ eventId, eventName }) => {
         );
     }
 
+    // function unregisterUsers() {
+    //     if (registrations)
+    //         unregisterUsers();
+    // }
+
     return (
         <Box>
             <Flex justifyContent="space-between">
@@ -62,6 +70,15 @@ const Registrations: React.FC<RegistraionsProps> = ({ eventId, eventName }) => {
                 >
                     Download as CSV
                 </Button>
+                {/* <Button
+                    ml={2}
+                    color="red"
+                    size="sm"
+                    onClick={unregisterUsers}
+                    isLoading={}
+                >
+                    Reset Registrations
+                </Button> */}
             </Flex>
             <TableContainer>
                 <Table variant="simple">
@@ -89,7 +106,7 @@ const Registrations: React.FC<RegistraionsProps> = ({ eventId, eventName }) => {
                                         </Tag>
                                     )}
                                 </Td>
-                                <Td>{r.present ? <FaLaptop /> : undefined}</Td>
+                                <Td>{r.present ? undefined : <FaLaptop />}</Td>
                                 <Td>{r.contact_information.email}</Td>
                             </Tr>
                         ))}

@@ -46,7 +46,7 @@ interface TeamDetails {
 
 const TeamDetails: React.FC<TeamDetails> = ({ team: serverSideTeam }) => {
     const toast = useToast();
-    const teamId = serverSideTeam.id;
+    const teamId = serverSideTeam?.id; //This fails with error - TypeError: Cannot read properties of undefined (reading 'id')
     const { team, isLoading } = useTeam(serverSideTeam.id, serverSideTeam);
     const { members } = useTeamMembers(teamId);
 
@@ -124,7 +124,7 @@ const TeamDetails: React.FC<TeamDetails> = ({ team: serverSideTeam }) => {
                 separator={<ChevronRightIcon color="gray.500" />}
             >
                 <BreadcrumbItem>
-                    <Link href="/connect/teams" passHref>
+                    <Link href="/connect/teams" passHref legacyBehavior>
                         <BreadcrumbLink>Teams</BreadcrumbLink>
                     </Link>
                 </BreadcrumbItem>

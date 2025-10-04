@@ -34,12 +34,12 @@ const GrowEvent = ({
                 separator={<ChevronRightIcon color="gray.500" />}
             >
                 <BreadcrumbItem>
-                    <Link href="/connect/events" passHref>
+                    <Link href="/connect/events" passHref legacyBehavior>
                         <BreadcrumbLink>Events</BreadcrumbLink>
                     </Link>
                 </BreadcrumbItem>
                 <BreadcrumbItem isCurrentPage>
-                    <Link href={'/connect/events/' + event.id} passHref>
+                    <Link href={'/connect/events/' + event.id} passHref legacyBehavior>
                         <BreadcrumbLink>
                             <Text
                                 as="span"

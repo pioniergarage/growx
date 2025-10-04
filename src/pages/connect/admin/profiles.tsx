@@ -11,8 +11,8 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import MentorsTab from 'modules/admin/components/MentorsTab';
 import ParticipantsTab from 'modules/admin/components/ParticipantsTab';
+import UsersTab from 'modules/admin/components/UsersTab';
 import { useFullProfiles } from 'modules/admin/hooks';
 import { allowOrga } from 'modules/admin/utils';
 
@@ -33,6 +33,7 @@ export default function ProfilesAdmin() {
                     <TabList overflowX="scroll" pb={1} maxW="100%">
                         <Tab>Participants</Tab>
                         <Tab>Mentors</Tab>
+                        <Tab>Orga</Tab>
                     </TabList>
 
                     <TabPanels>
@@ -40,7 +41,10 @@ export default function ProfilesAdmin() {
                             <ParticipantsTab profiles={profiles} />
                         </TabPanel>
                         <TabPanel px={0}>
-                            <MentorsTab profiles={profiles} />
+                            <UsersTab profiles={profiles} role='MENTOR' />
+                        </TabPanel>
+                        <TabPanel px={0}>
+                            <UsersTab profiles={profiles} role='ORGA' />
                         </TabPanel>
                     </TabPanels>
                 </Tabs>

@@ -14,7 +14,7 @@ export async function getMentorAssignments(
 ): Promise<MentorAssignments> {
     return supabaseClient
         .from('mentor_assignment')
-        .select('mentor (*), team')
+        .select('mentor:profiles (*), team')
         .then(handleResponse)
         .then((dtos) =>
             Object.assign(
@@ -22,6 +22,7 @@ export async function getMentorAssignments(
                 ...dtos.map((dto) => ({
                     [dto.team]: mapProfileDto(
                         dto.mentor as Database['public']['Tables']['profiles']['Row']
+
                     ),
                 }))
             )
@@ -37,7 +38,7 @@ export async function getTeamMentor(
 }> {
     const profile = await supabaseClient
         .from('mentor_assignment')
-        .select('mentor (*), team')
+        .select('mentor:profiles (*), team')
         .match({ team: teamId })
         .single()
         .then(handleSingleResponse)

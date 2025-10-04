@@ -1,15 +1,10 @@
 import Card from '@/components/Card';
-import { Flex, Heading, LinkBox, LinkOverlay } from '@chakra-ui/react';
+import { Center, Flex, Heading, LinkBox, LinkOverlay } from '@chakra-ui/react';
 
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { Team } from '../types';
+import { FaUsersCog } from 'react-icons/fa';
 
-const TeamLogo = dynamic(() => import('./TeamLogo'), {
-    ssr: false,
-});
-
-export default function TeamCard(team: Team) {
+export default function YourTeamCard() {
     return (
         <LinkBox>
             <Card
@@ -20,7 +15,9 @@ export default function TeamCard(team: Team) {
                 h={20}
                 alignItems="stretch"
             >
-                <TeamLogo {...team} size={20} />
+                <Center w={20} h={20} bgColor="whiteAlpha.200">
+                    <FaUsersCog size={25} />
+                </Center>
                 <Flex
                     flexDir="column"
                     px={4}
@@ -29,9 +26,9 @@ export default function TeamCard(team: Team) {
                     flexGrow={1}
                     gap={0}
                 >
-                    <Link href={`/connect/teams/${team.id}`} passHref legacyBehavior>
+                    <Link href={`/connect/`} passHref legacyBehavior>
                         <LinkOverlay>
-                            <Heading size="sm">{team.name}</Heading>
+                            <Heading size="sm">Your Team</Heading>
                         </LinkOverlay>
                     </Link>
                 </Flex>

@@ -10,18 +10,19 @@ import {
     Tr,
     VStack,
 } from '@chakra-ui/react';
-import { FullProfile } from 'modules/profile/types';
+import { FullProfile, UserRole } from 'modules/profile/types';
 import { useMemo } from 'react';
 import { downloadProfiles } from '../utils';
 
 type MentorsTabProps = {
     profiles: FullProfile[];
+    role?: UserRole;
 };
 
-const MentorsTab: React.FC<MentorsTabProps> = ({ profiles }) => {
+const UsersTab: React.FC<MentorsTabProps> = ({ profiles, role = "PARTICIPANT" }) => {
     const mentors = useMemo(
-        () => profiles.filter((p) => p.role === 'MENTOR'),
-        [profiles]
+        () => profiles.filter((p) => p.role === role),
+        [profiles, role]
     );
     return (
         <VStack alignItems="stretch">
@@ -56,4 +57,4 @@ const MentorsTab: React.FC<MentorsTabProps> = ({ profiles }) => {
     );
 };
 
-export default MentorsTab;
+export default UsersTab;

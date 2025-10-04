@@ -1,13 +1,23 @@
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     Box,
+    Button,
     Flex,
     Grid,
     GridItem,
     Heading,
     Show,
-    Text,
+    Spacer,
+    Text
 } from '@chakra-ui/react';
+import { GrowEvent } from 'modules/events/types';
+import { growFormattedDate } from 'utils/formatters';
 import AnimatedLogo from './AnimatedLogo';
+
+type InfoBlockProps = {
+    kickoff: GrowEvent;
+    final: GrowEvent;
+};
 
 function Fact({ amount, title }: { amount: string; title: string }) {
     return (
@@ -20,7 +30,11 @@ function Fact({ amount, title }: { amount: string; title: string }) {
     );
 }
 
-export default function MainInfoBlock() {
+const MainInfoBlock: React.FC<InfoBlockProps> = ({
+    kickoff,
+    final
+}) => {
+    const today = new Date();
     return (
         <Grid
             templateColumns={{ base: '1fr', lg: '1fr 1fr' }}
@@ -56,19 +70,14 @@ export default function MainInfoBlock() {
                             weeks. <br></br> Get support, build your prototype
                             and test your market.
                         </Text>
+
+                        {(today < kickoff.date && kickoff.href && kickoff.href.length > 0) &&
+                            <>
+                                <Spacer mb='8' />
+                                <Button leftIcon={<ExternalLinkIcon />} onClick={() => { if (kickoff.href) window.location.href = kickoff.href }}>Sign Up for the Kickoff!</Button>
+                            </>
+                        }
                     </Box>
-                    {/* <Flex
-                        justifyContent={{
-                            base: 'space-around',
-                            lg: 'space-between',
-                        }}
-                        w="100%"
-                        mt={10}
-                    >
-                        <Fact title="startups" amount="50+" />
-                        <Fact title="prizes" amount="20 000€" />
-                        <Fact title="workshops" amount="11" />
-                    </Flex> */}
                     <Flex
                         justifyContent={{
                             base: 'space-around',
@@ -84,13 +93,17 @@ export default function MainInfoBlock() {
                             lg: 'row',
                         }}
                     >
-                        <Fact title="Start Kick-Off" amount="4.Nov 2023" />
+                        <Fact
+                            title="Start Kick-Off"
+                            amount={growFormattedDate(kickoff.date, today)}
+                        />
                         <Fact
                             title="Finale in Karlsruhe"
-                            amount="20.Jan.2024"
+                            amount={growFormattedDate(final.date, today)}
                         />
                     </Flex>
                 </Flex>
+
             </GridItem>
             <Show above="md">
                 <GridItem placeSelf="center" textAlign="center" rowSpan={2}>
@@ -99,7 +112,9 @@ export default function MainInfoBlock() {
                     </Flex>
                 </GridItem>
             </Show>
-            {/* <BottomBanner /> */}
         </Grid>
     );
 }
+
+
+export default MainInfoBlock;

@@ -77,7 +77,7 @@ const TeamRow: React.FC<TeamRowProps> = ({ team, mentor }) => {
                             href={'/connect/teams/' + team.id}
                             passHref
                             prefetch={false}
-                        >
+                            legacyBehavior>
                             <LinkOverlay>{team.name}</LinkOverlay>
                         </Link>
                         {team.isArchived && (
@@ -136,6 +136,36 @@ const TeamTable = (props: { teams: TeamWithMembers[] }) => {
         [props.teams, showArchivedTeams]
     );
 
+    // Function to convert team data to CSV
+    const convertTeamsToCSV = (teams: TeamWithMembers[]): string => {
+        const header = "Team Name,Mentors,Members,Requested Support\n";
+        const rows = teams.map(team => {
+            if (team.isArchived)
+                return;
+            const teamName = team.name;
+            const mentor = mentorAssignments != undefined ? mentorAssignments[team.id] : undefined
+            const mentorName = mentor ? `${mentor.firstName} ${mentor.lastName}` : "No Mentor Assigned";
+
+            const members = team.members.map(m => `${m.firstName} ${m.lastName}`).join('; ');
+            const requestedSupport = team.requestSupport.join('; ');
+
+            return `${teamName},${mentorName},${members},${requestedSupport}`;
+        }).join('\n');
+        return header + rows;
+    };
+
+    // Function to trigger CSV download
+    const downloadCSV = () => {
+        const csvData = convertTeamsToCSV(filteredTeams);
+        const blob = new Blob([csvData], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'teams.csv';
+        a.click();
+        window.URL.revokeObjectURL(url);
+    };
+
     return (
         <Flex alignItems="stretch" flexDir="column">
             <Button
@@ -144,6 +174,14 @@ const TeamTable = (props: { teams: TeamWithMembers[] }) => {
                 onClick={() => setShowArchivedTeams(!showArchivedTeams)}
             >
                 Toggle Archived Teams
+            </Button>
+            <Button
+                alignSelf="start"
+                size="sm"
+                onClick={downloadCSV}
+                mt={2}
+            >
+                Download CSV
             </Button>
             <Grid
                 gridTemplateColumns="1fr 10rem 4rem"

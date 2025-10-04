@@ -7,7 +7,7 @@ import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { allowOrga } from 'modules/admin/utils';
 import EventConfiguration from 'modules/events/components/EventConfiguration';
 
-import Registrations from 'modules/events/components/Registraions';
+import Registrations from 'modules/events/components/Registrations';
 import {
     useDeleteEvent,
     useGrowEventWithSeats,

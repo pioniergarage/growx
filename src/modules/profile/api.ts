@@ -2,9 +2,8 @@ import { SupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from 'database/DatabaseDefition';
 
 import {
-    handleMaybeSingleResponse,
     handleResponse,
-    handleSingleResponse,
+    handleSingleResponse
 } from '../../database/utils';
 import { FurtherProfileInfo, Profile } from './types';
 
@@ -102,26 +101,3 @@ export const insertSignupInfo = async (
     supabaseClient: SupabaseClient<Database>,
     info: FurtherProfileInfo & { email: string }
 ) => supabaseClient.from('signup_info').insert(info).select().single();
-
-export async function fetchMatriculation(
-    supabaseClient: SupabaseClient<Database>,
-    user_id: string
-): Promise<string | undefined> {
-    return supabaseClient
-        .from('matriculation')
-        .select('*')
-        .eq('user_id', user_id)
-        .single()
-        .then(handleMaybeSingleResponse)
-        .then((dto) => dto?.Id);
-}
-
-export async function upsertMatriculation(
-    supabaseClient: SupabaseClient<Database>,
-    user_id: string,
-    matriculation: string
-) {
-    await supabaseClient
-        .from('matriculation')
-        .upsert({ Id: matriculation, user_id: user_id });
-}
