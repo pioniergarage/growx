@@ -15,24 +15,23 @@ import { getSeason } from 'utils/formatters';
 
 // TODO: this should fetch the link to the final by index from a "Links" table on the database.
 
-const FinalLandingPage = () => {
+const KickoffLandingPage = () => {
     const { events, isLoading, error } = useGrowEvents();
-    const finalEvent = events?.find((e) => e.ref === 'final');
-    const finalEventTimeline = finalEvent ? {
-        event: finalEvent,
-        title: 'Grand Final',
-        url: '/final',
-        description: `Present your results to a huge crowd and show how far you have come. 
-        Each participant will have learned a lot and gained a lot of experience by this point. 
-        The groups with the greatest progress will receive prizes. This is what you've been working for!`,
-        image: 'audimax.jpg',
+    const kickoffEvent = events?.find((e) => e.ref === 'kickoff');
+    const finalEventTimeline = kickoffEvent ? {
+        event: kickoffEvent,
+        title: 'Kickoff Event',
+        url: '/kickoff',
+        description: `Pitch your idea, find a team or simply learn more about the contest. 
+            The kickoff is where the fun starts, whether you already applied or you're up for a spontaneous adventure. `,
+        image: 'notes.jpg',
     } : undefined;
 
     const kickoff = events?.find((e) => e.ref === 'kickoff');
     const season = kickoff ? getSeason(kickoff.date) : "";
     return (
         <VStack>
-            <Heading size="lg">GROW {season} Grand Final</Heading>
+            <Heading size="lg">GROW {season} Kickoff Event</Heading>
             <Spacer mb={4} />
             {isLoading ? (
                 <Box>
@@ -75,4 +74,4 @@ const FinalLandingPage = () => {
     );
 };
 
-export default FinalLandingPage;
+export default KickoffLandingPage;

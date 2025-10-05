@@ -15,24 +15,23 @@ import { getSeason } from 'utils/formatters';
 
 // TODO: this should fetch the link to the final by index from a "Links" table on the database.
 
-const FinalLandingPage = () => {
+const MidtermLandingPage = () => {
     const { events, isLoading, error } = useGrowEvents();
-    const finalEvent = events?.find((e) => e.ref === 'final');
-    const finalEventTimeline = finalEvent ? {
-        event: finalEvent,
-        title: 'Grand Final',
-        url: '/final',
-        description: `Present your results to a huge crowd and show how far you have come. 
-        Each participant will have learned a lot and gained a lot of experience by this point. 
-        The groups with the greatest progress will receive prizes. This is what you've been working for!`,
-        image: 'audimax.jpg',
+    const midtermEvent = events?.find((e) => e.ref === 'final');
+    const finalEventTimeline = midtermEvent ? {
+        event: midtermEvent,
+        title: 'Midterm Pitch',
+        url: '/midterm',
+        description: `Half time break! Teams pitch their first progress and fight about advancing to the final. 
+            Pitch what you've accomplished in the last 5 weeks in front of a small audience and the jury. `,
+        image: 'speech.jpg',
     } : undefined;
 
     const kickoff = events?.find((e) => e.ref === 'kickoff');
     const season = kickoff ? getSeason(kickoff.date) : "";
     return (
         <VStack>
-            <Heading size="lg">GROW {season} Grand Final</Heading>
+            <Heading size="lg">GROW {season} Midterm Pitch</Heading>
             <Spacer mb={4} />
             {isLoading ? (
                 <Box>
@@ -75,4 +74,4 @@ const FinalLandingPage = () => {
     );
 };
 
-export default FinalLandingPage;
+export default MidtermLandingPage;
