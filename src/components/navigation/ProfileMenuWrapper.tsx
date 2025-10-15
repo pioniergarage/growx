@@ -1,3 +1,4 @@
+import { useSupabaseClient } from '@/components/providers/SupabaseProvider';
 import {
     Button,
     IconButton,
@@ -6,7 +7,6 @@ import {
     MenuItem,
     MenuList,
 } from '@chakra-ui/react';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import UserAvatar from 'modules/avatar/components/UserAvatar';
 import { Profile } from 'modules/profile/types';
 import Link from 'next/link';

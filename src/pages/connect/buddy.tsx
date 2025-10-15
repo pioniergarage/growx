@@ -1,5 +1,5 @@
+import { useSupabaseClient } from '@/components/providers/SupabaseProvider';
 import { Alert, AlertIcon, Spinner, Text, VStack } from '@chakra-ui/react';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import LoginLayout from 'layouts/LoginLayout';
 import { useInsertContactInformation } from 'modules/contactInformation/hooks';
 import { useUpdateProfile } from 'modules/profile/hooks';

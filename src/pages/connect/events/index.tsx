@@ -7,7 +7,8 @@ import {
     Skeleton,
     VStack,
 } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { withPageAuth } from 'utils/supabase/withPageAuth';
+
 import GrowEventCard from 'modules/events/components/GrowEventCard';
 import { useGrowEvents, useRegistrationsOfUser } from 'modules/events/hooks';
 import { useProfile } from 'modules/profile/hooks';

@@ -3,7 +3,8 @@ import AdminBreadcrumbs, {
 } from '@/components/navigation/AdminBreadcrumbs';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { Divider, Spinner, useToast, VStack } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { withPageAuth } from 'utils/supabase/withPageAuth';
+
 import { allowOrga } from 'modules/admin/utils';
 import EventConfiguration from 'modules/events/components/EventConfiguration';
 

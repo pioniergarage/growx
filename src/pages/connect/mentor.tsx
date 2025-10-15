@@ -1,6 +1,7 @@
 import { Alert, AlertIcon, Spinner, Text, VStack } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { withPageAuth } from 'utils/supabase/withPageAuth';
+
+import { useSupabaseClient } from '@/components/providers/SupabaseProvider';
 import LoginLayout from 'layouts/LoginLayout';
 import { useInsertContactInformation } from 'modules/contactInformation/hooks';
 import { useUpdateProfile } from 'modules/profile/hooks';

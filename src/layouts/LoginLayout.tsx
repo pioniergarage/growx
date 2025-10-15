@@ -1,10 +1,9 @@
 import { GrowLogo, TopNavBar } from '@/components/navigation/Nav';
+import SupabaseProvider from '@/components/providers/SupabaseProvider';
 import { Box, Flex } from '@chakra-ui/react';
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { useSideNav } from 'modules/navigation/hooks';
 import Head from 'next/head';
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 export default function Layout({ children }: PropsWithChildren) {
@@ -15,7 +14,6 @@ export default function Layout({ children }: PropsWithChildren) {
             },
         },
     });
-    const [supabaseClient] = useState(() => createBrowserSupabaseClient());
     const {
         alpha: navAlpha
     } = useSideNav();
@@ -27,7 +25,7 @@ export default function Layout({ children }: PropsWithChildren) {
             <TopNavBar alpha={navAlpha}>
                 <GrowLogo flexGrow={1} />
             </TopNavBar>
-            <SessionContextProvider supabaseClient={supabaseClient}>
+            <SupabaseProvider>
                 <QueryClientProvider client={queryClient}>
                     <Flex
                         as="main"
@@ -57,7 +55,7 @@ export default function Layout({ children }: PropsWithChildren) {
                         </Box>
                     </Flex>
                 </QueryClientProvider>
-            </SessionContextProvider>
+            </SupabaseProvider>
         </>
     );
 }

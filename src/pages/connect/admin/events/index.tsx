@@ -14,7 +14,8 @@ import {
     Tr,
     VStack,
 } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { withPageAuth } from 'utils/supabase/withPageAuth';
+
 import { allowOrga } from 'modules/admin/utils';
 
 import CreateEventModal from 'modules/events/components/CreateEventModal';

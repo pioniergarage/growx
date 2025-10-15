@@ -10,7 +10,8 @@ import {
     Tabs,
     VStack,
 } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { withPageAuth } from 'utils/supabase/withPageAuth';
+
 import ParticipantsTab from 'modules/admin/components/ParticipantsTab';
 import UsersTab from 'modules/admin/components/UsersTab';
 import { useFullProfiles } from 'modules/admin/hooks';

@@ -7,7 +7,8 @@ import {
     SimpleGrid,
     VStack,
 } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { withPageAuth } from 'utils/supabase/withPageAuth';
+
 
 import TeamCard from 'modules/teams/components/TeamCard';
 import { useAllTeams } from 'modules/teams/hooks';
