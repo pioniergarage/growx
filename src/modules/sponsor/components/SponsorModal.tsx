@@ -1,5 +1,6 @@
 // Component for the Ajust Sponsor form
 
+import { useSupabaseClient } from '@/components/providers/SupabaseProvider';
 import {
     Button,
     FormControl,
@@ -16,7 +17,6 @@ import {
     ModalOverlay,
     Select,
 } from '@chakra-ui/react';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
 import { uploadLogo } from 'modules/sponsor/api';
 import { useEffect, useState } from 'react';

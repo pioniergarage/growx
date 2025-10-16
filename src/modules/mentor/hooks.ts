@@ -1,5 +1,4 @@
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { Database } from 'database/DatabaseDefition';
+import { useSupabaseClient } from '@/components/providers/SupabaseProvider';
 import { Profile } from 'modules/profile/types';
 import { Team } from 'modules/teams/types';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -13,7 +12,7 @@ import {
 import { MentorAssignments } from './types';
 
 export function useMentorAssignments() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const query = useQuery(
         'mentorAssignments',
         () => getMentorAssignments(supabaseClient),
@@ -25,7 +24,7 @@ export function useMentorAssignments() {
 }
 
 export function useTeamMentor(teamId: number) {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const query = useQuery('teamMentor', () =>
         getTeamMentor(supabaseClient, teamId)
     );
@@ -33,7 +32,7 @@ export function useTeamMentor(teamId: number) {
 }
 
 export function useAssignMentor() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
     const mutation = useMutation(
         ({
@@ -53,7 +52,7 @@ export function useAssignMentor() {
 }
 
 export function useUnassignMentor() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
     const mutation = useMutation(
         ({ teamId }: { teamId: Team['id'] }) =>
@@ -73,7 +72,7 @@ export function useUnassignMentor() {
 }
 
 export function useGetAssignedTeamLeads() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const query = useQuery('assignedTeamLeads', () =>
         getAssignedTeamLeads(supabaseClient)
     );

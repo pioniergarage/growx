@@ -1,3 +1,4 @@
+import { useUser } from '@/components/providers/SupabaseProvider';
 import {
     Alert,
     AlertIcon,
@@ -6,7 +7,6 @@ import {
     useDisclosure,
     useToast,
 } from '@chakra-ui/react';
-import { useUser } from '@supabase/auth-helpers-react';
 import { useProfile } from 'modules/profile/hooks';
 import { useMemo } from 'react';
 import {
@@ -109,8 +109,8 @@ const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
                     </Button>
                 </Alert>
             )}
-            
-            
+
+
             <SignUpDialog
                 isOfflineEnabled={
                     (event.type === 'Hybrid' || event.type === 'Offline') &&

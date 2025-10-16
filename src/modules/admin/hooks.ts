@@ -1,10 +1,9 @@
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { Database } from 'database/DatabaseDefition';
+import { useSupabaseClient } from '@/components/providers/SupabaseProvider';
 import { useQuery } from 'react-query';
 import adminApi from './api';
 
 export const useFullProfiles = () => {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const result = useQuery(
         'fullProfiles',
         () => {
@@ -18,7 +17,7 @@ export const useFullProfiles = () => {
 };
 
 export const useAllProfiles = () => {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const result = useQuery('allProfiles', () => {
         return adminApi.getAllProfiles(supabaseClient);
     });
@@ -31,7 +30,7 @@ export const useProfileStats = () => {
 };
 
 export const useTeamsWithDates = () => {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const result = useQuery('teamsWithDates', () => {
         return adminApi.getActiveTeamsWithDates(supabaseClient);
     });

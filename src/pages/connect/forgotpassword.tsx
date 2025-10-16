@@ -1,3 +1,4 @@
+import { useSupabaseClient } from '@/components/providers/SupabaseProvider';
 import {
     Alert,
     AlertIcon,
@@ -7,7 +8,6 @@ import {
     Input,
     VStack,
 } from '@chakra-ui/react';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import LoginLayout from 'layouts/LoginLayout';
 import Image from "next/legacy/image";
 import { FormEventHandler, useState } from 'react';

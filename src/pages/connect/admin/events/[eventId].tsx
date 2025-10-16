@@ -2,8 +2,9 @@ import AdminBreadcrumbs, {
     AdminBreadcrumbItem,
 } from '@/components/navigation/AdminBreadcrumbs';
 import { ChevronRightIcon } from '@chakra-ui/icons';
-import { Divider, Spinner, useToast, VStack } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { Box, Divider, Spinner, useToast, VStack } from '@chakra-ui/react';
+import { withPageAuth } from 'utils/supabase/withPageAuth';
+
 import { allowOrga } from 'modules/admin/utils';
 import EventConfiguration from 'modules/events/components/EventConfiguration';
 
@@ -70,6 +71,10 @@ const EventDetails: NextPageWithLayout = () => {
                     {event?.title}
                 </AdminBreadcrumbItem>
             </AdminBreadcrumbs>
+
+            <Box padding='1em 0'>
+                <p>This page is live from the database. Changes made here may not immediately be visible on the public site.</p>
+            </Box>
 
             {isLoading && <Spinner />}
             {event && (

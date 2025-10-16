@@ -6,7 +6,8 @@ import {
     LinkOverlay,
     Spinner,
 } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { withPageAuth } from 'utils/supabase/withPageAuth';
+
 import { useGetAssignedTeamLeads } from 'modules/mentor/hooks';
 
 const AssignedTeamsPage: React.FC = () => {

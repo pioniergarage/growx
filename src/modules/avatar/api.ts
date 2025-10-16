@@ -1,4 +1,4 @@
-import { SupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { SupabaseClient } from '@supabase/supabase-js';
 import { Database } from 'database/DatabaseDefition';
 import { Profile } from 'modules/profile/types';
 import resizeImage from 'utils/resize';

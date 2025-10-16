@@ -1,4 +1,4 @@
-import { SupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { SupabaseClient } from '@supabase/supabase-js';
 import { Database } from 'database/DatabaseDefition';
 import { handleResponse, handleSingleResponse } from '../../database/utils';
 import { mapProfileDto } from '../profile/api';

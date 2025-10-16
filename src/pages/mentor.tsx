@@ -5,11 +5,11 @@ import {
     BreadcrumbLink,
     VStack,
 } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import MentorList from 'modules/landing/MentorList';
 import { getPublicMentors } from 'modules/profile/api';
 import { Profile } from 'modules/profile/types';
 import Link from 'next/link';
+import { withPageAuth } from 'utils/supabase/withPageAuth';
 
 export const getServerSideProps = withPageAuth({
     authRequired: false,

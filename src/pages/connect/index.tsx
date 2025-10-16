@@ -8,8 +8,9 @@ import {
     Text,
     VStack
 } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { useUser } from '@supabase/auth-helpers-react';
+import { withPageAuth } from 'utils/supabase/withPageAuth';
+
+import { useUser } from '@/components/providers/SupabaseProvider';
 
 import GrowEventCard from 'modules/events/components/GrowEventCard';
 import { useGrowEvents, useRegistrationsOfUser } from 'modules/events/hooks';

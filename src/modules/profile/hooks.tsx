@@ -1,7 +1,6 @@
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
+import { useSupabaseClient, useUser } from '@/components/providers/SupabaseProvider';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
-import { Database } from 'database/DatabaseDefition';
 import {
     fetchProfile,
     getProfiles,
@@ -11,7 +10,7 @@ import {
 import { FurtherProfileInfo, Profile } from './types';
 
 export function useProfile(userId?: string) {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const user = useUser();
     const userId2 = userId || user?.id;
     const result = useQuery(
@@ -28,7 +27,7 @@ export function useProfile(userId?: string) {
 }
 
 export function useUpdateProfile() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
     const mutation = useMutation(
         (profile: Partial<Profile> & Pick<Profile, 'userId'>) =>
@@ -54,7 +53,7 @@ export function useUpdateProfile() {
 }
 
 export function useProfiles() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
     const query = useQuery(
         'profiles',
@@ -74,7 +73,7 @@ export function useProfiles() {
 }
 
 export function useInsertFurhterProfileInfo() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const mutation = useMutation(
         (data: FurtherProfileInfo & { email: string }) =>
             insertSignupInfo(supabaseClient, data)

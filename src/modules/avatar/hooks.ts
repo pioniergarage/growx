@@ -1,5 +1,4 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { Database } from "database/DatabaseDefition";
+import { useSupabaseClient } from '@/components/providers/SupabaseProvider';
 import { useUpdateProfile } from "modules/profile/hooks";
 import { Profile } from "modules/profile/types";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -12,7 +11,7 @@ export function useAvatarUrl({
     userId?: Profile['userId'];
     avatar: Profile['avatar'];
 }) {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const result = useQuery(
         ['avatar', userId],
         async () => {
@@ -28,7 +27,7 @@ export function useAvatarUrl({
 }
 
 export function useUploadAvatar() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
     const { updateProfile } = useUpdateProfile();
     const mutation = useMutation(

@@ -1,6 +1,6 @@
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { useSupabaseClient } from '@/components/providers/SupabaseProvider';
+
 import { User } from '@supabase/supabase-js';
-import { Database } from 'database/DatabaseDefition';
 
 import {
     deleteEvent,
@@ -20,7 +20,7 @@ import { GrowEvent, GrowEventWithSeats } from './types';
 
 export function useRegisterUserToEvent() {
     const queryClient = useQueryClient();
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const mutation = useMutation(
         async ({
             user,
@@ -43,7 +43,7 @@ export function useRegisterUserToEvent() {
 
 export function useUnregisterUserFromEvent() {
     const queryClient = useQueryClient();
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const mutation = useMutation(
         async ({ user, event }: { user: User; event: GrowEvent }) => {
             return unregisterUser(supabaseClient, user.id, event.id);
@@ -57,7 +57,7 @@ export function useUnregisterUserFromEvent() {
 }
 
 export function useRegistrationsToEvent(eventId: number) {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const query = useQuery(
         ['eventRegistrations', eventId],
         async () => await getRegistrationsTo(supabaseClient, eventId)
@@ -66,7 +66,7 @@ export function useRegistrationsToEvent(eventId: number) {
 }
 
 export function useRegistrationsOfUser(userId?: string) {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const query = useQuery(
         ['eventRegistrationsOfUser', userId],
         async () => {
@@ -81,7 +81,7 @@ export function useRegistrationsOfUser(userId?: string) {
 }
 
 export function useGrowEvent(id: number) {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const { data, ...rest } = useQuery(
         ['event', id],
         async () => await getEvent(supabaseClient, id)
@@ -90,7 +90,7 @@ export function useGrowEvent(id: number) {
 }
 
 export function useGrowEventWithSeats(id: number) {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const { data, ...rest } = useQuery(
         ['eventWithSeats', id],
         async () => await getEventWithSeats(supabaseClient, id)
@@ -99,7 +99,7 @@ export function useGrowEventWithSeats(id: number) {
 }
 
 export function useGrowEvents() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
     const { data, ...rest } = useQuery(
         'events',
@@ -115,7 +115,7 @@ export function useGrowEvents() {
 }
 
 export function useGrowEventsWithSeats() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
     const { data, ...rest } = useQuery(
         'eventsWithSeats',
@@ -134,7 +134,7 @@ export function useGrowEventsWithSeats() {
 }
 
 export function useUpdateEvent() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
     const mutation = useMutation(
         async (patch: Partial<GrowEventWithSeats> & Pick<GrowEvent, 'id'>) =>
@@ -149,7 +149,7 @@ export function useUpdateEvent() {
 }
 
 export function useDeleteEvent() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
     const mutation = useMutation(
         async (eventId: number) => await deleteEvent(supabaseClient, eventId),
@@ -164,7 +164,7 @@ export function useDeleteEvent() {
 
 export function useInsertEvent() {
     const queryClient = useQueryClient();
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const mutation = useMutation(
         async (event: Partial<GrowEvent>) =>
             await insertEvent(supabaseClient, event),

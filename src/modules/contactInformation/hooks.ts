@@ -1,11 +1,10 @@
-import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
-import { Database } from "database/DatabaseDefition";
+import { useSupabaseClient, useUser } from '@/components/providers/SupabaseProvider';
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import contactInformationApi from "./api";
 import { ContactInformation } from "./types";
 
 export const useContactInformation = () => {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const user = useUser()
     const query = useQuery(
         ['contact_information', user?.id],
@@ -25,7 +24,7 @@ export const useContactInformation = () => {
 
 export const useInsertContactInformation = () => {
     const queryClient = useQueryClient();
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const mutation = useMutation(
         async (payload: { info: ContactInformation, userId: string }) => {
             return contactInformationApi.insertContactInformation(supabaseClient, payload.userId, payload.info)
@@ -41,7 +40,7 @@ export const useInsertContactInformation = () => {
 
 export const useUpdateContactInformation = () => {
     const queryClient = useQueryClient();
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const mutation = useMutation(
         async (payload: { info: ContactInformation, userId: string }) => {
             return contactInformationApi.updateContactInformation(supabaseClient, payload.userId, payload.info)

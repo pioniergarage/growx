@@ -42,14 +42,14 @@ export const allowOrga = async (
     supabase: SupabaseClient<Database>
 ) => {
     try {
-        const { data, error } = await supabase.auth.getSession();
+        const { data, error } = await supabase.auth.getUser();
         if (error) {
             throw error;
         }
         const { role } = await supabase
             .from('profiles')
             .select('role')
-            .eq('user_id', data.session?.user.id as string)
+            .eq('user_id', data.user.id as string)
             .single()
             .then(handleSingleResponse);
 

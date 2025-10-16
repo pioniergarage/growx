@@ -10,8 +10,9 @@ import {
     useToast,
     VStack,
 } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { useUser } from '@supabase/auth-helpers-react';
+import { withPageAuth } from 'utils/supabase/withPageAuth';
+
+import { useUser } from '@/components/providers/SupabaseProvider';
 import { getTeam } from 'modules/teams/api';
 import LeaveTeamButton from 'modules/teams/components/LeaveTeamButton';
 import MemberList from 'modules/teams/components/MemberList';
