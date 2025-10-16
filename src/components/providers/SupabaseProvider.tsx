@@ -23,7 +23,10 @@ export default function SupabaseProvider({
     return <Context.Provider value={{ supabase }}>{children}</Context.Provider>
 }
 
-// Hook for accessing the Supabase client
+/**
+ * Hook for accessing the Supabase client
+ * @returns Supabase client
+ */
 export const useSupabaseClient = () => {
     const context = useContext(Context)
 
@@ -33,10 +36,10 @@ export const useSupabaseClient = () => {
 
     return context.supabase
 }
-
-// -----------------------------------------------------------------
-// NEW: Hook for accessing the current user
-// -----------------------------------------------------------------
+/**
+ * Hook for accessing the Supabase user
+ * @returns Supabase user
+ */
 export const useUser = () => {
     const supabase = useSupabaseClient() // Depends on the hook above
     const [user, setUser] = useState<User | null>(null)

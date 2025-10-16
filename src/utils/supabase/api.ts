@@ -5,10 +5,10 @@ export default function createClient(req: NextApiRequest, res: NextApiResponse) 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-    // 1. Check if the variables are defined
     if (!supabaseUrl || !supabaseAnonKey) {
         throw new Error('Missing Supabase URL or anon key. (api)')
     }
+
     const supabase = createServerClient(
         supabaseUrl,
         supabaseAnonKey,

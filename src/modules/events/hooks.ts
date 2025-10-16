@@ -106,7 +106,7 @@ export function useGrowEvents() {
         async () => await getEvents(supabaseClient),
         {
             onSuccess: (events) =>
-                events.forEach((event) => //Error here: Parameter 'event' implicitly has an 'any' type.
+                events.forEach((event) =>
                     queryClient.setQueryData(['event', event.id], event)
                 ),
         }

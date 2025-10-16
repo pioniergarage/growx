@@ -9,26 +9,22 @@ import {
 import { createServerClient } from './server';
 
 
-// 1. Introduce a generic type parameter `<P>`
 interface WithPageAuthOptions<P> {
     authRequired?: boolean;
     redirectTo?: string;
     getServerSideProps?: (
         ctx: GetServerSidePropsContext,
         supabase: SupabaseClient<Database>
-    ) => Promise<GetServerSidePropsResult<P>>; // 2. Replace 'any' with 'P'
+    ) => Promise<GetServerSidePropsResult<P>>;
 }
 
-// 3. Add the generic to the function signature with a constraint
 export function withPageAuth<P extends { [key: string]: unknown } = { [key: string]: unknown }>({
     authRequired = false,
     redirectTo = '/',
     getServerSideProps,
-}: WithPageAuthOptions<P>): GetServerSideProps<P> { // 4. Use 'P' in the return type
+}: WithPageAuthOptions<P>): GetServerSideProps<P> {
     return async (context: GetServerSidePropsContext) => {
-        // This looks like you're using a client-side client on the server.
-        // It should be createServerClient(context) from './server'
-        const supabase = createServerClient(context); //Cannot find name 'createServerClient'.
+        const supabase = createServerClient(context);
 
         const {
             data: { user },
