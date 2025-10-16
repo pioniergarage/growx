@@ -17,7 +17,7 @@ import { getSeason } from 'utils/formatters';
 
 const MidtermLandingPage = () => {
     const { events, isLoading, error } = useGrowEvents();
-    const midtermEvent = events?.find((e) => e.ref === 'final');
+    const midtermEvent = events?.find((e) => e.ref === 'midterm');
     const finalEventTimeline = midtermEvent ? {
         event: midtermEvent,
         title: 'Midterm Pitch',
@@ -61,7 +61,7 @@ const MidtermLandingPage = () => {
                                 Join us at the GROW finale and witness the next big thing in innovation!
                             </p>
                         </VStack>
-                        <LinkListItem link={{ id: 1, title: 'GROW Final 24/25', href: 'https://pretix.eu/GROW/Final/', img: "/images/icons/grow.png" }} />
+                        <LinkListItem link={{ id: 1, title: midtermEvent?.title ?? 'GROW Midterm 24/25', href: `https://pretix.eu/GROW/${midtermEvent?.ref}/`, img: "/images/icons/grow.png" }} />
                     </SimpleGrid>
 
                 </>

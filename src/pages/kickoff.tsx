@@ -1,4 +1,3 @@
-import LinkListItem from '@/components/LinkListItem';
 import {
     Box,
     Heading,
@@ -61,7 +60,6 @@ const KickoffLandingPage = () => {
                                 Join us at the GROW finale and witness the next big thing in innovation!
                             </p>
                         </VStack>
-                        <LinkListItem link={{ id: 1, title: 'GROW Final 24/25', href: 'https://pretix.eu/GROW/Final/', img: "/images/icons/grow.png" }} />
                     </SimpleGrid>
 
                 </>
