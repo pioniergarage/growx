@@ -6,32 +6,34 @@ import {
     GetServerSidePropsContext,
     GetServerSidePropsResult,
 } from 'next';
-import { createClient } from './client';
+import { createServerClient } from './server';
 
-// Define the shape of the options object
-interface WithPageAuthOptions {
+
+// 1. Introduce a generic type parameter `<P>`
+interface WithPageAuthOptions<P> {
     authRequired?: boolean;
     redirectTo?: string;
     getServerSideProps?: (
         ctx: GetServerSidePropsContext,
         supabase: SupabaseClient<Database>
-    ) => Promise<GetServerSidePropsResult<any>>;
+    ) => Promise<GetServerSidePropsResult<P>>; // 2. Replace 'any' with 'P'
 }
 
-export function withPageAuth({
+// 3. Add the generic to the function signature with a constraint
+export function withPageAuth<P extends { [key: string]: unknown } = { [key: string]: unknown }>({
     authRequired = false,
     redirectTo = '/',
     getServerSideProps,
-}: WithPageAuthOptions): GetServerSideProps {
-    // Return a standard getServerSideProps function
+}: WithPageAuthOptions<P>): GetServerSideProps<P> { // 4. Use 'P' in the return type
     return async (context: GetServerSidePropsContext) => {
-        const supabase = createClient();
+        // This looks like you're using a client-side client on the server.
+        // It should be createServerClient(context) from './server'
+        const supabase = createServerClient(context); //Cannot find name 'createServerClient'.
 
         const {
             data: { user },
         } = await supabase.auth.getUser();
 
-        // If auth is required and there is no user, redirect
         if (authRequired && !user) {
             return {
                 redirect: {
@@ -41,12 +43,11 @@ export function withPageAuth({
             };
         }
 
-        // If a custom getServerSideProps is provided, call it with the context and client
         if (getServerSideProps) {
             return await getServerSideProps(context, supabase);
         }
 
-        // Otherwise, just return empty props
-        return { props: {} };
+        // We need to cast the empty props to the correct type
+        return { props: {} as P };
     };
 }

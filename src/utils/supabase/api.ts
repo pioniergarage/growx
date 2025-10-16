@@ -2,9 +2,16 @@ import { createServerClient, serializeCookieHeader } from '@supabase/ssr'
 import { type NextApiRequest, type NextApiResponse } from 'next'
 
 export default function createClient(req: NextApiRequest, res: NextApiResponse) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+    // 1. Check if the variables are defined
+    if (!supabaseUrl || !supabaseAnonKey) {
+        throw new Error('Missing Supabase URL or anon key. (api)')
+    }
     const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+        supabaseUrl,
+        supabaseAnonKey,
         {
             cookies: {
                 getAll() {

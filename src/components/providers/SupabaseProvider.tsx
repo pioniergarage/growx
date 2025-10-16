@@ -6,8 +6,6 @@ import type { SupabaseClient, User } from '@supabase/supabase-js';
 import { Database } from 'database/DatabaseDefition';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { createClient } from 'utils/supabase/client';
-// components/providers/SupabaseProvider.tsx
-'use client'
 
 type SupabaseContext = {
     supabase: SupabaseClient<Database>
