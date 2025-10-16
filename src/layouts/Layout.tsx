@@ -1,10 +1,9 @@
+import SupabaseProvider from '@/components/providers/SupabaseProvider';
 import { Box } from '@chakra-ui/react';
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import Footer from 'modules/landing/Footer';
 import GrowNav from 'modules/navigation/GrowNav';
 import Head from 'next/head';
-import React, { PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 export default function Layout({ children }: PropsWithChildren) {
@@ -15,7 +14,6 @@ export default function Layout({ children }: PropsWithChildren) {
             },
         },
     });
-    const [supabaseClient] = useState(() => createBrowserSupabaseClient());
 
     return (
         <>
@@ -30,14 +28,14 @@ export default function Layout({ children }: PropsWithChildren) {
                 <link rel="shortcut icon" href="/favicon.ico" />
             </Head>
 
-            <SessionContextProvider supabaseClient={supabaseClient}>
+            <SupabaseProvider>
                 <QueryClientProvider client={queryClient}>
                     <GrowNav />
                     <MainWrapper>{children}</MainWrapper>
                     <Footer />
                     {/* <ReactQueryDevtools initialIsOpen={false} /> */}
                 </QueryClientProvider>
-            </SessionContextProvider>
+            </SupabaseProvider>
         </>
     );
 }

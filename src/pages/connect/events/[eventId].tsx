@@ -8,7 +8,8 @@ import {
     Text,
     VStack,
 } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { withPageAuth } from 'utils/supabase/withPageAuth';
+
 import { Database } from 'database/DatabaseDefition';
 import { mapEventDto } from 'modules/events/api';
 import EventInformationCard from 'modules/events/components/EventInformationCard';

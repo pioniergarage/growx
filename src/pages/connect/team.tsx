@@ -1,6 +1,7 @@
 import PageLink from '@/components/navigation/PageLink';
 import { Text, VStack } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { withPageAuth } from 'utils/supabase/withPageAuth';
+
 import { getTeamIdOfUser } from 'modules/teams/api';
 import CreateTeamButton from 'modules/teams/components/CreateTeamButton';
 import { NextPageWithLayout } from 'utils/types';

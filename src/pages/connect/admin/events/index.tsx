@@ -4,6 +4,7 @@ import AdminBreadcrumbs, {
 import PageLink from '@/components/navigation/PageLink';
 import { CheckIcon } from '@chakra-ui/icons';
 import {
+    Box,
     Button,
     Table,
     TableContainer,
@@ -14,7 +15,8 @@ import {
     Tr,
     VStack,
 } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { withPageAuth } from 'utils/supabase/withPageAuth';
+
 import { allowOrga } from 'modules/admin/utils';
 
 import CreateEventModal from 'modules/events/components/CreateEventModal';
@@ -40,6 +42,10 @@ export default function EventManagement() {
                     Events
                 </AdminBreadcrumbItem>
             </AdminBreadcrumbs>
+
+            <Box padding='1em 0'>
+                <p>This page is live from the database. Changes made here may not immediately be visible on the public site.</p>
+            </Box>
 
             <TableContainer>
                 <Table size="sm">

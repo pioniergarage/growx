@@ -2,7 +2,8 @@ import AdminBreadcrumbs from '@/components/navigation/AdminBreadcrumbs';
 import PageLink from '@/components/navigation/PageLink';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { Divider, Flex } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { withPageAuth } from 'utils/supabase/withPageAuth';
+
 import InsertedStats from 'modules/admin/components/InsertedStats';
 import { useProfileStats, useTeamsWithDates } from 'modules/admin/hooks';
 import { allowOrga } from 'modules/admin/utils';

@@ -1,5 +1,4 @@
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { Database } from 'database/DatabaseDefition';
+import { useSupabaseClient } from '@/components/providers/SupabaseProvider';
 import { useProfiles } from 'modules/profile/hooks';
 import {
     acceptRequestToJoinTeam,
@@ -24,7 +23,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Team } from './types';
 
 export function useTeamIdOfUser(userId?: string) {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const result = useQuery(
         'currentTeamId',
         async () => {
@@ -42,7 +41,7 @@ export function useTeamIdOfUser(userId?: string) {
 }
 
 export function useAllTeams(initialData?: Team[]) {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
     const query = useQuery<Team[], string>(
         'teams',
@@ -60,7 +59,7 @@ export function useAllTeams(initialData?: Team[]) {
 }
 
 export function useAllTeamsWithMembers() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const query = useQuery(
         'teamsWithMembers',
         () => getTeamsWithMembers(supabaseClient),
@@ -70,7 +69,7 @@ export function useAllTeamsWithMembers() {
 }
 
 export function useTeam(teamId?: number | null, initialData?: Team) {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const query = useQuery(
         ['team', teamId],
         () => {
@@ -85,7 +84,7 @@ export function useTeam(teamId?: number | null, initialData?: Team) {
 }
 
 export function useTeamMembers(teamId: number) {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const query = useQuery(['members', teamId], () =>
         getTeamMembers(supabaseClient, teamId)
     );
@@ -93,7 +92,7 @@ export function useTeamMembers(teamId: number) {
 }
 
 export function useTeamRequests(teamId: number) {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const query = useQuery(
         ['teamRequests', teamId],
         () => getRequestsToTeam(supabaseClient, teamId),
@@ -103,7 +102,7 @@ export function useTeamRequests(teamId: number) {
 }
 
 export function useCurrentRequest(userId?: string) {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const query = useQuery(
         'currentTeamRequest',
         () => {
@@ -118,7 +117,7 @@ export function useCurrentRequest(userId?: string) {
 }
 
 export function useAcceptRequest() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
     const mutation = useMutation(
         (joiningUserId: string) =>
@@ -134,7 +133,7 @@ export function useAcceptRequest() {
 }
 
 export function useDeclineRequest() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
     const mutation = useMutation(
         (joiningUserId: string) =>
@@ -149,7 +148,7 @@ export function useDeclineRequest() {
 }
 
 export function useUploadTeamLogo() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const { updateTeam } = useUpdateTeam();
     const mutation = useMutation(
         ({ team, file }: { team: Team; file: File }) =>
@@ -165,7 +164,7 @@ export function useUploadTeamLogo() {
 }
 
 export function useRemoveTeamLogo() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const { updateTeam } = useUpdateTeam();
     const mutation = useMutation(
         ({ team }: { team: Team }) => removeTeamLogo(supabaseClient, team),
@@ -179,7 +178,7 @@ export function useRemoveTeamLogo() {
 }
 
 export function useRequestToJoinTeam() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
     const mutation = useMutation(
         ({ userId, teamId }: { userId: string; teamId: number }) =>
@@ -195,7 +194,7 @@ export function useRequestToJoinTeam() {
 }
 
 export function useWithdrawRequest() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
     const mutation = useMutation(
         ({ userId }: { userId: string }) =>
@@ -211,7 +210,7 @@ export function useWithdrawRequest() {
 }
 
 export function useCreateTeam() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
     const mutation = useMutation(
         (team: Partial<Team>) => createTeam(supabaseClient, team),
@@ -225,7 +224,7 @@ export function useCreateTeam() {
 }
 
 export function useUpdateTeam() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
     const mutation = useMutation(
         (team: Partial<Team>) => updateTeam(supabaseClient, team),
@@ -239,7 +238,7 @@ export function useUpdateTeam() {
 }
 
 export function useLeaveTeam() {
-    const supabaseClient = useSupabaseClient<Database>();
+    const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
     const mutation = useMutation(
         (userId: string) => leaveTeam(supabaseClient, userId),

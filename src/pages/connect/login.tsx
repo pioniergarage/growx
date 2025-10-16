@@ -1,7 +1,8 @@
 import PageLink from '@/components/navigation/PageLink';
 import { Alert, AlertIcon, Flex, Spacer, VStack } from '@chakra-ui/react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { withPageAuth } from 'utils/supabase/withPageAuth';
+
+import { useSupabaseClient } from '@/components/providers/SupabaseProvider';
 import LoginLayout from 'layouts/LoginLayout';
 import LogInForm from 'modules/signup/components/LoginForm';
 import Image from "next/legacy/image";

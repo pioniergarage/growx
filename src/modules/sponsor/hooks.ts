@@ -1,5 +1,5 @@
 
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { useSupabaseClient } from '@/components/providers/SupabaseProvider';
 import { deleteSponsor, getSponsors, upsertSponsor } from 'modules/sponsor/api';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Sponsor } from './types';
