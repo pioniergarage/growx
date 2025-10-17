@@ -8,10 +8,10 @@ import { getFAQs } from 'modules/faq/api';
 import { FAQ } from 'modules/faq/types';
 import Faqs from 'modules/landing/FaqList';
 import GrowVideo from 'modules/landing/GrowVideo';
+import LongTimeline from 'modules/landing/LongTimeline';
 import MainInfoBlock from 'modules/landing/MainInfoBlock';
 import MotivationBlock from 'modules/landing/MotivationBlock';
-import Timeline from 'modules/landing/ShortTimeline';
-import LongTimeline from 'modules/landing/Timeline_current';
+import ShortTimeline from 'modules/landing/ShortTimeline';
 import TimelinePlaceholder from 'modules/landing/Timeline_placeholder';
 import WaitingForBlock from 'modules/landing/WaitingForBlock';
 import SponsorsAndSupporters from 'modules/landing/sponsor/Sponsors';
@@ -53,7 +53,7 @@ export const getStaticProps = async () => {
         date: e.date.toISOString(),
     }));
 
-    // Save events to .json file (for calendar api)
+    // Save events to ical file (for calendar api)
     fs.writeFileSync(
         path.join(process.cwd(), 'public', "grow_calendar.ics"),
         createCalendar(events)
@@ -61,7 +61,7 @@ export const getStaticProps = async () => {
 
     return {
         props: { sponsors, faqs, jsonEvents },
-        revalidate: 60 * 30,
+        revalidate: 60 * 30
     };
 };
 
@@ -114,7 +114,7 @@ const Home: React.FC<HomeProps> = ({
 
             <Section>
                 {/*  das sind die 3 Blöcke mit Kick off, midterm und Final */}
-                <Timeline kickoff={kickoff} midterm={midterm} final={final} />
+                <ShortTimeline kickoff={kickoff} midterm={midterm} final={final} />
             </Section>
 
             <Section mt="8rem">
@@ -123,8 +123,6 @@ const Home: React.FC<HomeProps> = ({
             </Section>
 
             <Section id="timeline" mt="4rem" my="12rem">
-
-
                 {events.length > 3 ?
                     <LongTimeline events={events} kickoffDate={kickoff.date} />
                     :

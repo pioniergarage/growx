@@ -22,7 +22,7 @@ type ShortTimeLineProps = {
 export const TimelineItem: React.FC<TimeLineItemProps> = ({
     event,
     title,
-    url,
+    // url,
     description,
     image,
     objectPosition,

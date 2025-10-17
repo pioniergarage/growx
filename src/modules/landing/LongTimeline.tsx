@@ -1,18 +1,27 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Divider, Flex, Heading, Link, Stack, Text, VStack } from '@chakra-ui/react';
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Divider, Flex, Heading, Link, Stack, VStack } from '@chakra-ui/react';
 import GrowEventCard from 'modules/events/components/GrowEventCard';
+import { useRegistrationsOfUser } from 'modules/events/hooks';
 
 import { GrowEvent } from 'modules/events/types';
+import { useProfile } from 'modules/profile/hooks';
 import { FaRegCalendarPlus } from 'react-icons/fa';
 import { getSeason } from 'utils/formatters';
 
 interface LongTimelineProps {
     events: GrowEvent[];
-    kickoffDate: Date
+    kickoffDate: Date;
+    title?: string;
 }
 
-const LongTimeline: React.FC<LongTimelineProps> = ({ events, kickoffDate }) => {
+const LongTimeline: React.FC<LongTimelineProps> = ({ events, kickoffDate, title }) => {
     const season = getSeason(kickoffDate);
     const past_season = getSeason(kickoffDate, 1);
+    const { profile } = useProfile();
+
+    const { registrations } = useRegistrationsOfUser(profile?.userId);
+
+    const isLoggedIn = !!profile?.userId;
+
 
     const pastEvents = events.filter(
         (event) => event.date < kickoffDate
@@ -28,26 +37,29 @@ const LongTimeline: React.FC<LongTimelineProps> = ({ events, kickoffDate }) => {
                 <Stack
                     w="full"
                     direction={{ base: "column", md: "row" }}
-                    align={{ base: "center", md: "center" }}
-                    justify="space-around"
+                    align="space-between"
+                    justify="space-between"
                     mb={4}
                     spacing={{ base: 2, md: 0 }}
                 >
-                    <Heading>Timeline {season}</Heading>
-                    <Box textAlign="center" flex="1">
-                        <Text>All workshops open to the public!</Text>
-                    </Box>
+                    <Heading>{title ?? "Timeline"} {season}</Heading>
 
                     <Link href="webcal://grow.pioniergarage.de/grow_calendar.ics">
                         <Button className="flex items-center gap-2">
                             <FaRegCalendarPlus />
-                            Add to Calendar
+                            Subscribe to Calendar
                         </Button>
                     </Link>
                 </Stack>
                 <VStack gap={4} alignItems="stretch" mb={4}>
                     {currentEvents.map(event => (
-                        <GrowEventCard key={event.id} event={event} />
+                        <GrowEventCard key={event.id} event={event} registration={
+                            isLoggedIn
+                                ? registrations?.find(
+                                    (r) => r.eventId === event.id
+                                )
+                                : undefined
+                        } />
                     ))}
 
                     {currentEvents.length < 3 &&
@@ -70,7 +82,13 @@ const LongTimeline: React.FC<LongTimelineProps> = ({ events, kickoffDate }) => {
                         <AccordionPanel padding='0'>
                             <VStack gap={4} alignItems="stretch" pb='8'>
                                 {pastEvents.map(event => (
-                                    <GrowEventCard key={event.id} event={event} />
+                                    <GrowEventCard key={event.id} event={event} registration={
+                                        isLoggedIn
+                                            ? registrations?.find(
+                                                (r) => r.eventId === event.id
+                                            )
+                                            : undefined
+                                    } />
                                 ))}
                             </VStack>
                         </AccordionPanel>
