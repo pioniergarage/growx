@@ -31,7 +31,6 @@ function Fact({ amount, title, location }: { amount: string; title: string, loca
                 {amount}
             </Heading>
 
-            {/* hier nohc bisschen padding */}
             <div style={style}>
                 <EventTag icon={FaMapMarkerAlt} transparent={false}>
                     {location}
@@ -48,7 +47,7 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
     const today = new Date();
     return (
         <Grid
-            templateColumns={{ base: '1fr', lg: '1fr 1fr' }}
+            templateColumns={{ base: '1fr', lg: '3fr 2fr' }}
             placeItems={{ base: 'center', lg: 'start' }}
             textAlign={{ base: 'center', lg: 'left' }}
             mt={8}
@@ -90,12 +89,13 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                         w="100%"
                         mt={{
                             base: '6',
-                            lg: '30%',
+                            lg: '10%',
                         }}
                         flexFlow={{
                             base: 'column',
-                            lg: 'row',
+                            lg: 'row'
                         }}
+                        gap="2"
                     >
                         <Fact
                             title="Start Kick-Off"
