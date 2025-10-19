@@ -69,31 +69,33 @@ const LongTimeline: React.FC<LongTimelineProps> = ({ events, kickoffDate, title 
                     }
                 </VStack>
                 <Divider />
-                <Accordion allowToggle pb='0'>
-                    <AccordionItem border="none">
-                        <VStack alignItems='center'>
-                            <AccordionButton>
-                                <Box as="span" flex="1" textAlign="left" maxWidth='1xl'>
-                                    Past Events: {past_season}
-                                </Box>
-                                <AccordionIcon />
-                            </AccordionButton>
-                        </VStack>
-                        <AccordionPanel padding='0'>
-                            <VStack gap={4} alignItems="stretch" pb='8'>
-                                {pastEvents.map(event => (
-                                    <GrowEventCard key={event.id} event={event} registration={
-                                        isLoggedIn
-                                            ? registrations?.find(
-                                                (r) => r.eventId === event.id
-                                            )
-                                            : undefined
-                                    } />
-                                ))}
+                {pastEvents.length > 0 &&
+                    <Accordion allowToggle pb='0'>
+                        <AccordionItem border="none">
+                            <VStack alignItems='center'>
+                                <AccordionButton>
+                                    <Box as="span" flex="1" textAlign="left" maxWidth='1xl'>
+                                        Past Events: {past_season}
+                                    </Box>
+                                    <AccordionIcon />
+                                </AccordionButton>
                             </VStack>
-                        </AccordionPanel>
-                    </AccordionItem>
-                </Accordion>
+                            <AccordionPanel padding='0'>
+                                <VStack gap={4} alignItems="stretch" pb='8'>
+                                    {pastEvents.map(event => (
+                                        <GrowEventCard key={event.id} event={event} registration={
+                                            isLoggedIn
+                                                ? registrations?.find(
+                                                    (r) => r.eventId === event.id
+                                                )
+                                                : undefined
+                                        } />
+                                    ))}
+                                </VStack>
+                            </AccordionPanel>
+                        </AccordionItem>
+                    </Accordion>
+                }
             </VStack >
         </Box>
 

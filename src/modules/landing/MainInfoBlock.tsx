@@ -10,7 +10,9 @@ import {
     Spacer,
     Text
 } from '@chakra-ui/react';
+import EventTag from 'modules/events/components/EventTag';
 import { GrowEvent } from 'modules/events/types';
+import { FaMapMarkerAlt } from 'react-icons/fa';
 import { growFormattedDate } from 'utils/formatters';
 import AnimatedLogo from './AnimatedLogo';
 
@@ -19,13 +21,22 @@ type InfoBlockProps = {
     final: GrowEvent;
 };
 
-function Fact({ amount, title }: { amount: string; title: string }) {
+function Fact({ amount, title, location }: { amount: string; title: string, location: string }) {
+    const style = { marginTop: 8 }
+
     return (
         <Box>
+            <Text variant="info">{title}</Text>
             <Heading lineHeight="8" size={{ base: 'xl', md: '2xl' }}>
                 {amount}
             </Heading>
-            <Text variant="info">{title}</Text>
+
+            {/* hier nohc bisschen padding */}
+            <div style={style}>
+                <EventTag icon={FaMapMarkerAlt} transparent={false}>
+                    {location}
+                </EventTag>
+            </div>
         </Box>
     );
 }
@@ -70,13 +81,6 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                             weeks. <br></br> Get support, build your prototype
                             and test your market.
                         </Text>
-
-                        {(today < kickoff.date && kickoff.href && kickoff.href.length > 0) &&
-                            <>
-                                <Spacer mb='8' />
-                                <Button leftIcon={<ExternalLinkIcon />} onClick={() => { if (kickoff.href) window.location.href = kickoff.href }}>Sign Up for the Kickoff!</Button>
-                            </>
-                        }
                     </Box>
                     <Flex
                         justifyContent={{
@@ -96,12 +100,20 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                         <Fact
                             title="Start Kick-Off"
                             amount={growFormattedDate(kickoff.date, today)}
+                            location={kickoff.location}
                         />
                         <Fact
                             title="Finale in Karlsruhe"
                             amount={growFormattedDate(final.date, today)}
+                            location={final.location}
                         />
                     </Flex>
+                    {(today < kickoff.date && kickoff.href && kickoff.href.length > 0) &&
+                        <>
+                            <Spacer mb='4' />
+                            <Button leftIcon={<ExternalLinkIcon />} onClick={() => { if (kickoff.href) window.location.href = kickoff.href }}>Sign Up for the Kickoff!</Button>
+                        </>
+                    }
                 </Flex>
 
             </GridItem>
