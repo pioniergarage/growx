@@ -1,13 +1,11 @@
-import { ExternalLinkIcon } from '@chakra-ui/icons';
+import KickoffCTA from '@/components/KickoffCTA';
 import {
     Box,
-    Button,
     Flex,
     Grid,
     GridItem,
     Heading,
     Show,
-    Spacer,
     Text
 } from '@chakra-ui/react';
 import EventTag from 'modules/events/components/EventTag';
@@ -19,6 +17,7 @@ import AnimatedLogo from './AnimatedLogo';
 type InfoBlockProps = {
     kickoff: GrowEvent;
     final: GrowEvent;
+    today: Date;
 };
 
 function Fact({ amount, title, location }: { amount: string; title: string, location: string }) {
@@ -31,7 +30,6 @@ function Fact({ amount, title, location }: { amount: string; title: string, loca
                 {amount}
             </Heading>
 
-            {/* hier nohc bisschen padding */}
             <div style={style}>
                 <EventTag icon={FaMapMarkerAlt} transparent={false}>
                     {location}
@@ -43,15 +41,18 @@ function Fact({ amount, title, location }: { amount: string; title: string, loca
 
 const MainInfoBlock: React.FC<InfoBlockProps> = ({
     kickoff,
-    final
+    final,
+    today
 }) => {
-    const today = new Date();
     return (
         <Grid
-            templateColumns={{ base: '1fr', lg: '1fr 1fr' }}
+            templateColumns={{ base: '1fr', lg: '3fr 2fr' }}
             placeItems={{ base: 'center', lg: 'start' }}
             textAlign={{ base: 'center', lg: 'left' }}
-            mt={8}
+            mt={{
+                base: '2',
+                lg: '4',
+            }}
             columnGap={6}
             rowGap={12}
         >
@@ -67,12 +68,12 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                         fontWeight="400"
                         fontSize={{ base: '6rem', md: '6.5rem' }}
                         mt={{
-                            lg: '10%',
+                            lg: '5%',
                         }}
                     >
                         Let it <span className="neon-text2">Grow</span>
                     </Heading>
-                    <Box className=" mt-3">
+                    <Box className=" mt-2">
                         <Heading size="lg">
                             Germany&apos;s Largest Student Founding Contest
                         </Heading>
@@ -90,30 +91,33 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                         w="100%"
                         mt={{
                             base: '6',
-                            lg: '30%',
+                            lg: '10%',
                         }}
                         flexFlow={{
                             base: 'column',
-                            lg: 'row',
+                            lg: 'row'
                         }}
+                        gap="2"
                     >
-                        <Fact
-                            title="Start Kick-Off"
-                            amount={growFormattedDate(kickoff.date, today)}
-                            location={kickoff.location}
-                        />
+
+                        <Flex flexDir="column"
+                            gap={4}
+                            align={{ base: 'center', md: 'start' }}
+                            mb={8}
+                        >
+                            <Fact
+                                title="Start Kick-Off"
+                                amount={growFormattedDate(kickoff.date, today)}
+                                location={kickoff.location}
+                            />
+                            <KickoffCTA today={today} kickoff={kickoff} />
+                        </Flex>
                         <Fact
                             title="Finale in Karlsruhe"
                             amount={growFormattedDate(final.date, today)}
                             location={final.location}
                         />
                     </Flex>
-                    {(today < kickoff.date && kickoff.href && kickoff.href.length > 0) &&
-                        <>
-                            <Spacer mb='4' />
-                            <Button leftIcon={<ExternalLinkIcon />} onClick={() => { if (kickoff.href) window.location.href = kickoff.href }}>Sign Up for the Kickoff!</Button>
-                        </>
-                    }
                 </Flex>
 
             </GridItem>

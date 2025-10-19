@@ -1,4 +1,5 @@
-import { Box, BoxProps, Divider } from '@chakra-ui/react';
+import KickoffCTA from '@/components/KickoffCTA';
+import { Box, BoxProps, Divider, Flex } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
 import fs from "fs";
 import ical, { ICalCalendarMethod } from 'ical-generator';
@@ -80,9 +81,10 @@ const Home: React.FC<HomeProps> = ({
     const kickoff: GrowEvent = events.filter((e) => e.ref == 'kickoff')[0]
     const midterm: GrowEvent = events.filter((e) => e.ref == 'midterm')[0]
     const final: GrowEvent = events.filter((e) => e.ref == 'final')[0]
+    const today = new Date();
     return (
         <>
-            <Section position="relative" minH="80vh">
+            <Section position="relative" minH="75vh">
                 <Box
                     maxW="container.xl"
                     transform="translate(0, -50%)"
@@ -101,7 +103,7 @@ const Home: React.FC<HomeProps> = ({
                         filter={{ base: 'blur(80px)', md: 'blur(150px)' }}
                     />
                 </Box>
-                <MainInfoBlock kickoff={kickoff} final={final} />
+                <MainInfoBlock kickoff={kickoff} final={final} today={today} />
             </Section>
 
             <Divider mb={12} />
@@ -122,7 +124,7 @@ const Home: React.FC<HomeProps> = ({
                 <MotivationBlock />
             </Section>
 
-            <Section id="timeline" mt="4rem" my="12rem">
+            <Section id="timeline" mt="16rem" mb="4rem">
                 {events.length > 3 ?
                     <LongTimeline events={events} kickoffDate={kickoff.date} />
                     :
@@ -130,28 +132,17 @@ const Home: React.FC<HomeProps> = ({
                 }
             </Section>
 
-            <Section position="relative" my={24} px={0}>
-                <Box
-                    maxW="container.xl"
-                    top={0}
-                    w="100%"
-                    h="100%"
-                    position="absolute"
-                    zIndex={-10}
-                >
-                    <Box
-                        position="absolute"
-                        width="100%"
-                        height="100%"
-                        bgGradient="linear-gradient(128.16deg, #5557f777 8.06% , #5557f777 83.26%)"
-                        borderRadius="50%"
-                        filter="blur(150px)"
-                    />
-                </Box>
+            <Section position="relative" px={0}>
                 <WaitingForBlock />
+                <Flex flexDir="column"
+                    align='center'
+                    mt={4}
+                >
+                    <KickoffCTA today={today} kickoff={kickoff} />
+                </Flex>
             </Section>
 
-            <Divider my={24} />
+            <Divider my={16} />
 
             <Section my={24}>
                 <SponsorsAndSupporters sponsors={sponsors} />

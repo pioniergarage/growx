@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Icon, Image, Link, Spacer } from '@chakra-ui/react';
+import { Box, Divider, Flex, Icon, Image, Link, Spacer, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { FaGithub } from 'react-icons/fa';
 
@@ -24,23 +24,66 @@ export default function Footer() {
                         />
                     </Link>
 
+                    <Flex flexDir="column" color="gray.300">
+                        <NextLink href="/#faqs" legacyBehavior>
+                            <Link>FAQ</Link>
+                        </NextLink>
+                        <Link href="mailto:grow@pioniergarage.de">Contact</Link>
+                        <Link href="https://pioniergarage.de/impressum/">
+                            Impressum
+                        </Link>
+                    </Flex>
 
+                </Flex>
 
-                    <Flex
-                        gap={6}
+                <Flex
+                    gap={4}
+                    alignItems="center"
+                    justifyContent="center"
+                    flexDirection='column'
+                    mt={10}
+                >
+                    <Text fontSize="xl">
+                        Follow us!
+                    </Text>
+
+                    <Flex gap={10}
                         alignItems="center"
-                        height="2rem"
                         position="relative"
                         justifyContent="center"
+                        flexDirection='row'
+                        mb='0'
                     >
-                        <h3 style={{ position: "absolute", top: "-1.5rem", width: "100%", textAlign: "center" }}>
-                            Follow us!
-                        </h3>
                         <Link href="https://www.instagram.com/pioniergarage_ev/">
+                            <Box
+                                maxW="container.xl"
+                                top={0}
+                                w="100%"
+                                h="100%"
+                                position="absolute"
+                                zIndex={-10}
+                            >
+                                <Box
+                                    position="absolute"
+                                    width="100%"
+                                    height="100%"
+                                    bgGradient="linear-gradient(128.16deg, #ffffff 8.06% , #5557f777 83.26%)"
+                                    borderRadius="50%"
+                                    filter="blur(35px)"
+                                />
+                            </Box>
                             <Image
                                 height="2rem"
                                 src="/images/icons/instagram.svg"
                                 alt="Pioniergarage Instagram"
+                                objectFit="contain"
+                            />
+                        </Link>
+                        <Link href="https://chat.whatsapp.com/L3wQLnRULEb33YkFGS1pDx">
+                            <Image
+                                height="2rem"
+                                src="/images/icons/whatsapp.svg"
+                                alt="Pioniergarage WhatsApp"
                                 objectFit="contain"
                             />
                         </Link>
@@ -52,32 +95,9 @@ export default function Footer() {
                                 objectFit="contain"
                             />
                         </Link>
-                        <Link href="https://chat.whatsapp.com/GuhNZppcwLz3ngxY79LcWb">
-                            <Image
-                                height="2rem"
-                                src="/images/icons/whatsapp.svg"
-                                alt="Pioniergarage WhatsApp"
-                                objectFit="contain"
-                            />
-                        </Link>
                     </Flex>
-
-
-
-
-                    <Flex flexDir="column" color="gray.300">
-                        <NextLink href="/#faqs" legacyBehavior>
-                            <Link>FAQ</Link>
-                        </NextLink>
-                        <Link href="mailto:grow@pioniergarage.de">Contact</Link>
-                        <Link href="https://pioniergarage.de/impressum/">
-                            Impressum
-                        </Link>
-                    </Flex>
-
-
-
                 </Flex>
+
                 <Flex
                     flexDir="column"
                     mt={10}
