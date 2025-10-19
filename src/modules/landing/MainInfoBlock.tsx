@@ -1,13 +1,11 @@
-import { ExternalLinkIcon } from '@chakra-ui/icons';
+import KickoffCTA from '@/components/KickoffCTA';
 import {
     Box,
-    Button,
     Flex,
     Grid,
     GridItem,
     Heading,
     Show,
-    Spacer,
     Text
 } from '@chakra-ui/react';
 import EventTag from 'modules/events/components/EventTag';
@@ -19,6 +17,7 @@ import AnimatedLogo from './AnimatedLogo';
 type InfoBlockProps = {
     kickoff: GrowEvent;
     final: GrowEvent;
+    today: Date;
 };
 
 function Fact({ amount, title, location }: { amount: string; title: string, location: string }) {
@@ -42,9 +41,9 @@ function Fact({ amount, title, location }: { amount: string; title: string, loca
 
 const MainInfoBlock: React.FC<InfoBlockProps> = ({
     kickoff,
-    final
+    final,
+    today
 }) => {
-    const today = new Date();
     return (
         <Grid
             templateColumns={{ base: '1fr', lg: '3fr 2fr' }}
@@ -104,20 +103,14 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                         <Flex flexDir="column"
                             gap={4}
                             align={{ base: 'center', md: 'start' }}
+                            mb={8}
                         >
                             <Fact
                                 title="Start Kick-Off"
                                 amount={growFormattedDate(kickoff.date, today)}
                                 location={kickoff.location}
                             />
-                            {(today < kickoff.date && kickoff.href && kickoff.href.length > 0) &&
-                                <Box paddingTop={2} paddingBottom={2}>
-                                    <Button padding={6} paddingLeft={8} paddingRight={8} leftIcon={<ExternalLinkIcon />} onClick={() => { if (kickoff.href) window.location.href = kickoff.href }}><Heading size={{ base: 'm', md: 'l' }}>
-                                        Sign Up for the Kickoff!
-                                    </Heading></Button>
-                                    <Spacer mb='8' />
-                                </Box>
-                            }
+                            <KickoffCTA today={today} kickoff={kickoff} />
                         </Flex>
                         <Fact
                             title="Finale in Karlsruhe"
