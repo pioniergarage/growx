@@ -6,7 +6,6 @@ import {
     Grid,
     GridItem,
     Heading,
-    Link,
     Show,
     Spacer,
     Text
@@ -126,11 +125,7 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                         >
                             Sign up to the kickoff
                         </Button>
-                    ) : (
-                        <Link href={`/connect/events/${kickoff.id}`} mt={2}>
-                            <Button>Visit Event</Button>
-                        </Link>
-                    )}
+                    ) : <></>}
                 </Flex>
 
             </GridItem>
