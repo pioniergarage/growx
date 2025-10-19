@@ -115,17 +115,6 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                             location={final.location}
                         />
                     </Flex>
-                    {kickoff.href ? (
-                        <Button
-                            leftIcon={<ExternalLinkIcon />}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                window.location.href = kickoff.href as string;
-                            }}
-                        >
-                            Sign up to the kickoff
-                        </Button>
-                    ) : <></>}
                 </Flex>
 
             </GridItem>
