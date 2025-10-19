@@ -50,7 +50,10 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
             templateColumns={{ base: '1fr', lg: '3fr 2fr' }}
             placeItems={{ base: 'center', lg: 'start' }}
             textAlign={{ base: 'center', lg: 'left' }}
-            mt={8}
+            mt={{
+                base: '2',
+                lg: '4',
+            }}
             columnGap={6}
             rowGap={12}
         >
@@ -66,12 +69,12 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                         fontWeight="400"
                         fontSize={{ base: '6rem', md: '6.5rem' }}
                         mt={{
-                            lg: '10%',
+                            lg: '5%',
                         }}
                     >
                         Let it <span className="neon-text2">Grow</span>
                     </Heading>
-                    <Box className=" mt-3">
+                    <Box className=" mt-2">
                         <Heading size="lg">
                             Germany&apos;s Largest Student Founding Contest
                         </Heading>
@@ -97,23 +100,31 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                         }}
                         gap="2"
                     >
-                        <Fact
-                            title="Start Kick-Off"
-                            amount={growFormattedDate(kickoff.date, today)}
-                            location={kickoff.location}
-                        />
+
+                        <Flex flexDir="column"
+                            gap={4}
+                            align={{ base: 'center', md: 'start' }}
+                        >
+                            <Fact
+                                title="Start Kick-Off"
+                                amount={growFormattedDate(kickoff.date, today)}
+                                location={kickoff.location}
+                            />
+                            {(today < kickoff.date && kickoff.href && kickoff.href.length > 0) &&
+                                <Box paddingTop={2} paddingBottom={2}>
+                                    <Button padding={6} paddingLeft={8} paddingRight={8} leftIcon={<ExternalLinkIcon />} onClick={() => { if (kickoff.href) window.location.href = kickoff.href }}><Heading size={{ base: 'm', md: 'l' }}>
+                                        Sign Up for the Kickoff!
+                                    </Heading></Button>
+                                    <Spacer mb='8' />
+                                </Box>
+                            }
+                        </Flex>
                         <Fact
                             title="Finale in Karlsruhe"
                             amount={growFormattedDate(final.date, today)}
                             location={final.location}
                         />
                     </Flex>
-                    {(today < kickoff.date && kickoff.href && kickoff.href.length > 0) &&
-                        <>
-                            <Spacer mb='4' />
-                            <Button leftIcon={<ExternalLinkIcon />} onClick={() => { if (kickoff.href) window.location.href = kickoff.href }}>Sign Up for the Kickoff!</Button>
-                        </>
-                    }
                 </Flex>
 
             </GridItem>
