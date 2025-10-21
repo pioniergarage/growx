@@ -21,20 +21,17 @@ type InfoBlockProps = {
 };
 
 function Fact({ amount, title, location }: { amount: string; title: string, location: string }) {
-    const style = { marginTop: 8 }
-
     return (
         <Box>
             <Text variant="info">{title}</Text>
             <Heading lineHeight="8" size={{ base: 'xl', md: '2xl' }}>
                 {amount}
             </Heading>
-
-            <div style={style}>
+            <Box>
                 <EventTag icon={FaMapMarkerAlt} transparent={false}>
                     {location}
                 </EventTag>
-            </div>
+            </Box>
         </Box>
     );
 }
@@ -50,7 +47,7 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
             placeItems={{ base: 'center', lg: 'start' }}
             textAlign={{ base: 'center', lg: 'left' }}
             mt={{
-                base: '2',
+                base: '0',
                 lg: '4',
             }}
             columnGap={6}
@@ -59,22 +56,23 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
             <GridItem>
                 <Flex
                     flexDir="column"
-                    gap={4}
+                    gap={2}
                     align={{ base: 'center', md: 'start' }}
                 >
                     <Heading
                         className="neon-text"
-                        lineHeight={1.0}
+                        lineHeight={0.9}
                         fontWeight="400"
-                        fontSize={{ base: '6rem', md: '6.5rem' }}
+                        fontSize={{ base: '5.5rem', md: '6.5rem' }}
                         mt={{
-                            lg: '5%',
+                            base: '0',
+                            lg: '5%'
                         }}
                     >
                         Let it <span className="neon-text2">Grow</span>
                     </Heading>
-                    <Box className=" mt-2">
-                        <Heading size="lg">
+                    <Box>
+                        <Heading size="lg" lineHeight={1}>
                             Germany&apos;s Largest Student Founding Contest
                         </Heading>
                         <Text variant="info" fontSize="lg">
@@ -90,14 +88,15 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                         }}
                         w="100%"
                         mt={{
-                            base: '6',
+                            base: '2',
                             lg: '10%',
                         }}
+                        mb='4'
                         flexFlow={{
                             base: 'column',
                             lg: 'row'
                         }}
-                        gap="2"
+                        gap="4"
                     >
 
                         <Flex flexDir="column"

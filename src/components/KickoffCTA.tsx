@@ -1,5 +1,6 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Box, Button, Heading } from "@chakra-ui/react";
+import { keyframes } from "@emotion/react";
 import { GrowEvent } from "modules/events/types";
 import React from "react";
 
@@ -9,6 +10,19 @@ interface KickoffCTAProps {
 }
 
 const KickoffCTA: React.FC<KickoffCTAProps> = ({ today, kickoff }) => {
+    const glow = keyframes`
+  0% {
+    box-shadow: 0 0 20px 5px rgba(85,87,247,0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px 5px rgba(85,87,247,0.5);
+  }
+  100% {
+    box-shadow: 0 0 20px 5px rgba(85,87,247,0.3);
+  }
+`;
+
+    const glowAnimation = `${glow} 6s ease-in-out infinite`;
     const kickoffDate = kickoff.date;
     const kickoffHref = kickoff.href;
     if (!(today < kickoffDate && kickoffHref && kickoffHref.length > 0)) {
@@ -20,16 +34,19 @@ const KickoffCTA: React.FC<KickoffCTAProps> = ({ today, kickoff }) => {
     };
 
     return (
-        <Box paddingTop={2} paddingBottom={2}>
+        <Box>
             <Button
                 padding={6}
                 paddingLeft={8}
                 paddingRight={8}
                 leftIcon={<ExternalLinkIcon />}
                 onClick={handleClick}
+                shadow='0 0 20px 5px rgba(85,87,247,0.35)'
+                animation={glowAnimation}
             >
                 <Heading size={{ base: "m", md: "l" }}>Sign Up for the Kickoff!</Heading>
             </Button>
+
         </Box>
     );
 };

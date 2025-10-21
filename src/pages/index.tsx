@@ -112,7 +112,7 @@ const Home: React.FC<HomeProps> = ({
                 <GrowVideo />
             </Section>
 
-            <Divider my={20} />
+            <Divider my={10} />
 
             <Section>
                 {/*  das sind die 3 Blöcke mit Kick off, midterm und Final */}
@@ -124,7 +124,7 @@ const Home: React.FC<HomeProps> = ({
                 <MotivationBlock />
             </Section>
 
-            <Section id="timeline" mt="16rem" mb="4rem">
+            <Section id="timeline" mt="8rem" mb="4rem">
                 {events.length > 3 ?
                     <LongTimeline events={events} kickoffDate={kickoff.date} />
                     :
@@ -136,7 +136,7 @@ const Home: React.FC<HomeProps> = ({
                 <WaitingForBlock />
                 <Flex flexDir="column"
                     align='center'
-                    mt={4}
+                    mt={6}
                 >
                     <KickoffCTA today={today} kickoff={kickoff} />
                 </Flex>
