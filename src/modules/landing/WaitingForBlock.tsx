@@ -14,10 +14,10 @@ export default function WaitingForBlock() {
                 <Box
                     position="absolute"
                     width="100%"
-                    height="100%"
+                    height="50%"
                     bgGradient="linear-gradient(128.16deg, #5557f777 8.06% , #5557f777 83.26%)"
                     borderRadius="50%"
-                    filter="blur(150px)"
+                    filter="blur(200px)"
                 />
             </Box>
             <VStack mx={8}>
