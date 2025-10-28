@@ -23,7 +23,8 @@ export default function Layout({ children }: PropsWithChildren) {
                 </title>
                 <meta
                     name="description"
-                    content="GrowX - Founding Contest. Become an entrepreneur and advance your idea over 11 weeks. Get support, build your prototype and test your market."
+                    content="GrowX - Founding Contest.  Become an entrepreneur: advance your idea or turn your research into impact over 11
+                            weeks. Get support, build your prototype and test your market."
                 />
                 <link rel="shortcut icon" href="/favicon.ico" />
             </Head>
