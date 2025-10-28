@@ -76,7 +76,7 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                             Germany&apos;s Largest Student Founding Contest
                         </Heading>
                         <Text variant="info" fontSize="lg">
-                            Become an entrepreneur and advance your idea over 11
+                            Become an entrepreneur: advance your idea or turn your research into impact over 11
                             weeks. <br></br> Get support, build your prototype
                             and test your market.
                         </Text>
