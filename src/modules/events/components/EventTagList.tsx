@@ -13,15 +13,18 @@ import {
     FaStar,
     FaUser,
 } from 'react-icons/fa';
+import { growFormattedDate } from 'utils/formatters';
 import { EventCategory, EventType, GrowEvent } from '../types';
 import { formatEventTime } from '../utils';
 import EventTag from './EventTag';
 import { GrowEventCardProps } from './GrowEventCard';
 
+
 type EventTagListProps = FlexProps & {
     event: GrowEvent;
     transparent?: boolean;
     hide_category?: boolean;
+    show_date?: boolean;
     registration?: GrowEventCardProps['registration'];
 };
 
@@ -29,6 +32,7 @@ const EventTagList = ({
     event,
     transparent = false,
     hide_category = false,
+    show_date = false,
     registration,
     ...flexProps
 }: EventTagListProps) => {
@@ -46,7 +50,7 @@ const EventTagList = ({
             {...flexProps}
         >
             <EventTag icon={FaClock} transparent={transparent}>
-                {eventTimeFormatted}
+                {show_date ? growFormattedDate(event.date, undefined, undefined, true) : eventTimeFormatted}
             </EventTag>
             {event.location && (
                 <EventTag icon={FaMapMarkerAlt} transparent={transparent}>
