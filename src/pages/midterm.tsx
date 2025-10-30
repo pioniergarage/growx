@@ -54,12 +54,11 @@ const MidtermLandingPage = (props: MidtermProps) => {
                 />
             </VStack>
 
-            <EventDescription 
-                description={midtermEventTimeline.description}
-                today={today}
-                event={midtermEventTimeline.event}
+            <EventDescription
+            description={midtermEventTimeline.description}
+            today={today}
+            event={midtermEventTimeline.event}
             />
-
             <Spacer mb={4} />
 
             <LaterEvents events={laterEvents} />

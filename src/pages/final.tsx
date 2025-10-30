@@ -1,9 +1,8 @@
 import { Box, Skeleton, Spacer, Text, VStack } from '@chakra-ui/react';
 import { useGrowEvents } from 'modules/events/hooks';
-import { GrowEvent } from 'modules/events/types';
 import EventHero from '@/components/events/EventHero';
 import EventDescription from '@/components/events/EventDescription';
-import LinkListItem from '@/components/LinkListItem'; // <-- Wichtig: importiere es hier!
+import LinkListItem from '@/components/LinkListItem';
 
 // ...existing FinalProps type...
 
@@ -55,9 +54,9 @@ The groups with the greatest progress will receive prizes. This is what you've b
       </VStack>
 
       <EventDescription
-        description={finalEventTimeline.description}
-        today={today}
-        event={finalEventTimeline.event}
+      description={finalEventTimeline.description}
+      today={today}
+      event={finalEventTimeline.event}
       />
 
       <Spacer mb={4} />

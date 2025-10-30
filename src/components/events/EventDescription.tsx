@@ -3,26 +3,21 @@ import { GrowEvent } from 'modules/events/types';
 import KickoffCTA from '@/components/KickoffCTA';
 
 type EventDescriptionProps = {
-    description: string;
-    today: Date;
-    event: GrowEvent;
+  description: string;
+  today: Date;
+  event: GrowEvent;           // das Seiten-Event (midterm/final/…)
+  kickoff?: GrowEvent | null; // explizit das Kickoff-Event
 };
 
-const EventDescription = ({ description, today, event }: EventDescriptionProps) => (
-    <VStack alignItems='flex-start'>
-        <Text>{description}</Text>
-        <HStack padding={5} alignItems='center' justifyContent='center'>
-            <KickoffCTA today={today} kickoff={event} />
-        </HStack>
-        <Text>
-            <p>
-                10 teams, each with a groundbreaking idea, compete for one grand prize. It's time for the GROW final and the stakes are high.
-            </p>
-            <p>
-                Who will rise to the top? Join us at the GROW finale and witness the next big thing in innovation!
-            </p>
-        </Text>
-    </VStack>
+
+const EventDescription = ({ description, today, event, kickoff }: EventDescriptionProps) => (
+  <VStack alignItems="flex-start">
+    <Text>{description}</Text>
+    <HStack p={5} alignItems="center" justifyContent="center">
+      {kickoff && <KickoffCTA today={today} kickoff={kickoff} />}
+    </HStack>
+    {/* … */}
+  </VStack>
 );
 
 export default EventDescription;
