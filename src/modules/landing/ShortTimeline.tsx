@@ -1,10 +1,9 @@
-import { Box, Heading, SimpleGrid, Tag, Text, VStack } from '@chakra-ui/react';
+import { Box, Heading, Link, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import EventTagList from 'modules/events/components/EventTagList';
 import { GrowEvent } from 'modules/events/types';
 import Image from "next/legacy/image";
-import { growFormattedDate } from 'utils/formatters';
 
-type TimeLineItemProps = {
+export type TimeLineItemProps = {
     event: GrowEvent;
     title: string;
     url: string;
@@ -22,56 +21,63 @@ type ShortTimeLineProps = {
 export const TimelineItem: React.FC<TimeLineItemProps> = ({
     event,
     title,
-    // url,
+    url,
     description,
     image,
     objectPosition,
 }) => {
-    return (
-        <Box borderRadius={2} overflow="hidden">
-            <Box
-                position="relative"
-                minHeight="320px"
-                sx={{
-                    '&:hover img': {
-                        transform: 'scale(1.05)',
-                    },
-                    img: {
-                        transition: 'all 0.2s',
-                    },
-                }}
-            >
-                <Image
-                    alt={title}
-                    src={`/images/${image}`}
-                    layout="fill"
-                    objectFit="cover"
-                    objectPosition={objectPosition}
-                />
 
+    function truncateText(text: string, maxLength: number = 100): string {
+        if (text.length <= maxLength) return text;
+        const truncated = text.slice(0, maxLength);
+        return truncated.slice(0, truncated.lastIndexOf(" ")) + "...";
+    }
+
+    return (
+        <Link href={url}>
+            <Box borderRadius={2} overflow="hidden">
                 <Box
-                    position="absolute"
-                    width="100%"
-                    bottom={0}
-                    left={0}
-                    p={6}
-                    pt={14}
-                    bgGradient="linear(to-t, #000000cc 30%, #00000000 100%)"
+                    position="relative"
+                    minHeight="320px"
+                    sx={{
+                        '&:hover img': {
+                            transform: 'scale(1.05)',
+                        },
+                        img: {
+                            transition: 'all 0.2s',
+                        },
+                    }}
                 >
-                    <Tag bgColor="blackAlpha.600" mb={2}>
-                        {growFormattedDate(event.date, new Date())}
-                    </Tag>
-                    <Heading size="md">{title}</Heading>
-                    <Text mt={2}>{description}</Text>
-                    <EventTagList
-                        event={event}
-                        transparent
-                        hide_category
-                        gap={0}
+                    <Image
+                        alt={title}
+                        src={`/images/${image}`}
+                        layout="fill"
+                        objectFit="cover"
+                        objectPosition={objectPosition}
                     />
+
+                    <Box
+                        position="absolute"
+                        width="100%"
+                        bottom={0}
+                        left={0}
+                        p={6}
+                        pt={14}
+                        bgGradient="linear(to-t, #000000cc 30%, #00000000 100%)"
+                    >
+                        <Heading size="md">{title}</Heading>
+                        <Text mt={2}>{truncateText(description)}</Text>
+                        <EventTagList
+                            event={event}
+                            transparent
+                            hide_category
+                            show_date
+                            gap={0}
+                        />
+                    </Box>
                 </Box>
             </Box>
-        </Box>
+        </Link>
     );
 };
 
