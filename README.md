@@ -1,4 +1,4 @@
-[![Node.js CI](https://github.com/pioniergarage/growx/actions/workflows/build.yml/badge.svg)](https://github.com/pioniergarage/growx/actions/workflows/build.yml)
+<!-- [![Node.js CI](https://github.com/pioniergarage/growx/actions/workflows/build.yml/badge.svg)](https://github.com/pioniergarage/growx/actions/workflows/build.yml) -->
 
 # Website for the Grow Competition
 
