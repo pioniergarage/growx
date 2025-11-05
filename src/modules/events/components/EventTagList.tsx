@@ -2,7 +2,6 @@ import { Flex, FlexProps } from '@chakra-ui/react';
 import { useMemo } from 'react';
 
 import {
-    FaBuilding,
     FaCheck,
     FaChromecast,
     FaClock,
@@ -11,7 +10,7 @@ import {
     FaInfo,
     FaMapMarkerAlt,
     FaStar,
-    FaUser,
+    FaUser
 } from 'react-icons/fa';
 import { EventCategory, EventType, GrowEvent } from '../types';
 import { formatEventTime } from '../utils';
@@ -61,11 +60,6 @@ const EventTagList = ({
             {event.type === EventType.Online && (
                 <EventTag icon={FaCloud} transparent={transparent}>
                     Online
-                </EventTag>
-            )}
-            {event.type === EventType.Offline && (
-                <EventTag icon={FaBuilding} transparent={transparent}>
-                    Offline
                 </EventTag>
             )}
 
