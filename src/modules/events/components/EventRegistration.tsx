@@ -8,6 +8,7 @@ import {
     useToast,
 } from '@chakra-ui/react';
 import { useProfile } from 'modules/profile/hooks';
+import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import {
     useRegisterUserToEvent,
@@ -25,6 +26,7 @@ const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
     const toast = useToast();
     const { profile } = useProfile();
     const user = useUser();
+    const router = useRouter();
 
     const { registrations } = useRegistrationsOfUser(profile?.userId);
     const registration = useMemo(
@@ -79,7 +81,7 @@ const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
     return (
         <>
             {!registration && (
-                <Button onClick={onOpen} isLoading={isRegistering}>
+                <Button onClick={profile == undefined ? () => { router.push('/connect/login') } : onOpen} isLoading={isRegistering}>
                     Sign up
                 </Button>
             )}

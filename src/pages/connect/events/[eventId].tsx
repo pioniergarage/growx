@@ -66,7 +66,7 @@ const GrowEvent = ({
                 </Text>
                 <Flex flexDir="column" gap={4} minW={{ md: '25rem' }}>
                     <EventInformationCard event={event} auth={user != null} />
-                    {user && <EventRegistration event={event} />}
+                    <EventRegistration event={event} />
                 </Flex>
             </Flex>
         </VStack>
