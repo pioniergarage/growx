@@ -13,7 +13,7 @@ import { useFormik } from 'formik';
 import LoginLayout from 'layouts/LoginLayout';
 import Image from "next/legacy/image";
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import rules from 'utils/rules';
 import { NextPageWithLayout } from 'utils/types';
 
@@ -23,6 +23,16 @@ const ResetPassword: NextPageWithLayout = () => {
     const router = useRouter();
     const [isLoading, setLoading] = useState(false);
 
+    useEffect(() => {
+        const hash = window.location.hash;
+        const params = new URLSearchParams(hash.replace('#', ''));
+        const code = params.get('code');
+
+        if (code) {
+            supabaseClient.auth.exchangeCodeForSession(code);
+        }
+    }, [supabaseClient.auth]);
+
     const formik = useFormik({
         initialValues: {
             password: '',
@@ -30,15 +40,14 @@ const ResetPassword: NextPageWithLayout = () => {
         },
         onSubmit: async ({ password }) => {
             setLoading(true);
-            const { error } = await supabaseClient.auth.updateUser({
-                password,
-            });
+            const { error } = await supabaseClient.auth.updateUser({ password });
+
             if (error) {
                 setError(error.message);
-                setLoading(false);
             } else {
                 router.push('/connect/login');
             }
+            setLoading(false);
         },
         validate: (values) => {
             const errors: Record<string, string> = {};
