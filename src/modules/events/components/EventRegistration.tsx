@@ -115,8 +115,7 @@ const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
 
             <SignUpDialog
                 isOfflineEnabled={
-                    (event.type === 'Hybrid' || event.type === 'Offline') &&
-                    event.presenceSeatsLeft > 0
+                    (event.type === 'Hybrid' || event.type === 'Offline')
                 }
                 isOnlineEnabled={
                     event.type === 'Hybrid' || event.type === 'Online'

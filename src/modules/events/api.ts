@@ -148,12 +148,12 @@ export const registerUser = (
     eventId: number,
     present: boolean
 ) =>
-    supabaseClient
-        .from('event_registrations')
-        .insert({ user_id: userId, event_id: eventId, present })
-        .then(({ error }) => {
-            if (error) throw error;
-        });
+    supabaseClient.rpc('register_user_to_event', {
+        user_id: userId,
+        event_id: eventId,
+        present: present
+    });
+
 
 export const unregisterUser = (
     supabaseClient: SupabaseClient<Database>,
