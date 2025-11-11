@@ -48,12 +48,21 @@ const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
                 isClosable: true,
             });
         } catch (error) {
-            toast({
-                title: 'Something went wrong...',
-                status: 'error',
-                duration: 2000,
-                isClosable: true,
-            });
+            if (typeof error === 'object' && error !== null && 'message' in error && (error as { message: string }).message) {
+                toast({
+                    title: (error as { message: string }).message,
+                    status: 'error',
+                    duration: 2000,
+                    isClosable: true,
+                });
+            } else {
+                toast({
+                    title: 'Something went wrong...',
+                    status: 'error',
+                    duration: 2000,
+                    isClosable: true,
+                });
+            }
         }
     }
 

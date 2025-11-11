@@ -142,18 +142,25 @@ export const updateEvent = (
         .then(handleSingleResponse)
         .then(mapEventDto);
 
-export const registerUser = (
+export const registerUser = async (
     supabaseClient: SupabaseClient<Database>,
     userId: string,
     eventId: number,
     present: boolean
-) =>
-    supabaseClient
-        .from('event_registrations')
-        .insert({ user_id: userId, event_id: eventId, present })
-        .then(({ error }) => {
-            if (error) throw error;
-        });
+) => {
+    const { data, error } = await supabaseClient.rpc('register_user_to_event', {
+        user_id: userId,
+        event_id: eventId,
+        present
+    });
+
+    if (error) {
+        throw error; // now this function will actually throw
+    }
+
+    return data;
+};
+
 
 export const unregisterUser = (
     supabaseClient: SupabaseClient<Database>,
