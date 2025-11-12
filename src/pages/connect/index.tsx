@@ -28,7 +28,7 @@ const ConnectIndex: React.FC = () => {
     const user = useUser();
     const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
-    const { profile } = useProfile(user?.id);
+    const { profile, isLoading } = useProfile(user?.id);
     const { events } = useGrowEvents();
     const upcomingEvents = useMemo(() => {
         if (events) {
@@ -43,8 +43,8 @@ const ConnectIndex: React.FC = () => {
 
     const { registrations } = useRegistrationsOfUser(user?.id);
 
-    if (!profile) {
-        if (user) {
+    if (!profile) { //how do I differentiate whether 'profile' is loading or if it truly doesn't exist?
+        if (user && !isLoading) {
             return (
                 <VStack>
                     <Text fontSize="lg">We couldn’t find your profile information.</Text>
@@ -54,6 +54,11 @@ const ConnectIndex: React.FC = () => {
                     <Button
                         colorScheme="blue"
                         onClick={async () => {
+                            const confirmed = window.confirm(
+                                "Are you sure you want to reset your profile? This action cannot be undone."
+                            );
+                            if (!confirmed) return; // exit if user cancels
+
                             try {
                                 await supabaseClient.rpc('delete_own_user');
                                 await supabaseClient.auth.signOut();
