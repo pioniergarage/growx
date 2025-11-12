@@ -5,11 +5,12 @@ import {
     Button,
     Text,
     useDisclosure,
-    useToast,
+    useToast
 } from '@chakra-ui/react';
 import { useProfile } from 'modules/profile/hooks';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
+import QRCode from 'react-qr-code';
 import {
     useRegisterUserToEvent,
     useRegistrationsOfUser,
@@ -104,6 +105,9 @@ const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
                     borderColor="gray.700"
                     borderRadius={4}
                     fontSize="sm"
+                    flexWrap='wrap'
+                    justifyContent={'center'}
+                    gap='1em'
                 >
                     <AlertIcon />
                     <Text flexGrow={1}>
@@ -118,6 +122,15 @@ const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
                     >
                         Cancel
                     </Button>
+                    <QRCode
+                        size={400}
+                        style={{ height: "auto", maxWidth: "90%", width: "400px", padding: '1em' }}
+                        value={`${window.location.origin}/connect/registration?user=${user?.email}_${user?.id}&event=${event.id}`}
+                        viewBox={`0 0 256 256`}
+                    />
+                    <Text flexGrow={1}>
+                        Please show this code to check in.
+                    </Text>
                 </Alert>
             )}
 

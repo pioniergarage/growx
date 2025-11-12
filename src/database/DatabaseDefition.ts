@@ -552,6 +552,7 @@ export type Database = {
         Args: { requesting_user_id: string }
         Returns: undefined
       }
+      delete_own_user: { Args: never; Returns: undefined }
       get_assigned_team_leads: {
         Args: never
         Returns: Record<string, unknown>[]
