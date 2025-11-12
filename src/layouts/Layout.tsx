@@ -19,7 +19,7 @@ export default function Layout({ children }: PropsWithChildren) {
         <>
             <Head>
                 <title>
-                    GROW - Germany&apos;s Largest Student Founding Contest
+                    GROW - Germany&apos;s Largest smallest Founding Contest
                 </title>
                 <meta
                     name="description"
