@@ -1,38 +1,47 @@
 import { withPageAuth } from 'utils/supabase/withPageAuth';
 
 import { getTeamIdOfUser } from 'modules/teams/api';
-import CreateTeamButton from 'modules/teams/components/CreateTeamButton';
 import { NextPageWithLayout } from 'utils/types';
 
 import { Button, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { addRegistration, clearRegistrations, getAllRegistrations } from 'utils/registrationsDB';
 
 const RegistrationView: NextPageWithLayout = () => {
     const router = useRouter();
-    const [registrations, setRegistrations] = useState<[string, string][]>([]);
+    const [registrations, setRegistrations] = useState<{ id: string, user: string, event: string }[]>([]);
 
-    // Load registrations from localStorage on mount
+    // Load registrations from indexed db on mount
     useEffect(() => {
-        const stored = localStorage.getItem("registrations");
-        const parsed = stored ? (JSON.parse(stored) as [string, string][]) : [];
-        setRegistrations(parsed);
+        if (!router.isReady) return;
 
-        const { user, event } = router.query;
-        if (user && event) {
-            const newEntry: [string, string] = [user as string, event as string];
-            const exists = parsed.some(([u, e]) => u === newEntry[0] && e === newEntry[1]);
+        async function load() {
+            const all = await getAllRegistrations();
+            setRegistrations(all);
 
-            if (!exists) {
-                const updated = [...parsed, newEntry];
-                localStorage.setItem("registrations", JSON.stringify(updated));
-                setRegistrations(updated);
+            const { user, event } = router.query;
+
+            if (user || event) {
+                router.push('/connect/registration');
+            }
+
+            if (user && event) {
+                const exists = all.some(r => r.user === user && r.event === event);
+
+                if (!exists) {
+                    await addRegistration(user as string, event as string);
+                    const updated = await getAllRegistrations();
+                    setRegistrations(updated);
+                }
             }
         }
-    }, [router.query]);
 
-    const resetRegistrations = () => {
-        localStorage.setItem("registrations", JSON.stringify([]));
+        load();
+    }, [router.isReady, router.query, router]);
+
+    const resetRegistrations = async () => {
+        await clearRegistrations();
         setRegistrations([]);
     };
 
@@ -49,10 +58,10 @@ const RegistrationView: NextPageWithLayout = () => {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        {registrations.map(([user, event], index) => (
+                        {registrations.map((r, index) => (
                             <Tr key={index}>
-                                <Td>{user}</Td>
-                                <Td>{event}</Td>
+                                <Td>{r.user}</Td>
+                                <Td>{r.event}</Td>
                             </Tr>
                         ))}
                     </Tbody>
@@ -64,8 +73,6 @@ const RegistrationView: NextPageWithLayout = () => {
             <Button colorScheme="red" onClick={resetRegistrations}>
                 Reset Registrations
             </Button>
-
-            <CreateTeamButton />
         </VStack>
     );
 };

@@ -13,8 +13,10 @@ import { withPageAuth } from 'utils/supabase/withPageAuth';
 
 import { useSupabaseClient, useUser } from '@/components/providers/SupabaseProvider';
 
+import EventRegistration from 'modules/events/components/EventRegistration';
 import GrowEventCard from 'modules/events/components/GrowEventCard';
 import { useGrowEvents, useRegistrationsOfUser } from 'modules/events/hooks';
+import { addMinutes } from 'modules/events/utils';
 import { useProfile } from 'modules/profile/hooks';
 import CreateTeamButton from 'modules/teams/components/CreateTeamButton';
 import TeamCard from 'modules/teams/components/TeamCard';
@@ -34,7 +36,7 @@ const ConnectIndex: React.FC = () => {
         if (events) {
             const now = new Date();
             return events
-                .filter((e) => e.date > now)
+                .filter((e) => (addMinutes(e.date, e.duration)) > now)
                 .slice(0, Math.min(events.length, 1));
         } else {
             return [];
@@ -102,14 +104,16 @@ const ConnectIndex: React.FC = () => {
                         </Heading>
                         <VStack gap={4} alignItems="stretch">
                             {upcomingEvents.map((event) => (
-                                <GrowEventCard
-                                    key={event.id}
-                                    event={event}
-                                    registration={registrations?.find(
-                                        (registration) =>
-                                            registration.eventId === event.id
-                                    )}
-                                />
+                                <VStack key={event.id}>
+                                    <GrowEventCard
+                                        event={event}
+                                        registration={registrations?.find(
+                                            (registration) =>
+                                                registration.eventId === event.id
+                                        )}
+                                    />
+                                    <EventRegistration event={event} />
+                                </VStack>
                             ))}
                         </VStack>
                     </Box>
