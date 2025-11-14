@@ -22,7 +22,7 @@ const GrowEvent = ({
     eventRaw,
 }: {
     eventRaw: Database['public']['Tables']['events']['Row'] & {
-        seats_left: number;
+        seats_left: number; //why is this always outdated?
     };
 }) => {
     const event: GrowEventWithSeats = {
