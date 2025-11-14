@@ -3,7 +3,8 @@ import { withPageAuth } from 'utils/supabase/withPageAuth';
 import { getTeamIdOfUser } from 'modules/teams/api';
 import { NextPageWithLayout } from 'utils/types';
 
-import { Button, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
+import { Button, Heading, HStack, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
+import { useGrowEvent } from 'modules/events/hooks';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { addRegistration, clearRegistrations, getAllRegistrations } from 'utils/registrationsDB';
@@ -11,6 +12,7 @@ import { addRegistration, clearRegistrations, getAllRegistrations } from 'utils/
 const RegistrationView: NextPageWithLayout = () => {
     const router = useRouter();
     const [registrations, setRegistrations] = useState<{ id: string, user: string, event: string }[]>([]);
+    const event = useGrowEvent(registrations.length > 0 ? parseInt(registrations[0].event) : 0)
 
     // Load registrations from indexed db on mount
     useEffect(() => {
@@ -47,8 +49,13 @@ const RegistrationView: NextPageWithLayout = () => {
 
     return (
         <VStack spacing={4} align="stretch">
-            <Text>Registrations Table:</Text>
-
+            <Heading>{registrations.length > 0 ? event.event?.title : ""} Registration</Heading>
+            <HStack justifyContent={'space-between'}>
+                <Text>Attendees: {registrations.length}</Text>
+                <Button colorScheme="red" onClick={resetRegistrations}>
+                    Reset Registrations
+                </Button>
+            </HStack>
             {registrations.length > 0 ? (
                 <Table variant="simple">
                     <Thead>
@@ -70,9 +77,7 @@ const RegistrationView: NextPageWithLayout = () => {
                 <Text>No registrations yet.</Text>
             )}
 
-            <Button colorScheme="red" onClick={resetRegistrations}>
-                Reset Registrations
-            </Button>
+
         </VStack>
     );
 };
