@@ -1,3 +1,4 @@
+
 /**
  * Formats a date as "D. MM YYYY" for easy display. If 'today' is passed, returns placeholder if 'date' is more than 6 months in the past.
  * @param date The date to format.
@@ -5,7 +6,7 @@
  * @param placeholder (Optional) if passed, 'placeholder' will be returned instead of the formatted date if Today is after the date. Otherwise, 'TBD' will be returned instead.
  * @returns The formatted date.
  */
-export const growFormattedDate = (date: Date, today?: Date, placeholder?: string) => {
+export const growFormattedDate = (date: Date, today?: Date, placeholder?: string, show_time?: boolean) => {
     const defaultPlaceholder = 'TBA';
 
     if (today) {
@@ -18,6 +19,16 @@ export const growFormattedDate = (date: Date, today?: Date, placeholder?: string
     const day = date.getDate();
     const month = date.toLocaleString('en-US', { month: 'short' });
     const year = date.getFullYear();
+
+
+    if (show_time) {
+        const time = date.toLocaleString('DE-de', {
+            hour: '2-digit',
+            minute: '2-digit',
+        });
+
+        return `${day}. ${month} ${year}, ${time}`;
+    }
 
     return `${day}. ${month} ${year}`;
 }
