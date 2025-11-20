@@ -16,6 +16,7 @@ import AnimatedLogo from './AnimatedLogo';
 
 type InfoBlockProps = {
     kickoff: GrowEvent;
+    midterm: GrowEvent;
     final: GrowEvent;
     today: Date;
 };
@@ -38,6 +39,7 @@ function Fact({ amount, title, location }: { amount: string; title: string, loca
 
 const MainInfoBlock: React.FC<InfoBlockProps> = ({
     kickoff,
+    midterm,
     final,
     today
 }) => {
@@ -109,7 +111,7 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                                 amount={growFormattedDate(kickoff.date, today)}
                                 location={kickoff.location}
                             />
-                            <KickoffCTA today={today} kickoff={kickoff} />
+                            <KickoffCTA today={today} kickoff={kickoff} midterm={midterm} />
                         </Flex>
                         <Fact
                             title="Finale in Karlsruhe"

@@ -103,7 +103,7 @@ const Home: React.FC<HomeProps> = ({
                         filter={{ base: 'blur(80px)', md: 'blur(150px)' }}
                     />
                 </Box>
-                <MainInfoBlock kickoff={kickoff} final={final} today={today} />
+                <MainInfoBlock kickoff={kickoff} midterm={midterm} final={final} today={today} />
             </Section>
 
             <Divider mb={12} />
@@ -138,7 +138,7 @@ const Home: React.FC<HomeProps> = ({
                     align='center'
                     mt={6}
                 >
-                    <KickoffCTA today={today} kickoff={kickoff} />
+                    <KickoffCTA today={today} kickoff={kickoff} midterm={midterm} />
                 </Flex>
             </Section>
 
