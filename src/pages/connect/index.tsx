@@ -13,9 +13,11 @@ import { withPageAuth } from 'utils/supabase/withPageAuth';
 
 import { useSupabaseClient, useUser } from '@/components/providers/SupabaseProvider';
 
+import InviteCTA from '@/components/InviteCTA';
 import EventRegistration from 'modules/events/components/EventRegistration';
 import GrowEventCard from 'modules/events/components/GrowEventCard';
 import { useGrowEvents, useRegistrationsOfUser } from 'modules/events/hooks';
+import { GrowEvent } from 'modules/events/types';
 import { addMinutes } from 'modules/events/utils';
 import { useProfile } from 'modules/profile/hooks';
 import CreateTeamButton from 'modules/teams/components/CreateTeamButton';
@@ -42,6 +44,10 @@ const ConnectIndex: React.FC = () => {
             return [];
         }
     }, [events]);
+
+    const kickoff: GrowEvent = events.filter((e) => e.ref == 'kickoff')[0]
+    const midterm: GrowEvent = events.filter((e) => e.ref == 'midterm')[0]
+    const today = new Date();
 
     const { registrations } = useRegistrationsOfUser(user?.id);
 
@@ -120,7 +126,12 @@ const ConnectIndex: React.FC = () => {
                 )}
 
                 {['PARTICIPANT', 'ORGA'].includes(profile.role) && (
-                    <YourTeam userId={profile.userId} />
+                    <VStack gap={4} alignItems="stretch">
+                        <YourTeam userId={profile.userId} />
+                        <VStack>
+                            <InviteCTA today={today} kickoff={kickoff} midterm={midterm} />
+                        </VStack>
+                    </VStack>
                 )}
             </VStack>
         </VStack>
@@ -157,7 +168,7 @@ const YourTeam = ({ userId }: { userId: string }) => {
     } else if (team) {
         return (
             <Box>
-                <Heading mb={1} size="sm" color="gray.400" fontSize={12}>
+                <Heading mb={2} size="sm" color="gray.400" fontSize={12}>
                     Your Team
                 </Heading>
                 <TeamCard {...team} />
