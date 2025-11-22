@@ -15,7 +15,7 @@ const InviteCTA: React.FC<InviteCTAProps> = ({ today, kickoff, midterm }) => {
     const clipboardLink = 'https://grow.pioniergarage.de/connect/signup/';
     const toast = useToast();
 
-    if (!(today < midtermDate || today < kickoffDate)) {
+    if (!midtermDate || !kickoffDate || (today > midtermDate && today > kickoffDate)) {
         return null;
     }
 
