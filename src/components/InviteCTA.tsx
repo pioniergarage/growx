@@ -10,12 +10,17 @@ interface InviteCTAProps {
 }
 
 const InviteCTA: React.FC<InviteCTAProps> = ({ today, kickoff, midterm }) => {
+    // undefined check should run before properties are accessed
+    if (!(midterm && kickoff && midterm.date && kickoff.date)) {
+        return null;
+    }
+
     const kickoffDate = kickoff.date;
     const midtermDate = midterm.date;
     const clipboardLink = 'https://grow.pioniergarage.de/connect/signup/';
     const toast = useToast();
 
-    if (!(today < midtermDate || today < kickoffDate)) {
+    if (today > midtermDate && today > kickoffDate) {
         return null;
     }
 
