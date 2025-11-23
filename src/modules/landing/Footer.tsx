@@ -8,6 +8,7 @@ export default function Footer() {
             <Flex
                 direction="column"
                 as="footer"
+                justifyContent="center"
                 p={6}
                 mx="auto"
                 maxW="container.xl"
@@ -17,15 +18,19 @@ export default function Footer() {
                 {/* --- 3-Spalten Bereich: Left | Center | Right --- */}
                 <Flex
                     w="100%"
-                    align="flex-start"
+                    align="center"
                     position="relative"
-                    direction={['column', 'column', 'column', 'row']}
-                    textAlign={['center', 'center', 'center', 'left']}
-                    gap={['40px', '40px', '40px', 0]}
+                    direction={'column-reverse'}
+                    gap={10}
                     sx={{
                         '@media (min-width: 920px)': {
                             flexDirection: 'row',
+                            justifyContent: "space-between",
                             textAlign: 'left',
+                            gap: 0
+                        },
+                        '@media (min-width: 720px)': {
+                            flexDirection: 'rowR',
                             gap: 0
                         }
                     }}
@@ -36,13 +41,11 @@ export default function Footer() {
                         align="center"
                         justify="center"
                         direction="column"
-                        w={['100%', '100%', '100%', 'auto']}
-                        order={[1, 1, 1, 3]}
+                        w={'100%'}
+                        order={3}
                         sx={{
                             '@media (min-width: 920px)': {
-                                position: 'absolute',
-                                right: 0,
-                                width: 'auto',
+                                width: '100%',
                                 order: 3
                             }
                         }}
@@ -111,14 +114,11 @@ export default function Footer() {
                         align="center"
                         color="gray.400"
                         justify="center"
-                        w={['100%', '100%', '100%', 'auto']}
-                        order={[2, 2, 2, 2]}
+                        w={'100%'}
+                        order={2}
                         sx={{
                             '@media (min-width: 920px)': {
-                                position: 'absolute',
-                                left: '50%',
-                                transform: 'translateX(-50%)',
-                                width: 'auto',
+                                width: '100%',
                                 order: 2
                             }
                         }}
@@ -153,16 +153,12 @@ export default function Footer() {
                         gap={6}
                         align="center"
                         justify="center"
-                        w={['100%', '100%', '100%', 'auto']}
-                        order={[3, 3, 3, 1]}
-                        direction={['column-reverse', 'column-reverse', 'column-reverse', 'row']}
+                        w="100%"
+                        order={1}
                         sx={{
                             '@media (min-width: 920px)': {
-                                position: 'absolute',
-                                left: 0,
-                                width: 'auto',
+                                width: '100%',
                                 order: 1,
-                                justifyContent: 'flex-start',
                                 flexDirection: 'row'
                             }
                         }}
@@ -187,7 +183,7 @@ export default function Footer() {
                         </Flex>
                     </Flex>
                 </Flex>
-            </Flex>
+            </Flex >
         </>
     );
 }
