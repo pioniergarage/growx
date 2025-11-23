@@ -19,9 +19,16 @@ export default function Footer() {
                     w="100%"
                     align="flex-start"
                     position="relative"
-                    direction={{ base: 'column', md: 'row' }}
-                    textAlign={{ base: 'center', md: 'left' }}
-                    gap={{ base: 10, md: 0 }}
+                    direction={['column', 'column', 'column', 'row']}
+                    textAlign={['center', 'center', 'center', 'left']}
+                    gap={['40px', '40px', '40px', 0]}
+                    sx={{
+                        '@media (min-width: 920px)': {
+                            flexDirection: 'row',
+                            textAlign: 'left',
+                            gap: 0
+                        }
+                    }}
                 >
                     {/* Right: Follow us + Social Icons - auf Mobile zuerst */}
                     <Flex
@@ -29,10 +36,16 @@ export default function Footer() {
                         align="center"
                         justify="center"
                         direction="column"
-                        position={{ md: 'absolute' }}
-                        right={{ md: 0 }}
-                        w={{ base: '100%', md: 'auto' }}
-                        order={{ base: 1, md: 3 }}
+                        w={['100%', '100%', '100%', 'auto']}
+                        order={[1, 1, 1, 3]}
+                        sx={{
+                            '@media (min-width: 920px)': {
+                                position: 'absolute',
+                                right: 0,
+                                width: 'auto',
+                                order: 3
+                            }
+                        }}
                     >
                         <Text fontSize="xl" textAlign="center">
                             Follow us!
@@ -98,11 +111,17 @@ export default function Footer() {
                         align="center"
                         color="gray.400"
                         justify="center"
-                        position={{ md: 'absolute' }}
-                        left={{ md: '50%' }}
-                        transform={{ md: 'translateX(-50%)' }}
-                        w={{ base: '100%', md: 'auto' }}
-                        order={{ base: 2, md: 2 }}
+                        w={['100%', '100%', '100%', 'auto']}
+                        order={[2, 2, 2, 2]}
+                        sx={{
+                            '@media (min-width: 920px)': {
+                                position: 'absolute',
+                                left: '50%',
+                                transform: 'translateX(-50%)',
+                                width: 'auto',
+                                order: 2
+                            }
+                        }}
                     >
                         <Box color="primary" mb={1}>Made by</Box>
                         <Flex gap={3}>
@@ -133,12 +152,20 @@ export default function Footer() {
                     <Flex
                         gap={6}
                         align="center"
-                        justify={{ base: 'center', md: 'flex-start' }}
-                        position={{ md: 'absolute' }}
-                        left={{ md: 0 }}
-                        w={{ base: '100%', md: 'auto' }}
-                        order={{ base: 3, md: 1 }}
-                        direction={{ base: 'column-reverse', md: 'row' }}
+                        justify="center"
+                        w={['100%', '100%', '100%', 'auto']}
+                        order={[3, 3, 3, 1]}
+                        direction={['column-reverse', 'column-reverse', 'column-reverse', 'row']}
+                        sx={{
+                            '@media (min-width: 920px)': {
+                                position: 'absolute',
+                                left: 0,
+                                width: 'auto',
+                                order: 1,
+                                justifyContent: 'flex-start',
+                                flexDirection: 'row'
+                            }
+                        }}
                     >
                         <Link href="https://pioniergarage.de" isExternal>
                             <Image
