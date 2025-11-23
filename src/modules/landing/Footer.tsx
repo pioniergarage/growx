@@ -17,81 +17,31 @@ export default function Footer() {
                 {/* --- 3-Spalten Bereich: Left | Center | Right --- */}
                 <Flex
                     w="100%"
-                    gap={10}
                     align="flex-start"
-                    justify="space-between"
+                    position="relative"
                     direction={{ base: 'column', md: 'row' }}
                     textAlign={{ base: 'center', md: 'left' }}
+                    gap={{ base: 10, md: 0 }}
                 >
-                    {/* Left: Pioniergarage + Footer-Links */}
-                    <Flex gap={6} align="center" justify={{ base: 'center', md: 'flex-start' }}>
-                        <Link href="https://pioniergarage.de" isExternal>
-                            <Image
-                                src="/images/pg.webp"
-                                alt="Pioniergarage"
-                                height="3rem"
-                                objectFit="contain"
-                            />
-                        </Link>
-
-                        <Flex flexDir="column" color="gray.300" gap={1}>
-                            <NextLink href="/#faqs" legacyBehavior>
-                                <Link>FAQ</Link>
-                            </NextLink>
-                            <Link href="mailto:grow@pioniergarage.de">Contact</Link>
-                            <Link href="https://pioniergarage.de/impressum/" isExternal>
-                                Impressum
-                            </Link>
-                        </Flex>
-                    </Flex>
-
-                    {/* Center: Made by */}
-                    <Flex
-                        flexDir="column"
-                        align="center"
-                        color="gray.400"
-                        justify="center"
-                    >
-                        <Box color="primary" mb={1}>Made by</Box>
-                        <Flex gap={3}>
-                            <Link href="https://github.com/nimalu001" isExternal>
-                                <Icon as={FaGithub} mr={1} />
-                                Niklas
-                            </Link>
-                            <Link href="https://github.com/KanseiHara" isExternal>
-                                <Icon as={FaGithub} mr={1} />
-                                Kansei
-                            </Link>
-                            <Link href="https://github.com/JonasDeipenbrock" isExternal>
-                                <Icon as={FaGithub} mr={1} />
-                                Jonas
-                            </Link>
-                        </Flex>
-                        <Spacer mb={2} />
-                        <Box color="primary">{"GROW 24/25"}</Box>
-                        <Flex gap={3}>
-                            <Link href="https://github.com/hudmarc" isExternal>
-                                <Icon as={FaGithub} mr={1} />
-                                Marc
-                            </Link>
-                        </Flex>
-                    </Flex>
-
-                    {/* Right: Follow us + Social Icons */}
+                    {/* Right: Follow us + Social Icons - auf Mobile zuerst */}
                     <Flex
                         gap={4}
-                        align="flex-start"
-                        justify={{ base: 'center', md: 'flex-end' }}
+                        align="center"
+                        justify="center"
                         direction="column"
+                        position={{ md: 'absolute' }}
+                        right={{ md: 0 }}
+                        w={{ base: '100%', md: 'auto' }}
+                        order={{ base: 1, md: 3 }}
                     >
-                        <Text fontSize="xl" textAlign={{ base: 'center', md: 'right' }}>
+                        <Text fontSize="xl" textAlign="center">
                             Follow us!
                         </Text>
 
                         <Flex
                             gap={10}
                             align="center"
-                            justify={{ base: 'center', md: 'flex-end' }}
+                            justify="center"
                             position="relative"
                         >
                             <Box
@@ -138,6 +88,74 @@ export default function Footer() {
                                     filter="brightness(0) invert(1)"
                                     _hover={{ transform: "scale(1.2)", color: "#f09433" }}
                                 />
+                            </Link>
+                        </Flex>
+                    </Flex>
+
+                    {/* Center: Made by - auf Mobile in der Mitte */}
+                    <Flex
+                        flexDir="column"
+                        align="center"
+                        color="gray.400"
+                        justify="center"
+                        position={{ md: 'absolute' }}
+                        left={{ md: '50%' }}
+                        transform={{ md: 'translateX(-50%)' }}
+                        w={{ base: '100%', md: 'auto' }}
+                        order={{ base: 2, md: 2 }}
+                    >
+                        <Box color="primary" mb={1}>Made by</Box>
+                        <Flex gap={3}>
+                            <Link href="https://github.com/nimalu001" isExternal>
+                                <Icon as={FaGithub} mr={1} />
+                                Niklas
+                            </Link>
+                            <Link href="https://github.com/KanseiHara" isExternal>
+                                <Icon as={FaGithub} mr={1} />
+                                Kansei
+                            </Link>
+                            <Link href="https://github.com/JonasDeipenbrock" isExternal>
+                                <Icon as={FaGithub} mr={1} />
+                                Jonas
+                            </Link>
+                        </Flex>
+                        <Spacer mb={2} />
+                        <Box color="primary">{"GROW 24/25"}</Box>
+                        <Flex gap={3}>
+                            <Link href="https://github.com/hudmarc" isExternal>
+                                <Icon as={FaGithub} mr={1} />
+                                Marc
+                            </Link>
+                        </Flex>
+                    </Flex>
+
+                    {/* Left: Pioniergarage + Footer-Links */}
+                    <Flex
+                        gap={6}
+                        align="center"
+                        justify={{ base: 'center', md: 'flex-start' }}
+                        position={{ md: 'absolute' }}
+                        left={{ md: 0 }}
+                        w={{ base: '100%', md: 'auto' }}
+                        order={{ base: 3, md: 1 }}
+                        direction={{ base: 'column-reverse', md: 'row' }}
+                    >
+                        <Link href="https://pioniergarage.de" isExternal>
+                            <Image
+                                src="/images/pg.webp"
+                                alt="Pioniergarage"
+                                height="3rem"
+                                objectFit="contain"
+                            />
+                        </Link>
+
+                        <Flex flexDir="column" color="gray.300" gap={1}>
+                            <NextLink href="/#faqs" legacyBehavior>
+                                <Link>FAQ</Link>
+                            </NextLink>
+                            <Link href="mailto:grow@pioniergarage.de">Contact</Link>
+                            <Link href="https://pioniergarage.de/impressum/" isExternal>
+                                Impressum
                             </Link>
                         </Flex>
                     </Flex>
