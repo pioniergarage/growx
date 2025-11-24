@@ -6,9 +6,10 @@ type EventHeroProps = {
     title: string;
     image: string;
     event: GrowEvent;
+    imagePosition: string;
 };
 
-const EventHero = ({ title, image, event }: EventHeroProps) => (
+const EventHero = ({ title, image, event, imagePosition }: EventHeroProps) => (
     <Box
         position="relative"
         className="w-screen max-w-[1264px] mx-auto -mx-4 md:-mx-8 object-cover"
@@ -21,7 +22,7 @@ const EventHero = ({ title, image, event }: EventHeroProps) => (
             layout="fill"
             objectFit="cover"
             loading='lazy'
-            objectPosition='center'
+            objectPosition={imagePosition}
             w="100%"
             h={{ base: "250px", md: "350px" }}
             overflow="hidden"

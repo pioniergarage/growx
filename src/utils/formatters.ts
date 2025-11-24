@@ -34,6 +34,15 @@ export const growFormattedDate = (date: Date, today?: Date, placeholder?: string
 }
 
 /**
+ * Formats a given date as YYYYMMDDTHHMMSSZ, the required date format for ICS files.
+ * @param date the date to format.
+ * @returns the ICS-formatted date.
+ */
+export const formatDateToICS = (date: Date) => {
+    return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+}
+
+/**
  * Gets the current GROW season as a string based off the kickoff date (i.e. if 'kickoff' is in 2024, the season is '24/25')
  * @param kickoff The kickoff date.
  * @param offset Years to subtract from the kickoff year.

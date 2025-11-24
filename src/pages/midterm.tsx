@@ -58,11 +58,12 @@ const MidtermLandingPage = (props: MidtermProps) => {
 
     return (
         <VStack>
-            <VStack alignItems="stretch">
+            <VStack alignItems="stretch" marginTop={-6}>
                 <EventHero
                     title={midtermEventTimeline.title}
                     image={midtermEventTimeline.image}
                     event={midtermEventTimeline.event}
+                    imagePosition='top'
                 />
             </VStack>
 

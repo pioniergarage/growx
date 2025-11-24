@@ -69,11 +69,12 @@ The groups with the greatest progress will receive prizes. This is what you've b
 
   return (
     <VStack>
-      <VStack alignItems="stretch">
+      <VStack alignItems="stretch" marginTop={-6}>
         <EventHero
           title={finalEventTimeline.title}
           image={finalEventTimeline.image}
           event={finalEventTimeline.event}
+          imagePosition='center'
         />
       </VStack>
 

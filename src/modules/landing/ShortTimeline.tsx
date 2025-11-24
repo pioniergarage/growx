@@ -28,10 +28,10 @@ export const TimelineItem: React.FC<TimeLineItemProps> = ({
 }) => {
     return (
         <Link href={url}>
-            <Box borderRadius={2} overflow="hidden">
+            <Box borderRadius={8} overflow="hidden">
                 <Box
                     position="relative"
-                    minHeight="250px"
+                    h={{ base: "230px", md: "250px" }}
                     sx={{
                         '&:hover img': {
                             transform: 'scale(1.05)',

@@ -77,11 +77,12 @@ const KickoffLandingPage = (props: KickoffProps) => {
                 </Box>
             ) : kickoffEventTimeline ? (
                 <>
-                    <VStack alignItems="stretch">
+                    <VStack alignItems="stretch" marginTop={-6}>
                         <EventHero
                             title={kickoffEventTimeline.title}
                             image={kickoffEventTimeline.image}
                             event={kickoffEventTimeline.event}
+                            imagePosition='center'
                         />
                     </VStack>
 

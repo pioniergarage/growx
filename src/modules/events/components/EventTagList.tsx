@@ -12,9 +12,9 @@ import {
     FaStar,
     FaUser
 } from 'react-icons/fa';
-import { growFormattedDate } from 'utils/formatters';
+import { formatDateToICS, growFormattedDate } from 'utils/formatters';
 import { EventCategory, EventType, GrowEvent } from '../types';
-import { formatEventTime } from '../utils';
+import { calculateEndDate, formatEventTime } from '../utils';
 import EventTag from './EventTag';
 import { GrowEventCardProps } from './GrowEventCard';
 
@@ -67,6 +67,37 @@ const EventTagList = ({
         });
     };
 
+    function createICS(event: GrowEvent) {
+        const startDate = event.date;
+        const endDate = calculateEndDate(startDate, event.duration);
+
+        const icsContent = `
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Your App//EN
+BEGIN:VEVENT
+UID:${Date.now()}
+DTSTAMP:${formatDateToICS(new Date())}
+DTSTART:${formatDateToICS(startDate)}
+DTEND:${formatDateToICS(endDate)}
+SUMMARY:GROW ${event.title}
+DESCRIPTION:${event.description}
+LOCATION:${event.location}
+END:VEVENT
+END:VCALENDAR
+`;
+
+        const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${event.title.replace(/\s+/g, "_")}.ics`;
+        a.click();
+
+        URL.revokeObjectURL(url);
+    }
+
     return (
         <Flex
             mt={1}
@@ -76,7 +107,7 @@ const EventTagList = ({
             alignItems="center"
             {...flexProps}
         >
-            <EventTag icon={FaCalendarAlt} transparent={transparent}>
+            <EventTag icon={FaCalendarAlt} transparent={transparent} onClick={isClickable ? () => createICS(event) : undefined}>
                 {show_date ? growFormattedDate(event.date, undefined, undefined, true) : eventTimeFormatted}
             </EventTag>
             {event.location && (
