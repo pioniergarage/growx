@@ -23,6 +23,7 @@ export type GrowEvent = {
     availableSeats: number;
     eventCategory: EventCategory;
     href: string | null;
+    videoUrl?: string;
 };
 
 export type GrowEventWithSeats = GrowEvent & {
