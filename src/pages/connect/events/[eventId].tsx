@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { withPageAuth } from 'utils/supabase/withPageAuth';
 
+import { useUser } from '@/components/providers/SupabaseProvider';
 import { Database } from 'database/DatabaseDefition';
 import { mapEventDto } from 'modules/events/api';
 import EventInformationCard from 'modules/events/components/EventInformationCard';
@@ -21,13 +22,15 @@ const GrowEvent = ({
     eventRaw,
 }: {
     eventRaw: Database['public']['Tables']['events']['Row'] & {
-        seats_left: number;
+        seats_left: number; //why is this always outdated?
     };
 }) => {
     const event: GrowEventWithSeats = {
         ...mapEventDto(eventRaw),
         presenceSeatsLeft: eventRaw.seats_left ?? eventRaw.available_seats,
     };
+
+    const user = useUser();
     return (
         <VStack alignItems="stretch" gap={2}>
             <Breadcrumb
@@ -40,7 +43,7 @@ const GrowEvent = ({
                     </Link>
                 </BreadcrumbItem>
                 <BreadcrumbItem isCurrentPage>
-                    <Link href={'/events/' + event.id} passHref legacyBehavior>
+                    <Link href={'/connect/events/' + event.id} passHref legacyBehavior>
                         <BreadcrumbLink>
                             <Text
                                 as="span"
@@ -62,7 +65,7 @@ const GrowEvent = ({
                     {eventRaw.description}
                 </Text>
                 <Flex flexDir="column" gap={4} minW={{ md: '25rem' }}>
-                    <EventInformationCard event={event} />
+                    <EventInformationCard event={event} auth={user != null} />
                     <EventRegistration event={event} />
                 </Flex>
             </Flex>
@@ -72,14 +75,23 @@ const GrowEvent = ({
 export const getServerSideProps = withPageAuth({
     redirectTo: '/connect/login',
     getServerSideProps: async (context, supabase) => {
+        const eventIdParam = Array.isArray(context.query.eventId)
+            ? context.query.eventId[0]
+            : context.query.eventId;
+
+        if (!eventIdParam || !/^\d+$/.test(eventIdParam)) {
+            return { notFound: true };
+        }
+
+        const eventId = Number(eventIdParam);
+
         const { data: eventRaw, error } = await supabase
             .from('event_with_seats')
             .select('*')
-            .match({ id: context.query.eventId })
+            .eq('id', eventId)
             .single();
-        if (error) {
-            throw new Error(error.message);
-        }
+
+        if (error) throw new Error(error.message);
         return { props: { eventRaw } };
     },
 });

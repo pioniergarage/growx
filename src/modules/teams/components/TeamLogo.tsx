@@ -37,6 +37,8 @@ const TeamLogo: React.FC<TeamLogoProps> = ({
                     <NuxtImage
                         src={logo}
                         alt={name}
+                        minW={size}
+                        minH={size}
                         w={size}
                         h={size}
                         objectFit="cover"

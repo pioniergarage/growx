@@ -2,7 +2,10 @@ import { Flex, FlexProps } from '@chakra-ui/react';
 import { useMemo } from 'react';
 
 import {
+<<<<<<< HEAD
     FaCalendarAlt,
+=======
+>>>>>>> ea7814dd50ec56f25501e1fbd47c92496b39e4df
     FaCheck,
     FaChromecast,
     FaCloud,
@@ -73,11 +76,6 @@ const EventTagList = ({
                     Online
                 </EventTag>
             )}
-            {/* {event.type === EventType.Offline && (
-                <EventTag icon={FaBuilding} transparent={transparent}>
-                    Offline
-                </EventTag>
-            )} */}
 
             {!hide_category &&
                 <>

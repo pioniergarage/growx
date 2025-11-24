@@ -25,6 +25,7 @@ const KickoffCTA: React.FC<KickoffCTAProps> = ({ today, kickoff }) => {
     const glowAnimation = `${glow} 6s ease-in-out infinite`;
     const kickoffDate = kickoff.date;
     const kickoffHref = kickoff.href;
+
     if (!(today < kickoffDate && kickoffHref && kickoffHref.length > 0)) {
         return null;
     }
@@ -44,7 +45,7 @@ const KickoffCTA: React.FC<KickoffCTAProps> = ({ today, kickoff }) => {
                 shadow='0 0 20px 5px rgba(85,87,247,0.35)'
                 animation={glowAnimation}
             >
-                <Heading size={{ base: "m", md: "l" }}>Sign Up for the Kickoff!</Heading>
+                <Heading size={{ base: "m", md: "l" }}>{'Sign Up for the Kickoff!'}</Heading>
             </Button>
 
         </Box>
