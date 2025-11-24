@@ -14,7 +14,7 @@ const EventTag = ({
 }) => {
     return (
         <Tag
-            size="sm"
+            size="md"
             colorScheme={colorScheme}
             backgroundColor={transparent ? 'transparent' : undefined}
         >

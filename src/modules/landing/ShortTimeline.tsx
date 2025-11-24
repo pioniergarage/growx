@@ -26,19 +26,12 @@ export const TimelineItem: React.FC<TimeLineItemProps> = ({
     image,
     objectPosition,
 }) => {
-
-    function truncateText(text: string, maxLength: number = 100): string {
-        if (text.length <= maxLength) return text;
-        const truncated = text.slice(0, maxLength);
-        return truncated.slice(0, truncated.lastIndexOf(" ")) + "...";
-    }
-
     return (
         <Link href={url}>
             <Box borderRadius={2} overflow="hidden">
                 <Box
                     position="relative"
-                    minHeight="320px"
+                    minHeight="250px"
                     sx={{
                         '&:hover img': {
                             transform: 'scale(1.05)',
@@ -59,14 +52,22 @@ export const TimelineItem: React.FC<TimeLineItemProps> = ({
                     <Box
                         position="absolute"
                         width="100%"
+                        height="100%"
                         bottom={0}
                         left={0}
-                        p={6}
+                        bgGradient="linear(to-b,rgba(24, 25, 34, 0.1) 0%, rgba(24, 25, 34, 0.85) 100%)"
+                    />
+
+                    <Box
+                        position="absolute"
+                        width="100%"
+                        bottom={0}
+                        left={0}
+                        p={4}
                         pt={14}
-                        bgGradient="linear(to-t, #000000cc 30%, #00000000 100%)"
                     >
                         <Heading size="md">{title}</Heading>
-                        <Text mt={2}>{truncateText(description)}</Text>
+                        <Text mt={2} color={'#ffffffbf'} noOfLines={2}>{description}</Text>
                         <EventTagList
                             event={event}
                             transparent

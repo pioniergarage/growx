@@ -1,9 +1,11 @@
-import { Box, Skeleton, Spacer, Text, VStack } from '@chakra-ui/react';
+import EventDescription from '@/components/events/EventDescription';
+import EventHero from '@/components/events/EventHero';
+import OtherGrowEvents from '@/components/events/OtherGrowEvents';
+import { Box, Skeleton, Text, VStack } from '@chakra-ui/react';
 import { useGrowEvents } from 'modules/events/hooks';
 import { GrowEvent } from 'modules/events/types';
-import EventHero from '@/components/events/EventHero';
-import EventDescription from '@/components/events/EventDescription';
-import LaterEvents from '@/components/events/LaterEvents';
+import GrowEventVideo from 'modules/landing/GrowEventVideo';
+import { TimeLineItemProps } from 'modules/landing/ShortTimeline';
 
 // ...existing MidtermProps type...
 
@@ -21,7 +23,17 @@ const MidtermLandingPage = (props: MidtermProps) => {
 
     const final: GrowEvent = events.filter((e) => e.ref == 'final')[0];
     const today = new Date();
-
+    const kickoff: GrowEvent = events.filter((e) => e.ref == 'kickoff')[0]
+    const previousEvents: TimeLineItemProps[] = [
+        {
+            event: kickoff,
+            title: 'Kickoff Event',
+            url: '/kickoff',
+            description: `Pitch your idea, find a team or simply learn more about the contest. 
+            The kickoff is where the fun starts, whether you already applied or you're up for a spontaneous adventure. `,
+            image: 'notes.jpg',
+        },
+    ];
     const laterEvents = final ? [{
         event: final,
         title: 'Grand Final',
@@ -47,7 +59,7 @@ const MidtermLandingPage = (props: MidtermProps) => {
     return (
         <VStack>
             <VStack alignItems="stretch">
-                <EventHero 
+                <EventHero
                     title={midtermEventTimeline.title}
                     image={midtermEventTimeline.image}
                     event={midtermEventTimeline.event}
@@ -55,13 +67,13 @@ const MidtermLandingPage = (props: MidtermProps) => {
             </VStack>
 
             <EventDescription
-            description={midtermEventTimeline.description}
-            today={today}
-            event={midtermEventTimeline.event}
+                description={midtermEventTimeline.description}
+                today={today}
+                event={midtermEventTimeline.event}
             />
-            <Spacer mb={4} />
+            <GrowEventVideo event={midtermEventTimeline.event} />
 
-            <LaterEvents events={laterEvents} />
+            <OtherGrowEvents previousEvents={previousEvents} laterEvents={laterEvents} />
         </VStack>
     );
 };

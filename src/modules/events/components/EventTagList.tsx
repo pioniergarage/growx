@@ -2,16 +2,15 @@ import { Flex, FlexProps } from '@chakra-ui/react';
 import { useMemo } from 'react';
 
 import {
-    FaBuilding,
+    FaCalendarAlt,
     FaCheck,
     FaChromecast,
-    FaClock,
     FaCloud,
     FaExclamation,
     FaInfo,
     FaMapMarkerAlt,
     FaStar,
-    FaUser,
+    FaUser
 } from 'react-icons/fa';
 import { growFormattedDate } from 'utils/formatters';
 import { EventCategory, EventType, GrowEvent } from '../types';
@@ -40,21 +39,28 @@ const EventTagList = ({
         () => formatEventTime(event.date, event.duration),
         [event.date, event.duration]
     );
+
+    function truncateText(text: string, maxLength = 20): string {
+        if (text.length <= maxLength) return text;
+        const truncated = text.slice(0, maxLength);
+        return truncated.slice(0, truncated.lastIndexOf(" ")) + "...";
+    }
+
     return (
         <Flex
             mt={1}
             flexWrap="wrap"
             gap={2}
-            flexDir={{ base: 'column', sm: 'row' }}
+            flexDir={'row'}
             alignItems="start"
             {...flexProps}
         >
-            <EventTag icon={FaClock} transparent={transparent}>
+            <EventTag icon={FaCalendarAlt} transparent={transparent}>
                 {show_date ? growFormattedDate(event.date, undefined, undefined, true) : eventTimeFormatted}
             </EventTag>
             {event.location && (
                 <EventTag icon={FaMapMarkerAlt} transparent={transparent}>
-                    {event.location}
+                    {truncateText(event.location)}
                 </EventTag>
             )}
             {event.type === EventType.Hybrid && (
@@ -67,11 +73,11 @@ const EventTagList = ({
                     Online
                 </EventTag>
             )}
-            {event.type === EventType.Offline && (
+            {/* {event.type === EventType.Offline && (
                 <EventTag icon={FaBuilding} transparent={transparent}>
                     Offline
                 </EventTag>
-            )}
+            )} */}
 
             {!hide_category &&
                 <>

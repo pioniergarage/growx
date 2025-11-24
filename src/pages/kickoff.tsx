@@ -1,20 +1,17 @@
-import KickoffCTA from '@/components/KickoffCTA';
+import EventDescription from '@/components/events/EventDescription';
+import EventHero from '@/components/events/EventHero';
+import OtherGrowEvents from '@/components/events/OtherGrowEvents';
 import {
     Box,
-    Heading,
-    HStack,
-    Image,
-    SimpleGrid,
     Skeleton,
-    Spacer,
     Text,
     VStack
 } from '@chakra-ui/react';
-import EventTagList from 'modules/events/components/EventTagList';
 
 import { useGrowEvents } from 'modules/events/hooks';
 import { GrowEvent } from 'modules/events/types';
-import { TimelineItem, TimeLineItemProps } from 'modules/landing/ShortTimeline';
+import GrowEventVideo from 'modules/landing/GrowEventVideo';
+import { TimeLineItemProps } from 'modules/landing/ShortTimeline';
 
 
 // TODO: this should fetch the link to the final by index from a "Links" table on the database.
@@ -25,6 +22,7 @@ type KickoffProps = {
     description: string;
     image: string;
     objectPosition?: string;
+    // videoUrl?: string;
 };
 
 const KickoffLandingPage = (props: KickoffProps) => {
@@ -37,6 +35,7 @@ const KickoffLandingPage = (props: KickoffProps) => {
         description: `Pitch your idea, find a team or simply learn more about the contest. 
             The kickoff is where the fun starts, whether you already applied or you're up for a spontaneous adventure. `,
         image: 'notes.jpg',
+        // videoUrl: 'https://www.youtube.com/watch?v=H9l3KCKCm00',
     } : undefined;
 
     const midterm: GrowEvent = events.filter((e) => e.ref == 'midterm')[0]
@@ -79,62 +78,22 @@ const KickoffLandingPage = (props: KickoffProps) => {
             ) : kickoffEventTimeline ? (
                 <>
                     <VStack alignItems="stretch">
-                        <Box
-                            position="relative"
-                            className="w-screen max-w-[1264px] mx-auto -mx-4 md:-mx-8 object-cover"
-                            maxHeight="320"
-                            overflow="hidden"
-                        >
-                            <Image
-                                alt={kickoffEventTimeline.title}
-                                src={`/images/${kickoffEventTimeline.image}`}
-                                layout="fill"
-                                objectFit="cover"
-                                loading='lazy'
-                            />
-
-                            <Box
-                                position="absolute"
-                                width="100%"
-                                bottom={0}
-                                left={0}
-                                p={4}
-                                pt={10}
-                                bgGradient="linear(to-t, #181922 0%, #18192200 100%)"
-                            >
-                                <Heading size="lg">{kickoffEventTimeline.title}</Heading>
-                                <EventTagList
-                                    event={kickoffEventTimeline.event}
-                                    transparent
-                                    hide_category
-                                    show_date
-                                    gap={0}
-                                />
-                            </Box>
-                        </Box>
+                        <EventHero
+                            title={kickoffEventTimeline.title}
+                            image={kickoffEventTimeline.image}
+                            event={kickoffEventTimeline.event}
+                        />
                     </VStack>
 
-                    <VStack alignItems='flex-start'>
-                        <Text>{kickoffEventTimeline.description}</Text>
+                    <EventDescription
+                        description={kickoffEventTimeline.description}
+                        today={today}
+                        event={kickoffEventTimeline.event}
+                    />
 
-                        <HStack padding={5} alignItems='center' justifyContent='center'>
-                            <KickoffCTA today={today} kickoff={kickoffEventTimeline.event} />
-                        </HStack>
+                    <GrowEventVideo event={kickoffEventTimeline.event} />
 
-                        <Text>Info: The final of the Ideenwettbewerb by Gründerschmiede takes place just before this kickoff.</Text>
-                    </VStack>
-
-                    <Spacer mb={4} />
-
-                    <VStack alignItems='flex-start' width='100%'>
-                        <Heading size="md">Later Events</Heading>
-
-                        <SimpleGrid columns={[1, 1, 1, 3]} gap={8} width="100%">
-                            {laterEvents.map((event) => (
-                                <TimelineItem {...event} key={event.title} />
-                            ))}
-                        </SimpleGrid>
-                    </VStack>
+                    <OtherGrowEvents previousEvents={[]} laterEvents={laterEvents} />
                 </>
 
             ) : (
