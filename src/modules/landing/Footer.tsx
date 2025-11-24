@@ -26,7 +26,8 @@ export default function Footer() {
                         '@media (min-width: 920px)': {
                             flexDirection: 'row',
                             textAlign: 'left',
-                            gap: 0
+                            gap: 0,
+                            paddingBottom: '20px'
                         }
                     }}
                 >
