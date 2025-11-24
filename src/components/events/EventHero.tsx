@@ -60,6 +60,7 @@ const EventHero = ({ title, image, event }: EventHeroProps) => (
                 hide_category
                 show_date
                 gap={2}
+                isClickable
             />
         </Box>
     </Box>

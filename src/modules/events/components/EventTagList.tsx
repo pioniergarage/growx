@@ -1,11 +1,8 @@
-import { Flex, FlexProps } from '@chakra-ui/react';
+import { Box, Flex, FlexProps, useToast } from '@chakra-ui/react';
 import { useMemo } from 'react';
 
 import {
-<<<<<<< HEAD
     FaCalendarAlt,
-=======
->>>>>>> ea7814dd50ec56f25501e1fbd47c92496b39e4df
     FaCheck,
     FaChromecast,
     FaCloud,
@@ -28,6 +25,7 @@ type EventTagListProps = FlexProps & {
     hide_category?: boolean;
     show_date?: boolean;
     registration?: GrowEventCardProps['registration'];
+    isClickable?: boolean;
 };
 
 const EventTagList = ({
@@ -36,8 +34,10 @@ const EventTagList = ({
     hide_category = false,
     show_date = false,
     registration,
+    isClickable,
     ...flexProps
 }: EventTagListProps) => {
+    const toast = useToast();
     const eventTimeFormatted = useMemo(
         () => formatEventTime(event.date, event.duration),
         [event.date, event.duration]
@@ -49,20 +49,38 @@ const EventTagList = ({
         return truncated.slice(0, truncated.lastIndexOf(" ")) + "...";
     }
 
+    const copyToClipboard = (location: string) => {
+        navigator.clipboard.writeText(location).then(function () {
+            console.log('Async: Copying to clipboard was successful!');
+        });
+
+        toast({
+            title: `Copied to Clipboard!`,
+            description: (
+                <Box wordBreak="break-all">
+                    {location}
+                </Box>
+            ),
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+        });
+    };
+
     return (
         <Flex
             mt={1}
             flexWrap="wrap"
             gap={2}
             flexDir={'row'}
-            alignItems="start"
+            alignItems="center"
             {...flexProps}
         >
             <EventTag icon={FaCalendarAlt} transparent={transparent}>
                 {show_date ? growFormattedDate(event.date, undefined, undefined, true) : eventTimeFormatted}
             </EventTag>
             {event.location && (
-                <EventTag icon={FaMapMarkerAlt} transparent={transparent}>
+                <EventTag icon={FaMapMarkerAlt} transparent={transparent} onClick={isClickable ? () => copyToClipboard(event.location) : undefined}>
                     {truncateText(event.location)}
                 </EventTag>
             )}

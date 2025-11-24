@@ -8,9 +8,9 @@ type LaterEventsProps = {
 
 const OtherGrowEvents = ({ previousEvents, laterEvents }: LaterEventsProps) => (
     <VStack alignItems='flex-start' width='100%'>
-        {previousEvents.length > 0 ? (
+        {previousEvents.length > 0 && (
             <Heading size="md">Previous Events</Heading>
-        ) : (<></>)}
+        )}
 
         <SimpleGrid columns={[1, 1, 1, 3]} gap={8} width="100%">
             {previousEvents.map((event) => (
@@ -20,9 +20,9 @@ const OtherGrowEvents = ({ previousEvents, laterEvents }: LaterEventsProps) => (
 
         <Spacer mb={2} />
 
-        {laterEvents.length > 0 ? (
+        {laterEvents.length > 0 && (
             <Heading size="md">Later Events</Heading>
-        ) : (<></>)}
+        )}
 
         <SimpleGrid columns={[1, 1, 1, 3]} gap={8} width="100%">
             {laterEvents.map((event) => (
