@@ -17,7 +17,10 @@ import { withPageAuth } from 'utils/supabase/withPageAuth';
 
 import { allowOrga } from 'modules/admin/utils';
 
+import { useSupabaseClient } from '@/components/providers/SupabaseProvider';
 import UserAvatar from 'modules/avatar/components/UserAvatar';
+import contactInformationApi from 'modules/contactInformation/api';
+import { ContactInformation } from 'modules/contactInformation/types';
 import {
     useAssignMentor,
     useMentorAssignments,
@@ -131,6 +134,7 @@ const MemorizedTeamRow = memo(TeamRow);
 const TeamTable = (props: { teams: TeamWithMembers[] }) => {
     const [showArchivedTeams, setShowArchivedTeams] = useState(false);
     const { mentorAssignments } = useMentorAssignments();
+    const supabase = useSupabaseClient();
 
     const filteredTeams = useMemo(
         () => props.teams.filter((t) => !t.isArchived || showArchivedTeams),
@@ -138,8 +142,11 @@ const TeamTable = (props: { teams: TeamWithMembers[] }) => {
     );
 
     // Function to convert team data to CSV
-    const convertTeamsToCSV = (teams: TeamWithMembers[]): string => {
-        const header = "Team Name,Mentors,Members,Requested Support\n";
+    const convertTeamsToCSV = async (teams: TeamWithMembers[]): Promise<string> => {
+        const header = "Team Name,Mentors,Members,Contacts,Requested Support\n";
+
+        const contactInformationMap = await getContactInformationMap(teams);
+
         const rows = teams.map(team => {
             if (team.isArchived)
                 return;
@@ -148,16 +155,36 @@ const TeamTable = (props: { teams: TeamWithMembers[] }) => {
             const mentorName = mentor ? `${mentor.firstName} ${mentor.lastName}` : "No Mentor Assigned";
 
             const members = team.members.map(m => `${m.firstName} ${m.lastName}`).join('; ');
+            const contacts = team.members.map(m => `${contactInformationMap.get(m.userId)?.email} ${contactInformationMap.get(m.userId)?.phone}`).join('; ');
             const requestedSupport = team.requestSupport.join('; ');
 
-            return `${teamName},${mentorName},${members},${requestedSupport}`;
+            return `${teamName},${mentorName},${members},${contacts},${requestedSupport}`;
         }).join('\n');
+
         return header + rows;
     };
 
+    //gets a map of user id -> contact information
+    const getContactInformationMap = async (teams: TeamWithMembers[]): Promise<Map<string, ContactInformation>> => {
+        let member_ids: string[] = [];
+
+        for (const team of teams) {
+            member_ids = [...member_ids, ...(team.members.map(m => m.userId))]
+        }
+
+        const contact_infos = await contactInformationApi.getContactInformations(supabase, member_ids);
+        const contactInformation = new Map<string, ContactInformation>();
+
+        for (const contact_info of contact_infos) {
+            contactInformation.set(contact_info.user_id, contact_info)
+        }
+        return contactInformation;
+    }
+
     // Function to trigger CSV download
-    const downloadCSV = () => {
-        const csvData = convertTeamsToCSV(filteredTeams);
+    const downloadCSV = async () => {
+        const csvData = await convertTeamsToCSV(filteredTeams);
+
         const blob = new Blob([csvData], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
