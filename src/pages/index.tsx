@@ -1,4 +1,4 @@
-import KickoffCTA from '@/components/KickoffCTA';
+import EventCTA from '@/components/EventCTA';
 import { Box, BoxProps, Divider, Flex } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
 import fs from "fs";
@@ -103,7 +103,7 @@ const Home: React.FC<HomeProps> = ({
                         filter={{ base: 'blur(80px)', md: 'blur(150px)' }}
                     />
                 </Box>
-                <MainInfoBlock kickoff={kickoff} final={final} today={today} />
+                <MainInfoBlock kickoff={kickoff} midterm={midterm} final={final} today={today} />
             </Section>
 
             <Divider mb={12} />
@@ -138,7 +138,8 @@ const Home: React.FC<HomeProps> = ({
                     align='center'
                     mt={6}
                 >
-                    <KickoffCTA today={today} kickoff={kickoff} />
+                    <EventCTA today={today} event={final} start={midterm.date} text="Visit this year's GROW Final!" />
+                    <EventCTA today={today} event={kickoff} text='Sign Up for the Kickoff!' />
                 </Flex>
             </Section>
 
