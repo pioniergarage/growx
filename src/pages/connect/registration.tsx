@@ -4,6 +4,7 @@ import { getTeamIdOfUser } from 'modules/teams/api';
 import { NextPageWithLayout } from 'utils/types';
 
 import { Button, Heading, HStack, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
+import { handleSingleResponse } from 'database/utils';
 import { useGrowEvent } from 'modules/events/hooks';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -95,12 +96,26 @@ export const getServerSideProps = withPageAuth({
                 },
             };
         }
+        const { role } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('user_id', data.user.id as string)
+            .single()
+            .then(handleSingleResponse);
+
         const teamId = await getTeamIdOfUser(supabase, data.user.id);
         if (teamId) {
             return {
                 redirect: {
                     permanent: false,
                     destination: '/connect/teams/' + teamId,
+                },
+            };
+        } else if (role !== 'ORGA') {
+            return {
+                redirect: {
+                    permanent: false,
+                    destination: '/connect',
                 },
             };
         } else {
