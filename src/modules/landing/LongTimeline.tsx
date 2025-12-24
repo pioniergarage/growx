@@ -5,7 +5,7 @@ import { useRegistrationsOfUser } from 'modules/events/hooks';
 import { GrowEvent } from 'modules/events/types';
 import { useProfile } from 'modules/profile/hooks';
 import { FaRegCalendarPlus } from 'react-icons/fa';
-import { getSeason } from 'utils/formatters';
+import { getSeasonFromFinal } from 'utils/formatters';
 
 interface LongTimelineProps {
     events: GrowEvent[];
@@ -14,8 +14,8 @@ interface LongTimelineProps {
 }
 
 const LongTimeline: React.FC<LongTimelineProps> = ({ events, kickoffDate, title }) => {
-    const season = getSeason(kickoffDate);
-    const past_season = getSeason(kickoffDate, 1);
+    const season = getSeasonFromFinal(kickoffDate);
+    const past_season = getSeasonFromFinal(kickoffDate, 1);
     const { profile } = useProfile();
 
     const { registrations } = useRegistrationsOfUser(profile?.userId);

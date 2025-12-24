@@ -78,80 +78,153 @@ const Home: React.FC<HomeProps> = ({
     jsonEvents = [],
 }) => {
     const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
-    const kickoff: GrowEvent = events.filter((e) => e.ref == 'kickoff')[0]
-    const midterm: GrowEvent = events.filter((e) => e.ref == 'midterm')[0]
-    const final: GrowEvent = events.filter((e) => e.ref == 'final')[0]
+    const kickoff: GrowEvent | undefined = events.find((e) => e.ref === 'kickoff');
+    const midterm: GrowEvent | undefined = events.find((e) => e.ref === 'midterm');
+    const final: GrowEvent | undefined = events.find((e) => e.ref === 'final');
     const today = new Date();
+    if (!kickoff && midterm && final) {
+        console.log("Database administrator: Please ensure the events with ref=='kickoff', ref=='midterm' and ref=='final' exist on the database!")
+    }
     return (
         <>
-            <Section position="relative" minH="75vh">
-                <Box
-                    maxW="container.xl"
-                    transform="translate(0, -50%)"
-                    top={0}
-                    w="100%"
-                    h={{ base: '40rem', md: '100%' }}
-                    position="absolute"
-                    zIndex={-10}
-                >
-                    <Box
-                        position="absolute"
-                        width="100%"
-                        height="100%"
-                        bgGradient="linear-gradient(128.16deg, #5557f777 8.06%, #d34dbc80 45% , #d6265170 83.26%)"
-                        borderRadius="50%"
-                        filter={{ base: 'blur(80px)', md: 'blur(150px)' }}
-                    />
-                </Box>
-                <MainInfoBlock kickoff={kickoff} midterm={midterm} final={final} today={today} />
-            </Section>
+            {(kickoff && midterm && final) ?
+                <>
+                    <Section position="relative" minH="75vh">
+                        <Box
+                            maxW="container.xl"
+                            transform="translate(0, -50%)"
+                            top={0}
+                            w="100%"
+                            h={{ base: '40rem', md: '100%' }}
+                            position="absolute"
+                            zIndex={-10}
+                        >
+                            <Box
+                                position="absolute"
+                                width="100%"
+                                height="100%"
+                                bgGradient="linear-gradient(128.16deg, #5557f777 8.06%, #d34dbc80 45% , #d6265170 83.26%)"
+                                borderRadius="50%"
+                                filter={{ base: 'blur(80px)', md: 'blur(150px)' }}
+                            />
+                        </Box>
+                        <MainInfoBlock kickoff={kickoff} midterm={midterm} final={final} today={today} />
+                    </Section>
 
-            <Divider mb={12} />
+                    <Divider mb={12} />
 
-            <Section>
-                <GrowVideo />
-            </Section>
+                    <Section>
+                        <GrowVideo />
+                    </Section>
 
-            <Divider my={10} />
+                    <Divider my={10} />
 
-            <Section>
-                {/*  das sind die 3 Blöcke mit Kick off, midterm und Final */}
-                <ShortTimeline kickoff={kickoff} midterm={midterm} final={final} />
-            </Section>
+                    <Section>
+                        {/*  das sind die 3 Blöcke mit Kick off, midterm und Final */}
+                        <ShortTimeline kickoff={kickoff} midterm={midterm} final={final} />
+                    </Section>
 
-            <Section mt="8rem">
-                {/* Why Grow */}
-                <MotivationBlock />
-            </Section>
+                    <Section mt="8rem">
+                        {/* Why Grow */}
+                        <MotivationBlock />
+                    </Section>
 
-            <Section id="timeline" mt="8rem" mb="4rem">
-                {events.length > 3 ?
-                    <LongTimeline events={events} kickoffDate={kickoff.date} />
-                    :
-                    <TimelinePlaceholder season={getSeason(kickoff.date)} />
-                }
-            </Section>
+                    <Section id="timeline" mt="8rem" mb="4rem">
+                        {events.length > 3 ?
+                            <LongTimeline events={events} kickoffDate={kickoff.date} />
+                            :
+                            <TimelinePlaceholder season={getSeason(kickoff.date)} />
+                        }
+                    </Section>
 
-            <Section position="relative" px={0}>
-                <WaitingForBlock />
-                <Flex flexDir="column"
-                    align='center'
-                    mt={6}
-                >
-                    <EventCTA today={today} event={final} start={midterm.date} text="Visit this year's GROW Final!" />
-                    <EventCTA today={today} event={kickoff} text='Sign Up for the Kickoff!' />
-                </Flex>
-            </Section>
+                    <Section position="relative" px={0}>
+                        <WaitingForBlock />
+                        <Flex flexDir="column"
+                            align='center'
+                            mt={6}
+                        >
+                            <EventCTA today={today} event={final} start={midterm.date} text="Visit this year's GROW Final!" />
+                            <EventCTA today={today} event={kickoff} text='Sign Up for the Kickoff!' />
+                        </Flex>
+                    </Section>
 
-            <Divider my={16} />
+                    <Divider my={16} />
 
-            <Section my={24}>
-                <SponsorsAndSupporters sponsors={sponsors} />
-            </Section>
+                    <Section my={24}>
+                        <SponsorsAndSupporters sponsors={sponsors} />
+                    </Section>
 
-            <Section id="faqs" my={24}>
-                <Faqs faqs={faqs} />
-            </Section>
+                    <Section id="faqs" my={24}>
+                        <Faqs faqs={faqs} />
+                    </Section>
+                </>
+                :
+                <>
+                    <Section position="relative" minH="75vh">
+                        <Box
+                            maxW="container.xl"
+                            transform="translate(0, -50%)"
+                            top={0}
+                            w="100%"
+                            h={{ base: '40rem', md: '100%' }}
+                            position="absolute"
+                            zIndex={-10}
+                        >
+                            <Box
+                                position="absolute"
+                                width="100%"
+                                height="100%"
+                                bgGradient="linear-gradient(128.16deg, #5557f777 8.06%, #d34dbc80 45% , #d6265170 83.26%)"
+                                borderRadius="50%"
+                                filter={{ base: 'blur(80px)', md: 'blur(150px)' }}
+                            />
+                        </Box>
+                        <MainInfoBlock today={today} />
+                    </Section>
+
+                    <Divider mb={12} />
+
+                    <Section>
+                        <GrowVideo />
+                    </Section>
+
+                    <Divider my={10} />
+
+                    <Section>
+                        {/*  das sind die 3 Blöcke mit Kick off, midterm und Final */}
+                        {/* <ShortTimeline kickoff={kickoff} midterm={midterm} final={final} /> */}
+                    </Section>
+
+                    <Section mt="8rem">
+                        {/* Why Grow */}
+                        <MotivationBlock />
+                    </Section>
+
+                    <Section id="timeline" mt="8rem" mb="4rem">
+                        <TimelinePlaceholder season={getSeason(new Date())} />
+                    </Section>
+
+                    <Section position="relative" px={0}>
+                        <WaitingForBlock />
+                        <Flex flexDir="column"
+                            align='center'
+                            mt={6}
+                        >
+                            <EventCTA today={today} start={today} text="Want to learn more?" event_href='https://www.pioniergarage.de/kontakt' />
+                        </Flex>
+                    </Section>
+
+                    <Divider my={16} />
+
+                    <Section my={24}>
+                        <SponsorsAndSupporters sponsors={sponsors} />
+                    </Section>
+
+                    <Section id="faqs" my={24}>
+                        <Faqs faqs={faqs} />
+                    </Section>
+                </>
+            }
         </>
     );
 };

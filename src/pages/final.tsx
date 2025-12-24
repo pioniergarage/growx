@@ -62,7 +62,7 @@ const FinalLandingPage = () => {
                                 Join us at the GROW finale and witness the next big thing in innovation!
                             </p>
                         </VStack>
-                        <LinkListItem link={{ id: 1, title: 'GROW Final 24/25', href: 'https://pretix.eu/GROW/Final/', img: "/images/icons/grow.png" }} />
+                        <LinkListItem link={{ id: 1, title: `${finalEvent?.title} ${finalEvent?.date ? getSeason(finalEvent?.date, 1) : ''}`, href: finalEvent?.href ?? 'https://grow.pioniergarage.de', img: "/images/icons/grow.png" }} />
                     </SimpleGrid>
 
                 </>

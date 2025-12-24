@@ -15,9 +15,9 @@ import { growFormattedDate } from 'utils/formatters';
 import AnimatedLogo from './AnimatedLogo';
 
 type InfoBlockProps = {
-    kickoff: GrowEvent;
-    midterm: GrowEvent;
-    final: GrowEvent;
+    kickoff?: GrowEvent;
+    midterm?: GrowEvent;
+    final?: GrowEvent;
     today: Date;
 };
 
@@ -101,7 +101,7 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                         }}
                         gap="4"
                     >
-                        <EventCTA today={today} event={final} start={midterm.date} text='Join us at the GROW Final!' />
+                        <EventCTA today={today} event={final} start={midterm?.date} text='Join us at the GROW Final!' />
                     </Flex>
                     <Flex
                         justifyContent={{
@@ -126,19 +126,20 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                             align={{ base: 'center', md: 'start' }}
                             mb={8}
                         >
-
-                            <Fact
+                            {kickoff && <Fact
                                 title="Start Kick-Off"
                                 amount={growFormattedDate(kickoff.date, today)}
                                 location={kickoff.location}
-                            />
+                            />}
+
                             <EventCTA today={today} event={kickoff} text='Sign Up for the Kickoff!' />
                         </Flex>
-                        <Fact
+                        {final && <Fact
                             title="Finale in Karlsruhe"
                             amount={growFormattedDate(final.date, today)}
                             location={final.location}
-                        />
+                        />}
+
                     </Flex>
                 </Flex>
 
