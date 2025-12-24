@@ -11,7 +11,7 @@ import {
 
 import { useGrowEvents } from 'modules/events/hooks';
 import { TimelineItem } from 'modules/landing/ShortTimeline';
-import { getSeason } from 'utils/formatters';
+import { getSeasonFromFinal } from 'utils/formatters';
 
 // TODO: this should fetch the link to the final by index from a "Links" table on the database.
 
@@ -28,7 +28,7 @@ const KickoffLandingPage = () => {
     } : undefined;
 
     const kickoff = events?.find((e) => e.ref === 'kickoff');
-    const season = kickoff ? getSeason(kickoff.date) : "";
+    const season = kickoff ? getSeasonFromFinal(kickoff.date) : "";
     return (
         <VStack>
             <Heading size="lg">GROW {season} Kickoff Event</Heading>

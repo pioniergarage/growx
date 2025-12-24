@@ -6,7 +6,7 @@ import { useGrowEvents } from 'modules/events/hooks';
 import { GrowEvent } from 'modules/events/types';
 import LongTimeline from 'modules/landing/LongTimeline';
 import TimelinePlaceholder from 'modules/landing/Timeline_placeholder';
-import { getSeason } from 'utils/formatters';
+import { getSeasonFromFinal } from 'utils/formatters';
 
 const EventsPage = () => {
     const { events } = useGrowEvents();
@@ -18,7 +18,7 @@ const EventsPage = () => {
                     events.length > 3 ?
                         <LongTimeline events={events} kickoffDate={kickoff.date} title='Events' />
                         :
-                        <TimelinePlaceholder season={kickoff && getSeason(kickoff.date)} />
+                        <TimelinePlaceholder season={kickoff && getSeasonFromFinal(kickoff.date)} />
                 }
             </VStack>
         </Box>

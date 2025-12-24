@@ -6,12 +6,14 @@ import React from "react";
 
 interface EventCTAProps {
     today: Date;
-    event: GrowEvent;
+    event?: GrowEvent;
+    event_date?: Date;
+    event_href?: string;
     text: string;
     start?: Date;
 }
 
-const EventCTA: React.FC<EventCTAProps> = ({ today, event, text, start }) => {
+const EventCTA: React.FC<EventCTAProps> = ({ today, event, text, start, event_date, event_href }) => {
     const glow = keyframes`
   0% {
     box-shadow: 0 0 20px 5px rgba(85,87,247,0.3);
@@ -25,10 +27,14 @@ const EventCTA: React.FC<EventCTAProps> = ({ today, event, text, start }) => {
 `;
 
     const glowAnimation = `${glow} 6s ease-in-out infinite`;
-    const eventDate = event.date;
-    const eventHref = event.href;
+    const eventDate = event ? event.date : event_date;
+    const eventHref = event ? event.href : event_href;
 
-    if ((today >= eventDate || !eventHref || eventHref.length < 1) || (start && today < start)) {
+    if (eventDate && (today >= eventDate || !eventHref || eventHref.length < 1) || (start && today < start)) {
+        return null;
+    }
+
+    if (!eventHref) {
         return null;
     }
 
