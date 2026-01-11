@@ -1,5 +1,5 @@
 import SupabaseProvider from '@/components/providers/SupabaseProvider';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Link, Text } from '@chakra-ui/react';
 import { useGrowEvents } from 'modules/events/hooks';
 import Footer from 'modules/landing/Footer';
 import GrowNav from 'modules/navigation/GrowNav';
@@ -47,6 +47,7 @@ const FinalBanner: React.FC = () => {
     const { events } = useGrowEvents();
     const finalEvent = events?.find((e) => e.ref === 'final');
     const today = new Date();
+    const title = "Join us at the GROW Final '26";
 
     if (finalEvent?.date && finalEvent?.date < today) {
         return null;
@@ -55,7 +56,10 @@ const FinalBanner: React.FC = () => {
     return (
         <Box backgroundColor='rgba(85,100,250)' width='100%'>
             <Box mx="auto" maxW="container.xl" padding='1em 2em' fontWeight="semibold" textAlign={'center'}>
-                <Text color={'#ffffff'}>Join us at the GROW Final &apos;26</Text>
+                {finalEvent?.href ?
+                    <Link href={finalEvent?.href}>{title}</Link> :
+                    <Text>{title}</Text>
+                }
             </Box>
         </Box>
     );
