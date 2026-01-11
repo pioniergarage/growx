@@ -1,5 +1,6 @@
 import SupabaseProvider from '@/components/providers/SupabaseProvider';
-import { Box } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
+import { useGrowEvents } from 'modules/events/hooks';
 import Footer from 'modules/landing/Footer';
 import GrowNav from 'modules/navigation/GrowNav';
 import Head from 'next/head';
@@ -31,6 +32,7 @@ export default function Layout({ children }: PropsWithChildren) {
 
             <SupabaseProvider>
                 <QueryClientProvider client={queryClient}>
+                    <FinalBanner />
                     <GrowNav />
                     <MainWrapper>{children}</MainWrapper>
                     <Footer />
@@ -40,6 +42,24 @@ export default function Layout({ children }: PropsWithChildren) {
         </>
     );
 }
+
+const FinalBanner: React.FC = () => {
+    const { events } = useGrowEvents();
+    const finalEvent = events?.find((e) => e.ref === 'final');
+    const today = new Date();
+
+    if (finalEvent?.date && finalEvent?.date < today) {
+        return null;
+    }
+
+    return (
+        <Box backgroundColor='rgba(85,100,250)' width='100%'>
+            <Box mx="auto" maxW="container.xl" padding='1em 2em' fontWeight="semibold" textAlign={'center'}>
+                <Text color={'#ffffff'}>Join us at the GROW Final &apos;26</Text>
+            </Box>
+        </Box>
+    );
+};
 
 const MainWrapper: React.FC<PropsWithChildren> = ({ children }) => {
     return (
