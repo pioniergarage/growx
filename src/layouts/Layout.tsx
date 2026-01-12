@@ -1,4 +1,5 @@
 import SupabaseProvider from '@/components/providers/SupabaseProvider';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Box, Link, Text } from '@chakra-ui/react';
 import { useGrowEvents } from 'modules/events/hooks';
 import Footer from 'modules/landing/Footer';
@@ -54,10 +55,13 @@ const FinalBanner: React.FC = () => {
     }
 
     return (
-        <Box backgroundColor='rgba(85,100,250)' width='100%'>
+        <Box backgroundColor='rgba(85,100,250, 0.35)' width='100%'>
             <Box mx="auto" maxW="container.xl" padding='1em 2em' fontWeight="semibold" textAlign={'center'}>
                 {finalEvent?.href ?
-                    <Link href={finalEvent?.href}>{title}</Link> :
+                    <Link href={finalEvent?.href} display={'flex'} gap={'2'} alignItems={'center'} justifyContent={'center'}>
+                        <ExternalLinkIcon />
+                        {title}
+                    </Link> :
                     <Text>{title}</Text>
                 }
             </Box>
