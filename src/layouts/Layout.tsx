@@ -4,6 +4,7 @@ import { Box, Link, Text } from '@chakra-ui/react';
 import { useGrowEvents } from 'modules/events/hooks';
 import Footer from 'modules/landing/Footer';
 import GrowNav from 'modules/navigation/GrowNav';
+import { useProfile } from 'modules/profile/hooks';
 import Head from 'next/head';
 import React, { PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -46,24 +47,43 @@ export default function Layout({ children }: PropsWithChildren) {
 
 const FinalBanner: React.FC = () => {
     const { events } = useGrowEvents();
+    const { profile } = useProfile();
     const finalEvent = events?.find((e) => e.ref === 'final');
     const today = new Date();
     const title = "Join us at the GROW Final '26";
+    const isLoggedIn = !!profile?.userId;
 
     if (finalEvent?.date && finalEvent?.date < today) {
         return null;
     }
 
+    if (isLoggedIn) {
+        return null;
+    }
+
     return (
-        <Box backgroundColor='rgba(85,100,250, 0.35)' width='100%'>
-            <Box mx="auto" maxW="container.xl" padding='1em 2em' fontWeight="semibold" textAlign={'center'}>
-                {finalEvent?.href ?
-                    <Link href={finalEvent?.href} display={'flex'} gap={'2'} alignItems={'center'} justifyContent={'center'}>
+        <Box backgroundColor="rgba(85,100,250, 0.35)" width="100%">
+            <Box
+                mx="auto"
+                maxW="container.xl"
+                padding="1em 2em"
+                fontWeight="semibold"
+                textAlign={'center'}
+            >
+                {finalEvent?.href ? (
+                    <Link
+                        href={finalEvent?.href}
+                        display={'flex'}
+                        gap={'2'}
+                        alignItems={'center'}
+                        justifyContent={'center'}
+                    >
                         <ExternalLinkIcon />
                         {title}
-                    </Link> :
+                    </Link>
+                ) : (
                     <Text>{title}</Text>
-                }
+                )}
             </Box>
         </Box>
     );
