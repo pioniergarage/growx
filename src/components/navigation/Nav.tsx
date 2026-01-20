@@ -1,13 +1,15 @@
 import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import {
-    BoxProps, Button, ButtonProps,
+    BoxProps,
+    Button,
+    ButtonProps,
     chakra,
     Flex,
     shouldForwardProp,
-    useBreakpointValue
+    useBreakpointValue,
 } from '@chakra-ui/react';
 import { isValidMotionProp, motion } from 'framer-motion';
-import Image from "next/legacy/image";
+import Image from 'next/legacy/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { PropsWithChildren } from 'react';
@@ -85,8 +87,8 @@ const TopNavBar: React.FC<PropsWithChildren & { alpha: number }> = ({
             width="100%"
             zIndex={5}
             sx={{ backgroundColor: `rgba(0,0,0,${alpha})` }}
-            initial={{ y: '-200%' }}
-            animate={{ y: 0 }}
+            initial={{ marginTop: '-100' }}
+            animate={{ marginTop: 0 }}
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore no problem in operation, although type error appears.
             transition={{ delay: 0.5, type: 'tween' }}
@@ -155,4 +157,3 @@ const DesktopMenuButton = (props: PropsWithChildren & { href: string }) => {
 };
 
 export { DesktopMenuButton, GrowLogo, MenuToggle, MobileMenuButton, TopNavBar };
-
