@@ -3,7 +3,7 @@ import { GrowEvent } from 'modules/events/types';
 
 type GrowEventProps = {
     event: GrowEvent;
-}
+};
 
 const GrowEventVideo: React.FC<GrowEventProps> = ({ event }) => {
     const size = useBreakpointValue({
@@ -21,7 +21,7 @@ const GrowEventVideo: React.FC<GrowEventProps> = ({ event }) => {
         },
     });
     if (!event.videoUrl) {
-        return null
+        return null;
     }
 
     return (
@@ -33,7 +33,7 @@ const GrowEventVideo: React.FC<GrowEventProps> = ({ event }) => {
                 title="YouTube video player"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
-                loading='lazy'
+                loading="lazy"
             ></iframe>
         </Center>
     );

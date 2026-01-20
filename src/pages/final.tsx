@@ -21,6 +21,8 @@ const FinalLandingPage = () => {
     );
   }
 
+  console.log(events);
+
   if (error) {
     return (
       <Text color="red.500">
@@ -32,21 +34,19 @@ const FinalLandingPage = () => {
   // Einheitlich mit Kleinbuchstaben
   const finalEvent = events?.find((e) => e.ref === 'final');
 
-  const finalEventTimeline = finalEvent
-    ? {
-      event: finalEvent,
-      title: 'Final Event',
-      url: '/final',
-      description: `Present your results to a huge crowd and show how far you have come. 
-Each participant will have learned a lot and gained a lot of experience by this point. 
-The groups with the greatest progress will receive prizes. This is what you've been working for!`,
-      image: 'audimax.jpg',
-    }
-    : undefined;
-
-  if (!finalEventTimeline) {
+  if (!finalEvent) {
     return <Text>Final-Event wurde nicht gefunden.</Text>;
   }
+
+  const finalEventTimeline = {
+    event: finalEvent,
+    title: 'Final Event',
+    url: '/final',
+    description: `Present your results to a huge crowd and show how far you have come. 
+Each participant will have learned a lot and gained a lot of experience by this point. 
+The groups with the greatest progress will receive prizes. This is what you've been working for!`,
+    image: 'audimax.jpg',
+  };
 
   const today = new Date();
   const midterm: GrowEvent = events.filter((e) => e.ref == 'midterm')[0];
@@ -85,10 +85,10 @@ The groups with the greatest progress will receive prizes. This is what you've b
       <EventDescription
         description={finalEventTimeline.description}
         today={today}
-        event={finalEventTimeline.event}
+        event={finalEvent}
       />
 
-      <GrowEventVideo event={finalEventTimeline.event} />
+      <GrowEventVideo event={finalEvent} />
 
       <OtherGrowEvents previousEvents={previousEvents} laterEvents={[]} />
     </VStack>
