@@ -1,10 +1,19 @@
 import EventDescription from '@/components/events/EventDescription';
 import EventHero from '@/components/events/EventHero';
 import OtherGrowEvents from '@/components/events/OtherGrowEvents';
-import { Box, Skeleton, Text, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  HStack,
+  Show,
+  Skeleton,
+  Spacer,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { useGrowEvents } from 'modules/events/hooks';
 import { GrowEvent } from 'modules/events/types';
-import GrowEventVideo from 'modules/landing/GrowEventVideo';
+import AnimatedLogo from 'modules/landing/AnimatedLogo';
 import { TimeLineItemProps } from 'modules/landing/ShortTimeline';
 
 // ...existing FinalProps type...
@@ -38,23 +47,22 @@ const FinalLandingPage = () => {
     return <Text>Final-Event wurde nicht gefunden.</Text>;
   }
 
-  const finalEventTimeline = {
-    event: finalEvent,
-    title: 'Final Event',
-    url: '/final',
-    description: `Present your results to a huge crowd and show how far you have come. 
-Each participant will have learned a lot and gained a lot of experience by this point. 
-The groups with the greatest progress will receive prizes. This is what you've been working for!`,
-    image: 'audimax.jpg',
-  };
-
   const today = new Date();
   const midterm: GrowEvent = events.filter((e) => e.ref == 'midterm')[0];
   const kickoff: GrowEvent = events.filter((e) => e.ref == 'kickoff')[0];
+
+  const finalEventTimeline = {
+    event: finalEvent,
+    title: 'GROW Final',
+    url: '/final',
+    description: `IN AN AUDIMAX NEAR YOU...\n After months of hard work the participants in this year's GROW competition will pitch their startups to our panel of expert judges and a huge audience.\n The teams are in a breakneck race for our top three prizes as well as the Aurel Steinert Foundation Sustainabillity Award, and more from our sponsors.\n\n Only one question remains: who will make it to the top?`,
+    image: 'audimax.jpg',
+  };
+
   const previousEvents: TimeLineItemProps[] = [
     {
       event: kickoff,
-      title: 'Kickoff Event',
+      title: 'Kickoff',
       url: '/kickoff',
       description: `Pitch your idea, find a team or simply learn more about the contest. 
             The kickoff is where the fun starts, whether you already applied or you're up for a spontaneous adventure. `,
@@ -73,22 +81,29 @@ The groups with the greatest progress will receive prizes. This is what you've b
 
   return (
     <VStack>
-      <VStack alignItems="stretch" marginTop={-6}>
+      <VStack alignItems="stretch" marginTop={-6} maxW={'100%'}>
         <EventHero
           title={finalEventTimeline.title}
           image={finalEventTimeline.image}
           event={finalEventTimeline.event}
           imagePosition="center"
-        />
+        ></EventHero>
       </VStack>
-
-      <EventDescription
-        description={finalEventTimeline.description}
-        today={today}
-        event={finalEvent}
-      />
-
-      <GrowEventVideo event={finalEvent} />
+      <HStack justifyContent="space-between">
+        <EventDescription
+          description={finalEventTimeline.description}
+          today={today}
+          event={finalEvent}
+          event_start={midterm.date}
+          CTA_text="Find out at the GROW final!"
+        />
+        <Show above="md">
+          <Flex className=" flex-col">
+            <AnimatedLogo boxSize={250} />
+          </Flex>
+        </Show>
+      </HStack>
+      <Spacer></Spacer>
 
       <OtherGrowEvents previousEvents={previousEvents} laterEvents={[]} />
     </VStack>

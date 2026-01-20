@@ -1,7 +1,7 @@
 import EventCTA from '@/components/EventCTA';
 import { Box, BoxProps, Divider, Flex } from '@chakra-ui/react';
 import { createClient } from '@supabase/supabase-js';
-import fs from "fs";
+import fs from 'fs';
 import ical, { ICalCalendarMethod } from 'ical-generator';
 import { getEvents } from 'modules/events/api';
 import { GrowEvent } from 'modules/events/types';
@@ -18,13 +18,12 @@ import WaitingForBlock from 'modules/landing/WaitingForBlock';
 import SponsorsAndSupporters from 'modules/landing/sponsor/Sponsors';
 import { getSponsors } from 'modules/sponsor/api';
 import { Sponsor } from 'modules/sponsor/types';
-import path from "path";
+import path from 'path';
 import { PropsWithChildren } from 'react';
 import { getSeason } from 'utils/formatters';
 
 export const createCalendar = (events: GrowEvent[]) => {
-
-    const calendar = ical({ name: "PionierGarage GROW Events" });
+    const calendar = ical({ name: 'PionierGarage GROW Events' });
     calendar.method(ICalCalendarMethod.REQUEST);
 
     for (const e of events) {
@@ -33,13 +32,13 @@ export const createCalendar = (events: GrowEvent[]) => {
             end: new Date(new Date(e.date).getTime() + 60 * 60 * 1000),
             summary: e.title,
             description: e.description,
-            location: e.location ?? "",
-            url: e.href ?? "https://grow.pioniergarage.de/",
+            location: e.location ?? '',
+            url: e.href ?? 'https://grow.pioniergarage.de/',
         });
     }
 
-    return calendar.toString()
-}
+    return calendar.toString();
+};
 
 export const getStaticProps = async () => {
     const supabase = createClient(
@@ -48,7 +47,7 @@ export const getStaticProps = async () => {
     );
     const sponsors = await getSponsors(supabase);
     const faqs = await getFAQs(supabase);
-    const events = (await getEvents(supabase));
+    const events = await getEvents(supabase);
     const jsonEvents = events.map((e) => ({
         ...e,
         date: e.date.toISOString(),
@@ -56,13 +55,13 @@ export const getStaticProps = async () => {
 
     // Save events to ical file (for calendar api)
     fs.writeFileSync(
-        path.join(process.cwd(), 'public', "grow_calendar.ics"),
+        path.join(process.cwd(), 'public', 'grow_calendar.ics'),
         createCalendar(events)
     );
 
     return {
         props: { sponsors, faqs, jsonEvents },
-        revalidate: 60 * 30
+        revalidate: 60 * 30,
     };
 };
 
@@ -78,16 +77,22 @@ const Home: React.FC<HomeProps> = ({
     jsonEvents = [],
 }) => {
     const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
-    const kickoff: GrowEvent | undefined = events.find((e) => e.ref === 'kickoff');
-    const midterm: GrowEvent | undefined = events.find((e) => e.ref === 'midterm');
+    const kickoff: GrowEvent | undefined = events.find(
+        (e) => e.ref === 'kickoff'
+    );
+    const midterm: GrowEvent | undefined = events.find(
+        (e) => e.ref === 'midterm'
+    );
     const final: GrowEvent | undefined = events.find((e) => e.ref === 'final');
     const today = new Date();
     if (!kickoff && midterm && final) {
-        console.log("Database administrator: Please ensure the events with ref=='kickoff', ref=='midterm' and ref=='final' exist on the database!")
+        console.log(
+            "Database administrator: Please ensure the events with ref=='kickoff', ref=='midterm' and ref=='final' exist on the database!"
+        );
     }
     return (
         <>
-            {(kickoff && midterm && final) ?
+            {kickoff && midterm && final ? (
                 <>
                     <Section position="relative" minH="75vh">
                         <Box
@@ -105,10 +110,18 @@ const Home: React.FC<HomeProps> = ({
                                 height="100%"
                                 bgGradient="linear-gradient(128.16deg, #5557f777 8.06%, #d34dbc80 45% , #d6265170 83.26%)"
                                 borderRadius="50%"
-                                filter={{ base: 'blur(80px)', md: 'blur(150px)' }}
+                                filter={{
+                                    base: 'blur(80px)',
+                                    md: 'blur(150px)',
+                                }}
                             />
                         </Box>
-                        <MainInfoBlock kickoff={kickoff} midterm={midterm} final={final} today={today} />
+                        <MainInfoBlock
+                            kickoff={kickoff}
+                            midterm={midterm}
+                            final={final}
+                            today={today}
+                        />
                     </Section>
 
                     <Divider mb={12} />
@@ -121,7 +134,11 @@ const Home: React.FC<HomeProps> = ({
 
                     <Section>
                         {/*  das sind die 3 Blöcke mit Kick off, midterm und Final */}
-                        <ShortTimeline kickoff={kickoff} midterm={midterm} final={final} />
+                        <ShortTimeline
+                            kickoff={kickoff}
+                            midterm={midterm}
+                            final={final}
+                        />
                     </Section>
 
                     <Section mt="8rem">
@@ -130,21 +147,32 @@ const Home: React.FC<HomeProps> = ({
                     </Section>
 
                     <Section id="timeline" mt="8rem" mb="4rem">
-                        {events.length > 3 ?
-                            <LongTimeline events={events} kickoffDate={kickoff.date} />
-                            :
-                            <TimelinePlaceholder season={getSeason(kickoff.date)} />
-                        }
+                        {events.length > 3 ? (
+                            <LongTimeline
+                                events={events}
+                                kickoffDate={kickoff.date}
+                            />
+                        ) : (
+                            <TimelinePlaceholder
+                                season={getSeason(kickoff.date)}
+                            />
+                        )}
                     </Section>
 
                     <Section position="relative" px={0}>
                         <WaitingForBlock />
-                        <Flex flexDir="column"
-                            align='center'
-                            mt={6}
-                        >
-                            <EventCTA today={today} event={final} start={midterm.date} text="Visit this year's GROW Final!" />
-                            <EventCTA today={today} event={kickoff} text='Sign Up for the Kickoff!' />
+                        <Flex flexDir="column" align="center" mt={6}>
+                            <EventCTA
+                                today={today}
+                                event={final}
+                                start={midterm.date}
+                                text="Visit this year's GROW Final!"
+                            />
+                            <EventCTA
+                                today={today}
+                                event={kickoff}
+                                text="Sign Up for the Kickoff!"
+                            />
                         </Flex>
                     </Section>
 
@@ -158,7 +186,7 @@ const Home: React.FC<HomeProps> = ({
                         <Faqs faqs={faqs} />
                     </Section>
                 </>
-                :
+            ) : (
                 <>
                     <Section position="relative" minH="75vh">
                         <Box
@@ -176,7 +204,10 @@ const Home: React.FC<HomeProps> = ({
                                 height="100%"
                                 bgGradient="linear-gradient(128.16deg, #5557f777 8.06%, #d34dbc80 45% , #d6265170 83.26%)"
                                 borderRadius="50%"
-                                filter={{ base: 'blur(80px)', md: 'blur(150px)' }}
+                                filter={{
+                                    base: 'blur(80px)',
+                                    md: 'blur(150px)',
+                                }}
                             />
                         </Box>
                         <MainInfoBlock today={today} />
@@ -206,11 +237,13 @@ const Home: React.FC<HomeProps> = ({
 
                     <Section position="relative" px={0}>
                         <WaitingForBlock />
-                        <Flex flexDir="column"
-                            align='center'
-                            mt={6}
-                        >
-                            <EventCTA today={today} start={today} text="Want to learn more?" event_href='https://www.pioniergarage.de/kontakt' />
+                        <Flex flexDir="column" align="center" mt={6}>
+                            <EventCTA
+                                today={today}
+                                start={today}
+                                text="Want to learn more?"
+                                event_href="https://www.pioniergarage.de/kontakt"
+                            />
                         </Flex>
                     </Section>
 
@@ -224,7 +257,7 @@ const Home: React.FC<HomeProps> = ({
                         <Faqs faqs={faqs} />
                     </Section>
                 </>
-            }
+            )}
         </>
     );
 };

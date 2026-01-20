@@ -1,5 +1,5 @@
 import { Box, Flex, FlexProps, useToast } from '@chakra-ui/react';
-import { useMemo } from 'react';
+import { ReactElement, useMemo } from 'react';
 
 import {
     FaCalendarAlt,
@@ -10,14 +10,13 @@ import {
     FaInfo,
     FaMapMarkerAlt,
     FaStar,
-    FaUser
+    FaUser,
 } from 'react-icons/fa';
 import { formatDateToICS, growFormattedDate } from 'utils/formatters';
 import { EventCategory, EventType, GrowEvent } from '../types';
 import { calculateEndDate, formatEventTime } from '../utils';
 import EventTag from './EventTag';
 import { GrowEventCardProps } from './GrowEventCard';
-
 
 type EventTagListProps = FlexProps & {
     event: GrowEvent;
@@ -26,6 +25,7 @@ type EventTagListProps = FlexProps & {
     show_date?: boolean;
     registration?: GrowEventCardProps['registration'];
     isClickable?: boolean;
+    children?: ReactElement<typeof EventTag>;
 };
 
 const EventTagList = ({
@@ -35,6 +35,7 @@ const EventTagList = ({
     show_date = false,
     registration,
     isClickable,
+    children,
     ...flexProps
 }: EventTagListProps) => {
     const toast = useToast();
@@ -46,7 +47,7 @@ const EventTagList = ({
     function truncateText(text: string, maxLength = 20): string {
         if (text.length <= maxLength) return text;
         const truncated = text.slice(0, maxLength);
-        return truncated.slice(0, truncated.lastIndexOf(" ")) + "...";
+        return truncated.slice(0, truncated.lastIndexOf(' ')) + '...';
     }
 
     const copyToClipboard = (location: string) => {
@@ -56,11 +57,7 @@ const EventTagList = ({
 
         toast({
             title: `Copied to Clipboard!`,
-            description: (
-                <Box wordBreak="break-all">
-                    {location}
-                </Box>
-            ),
+            description: <Box wordBreak="break-all">{location}</Box>,
             status: 'success',
             duration: 3000,
             isClosable: true,
@@ -87,12 +84,14 @@ END:VEVENT
 END:VCALENDAR
 `;
 
-        const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
+        const blob = new Blob([icsContent], {
+            type: 'text/calendar;charset=utf-8',
+        });
         const url = URL.createObjectURL(blob);
 
-        const a = document.createElement("a");
+        const a = document.createElement('a');
         a.href = url;
-        a.download = `${event.title.replace(/\s+/g, "_")}.ics`;
+        a.download = `${event.title.replace(/\s+/g, '_')}.ics`;
         a.click();
 
         URL.revokeObjectURL(url);
@@ -107,11 +106,25 @@ END:VCALENDAR
             alignItems="center"
             {...flexProps}
         >
-            <EventTag icon={FaCalendarAlt} transparent={transparent} onClick={isClickable ? () => createICS(event) : undefined}>
-                {show_date ? growFormattedDate(event.date, undefined, undefined, true) : eventTimeFormatted}
+            <EventTag
+                icon={FaCalendarAlt}
+                transparent={transparent}
+                onClick={isClickable ? () => createICS(event) : undefined}
+            >
+                {show_date
+                    ? growFormattedDate(event.date, undefined, undefined, true)
+                    : eventTimeFormatted}
             </EventTag>
             {event.location && (
-                <EventTag icon={FaMapMarkerAlt} transparent={transparent} onClick={isClickable ? () => copyToClipboard(event.location) : undefined}>
+                <EventTag
+                    icon={FaMapMarkerAlt}
+                    transparent={transparent}
+                    onClick={
+                        isClickable
+                            ? () => copyToClipboard(event.location)
+                            : undefined
+                    }
+                >
                     {truncateText(event.location)}
                 </EventTag>
             )}
@@ -125,11 +138,12 @@ END:VCALENDAR
                     Online
                 </EventTag>
             )}
+            {children}
 
-            {!hide_category &&
+            {!hide_category && (
                 <>
                     {event.eventCategory === EventCategory.Grow && (
-                        <EventTag icon={FaStar} transparent={transparent} >
+                        <EventTag icon={FaStar} transparent={transparent}>
                             GROW
                         </EventTag>
                     )}
@@ -144,9 +158,7 @@ END:VCALENDAR
                         </EventTag>
                     )}
                 </>
-            }
-
-
+            )}
 
             {registration && (
                 <EventTag
