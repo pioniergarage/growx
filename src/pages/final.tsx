@@ -81,7 +81,11 @@ const FinalLandingPage = () => {
 
   return (
     <VStack>
-      <VStack alignItems="stretch" marginTop={-6} maxW={'100%'}>
+      <VStack
+        alignItems="stretch"
+        marginTop={-6}
+        maxW={{ base: 'container.xl', md: '100%' }}
+      >
         <EventHero
           title={finalEventTimeline.title}
           image={finalEventTimeline.image}

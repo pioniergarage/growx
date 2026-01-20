@@ -1,7 +1,7 @@
 import EventDescription from '@/components/events/EventDescription';
 import EventHero from '@/components/events/EventHero';
 import OtherGrowEvents from '@/components/events/OtherGrowEvents';
-import { Box, Skeleton, Text, VStack } from '@chakra-ui/react';
+import { Box, HStack, Skeleton, Text, VStack } from '@chakra-ui/react';
 import { useGrowEvents } from 'modules/events/hooks';
 import { GrowEvent } from 'modules/events/types';
 import GrowEventVideo from 'modules/landing/GrowEventVideo';
@@ -64,7 +64,11 @@ const MidtermLandingPage = () => {
 
     return (
         <VStack>
-            <VStack alignItems="stretch" marginTop={-6}>
+            <VStack
+                alignItems="stretch"
+                marginTop={-6}
+                maxW={{ base: 'container.xl', md: '100%' }}
+            >
                 <EventHero
                     title={midtermEventTimeline.title}
                     image={midtermEventTimeline.image}
@@ -73,11 +77,14 @@ const MidtermLandingPage = () => {
                 />
             </VStack>
 
-            <EventDescription
-                description={midtermEventTimeline.description}
-                today={today}
-                event={midtermEventTimeline.event}
-            />
+            <HStack width={'100%'} justifyContent="space-between">
+                <EventDescription
+                    description={midtermEventTimeline.description}
+                    today={today}
+                    event={midtermEventTimeline.event}
+                    event_start={kickoff.date}
+                />
+            </HStack>
             <GrowEventVideo event={midtermEventTimeline.event} />
 
             <OtherGrowEvents

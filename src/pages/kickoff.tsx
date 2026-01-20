@@ -1,7 +1,7 @@
 import EventDescription from '@/components/events/EventDescription';
 import EventHero from '@/components/events/EventHero';
 import OtherGrowEvents from '@/components/events/OtherGrowEvents';
-import { Box, Skeleton, Text, VStack } from '@chakra-ui/react';
+import { Box, HStack, Skeleton, Spacer, Text, VStack } from '@chakra-ui/react';
 
 import { useGrowEvents } from 'modules/events/hooks';
 import { GrowEvent } from 'modules/events/types';
@@ -60,7 +60,7 @@ const KickoffLandingPage = () => {
     ];
 
     return (
-        <VStack>
+        <>
             {isLoading ? (
                 <Box>
                     <Skeleton height="1em" width="100%" />
@@ -72,8 +72,12 @@ const KickoffLandingPage = () => {
                     <Skeleton height="1em" width="70%" />
                 </Box>
             ) : kickoffEventTimeline ? (
-                <>
-                    <VStack alignItems="stretch" marginTop={-6}>
+                <VStack>
+                    <VStack
+                        alignItems="stretch"
+                        marginTop={-6}
+                        maxW={{ base: 'container.xl', md: '100%' }}
+                    >
                         <EventHero
                             title={kickoffEventTimeline.title}
                             image={kickoffEventTimeline.image}
@@ -81,12 +85,24 @@ const KickoffLandingPage = () => {
                             imagePosition="center"
                         />
                     </VStack>
+                    <HStack width={'100%'} justifyContent="space-between">
+                        <EventDescription
+                            description={kickoffEventTimeline.description}
+                            today={today}
+                            event={kickoffEventTimeline.event}
+                            event_start={
+                                kickoffEvent
+                                    ? new Date(
+                                        new Date(kickoffEvent.date).setMonth(
+                                            kickoffEvent.date.getMonth() - 1
+                                        )
+                                    )
+                                    : today
+                            }
+                        />
+                    </HStack>
 
-                    <EventDescription
-                        description={kickoffEventTimeline.description}
-                        today={today}
-                        event={kickoffEventTimeline.event}
-                    />
+                    <Spacer></Spacer>
 
                     <GrowEventVideo event={kickoffEventTimeline.event} />
 
@@ -94,11 +110,11 @@ const KickoffLandingPage = () => {
                         previousEvents={[]}
                         laterEvents={laterEvents}
                     />
-                </>
+                </VStack>
             ) : (
                 <Text></Text>
             )}
-        </VStack>
+        </>
     );
 };
 
