@@ -1,45 +1,41 @@
 import EventDescription from '@/components/events/EventDescription';
 import EventHero from '@/components/events/EventHero';
 import OtherGrowEvents from '@/components/events/OtherGrowEvents';
-import {
-    Box,
-    Skeleton,
-    Text,
-    VStack
-} from '@chakra-ui/react';
+import { Box, Skeleton, Text, VStack } from '@chakra-ui/react';
 
 import { useGrowEvents } from 'modules/events/hooks';
 import { GrowEvent } from 'modules/events/types';
 import GrowEventVideo from 'modules/landing/GrowEventVideo';
 import { TimeLineItemProps } from 'modules/landing/ShortTimeline';
 
-
 // TODO: this should fetch the link to the final by index from a "Links" table on the database.
-type KickoffProps = {
-    event: GrowEvent;
-    title: string;
-    url: string;
-    description: string;
-    image: string;
-    objectPosition?: string;
-    // videoUrl?: string;
-};
+// type KickoffProps = {
+//     event: GrowEvent;
+//     title: string;
+//     url: string;
+//     description: string;
+//     image: string;
+//     objectPosition?: string;
+//     // videoUrl?: string;
+// };
 
-const KickoffLandingPage = (props: KickoffProps) => {
+const KickoffLandingPage = () => {
     const { events, isLoading, error } = useGrowEvents();
     const kickoffEvent = events?.find((e) => e.ref === 'kickoff');
-    const kickoffEventTimeline = kickoffEvent ? {
-        event: kickoffEvent,
-        title: 'Kickoff Event',
-        url: '/kickoff',
-        description: `Pitch your idea, find a team or simply learn more about the contest. 
+    const kickoffEventTimeline = kickoffEvent
+        ? {
+            event: kickoffEvent,
+            title: 'Kickoff Event',
+            url: '/kickoff',
+            description: `Pitch your idea, find a team or simply learn more about the contest. 
             The kickoff is where the fun starts, whether you already applied or you're up for a spontaneous adventure. `,
-        image: 'notes.jpg',
-        // videoUrl: 'https://www.youtube.com/watch?v=H9l3KCKCm00',
-    } : undefined;
+            image: 'notes.jpg',
+            // videoUrl: 'https://www.youtube.com/watch?v=H9l3KCKCm00',
+        }
+        : undefined;
 
-    const midterm: GrowEvent = events.filter((e) => e.ref == 'midterm')[0]
-    const final: GrowEvent = events.filter((e) => e.ref == 'final')[0]
+    const midterm: GrowEvent = events.filter((e) => e.ref == 'midterm')[0];
+    const final: GrowEvent = events.filter((e) => e.ref == 'final')[0];
     const today = new Date();
 
     const laterEvents: TimeLineItemProps[] = [
@@ -82,7 +78,7 @@ const KickoffLandingPage = (props: KickoffProps) => {
                             title={kickoffEventTimeline.title}
                             image={kickoffEventTimeline.image}
                             event={kickoffEventTimeline.event}
-                            imagePosition='center'
+                            imagePosition="center"
                         />
                     </VStack>
 
@@ -94,14 +90,15 @@ const KickoffLandingPage = (props: KickoffProps) => {
 
                     <GrowEventVideo event={kickoffEventTimeline.event} />
 
-                    <OtherGrowEvents previousEvents={[]} laterEvents={laterEvents} />
+                    <OtherGrowEvents
+                        previousEvents={[]}
+                        laterEvents={laterEvents}
+                    />
                 </>
-
             ) : (
                 <Text></Text>
-            )
-            }
-        </VStack >
+            )}
+        </VStack>
     );
 };
 

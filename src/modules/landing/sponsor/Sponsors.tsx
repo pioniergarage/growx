@@ -22,7 +22,7 @@ const SponsorsAndSupporters = ({ sponsors }: SponsorAndSupporterProps) => {
                 {patrons.length > 0 &&
                     <GridItem>
                         <Heading size="lg" color="whiteAlpha.600" mb={2}>
-                            Förderer
+                            Support
                         </Heading>
                         <SponsorGrid
                             sponsors={patrons}
@@ -83,7 +83,7 @@ const SponsorsAndSupporters = ({ sponsors }: SponsorAndSupporterProps) => {
                 {supporters.length > 0 &&
                     <GridItem>
                         <Heading size="lg" color="whiteAlpha.600" mb={2}>
-                            Support
+                            Community Partners
                         </Heading>
                         <SponsorGrid
                             sponsors={supporters}

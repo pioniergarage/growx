@@ -1,20 +1,23 @@
-import { VStack, HStack, Text } from '@chakra-ui/react';
+import { HStack, Text, VStack } from '@chakra-ui/react';
 import { GrowEvent } from 'modules/events/types';
-import KickoffCTA from '@/components/KickoffCTA';
+import EventCTA from '../EventCTA';
 
 type EventDescriptionProps = {
   description: string;
   today: Date;
-  event: GrowEvent;           // das Seiten-Event (midterm/final/…)
+  event: GrowEvent; // das Seiten-Event (midterm/final/…)
   kickoff?: GrowEvent | null; // explizit das Kickoff-Event
 };
 
-
-const EventDescription = ({ description, today, event, kickoff }: EventDescriptionProps) => (
+const EventDescription = ({
+  description,
+  today,
+  kickoff,
+}: EventDescriptionProps) => (
   <VStack alignItems="flex-start">
     <Text>{description}</Text>
     <HStack p={5} alignItems="center" justifyContent="center">
-      {kickoff && <KickoffCTA today={today} kickoff={kickoff} />}
+      {kickoff && <EventCTA today={today} event={kickoff} text={''} />}
     </HStack>
     {/* … */}
   </VStack>

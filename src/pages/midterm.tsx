@@ -9,21 +9,23 @@ import { TimeLineItemProps } from 'modules/landing/ShortTimeline';
 
 // ...existing MidtermProps type...
 
-const MidtermLandingPage = (props: MidtermProps) => {
+const MidtermLandingPage = () => {
     const { events, isLoading, error } = useGrowEvents();
     const midtermEvent = events?.find((e) => e.ref === 'midterm');
-    const midtermEventTimeline = midtermEvent ? {
-        event: midtermEvent,
-        title: 'Midterm Event',
-        url: '/midterm',
-        description: `Half time break! Teams pitch their first progress and fight about advancing to the final. 
+    const midtermEventTimeline = midtermEvent
+        ? {
+            event: midtermEvent,
+            title: 'Midterm Event',
+            url: '/midterm',
+            description: `Half time break! Teams pitch their first progress and fight about advancing to the final. 
             Pitch what you've accomplished in the last 5 weeks in front of a small audience and the jury. `,
-        image: 'speech.jpg',
-    } : undefined;
+            image: 'speech.jpg',
+        }
+        : undefined;
 
     const final: GrowEvent = events.filter((e) => e.ref == 'final')[0];
     const today = new Date();
-    const kickoff: GrowEvent = events.filter((e) => e.ref == 'kickoff')[0]
+    const kickoff: GrowEvent = events.filter((e) => e.ref == 'kickoff')[0];
     const previousEvents: TimeLineItemProps[] = [
         {
             event: kickoff,
@@ -34,15 +36,19 @@ const MidtermLandingPage = (props: MidtermProps) => {
             image: 'notes.jpg',
         },
     ];
-    const laterEvents = final ? [{
-        event: final,
-        title: 'Grand Final',
-        url: '/final',
-        description: `Present your results to a huge crowd and show how far you have come. 
+    const laterEvents = final
+        ? [
+            {
+                event: final,
+                title: 'Grand Final',
+                url: '/final',
+                description: `Present your results to a huge crowd and show how far you have come. 
             Each participant will have learned a lot and gained a lot of experience by this point. 
             The groups with the greatest progress will receive prizes. This is what you've been working for!`,
-        image: 'audimax.jpg',
-    }] : [];
+                image: 'audimax.jpg',
+            },
+        ]
+        : [];
     if (isLoading || error) {
         return (
             <Box>
@@ -63,7 +69,7 @@ const MidtermLandingPage = (props: MidtermProps) => {
                     title={midtermEventTimeline.title}
                     image={midtermEventTimeline.image}
                     event={midtermEventTimeline.event}
-                    imagePosition='top'
+                    imagePosition="top"
                 />
             </VStack>
 
@@ -74,7 +80,10 @@ const MidtermLandingPage = (props: MidtermProps) => {
             />
             <GrowEventVideo event={midtermEventTimeline.event} />
 
-            <OtherGrowEvents previousEvents={previousEvents} laterEvents={laterEvents} />
+            <OtherGrowEvents
+                previousEvents={previousEvents}
+                laterEvents={laterEvents}
+            />
         </VStack>
     );
 };

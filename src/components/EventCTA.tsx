@@ -4,12 +4,16 @@ import { keyframes } from "@emotion/react";
 import { GrowEvent } from "modules/events/types";
 import React from "react";
 
-interface KickoffCTAProps {
+interface EventCTAProps {
     today: Date;
-    kickoff: GrowEvent;
+    event?: GrowEvent;
+    event_date?: Date;
+    event_href?: string;
+    text: string;
+    start?: Date;
 }
 
-const KickoffCTA: React.FC<KickoffCTAProps> = ({ today, kickoff }) => {
+const EventCTA: React.FC<EventCTAProps> = ({ today, event, text, start, event_date, event_href }) => {
     const glow = keyframes`
   0% {
     box-shadow: 0 0 20px 5px rgba(85,87,247,0.3);
@@ -23,15 +27,19 @@ const KickoffCTA: React.FC<KickoffCTAProps> = ({ today, kickoff }) => {
 `;
 
     const glowAnimation = `${glow} 6s ease-in-out infinite`;
-    const kickoffDate = kickoff.date;
-    const kickoffHref = kickoff.href;
+    const eventDate = event ? event.date : event_date;
+    const eventHref = event ? event.href : event_href;
 
-    if (!(today < kickoffDate && kickoffHref && kickoffHref.length > 0)) {
+    if (eventDate && (today >= eventDate || !eventHref || eventHref.length < 1) || (start && today < start)) {
+        return null;
+    }
+
+    if (!eventHref) {
         return null;
     }
 
     const handleClick = () => {
-        if (kickoffHref) window.location.href = kickoffHref;
+        if (eventHref) window.location.href = eventHref;
     };
 
     return (
@@ -43,13 +51,14 @@ const KickoffCTA: React.FC<KickoffCTAProps> = ({ today, kickoff }) => {
                 leftIcon={<ExternalLinkIcon />}
                 onClick={handleClick}
                 shadow='0 0 20px 5px rgba(85,87,247,0.35)'
+                bgColor={'rgba(85,100,250,0.35)'}
                 animation={glowAnimation}
             >
-                <Heading size={{ base: "m", md: "l" }}>{'Sign Up for the Kickoff!'}</Heading>
+                <Heading size={{ base: "m", md: "l" }}>{text}</Heading>
             </Button>
 
         </Box>
     );
 };
 
-export default KickoffCTA;
+export default EventCTA;

@@ -1,4 +1,4 @@
-import KickoffCTA from '@/components/KickoffCTA';
+import EventCTA from '@/components/EventCTA';
 import {
     Box,
     Flex,
@@ -15,8 +15,9 @@ import { growFormattedDate } from 'utils/formatters';
 import AnimatedLogo from './AnimatedLogo';
 
 type InfoBlockProps = {
-    kickoff: GrowEvent;
-    final: GrowEvent;
+    kickoff?: GrowEvent;
+    midterm?: GrowEvent;
+    final?: GrowEvent;
     today: Date;
 };
 
@@ -38,6 +39,7 @@ function Fact({ amount, title, location }: { amount: string; title: string, loca
 
 const MainInfoBlock: React.FC<InfoBlockProps> = ({
     kickoff,
+    midterm,
     final,
     today
 }) => {
@@ -80,7 +82,27 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                             weeks. <br></br> Get support, build your prototype
                             and test your market.
                         </Text>
+
                     </Box>
+                    <Flex
+                        justifyContent={{
+                            base: 'center',
+                            lg: 'space-between',
+                        }}
+                        w="100%"
+                        mt={{
+                            base: '2',
+                            lg: '10%',
+                        }}
+                        mb='4'
+                        flexFlow={{
+                            base: 'column',
+                            lg: 'row'
+                        }}
+                        gap="4"
+                    >
+                        <EventCTA today={today} event={final} start={midterm?.date} text='Join us at the GROW Final!' />
+                    </Flex>
                     <Flex
                         justifyContent={{
                             base: 'space-around',
@@ -104,18 +126,20 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                             align={{ base: 'center', md: 'start' }}
                             mb={8}
                         >
-                            <Fact
+                            {kickoff && <Fact
                                 title="Start Kick-Off"
                                 amount={growFormattedDate(kickoff.date, today)}
                                 location={kickoff.location}
-                            />
-                            <KickoffCTA today={today} kickoff={kickoff} />
+                            />}
+
+                            <EventCTA today={today} event={kickoff} text='Sign Up for the Kickoff!' />
                         </Flex>
-                        <Fact
+                        {final && <Fact
                             title="Finale in Karlsruhe"
                             amount={growFormattedDate(final.date, today)}
                             location={final.location}
-                        />
+                        />}
+
                     </Flex>
                 </Flex>
 

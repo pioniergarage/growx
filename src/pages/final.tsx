@@ -9,7 +9,7 @@ import { TimeLineItemProps } from 'modules/landing/ShortTimeline';
 
 // ...existing FinalProps type...
 
-const FinalLandingPage = (props: FinalProps) => {
+const FinalLandingPage = () => {
   const { events, isLoading, error } = useGrowEvents();
 
   if (isLoading) {
@@ -22,7 +22,11 @@ const FinalLandingPage = (props: FinalProps) => {
   }
 
   if (error) {
-    return <Text color="red.500">Konnte Events nicht laden: {String(error)}</Text>;
+    return (
+      <Text color="red.500">
+        Konnte Events nicht laden: {String(error)}
+      </Text>
+    );
   }
 
   // Einheitlich mit Kleinbuchstaben
@@ -45,8 +49,8 @@ The groups with the greatest progress will receive prizes. This is what you've b
   }
 
   const today = new Date();
-  const midterm: GrowEvent = events.filter((e) => e.ref == 'midterm')[0]
-  const kickoff: GrowEvent = events.filter((e) => e.ref == 'kickoff')[0]
+  const midterm: GrowEvent = events.filter((e) => e.ref == 'midterm')[0];
+  const kickoff: GrowEvent = events.filter((e) => e.ref == 'kickoff')[0];
   const previousEvents: TimeLineItemProps[] = [
     {
       event: kickoff,
@@ -74,7 +78,7 @@ The groups with the greatest progress will receive prizes. This is what you've b
           title={finalEventTimeline.title}
           image={finalEventTimeline.image}
           event={finalEventTimeline.event}
-          imagePosition='center'
+          imagePosition="center"
         />
       </VStack>
 

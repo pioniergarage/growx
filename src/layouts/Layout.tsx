@@ -1,5 +1,7 @@
 import SupabaseProvider from '@/components/providers/SupabaseProvider';
-import { Box } from '@chakra-ui/react';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { Box, Link, Text } from '@chakra-ui/react';
+import { useGrowEvents } from 'modules/events/hooks';
 import Footer from 'modules/landing/Footer';
 import GrowNav from 'modules/navigation/GrowNav';
 import Head from 'next/head';
@@ -31,6 +33,7 @@ export default function Layout({ children }: PropsWithChildren) {
 
             <SupabaseProvider>
                 <QueryClientProvider client={queryClient}>
+                    <FinalBanner />
                     <GrowNav />
                     <MainWrapper>{children}</MainWrapper>
                     <Footer />
@@ -40,6 +43,31 @@ export default function Layout({ children }: PropsWithChildren) {
         </>
     );
 }
+
+const FinalBanner: React.FC = () => {
+    const { events } = useGrowEvents();
+    const finalEvent = events?.find((e) => e.ref === 'final');
+    const today = new Date();
+    const title = "Join us at the GROW Final '26";
+
+    if (finalEvent?.date && finalEvent?.date < today) {
+        return null;
+    }
+
+    return (
+        <Box backgroundColor='rgba(85,100,250, 0.35)' width='100%'>
+            <Box mx="auto" maxW="container.xl" padding='1em 2em' fontWeight="semibold" textAlign={'center'}>
+                {finalEvent?.href ?
+                    <Link href={finalEvent?.href} display={'flex'} gap={'2'} alignItems={'center'} justifyContent={'center'}>
+                        <ExternalLinkIcon />
+                        {title}
+                    </Link> :
+                    <Text>{title}</Text>
+                }
+            </Box>
+        </Box>
+    );
+};
 
 const MainWrapper: React.FC<PropsWithChildren> = ({ children }) => {
     return (
