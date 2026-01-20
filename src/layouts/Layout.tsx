@@ -6,6 +6,7 @@ import Footer from 'modules/landing/Footer';
 import GrowNav from 'modules/navigation/GrowNav';
 import { useProfile } from 'modules/profile/hooks';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import React, { PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
@@ -48,6 +49,7 @@ export default function Layout({ children }: PropsWithChildren) {
 const FinalBanner: React.FC = () => {
     const { events } = useGrowEvents();
     const { profile } = useProfile();
+    const router = useRouter();
     const finalEvent = events?.find((e) => e.ref === 'final');
     const today = new Date();
     const title = "Join us at the GROW Final '26";
@@ -58,6 +60,10 @@ const FinalBanner: React.FC = () => {
     }
 
     if (isLoggedIn) {
+        return null;
+    }
+
+    if (router.asPath != '/') {
         return null;
     }
 
