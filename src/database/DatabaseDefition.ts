@@ -56,18 +56,21 @@ export type Database = {
       }
       event_registrations: {
         Row: {
+          checked_in: boolean
           event_id: number
           inserted_at: string
           present: boolean
           user_id: string
         }
         Insert: {
+          checked_in?: boolean
           event_id: number
           inserted_at?: string
           present?: boolean
           user_id: string
         }
         Update: {
+          checked_in?: boolean
           event_id?: number
           inserted_at?: string
           present?: boolean
@@ -127,6 +130,7 @@ export type Database = {
           title: string
           type: Database["public"]["Enums"]["enum_event_type"] | null
           updated_at: string
+          videoUrl: string
         }
         Insert: {
           available_seats?: number
@@ -143,6 +147,7 @@ export type Database = {
           title?: string
           type?: Database["public"]["Enums"]["enum_event_type"] | null
           updated_at?: string
+          videoUrl?: string
         }
         Update: {
           available_seats?: number
@@ -159,6 +164,7 @@ export type Database = {
           title?: string
           type?: Database["public"]["Enums"]["enum_event_type"] | null
           updated_at?: string
+          videoUrl?: string
         }
         Relationships: []
       }

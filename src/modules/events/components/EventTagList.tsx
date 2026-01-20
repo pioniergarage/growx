@@ -1,19 +1,20 @@
-import { Flex, FlexProps } from '@chakra-ui/react';
-import { useMemo } from 'react';
+import { Box, Flex, FlexProps, useToast } from '@chakra-ui/react';
+import { ReactElement, useMemo } from 'react';
 
 import {
+    FaCalendarAlt,
     FaCheck,
     FaChromecast,
-    FaClock,
     FaCloud,
     FaExclamation,
     FaInfo,
     FaMapMarkerAlt,
     FaStar,
-    FaUser
+    FaUser,
 } from 'react-icons/fa';
+import { formatDateToICS, growFormattedDate } from 'utils/formatters';
 import { EventCategory, EventType, GrowEvent } from '../types';
-import { formatEventTime } from '../utils';
+import { calculateEndDate, formatEventTime } from '../utils';
 import EventTag from './EventTag';
 import { GrowEventCardProps } from './GrowEventCard';
 
@@ -21,35 +22,110 @@ type EventTagListProps = FlexProps & {
     event: GrowEvent;
     transparent?: boolean;
     hide_category?: boolean;
+    show_date?: boolean;
     registration?: GrowEventCardProps['registration'];
+    isClickable?: boolean;
+    children?: ReactElement<typeof EventTag>;
 };
 
 const EventTagList = ({
     event,
     transparent = false,
     hide_category = false,
+    show_date = false,
     registration,
+    isClickable,
+    children,
     ...flexProps
 }: EventTagListProps) => {
+    const toast = useToast();
     const eventTimeFormatted = useMemo(
         () => formatEventTime(event.date, event.duration),
         [event.date, event.duration]
     );
+
+    function truncateText(text: string, maxLength = 20): string {
+        if (text.length <= maxLength) return text;
+        const truncated = text.slice(0, maxLength);
+        return truncated.slice(0, truncated.lastIndexOf(' ')) + '...';
+    }
+
+    const copyToClipboard = (location: string) => {
+        navigator.clipboard.writeText(location).then(function () {
+            console.log('Async: Copying to clipboard was successful!');
+        });
+
+        toast({
+            title: `Copied to Clipboard!`,
+            description: <Box wordBreak="break-all">{location}</Box>,
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+        });
+    };
+
+    function createICS(event: GrowEvent) {
+        const startDate = event.date;
+        const endDate = calculateEndDate(startDate, event.duration);
+
+        const icsContent = `
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Your App//EN
+BEGIN:VEVENT
+UID:${Date.now()}
+DTSTAMP:${formatDateToICS(new Date())}
+DTSTART:${formatDateToICS(startDate)}
+DTEND:${formatDateToICS(endDate)}
+SUMMARY:GROW ${event.title}
+DESCRIPTION:${event.description}
+LOCATION:${event.location}
+END:VEVENT
+END:VCALENDAR
+`;
+
+        const blob = new Blob([icsContent], {
+            type: 'text/calendar;charset=utf-8',
+        });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${event.title.replace(/\s+/g, '_')}.ics`;
+        a.click();
+
+        URL.revokeObjectURL(url);
+    }
+
     return (
         <Flex
             mt={1}
             flexWrap="wrap"
             gap={2}
-            flexDir={{ base: 'column', sm: 'row' }}
-            alignItems="start"
+            flexDir={'row'}
+            alignItems="center"
             {...flexProps}
         >
-            <EventTag icon={FaClock} transparent={transparent}>
-                {eventTimeFormatted}
+            <EventTag
+                icon={FaCalendarAlt}
+                transparent={transparent}
+                onClick={isClickable ? () => createICS(event) : undefined}
+            >
+                {show_date
+                    ? growFormattedDate(event.date, undefined, undefined, true)
+                    : eventTimeFormatted}
             </EventTag>
             {event.location && (
-                <EventTag icon={FaMapMarkerAlt} transparent={transparent}>
-                    {event.location}
+                <EventTag
+                    icon={FaMapMarkerAlt}
+                    transparent={transparent}
+                    onClick={
+                        isClickable
+                            ? () => copyToClipboard(event.location)
+                            : undefined
+                    }
+                >
+                    {truncateText(event.location)}
                 </EventTag>
             )}
             {event.type === EventType.Hybrid && (
@@ -62,11 +138,12 @@ const EventTagList = ({
                     Online
                 </EventTag>
             )}
+            {children}
 
-            {!hide_category &&
+            {!hide_category && (
                 <>
                     {event.eventCategory === EventCategory.Grow && (
-                        <EventTag icon={FaStar} transparent={transparent} >
+                        <EventTag icon={FaStar} transparent={transparent}>
                             GROW
                         </EventTag>
                     )}
@@ -81,9 +158,7 @@ const EventTagList = ({
                         </EventTag>
                     )}
                 </>
-            }
-
-
+            )}
 
             {registration && (
                 <EventTag

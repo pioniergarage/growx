@@ -1,78 +1,117 @@
-import LinkListItem from '@/components/LinkListItem';
+import EventDescription from '@/components/events/EventDescription';
+import EventHero from '@/components/events/EventHero';
+import OtherGrowEvents from '@/components/events/OtherGrowEvents';
 import {
-    Box,
-    Heading,
-    SimpleGrid,
-    Skeleton,
-    Spacer,
-    Text,
-    VStack
+  Box,
+  Flex,
+  HStack,
+  Show,
+  Skeleton,
+  Spacer,
+  Text,
+  VStack,
 } from '@chakra-ui/react';
-
 import { useGrowEvents } from 'modules/events/hooks';
-import { TimelineItem } from 'modules/landing/ShortTimeline';
-import { getSeason } from 'utils/formatters';
+import { GrowEvent } from 'modules/events/types';
+import AnimatedLogo from 'modules/landing/AnimatedLogo';
+import { TimeLineItemProps } from 'modules/landing/ShortTimeline';
 
-// TODO: this should fetch the link to the final by index from a "Links" table on the database.
+// ...existing FinalProps type...
 
 const FinalLandingPage = () => {
-    const { events, isLoading, error } = useGrowEvents();
-    const finalEvent = events?.find((e) => e.ref === 'final');
-    const finalEventTimeline = finalEvent ? {
-        event: finalEvent,
-        title: 'Grand Final',
-        url: '/final',
-        description: `Present your results to a huge crowd and show how far you have come. 
-        Each participant will have learned a lot and gained a lot of experience by this point. 
-        The groups with the greatest progress will receive prizes. This is what you've been working for!`,
-        image: 'audimax.jpg',
-    } : undefined;
+  const { events, isLoading, error } = useGrowEvents();
 
-    const kickoff = events?.find((e) => e.ref === 'kickoff');
-    const season = kickoff ? getSeason(kickoff.date) : "";
+  if (isLoading) {
     return (
-        <VStack>
-            <Heading size="lg">GROW {season} Grand Final</Heading>
-            <Spacer mb={4} />
-            {isLoading ? (
-                <Box>
-                    <Skeleton height="1em" width="100%" />
-                    <Skeleton height="1em" width="70%" />
-                </Box>
-            ) : error ? (
-                <Box>
-                    <Skeleton height="1em" width="100%" />
-                    <Skeleton height="1em" width="70%" />
-                </Box>
-            ) : finalEventTimeline ? (
-                <>
-                    <SimpleGrid columns={[1, 1]} gap={8}>
-                        <TimelineItem {...finalEventTimeline} key={finalEventTimeline.title} />
-                        <VStack flexGrow={1} alignItems="stretch" gap={6}>
-                            <p>
-                                10 teams, each with a groundbreaking idea, compete for one grand prize.
-                            </p>
-                            <p>
-                                It’s time for the GROW final and the stakes are high.
-                            </p>
-                            <p>
-                                Who will rise to the top?
-                            </p>
-                            <p>
-                                Join us at the GROW finale and witness the next big thing in innovation!
-                            </p>
-                        </VStack>
-                        <LinkListItem link={{ id: 1, title: `${finalEvent?.title} ${finalEvent?.date ? getSeason(finalEvent?.date, 1) : ''}`, href: finalEvent?.href ?? 'https://grow.pioniergarage.de', img: "/images/icons/grow.png" }} />
-                    </SimpleGrid>
-
-                </>
-
-            ) : (
-                <Text></Text>
-            )
-            }
-        </VStack >
+      <Box>
+        <Skeleton height="1em" width="100%" />
+        <Skeleton height="1em" width="70%" />
+      </Box>
     );
+  }
+
+  console.log(events);
+
+  if (error) {
+    return (
+      <Text color="red.500">
+        Konnte Events nicht laden: {String(error)}
+      </Text>
+    );
+  }
+
+  // Einheitlich mit Kleinbuchstaben
+  const finalEvent = events?.find((e) => e.ref === 'final');
+
+  if (!finalEvent) {
+    return <Text>Final-Event wurde nicht gefunden.</Text>;
+  }
+
+  const today = new Date();
+  const midterm: GrowEvent = events.filter((e) => e.ref == 'midterm')[0];
+  const kickoff: GrowEvent = events.filter((e) => e.ref == 'kickoff')[0];
+
+  const finalEventTimeline = {
+    event: finalEvent,
+    title: 'GROW Final',
+    url: '/final',
+    description: `IN AN AUDIMAX NEAR YOU...\n After months of hard work the participants in this year's GROW competition will pitch their startups to our panel of expert judges and a huge audience.\n The teams are in a breakneck race for our top three prizes as well as the Aurel Steinert Foundation Sustainabillity Award, and more from our sponsors.\n\n Only one question remains: who will make it to the top?`,
+    image: 'audimax.jpg',
+  };
+
+  const previousEvents: TimeLineItemProps[] = [
+    {
+      event: kickoff,
+      title: 'Kickoff',
+      url: '/kickoff',
+      description: `Pitch your idea, find a team or simply learn more about the contest. 
+            The kickoff is where the fun starts, whether you already applied or you're up for a spontaneous adventure. `,
+      image: 'notes.jpg',
+    },
+    {
+      event: midterm,
+      title: 'Midterm Pitch',
+      url: '/midterm',
+      description: `Half time break! Teams pitch their first progress and fight about advancing to the final. 
+              Pitch what you've accomplished in the last 5 weeks in front of a small audience and the jury. `,
+      image: 'speech.jpg',
+      objectPosition: '0 0',
+    },
+  ];
+
+  return (
+    <VStack>
+      <VStack
+        alignItems="stretch"
+        marginTop={-6}
+        maxW={{ base: 'container.xl', md: '100%' }}
+      >
+        <EventHero
+          title={finalEventTimeline.title}
+          image={finalEventTimeline.image}
+          event={finalEventTimeline.event}
+          imagePosition="center"
+        ></EventHero>
+      </VStack>
+      <HStack justifyContent="space-between">
+        <EventDescription
+          description={finalEventTimeline.description}
+          today={today}
+          event={finalEvent}
+          event_start={midterm.date}
+          CTA_text="Find out at the GROW final!"
+        />
+        <Show above="md">
+          <Flex className=" flex-col">
+            <AnimatedLogo boxSize={250} />
+          </Flex>
+        </Show>
+      </HStack>
+      <Spacer></Spacer>
+
+      <OtherGrowEvents previousEvents={previousEvents} laterEvents={[]} />
+    </VStack>
+  );
 };
 
 export default FinalLandingPage;
