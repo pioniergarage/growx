@@ -34,6 +34,9 @@
         "react-tsparticles": "^2.5.3",
         "tsparticles": "^2.5.3"
     },
+    "overrides": {
+        "tar": "^7.4.3"
+    },
     "devDependencies": {
         "@types/node": "18.0.3",
         "@types/react": "18.0.15",
@@ -44,7 +47,7 @@
         "eslint-config-prettier": "^8.5.0",
         "postcss": "^8.4.14",
         "prettier": "^2.7.1",
-        "supabase": "^1.200.3",
+        "supabase": "^2.72.8",
         "tailwindcss": "^3.1.5",
         "typescript": "4.7.4"
     },
