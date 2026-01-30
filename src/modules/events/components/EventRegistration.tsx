@@ -3,28 +3,33 @@ import {
     Alert,
     AlertIcon,
     Button,
+    HStack,
     Text,
     useDisclosure,
     useToast,
+    VStack
 } from '@chakra-ui/react';
 import { useProfile } from 'modules/profile/hooks';
+import { useRouter } from 'next/router';
 import { useMemo } from 'react';
+import QRCode from 'react-qr-code';
 import {
     useRegisterUserToEvent,
     useRegistrationsOfUser,
     useUnregisterUserFromEvent,
 } from '../hooks';
-import { GrowEventWithSeats } from '../types';
+import { GrowEvent } from '../types';
 import SignUpDialog from './SignUpDialog';
 
 type EventRegistrationProps = {
-    event: GrowEventWithSeats;
+    event: GrowEvent;
 };
 
 const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
     const toast = useToast();
     const { profile } = useProfile();
     const user = useUser();
+    const router = useRouter();
 
     const { registrations } = useRegistrationsOfUser(profile?.userId);
     const registration = useMemo(
@@ -46,12 +51,21 @@ const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
                 isClosable: true,
             });
         } catch (error) {
-            toast({
-                title: 'Something went wrong...',
-                status: 'error',
-                duration: 2000,
-                isClosable: true,
-            });
+            if (typeof error === 'object' && error !== null && 'message' in error && (error as { message: string }).message) {
+                toast({
+                    title: (error as { message: string }).message,
+                    status: 'error',
+                    duration: 2000,
+                    isClosable: true,
+                });
+            } else {
+                toast({
+                    title: 'Something went wrong...',
+                    status: 'error',
+                    duration: 2000,
+                    isClosable: true,
+                });
+            }
         }
     }
 
@@ -77,9 +91,9 @@ const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
 
     const { onOpen, isOpen, onClose } = useDisclosure();
     return (
-        <>
+        <VStack>
             {!registration && (
-                <Button onClick={onOpen} isLoading={isRegistering}>
+                <Button onClick={profile == undefined ? () => { router.push('/connect/login') } : onOpen} isLoading={isRegistering}>
                     Sign up
                 </Button>
             )}
@@ -93,28 +107,42 @@ const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
                     borderColor="gray.700"
                     borderRadius={4}
                     fontSize="sm"
+                    flexDir='column'
+                    justifyContent={'center'}
+                    gap='1em'
                 >
-                    <AlertIcon />
+                    <HStack>
+                        <AlertIcon />
+                        <Text flexGrow={1}>
+                            Signed up (
+                            {registration.present ? 'presence' : 'online'} seat)
+                        </Text>
+                        <Button
+                            ml={2}
+                            size="sm"
+                            onClick={deregister}
+                            isLoading={isUnregistering}
+                        >
+                            Cancel
+                        </Button>
+                    </HStack>
+
+                    <QRCode
+                        size={400}
+                        style={{ height: "auto", maxWidth: "90%", width: "400px", padding: '1em' }}
+                        value={`${window.location.origin}/connect/registration?user=${user?.email}_${user?.id}&event=${event.id}`}
+                        viewBox={`0 0 256 256`}
+                    />
                     <Text flexGrow={1}>
-                        Signed up (
-                        {registration.present ? 'presence' : 'online'} seat)
+                        Please show this code to check in.
                     </Text>
-                    <Button
-                        ml={2}
-                        size="sm"
-                        onClick={deregister}
-                        isLoading={isUnregistering}
-                    >
-                        Cancel
-                    </Button>
                 </Alert>
             )}
 
 
             <SignUpDialog
                 isOfflineEnabled={
-                    (event.type === 'Hybrid' || event.type === 'Offline') &&
-                    event.presenceSeatsLeft > 0
+                    (event.type === 'Hybrid' || event.type === 'Offline')
                 }
                 isOnlineEnabled={
                     event.type === 'Hybrid' || event.type === 'Online'
@@ -127,7 +155,7 @@ const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
                 }}
                 onCancel={onClose}
             />
-        </>
+        </VStack>
     );
 };
 

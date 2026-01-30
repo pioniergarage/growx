@@ -7,14 +7,13 @@ import {
     Grid,
     GridItem,
     Heading,
-    Image
+    Image,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 
 interface LinkListItemProps {
-    link: { id: number; title: string; href: string; img: string; };
+    link: { id: number; title: string; href: string; img: string };
 }
-
 
 function LinkListItem({ link }: LinkListItemProps) {
     return (
@@ -48,14 +47,15 @@ function LinkListItem({ link }: LinkListItemProps) {
                                 leftIcon={<ExternalLinkIcon />}
                                 size="sm"
                                 variant="link"
-                                onClick={() => { window.location.href = link.href }}
+                                onClick={() => {
+                                    window.location.href = link.href;
+                                }}
                             >
                                 Go to Link
                             </Button>
                         </GridItem>
                     </Box>
                 </Flex>
-
             </Card>
         </Link>
     );

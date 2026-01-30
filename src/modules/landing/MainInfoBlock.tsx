@@ -1,83 +1,108 @@
-import { ExternalLinkIcon } from '@chakra-ui/icons';
+import EventCTA from '@/components/EventCTA';
 import {
     Box,
-    Button,
     Flex,
     Grid,
     GridItem,
     Heading,
     Show,
-    Spacer,
     Text
 } from '@chakra-ui/react';
+import EventTag from 'modules/events/components/EventTag';
 import { GrowEvent } from 'modules/events/types';
+import { FaMapMarkerAlt } from 'react-icons/fa';
 import { growFormattedDate } from 'utils/formatters';
 import AnimatedLogo from './AnimatedLogo';
 
 type InfoBlockProps = {
-    kickoff: GrowEvent;
-    final: GrowEvent;
+    kickoff?: GrowEvent;
+    midterm?: GrowEvent;
+    final?: GrowEvent;
+    today: Date;
 };
 
-function Fact({ amount, title }: { amount: string; title: string }) {
+function Fact({ amount, title, location }: { amount: string; title: string, location: string }) {
     return (
         <Box>
+            <Text variant="info">{title}</Text>
             <Heading lineHeight="8" size={{ base: 'xl', md: '2xl' }}>
                 {amount}
             </Heading>
-            <Text variant="info">{title}</Text>
+            <Box>
+                <EventTag icon={FaMapMarkerAlt} transparent={false}>
+                    {location}
+                </EventTag>
+            </Box>
         </Box>
     );
 }
 
 const MainInfoBlock: React.FC<InfoBlockProps> = ({
     kickoff,
-    final
+    midterm,
+    final,
+    today
 }) => {
-    const today = new Date();
     return (
         <Grid
-            templateColumns={{ base: '1fr', lg: '1fr 1fr' }}
+            templateColumns={{ base: '1fr', lg: '3fr 2fr' }}
             placeItems={{ base: 'center', lg: 'start' }}
             textAlign={{ base: 'center', lg: 'left' }}
-            mt={8}
+            mt={{
+                base: '0',
+                lg: '4',
+            }}
             columnGap={6}
             rowGap={12}
         >
             <GridItem>
                 <Flex
                     flexDir="column"
-                    gap={4}
+                    gap={2}
                     align={{ base: 'center', md: 'start' }}
                 >
                     <Heading
                         className="neon-text"
-                        lineHeight={1.0}
+                        lineHeight={0.9}
                         fontWeight="400"
-                        fontSize={{ base: '6rem', md: '6.5rem' }}
+                        fontSize={{ base: '5.5rem', md: '6.5rem' }}
                         mt={{
-                            lg: '10%',
+                            base: '0',
+                            lg: '5%'
                         }}
                     >
                         Let it <span className="neon-text2">Grow</span>
                     </Heading>
-                    <Box className=" mt-3">
-                        <Heading size="lg">
+                    <Box>
+                        <Heading size="lg" lineHeight={1}>
                             Germany&apos;s Largest Student Founding Contest
                         </Heading>
                         <Text variant="info" fontSize="lg">
-                            Become an entrepreneur and advance your idea over 11
+                            Become an entrepreneur: advance your idea or turn your research into impact over 11
                             weeks. <br></br> Get support, build your prototype
                             and test your market.
                         </Text>
 
-                        {(today < kickoff.date && kickoff.href && kickoff.href.length > 0) &&
-                            <>
-                                <Spacer mb='8' />
-                                <Button leftIcon={<ExternalLinkIcon />} onClick={() => { if (kickoff.href) window.location.href = kickoff.href }}>Sign Up for the Kickoff!</Button>
-                            </>
-                        }
                     </Box>
+                    <Flex
+                        justifyContent={{
+                            base: 'center',
+                            lg: 'space-between',
+                        }}
+                        w="100%"
+                        mt={{
+                            base: '2',
+                            lg: '10%',
+                        }}
+                        mb='4'
+                        flexFlow={{
+                            base: 'column',
+                            lg: 'row'
+                        }}
+                        gap="4"
+                    >
+                        <EventCTA today={today} event={final} start={midterm?.date} text='Join us at the GROW Final!' />
+                    </Flex>
                     <Flex
                         justifyContent={{
                             base: 'space-around',
@@ -85,22 +110,36 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                         }}
                         w="100%"
                         mt={{
-                            base: '6',
-                            lg: '30%',
+                            base: '2',
+                            lg: '10%',
                         }}
+                        mb='4'
                         flexFlow={{
                             base: 'column',
-                            lg: 'row',
+                            lg: 'row'
                         }}
+                        gap="4"
                     >
-                        <Fact
-                            title="Start Kick-Off"
-                            amount={growFormattedDate(kickoff.date, today)}
-                        />
-                        <Fact
+
+                        <Flex flexDir="column"
+                            gap={4}
+                            align={{ base: 'center', md: 'start' }}
+                            mb={8}
+                        >
+                            {kickoff && <Fact
+                                title="Start Kick-Off"
+                                amount={growFormattedDate(kickoff.date, today)}
+                                location={kickoff.location}
+                            />}
+
+                            <EventCTA today={today} event={kickoff} text='Sign Up for the Kickoff!' />
+                        </Flex>
+                        {final && <Fact
                             title="Finale in Karlsruhe"
                             amount={growFormattedDate(final.date, today)}
-                        />
+                            location={final.location}
+                        />}
+
                     </Flex>
                 </Flex>
 

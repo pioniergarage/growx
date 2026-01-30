@@ -10,7 +10,7 @@ import {
     FaMapMarkerAlt,
     FaTicketAlt,
 } from 'react-icons/fa';
-import { GrowEventWithSeats } from '../types';
+import { EventType, GrowEventWithSeats } from '../types';
 import { formatEventTime } from '../utils';
 
 const InfoRow: React.FC<
@@ -20,12 +20,15 @@ const InfoRow: React.FC<
     }
 > = ({ children, icon, label, ...rest }) => {
     return (
-        <Flex alignItems="center" whiteSpace="nowrap" {...rest}>
-            <Icon as={icon} mr={2} />
-            <Text as="div" variant="info" fontWeight="light" flexGrow={1}>
-                {label}
-            </Text>
-            <Box fontWeight="bold" ml={4}>
+        <Flex alignItems='flex-start' whiteSpace='normal' {...rest} overflow='hidden'>
+            <Flex alignItems={'center'} flexGrow={1}>
+                <Icon as={icon} mr={2} />
+                <Text as="div" variant="info" fontWeight="light" >
+                    {label}
+                </Text>
+            </Flex>
+
+            <Box fontWeight="bold" ml={4} alignItems={'stretch'} minWidth={0} textAlign={'right'}>
                 {children}
             </Box>
         </Flex>
@@ -34,10 +37,12 @@ const InfoRow: React.FC<
 
 type EventInformationCardProps = {
     event: GrowEventWithSeats;
+    auth: boolean;
 };
 
 const EventInformationCard: React.FC<EventInformationCardProps> = ({
     event,
+    auth
 }) => {
     const eventTimeFormatted = useMemo(
         () => formatEventTime(event.date, event.duration),
@@ -57,12 +62,16 @@ const EventInformationCard: React.FC<EventInformationCardProps> = ({
             <InfoRow label="Location" icon={FaMapMarkerAlt}>
                 {event.location}
             </InfoRow>
-            <InfoRow label="Online seats left" icon={FaChromecast}>
-                ∞
-            </InfoRow>
-            <InfoRow label="Presence seats left" icon={FaTicketAlt}>
-                {Math.max(event.presenceSeatsLeft, 0)}
-            </InfoRow>
+            {(auth && event.type != EventType.Offline) &&
+                <InfoRow label="Online seats left" icon={FaChromecast}>
+                    ∞
+                </InfoRow>
+            }
+            {(auth && event.type != EventType.Online) &&
+                <InfoRow label="Presence seats left" icon={FaTicketAlt}>
+                    {Math.max(event.presenceSeatsLeft, 0)}
+                </InfoRow>
+            }
             {event.mandatory && (
                 <InfoRow
                     label="Mandatory"

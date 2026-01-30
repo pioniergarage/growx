@@ -3,6 +3,7 @@ import {
     Alert,
     AlertIcon,
     Box,
+    Button,
     Heading,
     Spacer,
     Text,
@@ -10,36 +11,80 @@ import {
 } from '@chakra-ui/react';
 import { withPageAuth } from 'utils/supabase/withPageAuth';
 
-import { useUser } from '@/components/providers/SupabaseProvider';
+import { useSupabaseClient, useUser } from '@/components/providers/SupabaseProvider';
 
+import InviteCTA from '@/components/InviteCTA';
+import EventRegistration from 'modules/events/components/EventRegistration';
 import GrowEventCard from 'modules/events/components/GrowEventCard';
 import { useGrowEvents, useRegistrationsOfUser } from 'modules/events/hooks';
+import { GrowEvent } from 'modules/events/types';
+import { addMinutes } from 'modules/events/utils';
 import { useProfile } from 'modules/profile/hooks';
 import CreateTeamButton from 'modules/teams/components/CreateTeamButton';
 import TeamCard from 'modules/teams/components/TeamCard';
 import { useTeam, useTeamIdOfUser, useTeamRequests } from 'modules/teams/hooks';
 import { Team } from 'modules/teams/types';
+import router from 'next/router';
 import { useMemo } from 'react';
+import { useQueryClient } from 'react-query';
 
 const ConnectIndex: React.FC = () => {
     const user = useUser();
-    const { profile } = useProfile(user?.id);
+    const supabaseClient = useSupabaseClient();
+    const queryClient = useQueryClient();
+    const { profile, isLoading } = useProfile(user?.id);
     const { events } = useGrowEvents();
     const upcomingEvents = useMemo(() => {
         if (events) {
             const now = new Date();
             return events
-                .filter((e) => e.date > now)
+                .filter((e) => (addMinutes(e.date, e.duration)) > now)
                 .slice(0, Math.min(events.length, 1));
         } else {
             return [];
         }
     }, [events]);
 
+    const kickoff: GrowEvent = events.filter((e) => e.ref == 'kickoff')[0]
+    const midterm: GrowEvent = events.filter((e) => e.ref == 'midterm')[0]
+    const today = new Date();
+
     const { registrations } = useRegistrationsOfUser(user?.id);
 
-    if (!profile) {
-        return <></>;
+    if (!profile) { //how do I differentiate whether 'profile' is loading or if it truly doesn't exist?
+        if (user && !isLoading) {
+            return (
+                <VStack>
+                    <Text fontSize="lg">We couldn’t find your profile information.</Text>
+                    <Text color="gray.500">
+                        Please reset your login info and create a new profile.
+                    </Text>
+                    <Button
+                        colorScheme="blue"
+                        onClick={async () => {
+                            const confirmed = window.confirm(
+                                "Are you sure you want to reset your profile? This action cannot be undone."
+                            );
+                            if (!confirmed) return; // exit if user cancels
+
+                            try {
+                                await supabaseClient.rpc('delete_own_user');
+                                await supabaseClient.auth.signOut();
+                                queryClient.setQueryData('profile', null);
+                                router.push('/connect/signup'); // include query param
+                            } catch (error) {
+                                console.error('Failed to reset profile:', error);
+                            }
+                        }}
+                    >
+                        Reset Profile
+                    </Button>
+                </VStack >
+            );
+        }
+        else {
+            return (<></>);
+        }
     }
 
     return (
@@ -65,21 +110,28 @@ const ConnectIndex: React.FC = () => {
                         </Heading>
                         <VStack gap={4} alignItems="stretch">
                             {upcomingEvents.map((event) => (
-                                <GrowEventCard
-                                    key={event.id}
-                                    event={event}
-                                    registration={registrations?.find(
-                                        (registration) =>
-                                            registration.eventId === event.id
-                                    )}
-                                />
+                                <VStack key={event.id}>
+                                    <GrowEventCard
+                                        event={event}
+                                        registration={registrations?.find(
+                                            (registration) =>
+                                                registration.eventId === event.id
+                                        )}
+                                    />
+                                    <EventRegistration event={event} />
+                                </VStack>
                             ))}
                         </VStack>
                     </Box>
                 )}
 
                 {['PARTICIPANT', 'ORGA'].includes(profile.role) && (
-                    <YourTeam userId={profile.userId} />
+                    <VStack gap={4} alignItems="stretch">
+                        <YourTeam userId={profile.userId} />
+                        <VStack>
+                            <InviteCTA today={today} kickoff={kickoff} midterm={midterm} />
+                        </VStack>
+                    </VStack>
                 )}
             </VStack>
         </VStack>
@@ -116,7 +168,7 @@ const YourTeam = ({ userId }: { userId: string }) => {
     } else if (team) {
         return (
             <Box>
-                <Heading mb={1} size="sm" color="gray.400" fontSize={12}>
+                <Heading mb={2} size="sm" color="gray.400" fontSize={12}>
                     Your Team
                 </Heading>
                 <TeamCard {...team} />

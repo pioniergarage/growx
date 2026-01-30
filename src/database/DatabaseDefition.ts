@@ -1,4 +1,3 @@
-
 export type Json =
   | string
   | number
@@ -33,21 +32,21 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "contact_information_fkey"
+            foreignKeyName: "contact_information_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "profiles"
             referencedColumns: ["user_id"]
           },
           {
-            foreignKeyName: "contact_information_fkey"
+            foreignKeyName: "contact_information_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "team_leads"
             referencedColumns: ["user_id"]
           },
           {
-            foreignKeyName: "contact_information_fkey"
+            foreignKeyName: "contact_information_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "teams_with_members"
@@ -57,18 +56,21 @@ export type Database = {
       }
       event_registrations: {
         Row: {
+          checked_in: boolean
           event_id: number
           inserted_at: string
           present: boolean
           user_id: string
         }
         Insert: {
+          checked_in?: boolean
           event_id: number
           inserted_at?: string
           present?: boolean
           user_id: string
         }
         Update: {
+          checked_in?: boolean
           event_id?: number
           inserted_at?: string
           present?: boolean
@@ -128,6 +130,7 @@ export type Database = {
           title: string
           type: Database["public"]["Enums"]["enum_event_type"] | null
           updated_at: string
+          videoUrl: string
         }
         Insert: {
           available_seats?: number
@@ -144,6 +147,7 @@ export type Database = {
           title?: string
           type?: Database["public"]["Enums"]["enum_event_type"] | null
           updated_at?: string
+          videoUrl?: string
         }
         Update: {
           available_seats?: number
@@ -160,6 +164,7 @@ export type Database = {
           title?: string
           type?: Database["public"]["Enums"]["enum_event_type"] | null
           updated_at?: string
+          videoUrl?: string
         }
         Relationships: []
       }
@@ -553,13 +558,15 @@ export type Database = {
         Args: { requesting_user_id: string }
         Returns: undefined
       }
+      delete_own_user: { Args: never; Returns: undefined }
       get_assigned_team_leads: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: Record<string, unknown>[]
       }
-      isadmin: {
-        Args: { user_id: string }
-        Returns: boolean
+      isadmin: { Args: { user_id: string }; Returns: boolean }
+      register_user_to_event: {
+        Args: { event_id: number; present: boolean; user_id: string }
+        Returns: undefined
       }
     }
     Enums: {

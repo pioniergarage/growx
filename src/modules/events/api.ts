@@ -2,7 +2,12 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { Database } from 'database/DatabaseDefition';
 import { handleResponse, handleSingleResponse } from '../../database/utils';
 import { mapProfileDto } from '../profile/api';
-import { EventCategory, EventType, GrowEvent, GrowEventWithSeats } from './types';
+import {
+    EventCategory,
+    EventType,
+    GrowEvent,
+    GrowEventWithSeats,
+} from './types';
 
 export const mapEventDto: (
     dto: Database['public']['Tables']['events']['Row']
@@ -18,7 +23,8 @@ export const mapEventDto: (
     duration: dto.duration,
     availableSeats: dto.available_seats,
     eventCategory: dto.event_category as EventCategory,
-    href: dto.href
+    href: dto.href,
+    videoUrl: dto.videoUrl,
 });
 
 export const getEvents = (supabaseClient: SupabaseClient<Database>) =>
@@ -81,7 +87,8 @@ export const getEventsWithSeats = (supabaseClient: SupabaseClient<Database>) =>
         .then((dtos) =>
             dtos.map(({ seats_left, ...dto }) => ({
                 ...mapEventDto(dto),
-                presenceSeatsLeft: (seats_left as number) ?? dto.available_seats,
+                presenceSeatsLeft:
+                    (seats_left as number) ?? dto.available_seats,
             }))
         );
 
@@ -142,18 +149,24 @@ export const updateEvent = (
         .then(handleSingleResponse)
         .then(mapEventDto);
 
-export const registerUser = (
+export const registerUser = async (
     supabaseClient: SupabaseClient<Database>,
     userId: string,
     eventId: number,
     present: boolean
-) =>
-    supabaseClient
-        .from('event_registrations')
-        .insert({ user_id: userId, event_id: eventId, present })
-        .then(({ error }) => {
-            if (error) throw error;
-        });
+) => {
+    const { data, error } = await supabaseClient.rpc('register_user_to_event', {
+        user_id: userId,
+        event_id: eventId,
+        present,
+    });
+
+    if (error) {
+        throw error; // now this function will actually throw
+    }
+
+    return data;
+};
 
 export const unregisterUser = (
     supabaseClient: SupabaseClient<Database>,

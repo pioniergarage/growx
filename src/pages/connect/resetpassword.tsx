@@ -30,15 +30,21 @@ const ResetPassword: NextPageWithLayout = () => {
         },
         onSubmit: async ({ password }) => {
             setLoading(true);
-            const { error } = await supabaseClient.auth.updateUser({
-                password,
-            });
+            const hash = window.location.hash;
+            const params = new URLSearchParams(hash.replace('#', ''));
+            const code = params.get('code');
+
+            if (code) {
+                supabaseClient.auth.exchangeCodeForSession(code);
+            }
+            const { error } = await supabaseClient.auth.updateUser({ password });
+
             if (error) {
                 setError(error.message);
-                setLoading(false);
             } else {
                 router.push('/connect/login');
             }
+            setLoading(false);
         },
         validate: (values) => {
             const errors: Record<string, string> = {};
