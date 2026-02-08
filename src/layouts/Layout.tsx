@@ -70,7 +70,7 @@ const FinalBanner: React.FC = () => {
     const showClose = isLoggedIn || router.asPath != '/';
     const showBanner = router.asPath == '/' || !isLoggedIn;
 
-    if (finalEvent?.date && finalEvent?.date < today) {
+    if (finalEvent == undefined || finalEvent.date == undefined || finalEvent?.date < today) {
         return null;
     }
 

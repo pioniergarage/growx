@@ -87,8 +87,8 @@ const TopNavBar: React.FC<PropsWithChildren & { alpha: number }> = ({
             width="100%"
             zIndex={5}
             sx={{ backgroundColor: `rgba(0,0,0,${alpha})` }}
-            initial={{ marginTop: '-100' }}
-            animate={{ marginTop: 0 }}
+            initial={{ y: '-200%' }}
+            animate={{ y: 0 }}
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore no problem in operation, although type error appears.
             transition={{ delay: 0.5, type: 'tween' }}
