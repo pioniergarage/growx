@@ -1,4 +1,5 @@
 import { Box, Button, Center, Text, VStack, useBreakpointValue } from '@chakra-ui/react';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 enum LoadMode {
@@ -75,9 +76,6 @@ const GrowVideo = () => {
                 <Box
                     width={size?.width}
                     height={size?.height}
-                    bgImage="url('https://i.ytimg.com/vi/ScNQ2jE5UxA/maxresdefault.jpg')"
-                    bgSize="cover"
-                    bgPosition="center"
                     position="relative"
                     display="flex"
                     alignItems="center"
@@ -85,7 +83,16 @@ const GrowVideo = () => {
                     borderRadius="md"
                     overflow="hidden"
                 >
-                    <Box position="absolute" inset="0" bg="blackAlpha.800" />
+                    <Image
+                        src="https://i.ytimg.com/vi/ScNQ2jE5UxA/maxresdefault.jpg"
+                        alt="Video placeholder"
+                        fill
+                        style={{ objectFit: 'cover' }}
+                        quality={80}
+                    />
+
+                    {/* Dark overlay for text readability */}
+                    <Box position="absolute" inset="0" bg="blackAlpha.800" zIndex={0} />
 
                     <VStack position="relative" zIndex={1} spacing={4} p={6} textAlign="center">
                         <Text color="white" fontWeight="semibold" fontSize="md">
