@@ -30,7 +30,7 @@ const KickoffLandingPage = () => {
             description: `Pitch your idea, find a team or simply learn more about the contest. 
             The kickoff is where the fun starts, whether you already applied or you're up for a spontaneous adventure. `,
             image: 'notes.jpg',
-            // videoUrl: 'https://www.youtube.com/watch?v=H9l3KCKCm00',
+            // videoUrl: 'https://www.youtube-nocookie.com/watch?v=H9l3KCKCm00',
         }
         : undefined;
 
