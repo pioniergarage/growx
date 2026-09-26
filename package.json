@@ -9,6 +9,7 @@
         "lint": "next lint --fix",
         "prettier": "prettier --write src/**/*.{ts,tsx}",
         "link": "supabase link --project-ref gzffqettxggcszrafysw",
+        "login": "supabase login",
         "generate": "supabase gen types typescript --linked > src/database/DatabaseDefition.ts"
     },
     "dependencies": {

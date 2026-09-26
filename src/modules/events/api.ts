@@ -105,6 +105,7 @@ export const insertEvent = (
             location: event.location ?? '',
             type: event.type,
             duration: event.duration,
+            href: event.href
         })
         .select()
         .single()
@@ -142,6 +143,7 @@ export const updateEvent = (
             type: growEvent.type,
             duration: growEvent.duration,
             available_seats: growEvent.availableSeats,
+            href: growEvent.href == undefined ? null : growEvent.href // formik outputs undefined instead of null
         })
         .match({ id: growEvent.id })
         .select()
