@@ -59,7 +59,6 @@ const FinalBanner: React.FC = () => {
     const router = useRouter();
     const finalEvent = events?.find((e) => e.ref === 'final');
     const today = new Date();
-    const title = "Join us at the GROW Final '26";
     const isLoggedIn = user != undefined;
     useEffect(() => {
         supabase.auth.getSession().then(() => {
@@ -70,7 +69,11 @@ const FinalBanner: React.FC = () => {
     const showClose = isLoggedIn || router.asPath != '/';
     const showBanner = router.asPath == '/' || !isLoggedIn;
 
-    if (finalEvent == undefined || finalEvent.date == undefined || finalEvent?.date < today) {
+    if (finalEvent == undefined || // final event doesn't exist on the database
+        finalEvent.date == undefined || // final event doesn't have a defined date on the database
+        finalEvent?.date < today || // final event already happened
+        finalEvent.href == undefined || finalEvent.href.length < 1 // final event doesn't yet have a sign up link
+    ) {
         return null;
     }
 
@@ -104,10 +107,10 @@ const FinalBanner: React.FC = () => {
                                 justifyContent={'center'}
                             >
                                 <ExternalLinkIcon />
-                                {title}
+                                {`Join us at the GROW Final '${finalEvent.date.getFullYear() % 100}`}
                             </Link>
                         ) : (
-                            <Text>{title}</Text>
+                            <Text>{`Join us at the GROW Final '${finalEvent.date.getFullYear() % 100}`}</Text>
                         )}
                     </Box>
                     {showClose ? (
