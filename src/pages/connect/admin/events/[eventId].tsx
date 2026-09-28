@@ -23,7 +23,7 @@ const EventDetails: NextPageWithLayout = () => {
     const router = useRouter();
     const eventId = Number.parseInt(router.query.eventId as string);
 
-    const { event, isLoading } = useGrowEventWithSeats(eventId);
+    const { event: event_seats, isLoading: isLoading_seats } = useGrowEventWithSeats(eventId);
 
     const { updateEvent, isLoading: isUpdating } = useUpdateEvent();
     const { deleteEvent } = useDeleteEvent();
@@ -66,9 +66,9 @@ const EventDetails: NextPageWithLayout = () => {
                     <ChevronRightIcon color="gray.500" mx={2} />
                 </AdminBreadcrumbItem>
                 <AdminBreadcrumbItem
-                    href={`/connect/admin/events/${event?.id}`}
+                    href={`/connect/admin/events/${event_seats?.id}`}
                 >
-                    {event?.title}
+                    {event_seats?.title}
                 </AdminBreadcrumbItem>
             </AdminBreadcrumbs>
 
@@ -76,17 +76,17 @@ const EventDetails: NextPageWithLayout = () => {
                 <p>This page is live from the database. Changes made here may not immediately be visible on the public site.</p>
             </Box>
 
-            {isLoading && <Spinner />}
-            {event && (
+            {isLoading_seats && <Spinner />}
+            {event_seats && (
                 <>
                     <EventConfiguration
-                        initialEvent={event}
+                        initialEvent={event_seats}
                         onDelete={handleDelete}
                         onSave={handleSave}
                         isLoading={isUpdating}
                     />
                     <Divider />
-                    <Registrations eventId={event.id} eventName={event.title} />
+                    <Registrations eventId={event_seats.id} eventName={event_seats.title} />
                 </>
             )}
         </VStack>
