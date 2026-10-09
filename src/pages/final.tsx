@@ -56,7 +56,7 @@ const FinalLandingPage = () => {
     title: 'GROW Final',
     url: '/final',
     description: `IN AN AUDIMAX NEAR YOU...\n After months of hard work the participants in this year's GROW competition will pitch their startups to our panel of expert judges and a huge audience.\n The teams are in a breakneck race for our top three prizes as well as the Aurel Steinert Foundation Sustainabillity Award, and more from our sponsors.\n\n Only one question remains: who will make it to the top?`,
-    image: 'audimax.jpg',
+    image: 'grow_final_hero.jpg',
   };
 
   const previousEvents: TimeLineItemProps[] = [
@@ -66,7 +66,7 @@ const FinalLandingPage = () => {
       url: '/kickoff',
       description: `Pitch your idea, find a team or simply learn more about the contest. 
             The kickoff is where the fun starts, whether you already applied or you're up for a spontaneous adventure. `,
-      image: 'notes.jpg',
+      image: 'grow_kickoff.jpg',
     },
     {
       event: midterm,
@@ -74,7 +74,7 @@ const FinalLandingPage = () => {
       url: '/midterm',
       description: `Half time break! Teams pitch their first progress and fight about advancing to the final. 
               Pitch what you've accomplished in the last 5 weeks in front of a small audience and the jury. `,
-      image: 'speech.jpg',
+      image: 'grow_midterm.jpg',
       objectPosition: '0 0',
     },
   ];
