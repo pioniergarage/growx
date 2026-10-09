@@ -6,7 +6,6 @@ export type Team = {
     logo: string | null;
     archived: boolean;
     requestSupport: string[];
-    mentor?: string;
 };
 
 export type TeamWithMembers = {

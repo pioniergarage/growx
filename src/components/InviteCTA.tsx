@@ -50,7 +50,7 @@ const InviteCTA: React.FC<InviteCTAProps> = ({ today, kickoff, midterm }) => {
                 leftIcon={<LinkIcon />}
                 onClick={handleInvite}
             >
-                <Heading size={{ base: "m", md: "l" }}>{'Invite Your Teammates!'}</Heading>
+                <Heading size={{ base: "m", md: "l" }}>{'Invite Your Teammates to GROW!'}</Heading>
             </Button>
 
         </Box>

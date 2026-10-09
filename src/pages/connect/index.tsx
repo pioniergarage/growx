@@ -127,10 +127,7 @@ const ConnectIndex: React.FC = () => {
 
                 {['PARTICIPANT', 'ORGA'].includes(profile.role) && (
                     <VStack gap={4} alignItems="stretch">
-                        <YourTeam userId={profile.userId} />
-                        <VStack>
-                            <InviteCTA today={today} kickoff={kickoff} midterm={midterm} />
-                        </VStack>
+                        <YourTeam userId={profile.userId} today={today} kickoff={kickoff} midterm={midterm} />
                     </VStack>
                 )}
             </VStack>
@@ -138,7 +135,7 @@ const ConnectIndex: React.FC = () => {
     );
 };
 
-const YourTeam = ({ userId }: { userId: string }) => {
+const YourTeam = ({ userId, today, kickoff, midterm }: { userId: string, today: Date, kickoff: GrowEvent, midterm: GrowEvent }) => {
     const { teamId, isLoading } = useTeamIdOfUser(userId);
     const { team } = useTeam(teamId);
     if (isLoading) {
@@ -173,6 +170,9 @@ const YourTeam = ({ userId }: { userId: string }) => {
                 </Heading>
                 <TeamCard {...team} />
                 <TeamRequestInfo team={team} />
+                <VStack mt={4}>
+                    <InviteCTA today={today} kickoff={kickoff} midterm={midterm} />
+                </VStack>
             </Box>
         );
     } else {

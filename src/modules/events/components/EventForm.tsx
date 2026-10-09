@@ -14,6 +14,7 @@ import {
     HStack,
     Input,
     Select,
+    Spacer,
     Switch,
     Textarea,
     useDisclosure,
@@ -222,36 +223,26 @@ export default function EventForm({
                             />
                         </FormControl>
                     </HStack>
-                    <HStack alignItems="end" gap={4}>
-                        <FormControl mt={6}>
-                            <FormLabel>How to participate</FormLabel>
-                            <Select
-                                id="type"
-                                value={formik.values.type}
-                                onChange={formik.handleChange}
-                            >
-                                <option value={EventType.Online}>
-                                    {EventType.Online}
-                                </option>
-                                <option value={EventType.Offline}>
-                                    {EventType.Offline}
-                                </option>
-                                <option value={EventType.Hybrid}>
-                                    {EventType.Hybrid}
-                                </option>
-                            </Select>
-                        </FormControl>
+                    <FormControl mt={6}>
+                        <FormLabel>How to participate</FormLabel>
+                        <Select
+                            id="type"
+                            value={formik.values.type}
+                            onChange={formik.handleChange}
+                        >
+                            <option value={EventType.Online}>
+                                {EventType.Online}
+                            </option>
+                            <option value={EventType.Offline}>
+                                {EventType.Offline}
+                            </option>
+                            <option value={EventType.Hybrid}>
+                                {EventType.Hybrid}
+                            </option>
+                        </Select>
+                    </FormControl>
 
-                        <FormControl isDisabled={isLoading}>
-                            <Switch
-                                id="mandatory"
-                                isChecked={formik.values.mandatory}
-                                onChange={formik.handleChange}
-                            >
-                                Mandatory
-                            </Switch>
-                        </FormControl>
-                    </HStack>
+
                     <FormControl isDisabled={isLoading}>
                         <FormLabel htmlFor="description">Description</FormLabel>
                         <Textarea
@@ -270,6 +261,36 @@ export default function EventForm({
                             {formik.errors.description}
                         </FormErrorMessage>
                     </FormControl>
+                    <details>
+                        <summary>Advanced</summary>
+                        <HStack alignItems="end" gap={4}>
+                            <FormControl isDisabled={isLoading} mt={4}>
+                                <FormLabel htmlFor="href">External URL (Optional)</FormLabel>
+                                <Input
+                                    name="href"
+                                    id="href"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.href ?? undefined}
+                                    borderColor={
+                                        formik.values.href !==
+                                            initialFormValue.href
+                                            ? 'green.200'
+                                            : undefined
+                                    }
+                                />
+                            </FormControl>
+                            <FormControl isDisabled={isLoading}>
+                                <Switch
+                                    id="mandatory"
+                                    isChecked={formik.values.mandatory}
+                                    onChange={formik.handleChange}
+                                >
+                                    Mandatory
+                                </Switch>
+                            </FormControl>
+                        </HStack>
+                    </details>
+                    <Spacer />
                     <HStack>
                         <Button
                             color="secondary"
