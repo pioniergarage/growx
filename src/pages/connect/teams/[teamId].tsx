@@ -37,7 +37,7 @@ import { Team } from 'modules/teams/types';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState } from 'react';
-const TeamLogo = dynamic(() => import('modules/teams/components/TeamLogo'), {
+const TeamLogo = dynamic(() => import('modules/teams/components/TeamLogo.js').then((mod) => mod.default), { //fixes NodeNext import
     ssr: false,
 });
 
