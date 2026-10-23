@@ -1,9 +1,9 @@
 import {
-    Flex,
     Box,
+    Flex,
     Heading,
-    Text,
     Image,
+    Text,
 } from '@chakra-ui/react';
 import { Finalist } from '../types';
 
@@ -11,7 +11,7 @@ type FinalistProps = {
     finalist: Finalist;
 };
 
-const Finalist: React.FC<FinalistProps> = ({ finalist }) => {
+const FinalistCard: React.FC<FinalistProps> = ({ finalist }) => {
     return (
         <Flex flexDir="column" gap={2} alignItems="center" bgColor="blackAlpha.400" p={4} rounded="md">
             <Image
@@ -35,4 +35,4 @@ const Finalist: React.FC<FinalistProps> = ({ finalist }) => {
     );
 };
 
-export default Finalist;
+export default FinalistCard;

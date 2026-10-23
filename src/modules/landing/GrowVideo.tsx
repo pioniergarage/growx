@@ -88,7 +88,7 @@ const GrowVideo = () => {
                         alt="Video placeholder"
                         fill
                         style={{ objectFit: 'cover' }}
-                        quality={80}
+                        quality={75}
                     />
 
                     {/* Dark overlay for text readability */}

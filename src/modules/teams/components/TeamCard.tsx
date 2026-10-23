@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { Team } from '../types';
 
-const TeamLogo = dynamic(() => import('./TeamLogo'), {
+const TeamLogo = dynamic(() => import('./TeamLogo.js').then((mod) => mod.default), { //fixes NodeNext import
     ssr: false,
 });
 
