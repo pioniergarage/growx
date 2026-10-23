@@ -29,8 +29,8 @@ const KickoffLandingPage = () => {
             url: '/kickoff',
             description: `Pitch your idea, find a team or simply learn more about the contest. 
             The kickoff is where the fun starts, whether you already applied or you're up for a spontaneous adventure. `,
-            image: 'notes.jpg',
-            // videoUrl: 'https://www.youtube-nocookie.com/watch?v=H9l3KCKCm00',
+            image: 'grow_kickoff.jpg',
+            // videoUrl: 'https://www.youtube.com/watch?v=H9l3KCKCm00',
         }
         : undefined;
 
@@ -45,7 +45,7 @@ const KickoffLandingPage = () => {
             url: '/midterm',
             description: `Half time break! Teams pitch their first progress and fight about advancing to the final. 
             Pitch what you've accomplished in the last 5 weeks in front of a small audience and the jury. `,
-            image: 'speech.jpg',
+            image: 'grow_midterm.jpg',
             objectPosition: '0 0',
         },
         {
@@ -55,7 +55,7 @@ const KickoffLandingPage = () => {
             description: `Present your results to a huge crowd and show how far you have come. 
             Each participant will have learned a lot and gained a lot of experience by this point. 
             The groups with the greatest progress will receive prizes. This is what you've been working for!`,
-            image: 'audimax.jpg',
+            image: 'grow_final_hero.jpg',
         },
     ];
 
