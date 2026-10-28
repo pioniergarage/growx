@@ -7,9 +7,10 @@ interface InviteCTAProps {
     today: Date;
     kickoff: GrowEvent;
     midterm: GrowEvent;
+    invite_token: string | null
 }
 
-const InviteCTA: React.FC<InviteCTAProps> = ({ today, kickoff, midterm }) => {
+const InviteCTA: React.FC<InviteCTAProps> = ({ today, kickoff, midterm, invite_token }) => {
     const toast = useToast();
     // undefined check should run before properties are accessed
     if (!(midterm && kickoff && midterm.date && kickoff.date)) {
@@ -18,7 +19,7 @@ const InviteCTA: React.FC<InviteCTAProps> = ({ today, kickoff, midterm }) => {
 
     const kickoffDate = kickoff.date;
     const midtermDate = midterm.date;
-    const clipboardLink = 'https://grow.pioniergarage.de/connect/signup/';
+    const clipboardLink = `https://grow.pioniergarage.de/connect/signup?t=${invite_token}`; //how do I securely get the process.env.SIGNUP_SECRET_TOKEN here, without exposing it on the frontend (UNLESS the user is signed in)
 
 
     if (today > midtermDate && today > kickoffDate) {
