@@ -19,7 +19,7 @@ interface WithPageAuthOptions<P> {
 }
 
 export function withPageAuth<P extends { [key: string]: unknown } = { [key: string]: unknown }>({
-    authRequired = false,
+    authRequired = true, //now defaults to 'true'
     redirectTo = '/',
     getServerSideProps,
 }: WithPageAuthOptions<P>): GetServerSideProps<P> {

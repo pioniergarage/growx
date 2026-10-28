@@ -28,7 +28,11 @@ import router from 'next/router';
 import { useMemo } from 'react';
 import { useQueryClient } from 'react-query';
 
-const ConnectIndex: React.FC = () => {
+interface ConnectIndexProps {
+    invite_token: string | null;
+}
+
+const ConnectIndex: React.FC<ConnectIndexProps> = ({ invite_token }) => {
     const user = useUser();
     const supabaseClient = useSupabaseClient();
     const queryClient = useQueryClient();
@@ -127,7 +131,7 @@ const ConnectIndex: React.FC = () => {
 
                 {['PARTICIPANT', 'ORGA'].includes(profile.role) && (
                     <VStack gap={4} alignItems="stretch">
-                        <YourTeam userId={profile.userId} today={today} kickoff={kickoff} midterm={midterm} />
+                        <YourTeam userId={profile.userId} today={today} kickoff={kickoff} midterm={midterm} invite_token={invite_token} />
                     </VStack>
                 )}
             </VStack>
@@ -135,7 +139,7 @@ const ConnectIndex: React.FC = () => {
     );
 };
 
-const YourTeam = ({ userId, today, kickoff, midterm }: { userId: string, today: Date, kickoff: GrowEvent, midterm: GrowEvent }) => {
+const YourTeam = ({ userId, today, kickoff, midterm, invite_token }: { userId: string, today: Date, kickoff: GrowEvent, midterm: GrowEvent, invite_token: string | null }) => {
     const { teamId, isLoading } = useTeamIdOfUser(userId);
     const { team } = useTeam(teamId);
     if (isLoading) {
@@ -171,7 +175,7 @@ const YourTeam = ({ userId, today, kickoff, midterm }: { userId: string, today: 
                 <TeamCard {...team} />
                 <TeamRequestInfo team={team} />
                 <VStack mt={4}>
-                    <InviteCTA today={today} kickoff={kickoff} midterm={midterm} />
+                    <InviteCTA today={today} kickoff={kickoff} midterm={midterm} invite_token={invite_token} />
                 </VStack>
             </Box>
         );
@@ -197,5 +201,15 @@ const TeamRequestInfo = ({ team }: { team: Team }) => {
 export default ConnectIndex;
 
 export const getServerSideProps = withPageAuth({
+    authRequired: true,
     redirectTo: '/connect/login',
+    getServerSideProps: async () => {
+        const invite_token = process.env.SIGNUP_SECRET_TOKEN;
+        const isValid = invite_token != undefined && invite_token.length > 0;
+        return {
+            props: {
+                invite_token: isValid ? invite_token : null
+            },
+        };
+    },
 });
