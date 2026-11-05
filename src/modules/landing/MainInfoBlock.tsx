@@ -28,7 +28,7 @@ function Fact({ amount, title, location }: { amount: string; title: string, loca
             <Heading lineHeight="8" size={{ base: 'xl', md: '2xl' }}>
                 {amount}
             </Heading>
-            <Box>
+            <Box className='mt-2'>
                 <EventTag icon={FaMapMarkerAlt} transparent={false}>
                     {location}
                 </EventTag>
@@ -73,7 +73,7 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                     >
                         Let it <span className="neon-text2">Grow</span>
                     </Heading>
-                    <Box>
+                    <Box className='pt-6 grid gap-2'>
                         <Heading size="lg" lineHeight={1}>
                             Germany&apos;s Largest Student Founding Contest
                         </Heading>

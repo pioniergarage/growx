@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { withPageAuth } from 'utils/supabase/withPageAuth';
 
+import InviteCTA from '@/components/InviteCTA';
 import { useUser } from '@/components/providers/SupabaseProvider';
 import { getTeam } from 'modules/teams/api';
 import LeaveTeamButton from 'modules/teams/components/LeaveTeamButton';
@@ -43,9 +44,10 @@ const TeamLogo = dynamic(() => import('modules/teams/components/TeamLogo.js').th
 
 interface TeamDetails {
     team: Team;
+    invite_token: string | null;
 }
 
-const TeamDetails: React.FC<TeamDetails> = ({ team: serverSideTeam }) => {
+const TeamDetails: React.FC<TeamDetails> = ({ team: serverSideTeam, invite_token }) => {
     const toast = useToast();
     const teamId = serverSideTeam?.id; //This fails with error - TypeError: Cannot read properties of undefined (reading 'id')
     const { team, isLoading } = useTeam(serverSideTeam.id, serverSideTeam);
@@ -198,6 +200,7 @@ const TeamDetails: React.FC<TeamDetails> = ({ team: serverSideTeam }) => {
                                     userId={user?.id}
                                     maxW="10rem"
                                 />
+                                <InviteCTA invite_token={invite_token} />
                             </>
                         )}
                     </>
@@ -222,7 +225,11 @@ export const getServerSideProps = withPageAuth({
             supabase,
             parseInt(context.query.teamId as string)
         );
-        return { props: { team } };
+        const invite_token = process.env.SIGNUP_SECRET_TOKEN;
+        const isValid = invite_token != undefined && invite_token.length > 0;
+        return {
+            props: { team, invite_token: isValid ? invite_token : null },
+        };
     },
 });
 export default TeamDetails;

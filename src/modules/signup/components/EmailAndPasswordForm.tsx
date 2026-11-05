@@ -11,8 +11,7 @@ import {
     Heading,
     Input,
     Link,
-    Text,
-    VStack,
+    Text
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import Image from "next/legacy/image";
@@ -77,8 +76,8 @@ const EmailAndPasswordForm = ({
     }, [initialEmail]);
 
     return (
-        <form onSubmit={formik.handleSubmit}>
-            <VStack alignItems="stretch">
+        <form onSubmit={formik.handleSubmit} className='grid gap-10'>
+            <div className='grid gap-5'>
                 <Box textAlign="center">
                     <Box mb={2}>
                         <Image
@@ -199,7 +198,7 @@ const EmailAndPasswordForm = ({
                 >
                     Next
                 </Button>
-            </VStack>
+            </div>
 
             <PageLink href="/connect/login" color="primary" textAlign="center">
                 Already signed up? Click here to login.
