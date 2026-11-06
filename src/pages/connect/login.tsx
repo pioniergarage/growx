@@ -108,19 +108,20 @@ export const getServerSideProps = withPageAuth({
         // Between kickoff and midterm, show a direct link to the sign up page.
         // The token is only sent to the client inside this window.
         let signupLink: string | null = null;
+        // The token is optional: without SIGNUP_SECRET_TOKEN the sign up page is open.
         const token = process.env.SIGNUP_SECRET_TOKEN;
-        if (token) {
-            try {
-                const events = await getEvents(supabase);
-                const kickoff = events.find((e) => e.ref === 'kickoff');
-                const midterm = events.find((e) => e.ref === 'midterm');
-                const now = new Date();
-                if (kickoff && midterm && kickoff.date <= now && now <= midterm.date) {
-                    signupLink = `/connect/signup?t=${encodeURIComponent(token)}`;
-                }
-            } catch (e) {
-                console.error('Could not load events for sign up link', e);
+        try {
+            const events = await getEvents(supabase);
+            const kickoff = events.find((e) => e.ref === 'kickoff');
+            const midterm = events.find((e) => e.ref === 'midterm');
+            const now = new Date();
+            if (kickoff && midterm && kickoff.date <= now && now <= midterm.date) {
+                signupLink = token
+                    ? `/connect/signup?t=${encodeURIComponent(token)}`
+                    : '/connect/signup';
             }
+        } catch (e) {
+            console.error('Could not load events for sign up link', e);
         }
         return { props: { signupLink } };
     },

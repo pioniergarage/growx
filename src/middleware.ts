@@ -9,11 +9,9 @@ export function middleware(request: NextRequest) {
         const token = url.searchParams.get('t') || url.searchParams.get('token');
         const validToken = process.env.SIGNUP_SECRET_TOKEN;
 
-        console.log('Provided token:', token);
-        console.log('Valid token from env:', validToken);
-
-        // If token doesn't match or the window has expired, block access
-        if (token !== validToken) {
+        // The token is optional: if no SIGNUP_SECRET_TOKEN is set, the sign up page is open.
+        // If a token is set and doesn't match, block access
+        if (validToken && token !== validToken) {
             return NextResponse.rewrite(new URL('/404', request.url));
         }
     }
