@@ -59,8 +59,16 @@ export const getStaticProps = async () => {
         createCalendar(events)
     );
 
+    // Last day (YYYY-MM-DD) on which the "Sign up for GROW" button is shown on the landing page.
+    // The button is hidden if the variable is not set, or if the sign up page is protected by a token
+    // (the token must not be exposed on the public landing page).
+    const signupDeadline =
+        process.env.SIGNUP_CTA_DEADLINE && !process.env.SIGNUP_SECRET_TOKEN
+            ? process.env.SIGNUP_CTA_DEADLINE
+            : null;
+
     return {
-        props: { sponsors, faqs, jsonEvents },
+        props: { sponsors, faqs, jsonEvents, signupDeadline },
         revalidate: 60 * 30,
     };
 };
@@ -69,12 +77,14 @@ interface HomeProps {
     sponsors: Sponsor[];
     faqs: FAQ[];
     jsonEvents: (Omit<GrowEvent, 'date'> & { date: string })[];
+    signupDeadline: string | null;
 }
 
 const Home: React.FC<HomeProps> = ({
     sponsors = [],
     faqs = [],
     jsonEvents = [],
+    signupDeadline = null,
 }) => {
     const events = jsonEvents.map((e) => ({ ...e, date: new Date(e.date) }));
     const kickoff: GrowEvent | undefined = events.find(
@@ -121,6 +131,7 @@ const Home: React.FC<HomeProps> = ({
                             midterm={midterm}
                             final={final}
                             today={today}
+                            signupDeadline={signupDeadline}
                         />
                     </Section>
 
@@ -210,7 +221,7 @@ const Home: React.FC<HomeProps> = ({
                                 }}
                             />
                         </Box>
-                        <MainInfoBlock today={today} />
+                        <MainInfoBlock today={today} signupDeadline={signupDeadline} />
                     </Section>
 
                     <Divider mb={12} />
