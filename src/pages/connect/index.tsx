@@ -17,7 +17,6 @@ import InviteCTA from '@/components/InviteCTA';
 import EventRegistration from 'modules/events/components/EventRegistration';
 import GrowEventCard from 'modules/events/components/GrowEventCard';
 import { useGrowEvents, useRegistrationsOfUser } from 'modules/events/hooks';
-import { GrowEvent } from 'modules/events/types';
 import { addMinutes } from 'modules/events/utils';
 import { useProfile } from 'modules/profile/hooks';
 import CreateTeamButton from 'modules/teams/components/CreateTeamButton';
@@ -49,9 +48,6 @@ const ConnectIndex: React.FC<ConnectIndexProps> = ({ invite_token }) => {
         }
     }, [events]);
 
-    const kickoff: GrowEvent = events.filter((e) => e.ref == 'kickoff')[0]
-    const midterm: GrowEvent = events.filter((e) => e.ref == 'midterm')[0]
-    const today = new Date();
 
     const { registrations } = useRegistrationsOfUser(user?.id);
 
@@ -131,7 +127,7 @@ const ConnectIndex: React.FC<ConnectIndexProps> = ({ invite_token }) => {
 
                 {['PARTICIPANT', 'ORGA'].includes(profile.role) && (
                     <VStack gap={4} alignItems="stretch">
-                        <YourTeam userId={profile.userId} today={today} kickoff={kickoff} midterm={midterm} invite_token={invite_token} />
+                        <YourTeam userId={profile.userId} invite_token={invite_token} />
                     </VStack>
                 )}
             </VStack>
@@ -139,7 +135,7 @@ const ConnectIndex: React.FC<ConnectIndexProps> = ({ invite_token }) => {
     );
 };
 
-const YourTeam = ({ userId, today, kickoff, midterm, invite_token }: { userId: string, today: Date, kickoff: GrowEvent, midterm: GrowEvent, invite_token: string | null }) => {
+const YourTeam = ({ userId, invite_token }: { userId: string, invite_token: string | null }) => {
     const { teamId, isLoading } = useTeamIdOfUser(userId);
     const { team } = useTeam(teamId);
     if (isLoading) {
@@ -175,7 +171,7 @@ const YourTeam = ({ userId, today, kickoff, midterm, invite_token }: { userId: s
                 <TeamCard {...team} />
                 <TeamRequestInfo team={team} />
                 <VStack mt={4}>
-                    <InviteCTA today={today} kickoff={kickoff} midterm={midterm} invite_token={invite_token} />
+                    <InviteCTA invite_token={invite_token} />
                 </VStack>
             </Box>
         );

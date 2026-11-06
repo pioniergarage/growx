@@ -25,9 +25,9 @@ type UniversityFormProps = {
 const UniversityForm = ({ onNext }: UniversityFormProps) => {
     const formik = useFormik({
         initialValues: {
-            atKIT: false,
-            university: '',
-            country: ''
+            atKIT: true,
+            university: kitName,
+            country: kitCountry
         },
         onSubmit: ({ university, country }) => {
             onNext({ university, country });

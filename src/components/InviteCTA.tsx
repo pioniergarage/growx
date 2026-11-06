@@ -1,17 +1,18 @@
 import { LinkIcon } from "@chakra-ui/icons";
 import { Box, Button, Heading, useToast } from "@chakra-ui/react";
-import { GrowEvent } from "modules/events/types";
+import { useGrowEvents } from "modules/events/hooks";
 import React from "react";
 
 interface InviteCTAProps {
-    today: Date;
-    kickoff: GrowEvent;
-    midterm: GrowEvent;
     invite_token: string | null
 }
 
-const InviteCTA: React.FC<InviteCTAProps> = ({ today, kickoff, midterm, invite_token }) => {
+const InviteCTA: React.FC<InviteCTAProps> = ({ invite_token }) => {
     const toast = useToast();
+    const { events } = useGrowEvents();
+    const kickoff = events.find((e) => e.ref == 'kickoff');
+    const midterm = events.find((e) => e.ref == 'midterm');
+    const today = new Date();
     // undefined check should run before properties are accessed
     if (!(midterm && kickoff && midterm.date && kickoff.date)) {
         return null;
