@@ -3,8 +3,8 @@ import { Alert, AlertIcon, Flex, Spacer, VStack } from '@chakra-ui/react';
 import { withPageAuth } from 'utils/supabase/withPageAuth';
 
 import { useSupabaseClient } from '@/components/providers/SupabaseProvider';
-import { getEvents } from 'modules/events/api';
 import LoginLayout from 'layouts/LoginLayout';
+import { getEvents } from 'modules/events/api';
 import LogInForm from 'modules/signup/components/LoginForm';
 import Image from "next/legacy/image";
 import { useRouter } from 'next/router';
@@ -115,7 +115,15 @@ export const getServerSideProps = withPageAuth({
             const kickoff = events.find((e) => e.ref === 'kickoff');
             const midterm = events.find((e) => e.ref === 'midterm');
             const now = new Date();
-            if (kickoff && midterm && kickoff.date <= now && now <= midterm.date) {
+            // Compare calendar days (German time), so the link is already shown on the kickoff day
+            const toBerlinDay = (d: Date) =>
+                d.toLocaleDateString('sv-SE', { timeZone: 'Europe/Berlin' }); // YYYY-MM-DD
+            if (
+                kickoff &&
+                midterm &&
+                toBerlinDay(kickoff.date) <= toBerlinDay(now) &&
+                now <= midterm.date
+            ) {
                 signupLink = token
                     ? `/connect/signup?t=${encodeURIComponent(token)}`
                     : '/connect/signup';

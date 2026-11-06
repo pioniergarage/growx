@@ -19,7 +19,22 @@ type InfoBlockProps = {
     midterm?: GrowEvent;
     final?: GrowEvent;
     today: Date;
+    /** Last day (YYYY-MM-DD) on which the sign up button is shown. Not shown if null. */
+    signupDeadline?: string | null;
 };
+
+/** Parses YYYY-MM-DD and returns the start of the following day (local time), or undefined if invalid. */
+function endOfDay(date?: string | null): Date | undefined {
+    const match = date?.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return undefined;
+    const [, year, month, day] = match.map(Number);
+    return new Date(year, month - 1, day + 1);
+}
+
+/** Calendar day (YYYY-MM-DD) in German time, used to compare dates by day instead of exact time. */
+function toBerlinDay(date: Date): string {
+    return date.toLocaleDateString('sv-SE', { timeZone: 'Europe/Berlin' });
+}
 
 function Fact({ amount, title, location }: { amount: string; title: string, location: string }) {
     return (
@@ -41,8 +56,12 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
     kickoff,
     midterm,
     final,
-    today
+    today,
+    signupDeadline
 }) => {
+    const signupEnd = endOfDay(signupDeadline);
+    // Hide the kickoff sign up button from the kickoff day on (same as the sign up link on the login page)
+    const isBeforeKickoffDay = !!kickoff && toBerlinDay(today) < toBerlinDay(kickoff.date);
     return (
         <Grid
             templateColumns={{ base: '1fr', lg: '3fr 2fr' }}
@@ -101,6 +120,14 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                         }}
                         gap="4"
                     >
+                        {signupEnd && (
+                            <EventCTA
+                                today={today}
+                                event_date={signupEnd}
+                                event_href="/connect/signup"
+                                text="Sign up for GROW!"
+                            />
+                        )}
                         <EventCTA today={today} event={final} start={midterm?.date} text='Join us at the GROW Final!' />
                     </Flex>
                     <Flex
@@ -132,7 +159,9 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                                 location={kickoff.location}
                             />}
 
-                            <EventCTA today={today} event={kickoff} text='Sign Up for the Kickoff!' />
+                            {isBeforeKickoffDay && (
+                                <EventCTA today={today} event={kickoff} text='Sign Up for the Kickoff!' />
+                            )}
                         </Flex>
                         {final && <Fact
                             title="Finale in Karlsruhe"
