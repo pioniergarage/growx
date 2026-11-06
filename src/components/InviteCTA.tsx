@@ -20,7 +20,9 @@ const InviteCTA: React.FC<InviteCTAProps> = ({ invite_token }) => {
 
     const kickoffDate = kickoff.date;
     const midtermDate = midterm.date;
-    const clipboardLink = `https://grow.pioniergarage.de/connect/signup?t=${invite_token}`; //how do I securely get the process.env.SIGNUP_SECRET_TOKEN here, without exposing it on the frontend (UNLESS the user is signed in)
+    const clipboardLink = invite_token
+        ? `https://grow.pioniergarage.de/connect/signup?t=${encodeURIComponent(invite_token)}`
+        : 'https://grow.pioniergarage.de/connect/signup';
 
 
     if (today > midtermDate && today > kickoffDate) {
