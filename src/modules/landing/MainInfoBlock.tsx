@@ -94,7 +94,7 @@ const MainInfoBlock: React.FC<InfoBlockProps> = ({
                     </Heading>
                     <Box className='pt-6 grid gap-2'>
                         <Heading size="lg" lineHeight={1}>
-                            Germany&apos;s Largest Student Founding Contest
+                            The KIT Startup Competition.
                         </Heading>
                         <Text variant="info" fontSize="lg">
                             Become an entrepreneur: advance your idea or turn your research into impact over 11
