@@ -1,3 +1,4 @@
+import LegalLinks from '@/components/navigation/LegalLinks';
 import { Box, Divider, Flex, Icon, Image, Link, Spacer, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { FaGithub } from 'react-icons/fa';
@@ -177,9 +178,7 @@ export default function Footer() {
                                 <Link>FAQ</Link>
                             </NextLink>
                             <Link href="mailto:grow@pioniergarage.de">Contact</Link>
-                            <Link href="https://pioniergarage.de/impressum/" isExternal>
-                                Impressum
-                            </Link>
+                            <LegalLinks stacked />
                         </Flex>
                     </Flex>
                 </Flex>
