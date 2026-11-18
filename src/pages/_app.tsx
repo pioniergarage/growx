@@ -8,46 +8,70 @@ import '../styles/globals.css';
 import { ChakraProvider } from '@chakra-ui/react';
 import Layout from 'layouts/Layout';
 import type { AppProps } from 'next/app';
+import { useRouter } from 'next/router';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
 import theme from 'styles/theme';
 import { NextPageWithLayout } from 'utils/types';
-import { ConsentPreferences, CookieBanner } from '../components/CookieBanner';
+import {
+    ConsentPreferences,
+    CookieBanner,
+    externalMediaConsent,
+    noOptionalConsent,
+    readConsentPreferences,
+} from '../components/CookieBanner';
 
 type AppPropsWithLayout = AppProps & {
     Component: NextPageWithLayout;
 };
 
-export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-    // State is now an object matching our interface
-    const [consent, setConsent] = useState<ConsentPreferences>({
-        analytics: false,
-        marketing: false,
-    });
+const analyticsId = 'G-8RJZFTKYB5';
+const disableAnalyticsKey = `ga-disable-${analyticsId}` as const;
+const isConnectRoute = (path: string) => /^\/connect(?:[/?#]|$)/.test(path);
 
+function setAnalyticsDisabled(disabled: boolean) {
+    (window as Window & { [disableAnalyticsKey]?: boolean })[disableAnalyticsKey] = disabled;
+}
+
+export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+    const [consent, setConsent] = useState(noOptionalConsent);
+    const router = useRouter();
     const isProd = process.env.NODE_ENV === 'production';
+    const mayTrack = isProd && !isConnectRoute(router.pathname);
+    const analyticsAllowed = mayTrack && consent.analytics;
 
     useEffect(() => {
-        try {
-            const storedConsent = localStorage.getItem('cookieConsent');
-            if (storedConsent) {
-                setConsent(JSON.parse(storedConsent));
-            }
-        } catch (error) {
-            console.error("Failed to parse consent data");
-        }
+        setConsent(readConsentPreferences() ?? noOptionalConsent);
     }, []);
+
+    useEffect(() => {
+        setAnalyticsDisabled(!analyticsAllowed);
+        const suspendOnConnect = (url: string) => {
+            if (isConnectRoute(url)) setAnalyticsDisabled(true);
+        };
+        const restoreAfterFailure = () => setAnalyticsDisabled(!analyticsAllowed);
+        router.events.on('routeChangeStart', suspendOnConnect);
+        router.events.on('routeChangeError', restoreAfterFailure);
+        return () => {
+            router.events.off('routeChangeStart', suspendOnConnect);
+            router.events.off('routeChangeError', restoreAfterFailure);
+        };
+    }, [analyticsAllowed, router.events]);
+
+    const saveConsent = (preferences: ConsentPreferences) => {
+        setAnalyticsDisabled(!(mayTrack && preferences.analytics));
+        setConsent(preferences);
+    };
 
     const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>);
 
     return (
         <ChakraProvider theme={theme}>
-            {/* Inject Google Analytics ONLY if analytics consent is granted */}
-            {isProd && consent.analytics && (
+            {analyticsAllowed && (
                 <>
                     <Script
                         strategy="afterInteractive"
-                        src={`https://www.googletagmanager.com/gtag/js?id=G-8RJZFTKYB5`}
+                        src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`}
                     />
                     <Script
                         id="google-analytics"
@@ -57,8 +81,10 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                                 window.dataLayer = window.dataLayer || [];
                                 function gtag(){dataLayer.push(arguments);}
                                 gtag('js', new Date());
-                                gtag('config', 'G-8RJZFTKYB5', {
+                                gtag('config', '${analyticsId}', {
                                     page_path: window.location.pathname,
+                                    page_location: window.location.origin + window.location.pathname,
+                                    page_referrer: '',
                                 });
                             `,
                         }}
@@ -66,9 +92,11 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                 </>
             )}
 
-            {getLayout(<Component {...pageProps} />)}
+            <externalMediaConsent.Provider value={consent.marketing}>
+                {getLayout(<Component {...pageProps} />)}
+            </externalMediaConsent.Provider>
 
-            <CookieBanner onSave={(preferences) => setConsent(preferences)} />
+            <CookieBanner onSave={saveConsent} />
         </ChakraProvider>
     );
 }
