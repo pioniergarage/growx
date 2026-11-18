@@ -18,13 +18,14 @@ const Privacy: NextPageWithLayout = () => (
                         Who is responsible for your data
                     </Heading>
                     <Text>
-                        PionierGarage e.V., Straße am Forum 1, 76131 Karlsruhe,
-                        Germany. You can contact us about GROW and your data at{' '}
+                        Pioniergarage e.V., Straße am Forum 1, 76131 Karlsruhe,
+                        Germany, operates GROW and is the data controller. For
+                        privacy enquiries, contact PionierGarage IT at{' '}
                         <Link
-                            href="mailto:grow@pioniergarage.de"
+                            href="mailto:datenschutz@pioniergarage.de"
                             textDecoration="underline"
                         >
-                            grow@pioniergarage.de
+                            datenschutz@pioniergarage.de
                         </Link>
                         .
                     </Text>
