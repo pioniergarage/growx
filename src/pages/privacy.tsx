@@ -80,6 +80,10 @@ const Privacy: NextPageWithLayout = () => (
                         to send a password reset link when you request one.
                         Session cookies keep you signed in.
                     </Text>
+                    <Text>
+                        We delete GROW Connect accounts after the end of the
+                        GROW round.
+                    </Text>
                 </Stack>
                 <Stack as="section" spacing={2}>
                     <Heading as="h2" size="md">
