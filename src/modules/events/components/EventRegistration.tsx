@@ -24,9 +24,14 @@ import SignUpDialog from './SignUpDialog';
 type EventRegistrationProps = {
     event: GrowEvent;
     onSignUp?: () => void;
+    signUpLabel?: string;
 };
 
-const EventRegistraion: React.FC<EventRegistrationProps> = ({ event, onSignUp }) => {
+const EventRegistraion: React.FC<EventRegistrationProps> = ({
+    event,
+    onSignUp,
+    signUpLabel = 'Sign up',
+}) => {
     const toast = useToast();
     const { profile } = useProfile();
     const user = useUser();
@@ -97,7 +102,7 @@ const EventRegistraion: React.FC<EventRegistrationProps> = ({ event, onSignUp })
         <VStack>
             {!registration && (
                 <Button onClick={handleSignUp} isLoading={isRegistering}>
-                    Sign up
+                    {signUpLabel}
                 </Button>
             )}
             {!!registration && (

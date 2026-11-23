@@ -72,7 +72,11 @@ const GrowEvent = ({
                 </Text>
                 <Flex flexDir="column" gap={4} minW={{ md: '25rem' }}>
                     <EventInformationCard event={event} auth={user != null} />
-                    <EventRegistration event={event} onSignUp={onSignUp} />
+                    <EventRegistration
+                        event={event}
+                        onSignUp={onSignUp}
+                        signUpLabel={onSignUp ? 'Sign up on Luma' : undefined}
+                    />
                 </Flex>
             </Flex>
         </VStack>
