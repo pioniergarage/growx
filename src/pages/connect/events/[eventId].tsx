@@ -18,15 +18,16 @@ import EventRegistration from 'modules/events/components/EventRegistration';
 import { GrowEventWithSeats } from 'modules/events/types';
 import Link from 'next/link';
 
-const MIDTERM_EVENT_ID = 8;
-const MIDTERM_SIGNUP_URL = 'https://luma.com/m41bdcxn';
+type ExternalSignup = { href: string; label: string };
 
 const GrowEvent = ({
     eventRaw,
+    externalSignup,
 }: {
     eventRaw: Database['public']['Tables']['events']['Row'] & {
         seats_left: number; //why is this always outdated?
     };
+    externalSignup: ExternalSignup | null;
 }) => {
     const event: GrowEventWithSeats = {
         ...mapEventDto(eventRaw),
@@ -34,8 +35,8 @@ const GrowEvent = ({
     };
 
     const user = useUser();
-    const onSignUp = event.id === MIDTERM_EVENT_ID
-        ? () => window.location.assign(MIDTERM_SIGNUP_URL)
+    const onSignUp = externalSignup
+        ? () => window.location.assign(externalSignup.href)
         : undefined;
     return (
         <VStack alignItems="stretch" gap={2}>
@@ -75,7 +76,7 @@ const GrowEvent = ({
                     <EventRegistration
                         event={event}
                         onSignUp={onSignUp}
-                        signUpLabel={onSignUp ? 'Sign up on Luma' : undefined}
+                        signUpLabel={externalSignup?.label}
                     />
                 </Flex>
             </Flex>
@@ -102,7 +103,26 @@ export const getServerSideProps = withPageAuth({
             .single();
 
         if (error) throw new Error(error.message);
-        return { props: { eventRaw } };
+
+        let externalSignup: ExternalSignup | null = null;
+        if (eventRaw?.ref === 'midterm' && eventRaw.href) {
+            try {
+                const url = new URL(eventRaw.href);
+                if (url.protocol === 'https:') {
+                    const isLuma = ['luma.com', 'lu.ma'].includes(
+                        url.hostname.replace(/^www\./, '')
+                    );
+                    externalSignup = {
+                        href: url.href,
+                        label: isLuma ? 'Sign up on Luma' : 'Sign up',
+                    };
+                }
+            } catch {
+                // An invalid external URL falls back to Connect signup.
+            }
+        }
+
+        return { props: { eventRaw, externalSignup } };
     },
 });
 export default GrowEvent;
