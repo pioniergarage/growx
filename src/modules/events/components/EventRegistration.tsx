@@ -19,13 +19,32 @@ import {
     useUnregisterUserFromEvent,
 } from '../hooks';
 import { GrowEvent } from '../types';
+import { getEventExternalUrl } from '../utils';
 import SignUpDialog from './SignUpDialog';
 
 type EventRegistrationProps = {
     event: GrowEvent;
+    midtermSignupUrl?: string | null;
 };
 
-const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
+const EventRegistration = ({ event, midtermSignupUrl }: EventRegistrationProps) => {
+    if (event.ref === 'midterm') {
+        const href = midtermSignupUrl === undefined ? getEventExternalUrl(event) : midtermSignupUrl;
+        return (
+            <VStack>
+                {href ? (
+                    <Button as="a" href={href}>Sign up on Luma</Button>
+                ) : (
+                    <Text fontSize="sm">Midterm registration is not available yet.</Text>
+                )}
+            </VStack>
+        );
+    }
+
+    return <ConnectEventRegistration event={event} />;
+};
+
+const ConnectEventRegistration = ({ event }: { event: GrowEvent }) => {
     const toast = useToast();
     const { profile } = useProfile();
     const user = useUser();
@@ -90,10 +109,11 @@ const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
     }
 
     const { onOpen, isOpen, onClose } = useDisclosure();
+    const handleSignUp = profile == null ? () => { void router.push('/connect/login'); } : onOpen;
     return (
         <VStack>
             {!registration && (
-                <Button onClick={profile == undefined ? () => { router.push('/connect/login') } : onOpen} isLoading={isRegistering}>
+                <Button onClick={handleSignUp} isLoading={isRegistering}>
                     Sign up
                 </Button>
             )}
@@ -159,4 +179,4 @@ const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
     );
 };
 
-export default EventRegistraion;
+export default EventRegistration;

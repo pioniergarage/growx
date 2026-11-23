@@ -3,6 +3,7 @@ import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Box, Button, Fade, Flex, Grid, GridItem, Heading, Link, Text } from '@chakra-ui/react';
 import { useMemo, useState } from 'react';
 import { EventCategory, GrowEvent } from '../types';
+import { getEventExternalUrl } from '../utils';
 import EventTagList from './EventTagList';
 
 export type GrowEventCardProps = {
@@ -16,6 +17,7 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
 }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const over = useMemo(() => new Date() > event.date, [event.date]);
+    const externalUrl = getEventExternalUrl(event);
 
     const handleCardClick = () => {
         setIsExpanded(!isExpanded);
@@ -74,7 +76,7 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
 
                 <EventTagList
                     event={event}
-                    registration={over ? undefined : registration}
+                    registration={over || event.ref === 'midterm' ? undefined : registration}
                     transparent
                     gap={0}
                 />
@@ -91,12 +93,12 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
                                 <Text>{event.description}</Text>
                             )}
 
-                            {event.href ? (
+                            {externalUrl ? (
                                 <Button
                                     leftIcon={<ExternalLinkIcon />}
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        window.location.href = event.href as string;
+                                        window.location.href = externalUrl;
                                     }}
                                 >
                                     Link to Event

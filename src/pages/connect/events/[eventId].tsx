@@ -16,14 +16,17 @@ import { mapEventDto } from 'modules/events/api';
 import EventInformationCard from 'modules/events/components/EventInformationCard';
 import EventRegistration from 'modules/events/components/EventRegistration';
 import { GrowEventWithSeats } from 'modules/events/types';
+import { getEventExternalUrl } from 'modules/events/utils';
 import Link from 'next/link';
 
 const GrowEvent = ({
     eventRaw,
+    midtermSignupUrl,
 }: {
     eventRaw: Database['public']['Tables']['events']['Row'] & {
         seats_left: number; //why is this always outdated?
     };
+    midtermSignupUrl: string | null;
 }) => {
     const event: GrowEventWithSeats = {
         ...mapEventDto(eventRaw),
@@ -66,7 +69,10 @@ const GrowEvent = ({
                 </Text>
                 <Flex flexDir="column" gap={4} minW={{ md: '25rem' }}>
                     <EventInformationCard event={event} auth={user != null} />
-                    <EventRegistration event={event} />
+                    <EventRegistration
+                        event={event}
+                        midtermSignupUrl={midtermSignupUrl}
+                    />
                 </Flex>
             </Flex>
         </VStack>
@@ -92,7 +98,9 @@ export const getServerSideProps = withPageAuth({
             .single();
 
         if (error) throw new Error(error.message);
-        return { props: { eventRaw } };
+
+        const midtermSignupUrl = eventRaw?.ref === 'midterm' ? getEventExternalUrl(eventRaw) : null;
+        return { props: { eventRaw, midtermSignupUrl } };
     },
 });
 export default GrowEvent;
