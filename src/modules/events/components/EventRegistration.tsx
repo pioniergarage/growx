@@ -23,9 +23,10 @@ import SignUpDialog from './SignUpDialog';
 
 type EventRegistrationProps = {
     event: GrowEvent;
+    onSignUp?: () => void;
 };
 
-const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
+const EventRegistraion: React.FC<EventRegistrationProps> = ({ event, onSignUp }) => {
     const toast = useToast();
     const { profile } = useProfile();
     const user = useUser();
@@ -90,10 +91,12 @@ const EventRegistraion: React.FC<EventRegistrationProps> = ({ event }) => {
     }
 
     const { onOpen, isOpen, onClose } = useDisclosure();
+    const handleSignUp = onSignUp ??
+        (profile == null ? () => { void router.push('/connect/login'); } : onOpen);
     return (
         <VStack>
             {!registration && (
-                <Button onClick={profile == undefined ? () => { router.push('/connect/login') } : onOpen} isLoading={isRegistering}>
+                <Button onClick={handleSignUp} isLoading={isRegistering}>
                     Sign up
                 </Button>
             )}

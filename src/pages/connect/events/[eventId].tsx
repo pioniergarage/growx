@@ -18,6 +18,9 @@ import EventRegistration from 'modules/events/components/EventRegistration';
 import { GrowEventWithSeats } from 'modules/events/types';
 import Link from 'next/link';
 
+const MIDTERM_EVENT_ID = 8;
+const MIDTERM_SIGNUP_URL = 'https://luma.com/m41bdcxn';
+
 const GrowEvent = ({
     eventRaw,
 }: {
@@ -31,6 +34,9 @@ const GrowEvent = ({
     };
 
     const user = useUser();
+    const onSignUp = event.id === MIDTERM_EVENT_ID
+        ? () => window.location.assign(MIDTERM_SIGNUP_URL)
+        : undefined;
     return (
         <VStack alignItems="stretch" gap={2}>
             <Breadcrumb
@@ -66,7 +72,7 @@ const GrowEvent = ({
                 </Text>
                 <Flex flexDir="column" gap={4} minW={{ md: '25rem' }}>
                     <EventInformationCard event={event} auth={user != null} />
-                    <EventRegistration event={event} />
+                    <EventRegistration event={event} onSignUp={onSignUp} />
                 </Flex>
             </Flex>
         </VStack>
