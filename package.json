@@ -5,6 +5,7 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build",
+        "build:ci": "node .github/scripts/build-with-supabase-fixtures.cjs",
         "start": "next start",
         "lint": "next lint --fix",
         "prettier": "prettier --write src/**/*.{ts,tsx}",

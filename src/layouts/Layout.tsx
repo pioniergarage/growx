@@ -3,9 +3,10 @@ import SupabaseProvider, {
     useUser,
 } from '@/components/providers/SupabaseProvider';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { Box, chakra, HStack, Link, Text } from '@chakra-ui/react';
+import { Box, chakra, HStack, Link } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useGrowEvents } from 'modules/events/hooks';
+import { getEventExternalUrl } from 'modules/events/utils';
 import Footer from 'modules/landing/Footer';
 import GrowNav from 'modules/navigation/GrowNav';
 import Head from 'next/head';
@@ -58,6 +59,7 @@ const FinalBanner: React.FC = () => {
     const supabase = useSupabaseClient();
     const router = useRouter();
     const finalEvent = events?.find((e) => e.ref === 'final');
+    const finalEventHref = finalEvent ? getEventExternalUrl(finalEvent) : null;
     const today = new Date();
     const isLoggedIn = user != undefined;
     useEffect(() => {
@@ -69,11 +71,7 @@ const FinalBanner: React.FC = () => {
     const showClose = isLoggedIn || router.asPath != '/';
     const showBanner = router.asPath == '/' || !isLoggedIn;
 
-    if (finalEvent == undefined || // final event doesn't exist on the database
-        finalEvent.date == undefined || // final event doesn't have a defined date on the database
-        finalEvent?.date < today || // final event already happened
-        finalEvent.href == undefined || finalEvent.href.length < 1 // final event doesn't yet have a sign up link
-    ) {
+    if (!finalEvent?.date || finalEvent.date < today || !finalEventHref) {
         return null;
     }
 
@@ -98,20 +96,16 @@ const FinalBanner: React.FC = () => {
                         fontWeight="semibold"
                         textAlign={'center'}
                     >
-                        {finalEvent?.href ? (
-                            <Link
-                                href={finalEvent?.href}
-                                display={'flex'}
-                                gap={'2'}
-                                alignItems={'center'}
-                                justifyContent={'center'}
-                            >
-                                <ExternalLinkIcon />
-                                {`Join us at the GROW Final '${finalEvent.date.getFullYear() % 100}`}
-                            </Link>
-                        ) : (
-                            <Text>{`Join us at the GROW Final '${finalEvent.date.getFullYear() % 100}`}</Text>
-                        )}
+                        <Link
+                            href={finalEventHref}
+                            display={'flex'}
+                            gap={'2'}
+                            alignItems={'center'}
+                            justifyContent={'center'}
+                        >
+                            <ExternalLinkIcon />
+                            {`Join us at the GROW Final '${finalEvent.date.getFullYear() % 100}`}
+                        </Link>
                     </Box>
                     {showClose ? (
                         <Link onClick={() => setOpen(false)}>X</Link>
