@@ -21,4 +21,4 @@ jobs:
               run: npm ci # or `yarn install --frozen-lockfile` / `pnpm install --frozen-lockfile`
 
             - name: Build project
-              run: npm run build # replace with your repo's standard build command (e.g., `npx tsc --noEmit` or `yarn build`)
+              run: npm run build:ci
