@@ -1,7 +1,6 @@
 import Card from '@/components/Card';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { Box, Button, Fade, Flex, Grid, GridItem, Heading, Link, Text } from '@chakra-ui/react';
-import { useMemo, useState } from 'react';
+import { Box, Flex, GridItem, Heading, Text } from '@chakra-ui/react';
+import Link from 'next/link';
 import { EventCategory, GrowEvent } from '../types';
 import EventTagList from './EventTagList';
 
@@ -14,18 +13,17 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
     event,
     registration
 }) => {
-    const [isExpanded, setIsExpanded] = useState(false);
-    const over = useMemo(() => new Date() > event.date, [event.date]);
-
-    const handleCardClick = () => {
-        setIsExpanded(!isExpanded);
-    };
-
-
+    const over = new Date() > event.date;
+    const isMidterm = event.ref === 'midterm';
+    const firstLine = isMidterm
+        ? event.description?.trim().split(/\r?\n/, 1)[0].trimEnd()
+        : undefined;
 
     return (
         <Card
-            as={Grid}
+            as={Link}
+            href={`/connect/events/${event.id}`}
+            display="grid"
             alignItems="center"
             gridTemplateColumns={{ base: '1fr 2fr', md: '10rem 2fr' }}
             px={3}
@@ -37,7 +35,7 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
             bgColor={event.eventCategory === EventCategory.Grow ? "rgba(211, 77, 188, 0.25)" : "whiteAlpha.50"}
             _hover={{ bgColor: event.eventCategory === EventCategory.Grow ? "rgba(211, 77, 188, 0.5)" : "whiteAlpha.100" }}
             _focus={{ bgColor: event.eventCategory === EventCategory.Grow ? "rgba(211, 77, 188, 0.75)" : "whiteAlpha.200" }}
-            onClick={handleCardClick}
+            _focusVisible={{ boxShadow: 'outline' }}
         >
             <GridItem rowSpan={{ base: undefined, md: 3 }}>
                 <Heading
@@ -59,7 +57,7 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
                     })}
                 </Heading>
             </GridItem>
-            <Box>
+            <Box minW={0}>
                 <Flex
                     mt={1}
                     flexWrap="wrap"
@@ -74,41 +72,14 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
 
                 <EventTagList
                     event={event}
-                    registration={over ? undefined : registration}
+                    registration={over || isMidterm ? undefined : registration}
                     transparent
                     gap={0}
                 />
-                {isExpanded && (
-                    <Fade in={true}>
-                        <Flex
-                            mt={1}
-                            flexWrap="wrap"
-                            gap={2}
-                            flexDir={{ base: 'column', sm: 'row' }}
-                            alignItems="center"
-                        >
-                            {event.description && event.description.length > 0 && (
-                                <Text>{event.description}</Text>
-                            )}
-
-                            {event.href ? (
-                                <Button
-                                    leftIcon={<ExternalLinkIcon />}
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        window.location.href = event.href as string;
-                                    }}
-                                >
-                                    Link to Event
-                                </Button>
-                            ) : (
-                                <Link href={`/connect/events/${event.id}`} mt={2}>
-                                    <Button>Visit Event</Button>
-                                </Link>
-                            )}
-                        </Flex>
-                    </Fade>
-
+                {firstLine && (
+                    <Text mt={1} fontSize="sm" isTruncated>
+                        {`${firstLine.replace(/[.…]+$/, '')}...`}
+                    </Text>
                 )}
             </Box>
         </Card>
