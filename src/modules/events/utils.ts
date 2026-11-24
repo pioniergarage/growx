@@ -2,14 +2,27 @@ export function addMinutes(date: Date, minutes: number) {
     return new Date(date.getTime() + minutes * 60000);
 }
 
-export function getEventExternalUrl(event: { ref?: string | null; href: string | null }) {
-    if (event.ref !== 'midterm') return event.href;
-    if (!event.href) return null;
+export function getEventExternalUrl(event: {
+    ref?: string | null;
+    href: string | null;
+}) {
+    const href = event.href?.trim();
+    if (!href || !/^https?:\/\//i.test(href)) return null;
 
     try {
-        const url = new URL(event.href);
-        const isLuma = ['luma.com', 'lu.ma'].includes(url.hostname.replace(/^www\./, ''));
-        if (url.protocol === 'https:' && isLuma && !url.username && !url.password && !url.port) {
+        const url = new URL(href);
+        if (event.ref !== 'midterm') return url.href;
+
+        const isLuma = ['luma.com', 'lu.ma'].includes(
+            url.hostname.replace(/^www\./, '')
+        );
+        if (
+            url.protocol === 'https:' &&
+            isLuma &&
+            !url.username &&
+            !url.password &&
+            !url.port
+        ) {
             return url.href;
         }
     } catch {

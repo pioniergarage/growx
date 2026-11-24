@@ -3,6 +3,7 @@ import {
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbLink,
+    Button,
     Flex,
     Heading,
     Text,
@@ -10,7 +11,6 @@ import {
 } from '@chakra-ui/react';
 import { withPageAuth } from 'utils/supabase/withPageAuth';
 
-import { useUser } from '@/components/providers/SupabaseProvider';
 import { Database } from 'database/DatabaseDefition';
 import { mapEventDto } from 'modules/events/api';
 import EventInformationCard from 'modules/events/components/EventInformationCard';
@@ -19,21 +19,18 @@ import { GrowEventWithSeats } from 'modules/events/types';
 import { getEventExternalUrl } from 'modules/events/utils';
 import Link from 'next/link';
 
-const GrowEvent = ({
-    eventRaw,
-    midtermSignupUrl,
-}: {
-    eventRaw: Database['public']['Tables']['events']['Row'] & {
-        seats_left: number; //why is this always outdated?
-    };
-    midtermSignupUrl: string | null;
-}) => {
-    const event: GrowEventWithSeats = {
-        ...mapEventDto(eventRaw),
-        presenceSeatsLeft: eventRaw.seats_left ?? eventRaw.available_seats,
-    };
+type EventDetailProps = {
+    eventData: Omit<GrowEventWithSeats, 'date' | 'videoUrl'> & { date: string };
+    signedIn: boolean;
+};
 
-    const user = useUser();
+const GrowEvent = ({ eventData, signedIn }: EventDetailProps) => {
+    const event: GrowEventWithSeats = {
+        ...eventData,
+        date: new Date(eventData.date),
+    };
+    const isMidterm = event.ref === 'midterm';
+
     return (
         <VStack alignItems="stretch" gap={2}>
             <Breadcrumb
@@ -65,22 +62,29 @@ const GrowEvent = ({
             <Heading size="md">{event.title}</Heading>
             <Flex flexDir={{ base: 'column', md: 'row' }} gap={4}>
                 <Text variant="info" fontSize={{ base: 'sm', md: 'md' }}>
-                    {eventRaw.description}
+                    {event.description}
                 </Text>
                 <Flex flexDir="column" gap={4} minW={{ md: '25rem' }}>
-                    <EventInformationCard event={event} auth={user != null} />
-                    <EventRegistration
-                        event={event}
-                        midtermSignupUrl={midtermSignupUrl}
-                    />
+                    <EventInformationCard event={event} auth={signedIn} />
+                    {!isMidterm && event.href && (
+                        <Button as="a" href={event.href} alignSelf="center">
+                            Link to Event
+                        </Button>
+                    )}
+                    {(isMidterm || signedIn) && (
+                        <EventRegistration
+                            event={event}
+                            midtermSignupUrl={event.href}
+                        />
+                    )}
                 </Flex>
             </Flex>
         </VStack>
     );
 };
-export const getServerSideProps = withPageAuth({
-    redirectTo: '/connect/login',
-    getServerSideProps: async (context, supabase) => {
+export const getServerSideProps = withPageAuth<EventDetailProps>({
+    authRequired: false,
+    getServerSideProps: async (context, supabase, user) => {
         const eventIdParam = Array.isArray(context.query.eventId)
             ? context.query.eventId[0]
             : context.query.eventId;
@@ -91,16 +95,43 @@ export const getServerSideProps = withPageAuth({
 
         const eventId = Number(eventIdParam);
 
-        const { data: eventRaw, error } = await supabase
-            .from('event_with_seats')
-            .select('*')
-            .eq('id', eventId)
-            .single();
+        const { data: eventRaw, error } = user
+            ? await supabase.from('event_with_seats').select('*').eq('id', eventId).maybeSingle()
+            : await supabase.from('events').select('*').eq('id', eventId).maybeSingle();
 
         if (error) throw new Error(error.message);
+        if (!eventRaw) return { notFound: true };
 
-        const midtermSignupUrl = eventRaw?.ref === 'midterm' ? getEventExternalUrl(eventRaw) : null;
-        return { props: { eventRaw, midtermSignupUrl } };
+        const externalUrl = getEventExternalUrl(eventRaw);
+        if (!user && !externalUrl) {
+            return { redirect: { destination: '/connect/login', permanent: false } };
+        }
+
+        const event = mapEventDto(
+            eventRaw as Database['public']['Tables']['events']['Row']
+        );
+        return {
+            props: {
+                eventData: {
+                    id: event.id,
+                    ref: event.ref,
+                    title: event.title,
+                    description: event.description,
+                    date: event.date.toISOString(),
+                    duration: event.duration,
+                    location: event.location,
+                    mandatory: event.mandatory,
+                    type: event.type,
+                    eventCategory: event.eventCategory,
+                    href: externalUrl,
+                    availableSeats: user ? event.availableSeats : 0,
+                    presenceSeatsLeft: user && 'seats_left' in eventRaw
+                        ? eventRaw.seats_left ?? event.availableSeats
+                        : 0,
+                },
+                signedIn: !!user,
+            },
+        };
     },
 });
 export default GrowEvent;
