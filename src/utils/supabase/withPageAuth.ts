@@ -1,5 +1,5 @@
 // lib/supabase/withPageAuth.ts
-import { SupabaseClient } from '@supabase/supabase-js';
+import { SupabaseClient, User } from '@supabase/supabase-js';
 import { Database } from 'database/DatabaseDefition';
 import {
     GetServerSideProps,
@@ -14,7 +14,8 @@ interface WithPageAuthOptions<P> {
     redirectTo?: string;
     getServerSideProps?: (
         ctx: GetServerSidePropsContext,
-        supabase: SupabaseClient<Database>
+        supabase: SupabaseClient<Database>,
+        user: User | null
     ) => Promise<GetServerSidePropsResult<P>>;
 }
 
@@ -40,7 +41,7 @@ export function withPageAuth<P extends { [key: string]: unknown } = { [key: stri
         }
 
         if (getServerSideProps) {
-            return await getServerSideProps(context, supabase);
+            return await getServerSideProps(context, supabase, user);
         }
 
         // We need to cast the empty props to the correct type

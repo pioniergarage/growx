@@ -69,7 +69,7 @@ const EventHero = ({
                         gap={2}
                         isClickable
                     >
-                        {event.ref !== 'midterm' || getEventExternalUrl(event) ? (
+                        {getEventExternalUrl(event) ? (
                             <EventTag
                                 icon={FaExternalLinkAlt}
                                 onClick={() => {

@@ -1,11 +1,26 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import { Box, Button, Checkbox, Flex, HStack, Text, useColorModeValue, VStack } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { Box, Button, Checkbox, Flex, HStack, Link, Text, useColorModeValue, VStack } from '@chakra-ui/react';
+import { createContext, useEffect, useState } from 'react';
 
 // Define the shape of our consent object
 export interface ConsentPreferences {
     analytics: boolean;
     marketing: boolean;
+}
+
+export const externalMediaConsent = createContext(false);
+export const noOptionalConsent: ConsentPreferences = { analytics: false, marketing: false };
+const consentKey = 'growConsentV2';
+
+export function readConsentPreferences(): ConsentPreferences | null {
+    try {
+        const value = JSON.parse(localStorage.getItem(consentKey) ?? 'null');
+        if (typeof value?.analytics === 'boolean' && typeof value.marketing === 'boolean') {
+            return { analytics: value.analytics, marketing: value.marketing };
+        }
+    } catch {
+        // Optional services stay disabled if browser storage is unavailable.
+    }
+    return null;
 }
 
 interface CookieBannerProps {
@@ -17,26 +32,18 @@ export const CookieBanner = ({ onSave }: CookieBannerProps) => {
     const [showSettings, setShowSettings] = useState(false);
 
     // Default preferences for the checkboxes
-    const [preferences, setPreferences] = useState<ConsentPreferences>({
-        analytics: false,
-        marketing: false,
-    });
+    const [preferences, setPreferences] = useState(noOptionalConsent);
 
     const bgColor = useColorModeValue('white', 'gray.800');
     const textColor = useColorModeValue('gray.800', 'white');
     const borderColor = useColorModeValue('gray.200', 'gray.700');
+    const optionBg = useColorModeValue('gray.50', 'gray.700');
 
     useEffect(() => {
-        try {
-            const storedConsent = localStorage.getItem('cookieConsent');
-            if (!storedConsent) {
-                setIsVisible(true);
-            } else {
-                // Parse existing preferences if they open settings manually later
-                setPreferences(JSON.parse(storedConsent));
-            }
-        } catch (error) {
-            // Failsafe in case of old data formats
+        const storedConsent = readConsentPreferences();
+        if (storedConsent) {
+            setPreferences(storedConsent);
+        } else {
             setIsVisible(true);
         }
 
@@ -51,8 +58,7 @@ export const CookieBanner = ({ onSave }: CookieBannerProps) => {
     };
 
     const handleDeclineAll = () => {
-        const noConsent = { analytics: false, marketing: false };
-        saveAndClose(noConsent);
+        saveAndClose(noOptionalConsent);
     };
 
     const handleSaveSettings = () => {
@@ -60,15 +66,15 @@ export const CookieBanner = ({ onSave }: CookieBannerProps) => {
     };
 
     const saveAndClose = (finalPreferences: ConsentPreferences) => {
-        localStorage.setItem('cookieConsent', JSON.stringify(finalPreferences));
+        try {
+            localStorage.setItem(consentKey, JSON.stringify(finalPreferences));
+        } catch {
+            // The choice still applies to the current page when storage is unavailable.
+        }
+        setPreferences(finalPreferences);
         setIsVisible(false);
         setShowSettings(false);
         onSave(finalPreferences);
-
-        // Broadcast the specific marketing consent for the video component
-        if (finalPreferences.marketing) {
-            window.dispatchEvent(new Event('marketingConsentGranted'));
-        }
     };
 
     if (!isVisible) return null;
@@ -79,6 +85,8 @@ export const CookieBanner = ({ onSave }: CookieBannerProps) => {
             bottom="0"
             left="0"
             right="0"
+            maxH="100dvh"
+            overflowY="auto"
             p={4}
             bg={bgColor}
             borderTop="1px solid"
@@ -96,9 +104,9 @@ export const CookieBanner = ({ onSave }: CookieBannerProps) => {
                     <VStack align="stretch" spacing={4}>
                         <Text color={textColor} fontWeight="bold">Cookie Preferences</Text>
                         <Text color={textColor} fontSize="sm">
-                            Select which cookies you want to accept. Essential cookies are always active as the site cannot function without them.
+                            Session cookies keep you signed in. The options below are voluntary.
                         </Text>
-                        <Box p={3} bg={useColorModeValue('gray.50', 'gray.700')} borderRadius="md">
+                        <Box p={3} bg={optionBg} borderRadius="md">
                             <Checkbox
                                 isChecked={preferences.analytics}
                                 onChange={(e) => setPreferences({ ...preferences, analytics: e.target.checked })}
@@ -110,28 +118,28 @@ export const CookieBanner = ({ onSave }: CookieBannerProps) => {
                                 Used by Google Analytics to help us understand how visitors interact with our website.
                             </Text>
                         </Box>
-                        <Box p={3} bg={useColorModeValue('gray.50', 'gray.700')} borderRadius="md">
+                        <Box p={3} bg={optionBg} borderRadius="md">
                             <Checkbox
                                 isChecked={preferences.marketing}
                                 onChange={(e) => setPreferences({ ...preferences, marketing: e.target.checked })}
                                 colorScheme="blue"
                             >
-                                <Text fontSize="sm" fontWeight="medium">External Media & Marketing</Text>
+                                <Text fontSize="sm" fontWeight="medium">External media (YouTube)</Text>
                             </Checkbox>
                             <Text fontSize="xs" color="gray.500" mt={1} ml={6}>
-                                Allows loading external content like YouTube videos, which may set tracking cookies.
+                                Lets embedded YouTube videos connect to Google and access device information.
                             </Text>
                         </Box>
                         <HStack justify="flex-end" pt={2}>
                             <Button size="sm" variant="ghost" onClick={() => setShowSettings(false)}>Back</Button>
-                            <Button size="sm" colorScheme="blue" onClick={handleSaveSettings}>Accept and Save Preferences</Button>
+                            <Button size="sm" colorScheme="blue" onClick={handleSaveSettings}>Save preferences</Button>
                         </HStack>
                     </VStack>
                 ) : (
                     <Flex direction={{ base: 'column', md: 'row' }} align="center" justify="space-between" gap={4}>
                         <Text color={textColor} fontSize="sm" textAlign={{ base: 'center', md: 'left' }}>
-                            We use cookies to improve your GROW experience and load external content.<br />
-                            You can accept all, decline non-essential cookies, or manage your preferences.
+                            We use optional Google Analytics and YouTube embeds with your permission.{' '}
+                            <Link href="/privacy" isExternal textDecoration="underline">Privacy notice</Link>
                         </Text>
                         <Flex gap={2} wrap="wrap" justify="center">
                             <Button size="sm" variant="link" onClick={() => setShowSettings(true)} px={2}>
@@ -140,7 +148,7 @@ export const CookieBanner = ({ onSave }: CookieBannerProps) => {
                             <Button size="sm" variant="outline" onClick={handleDeclineAll}>
                                 Decline All
                             </Button>
-                            <Button size="sm" colorScheme="blue" onClick={handleAcceptAll}>
+                            <Button size="sm" variant="outline" onClick={handleAcceptAll}>
                                 Accept All
                             </Button>
                         </Flex>

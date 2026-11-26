@@ -33,9 +33,7 @@ const SignUp: NextPageWithLayout = () => {
     const [personalInfo, setPersonalInfo] = useState<PersonalInfo>({
         firstName: '',
         lastName: '',
-        gender: 'MALE',
         phone: '',
-        homeland: '',
     });
     const [signUpError, setSignUpError] = useState<string>('');
 

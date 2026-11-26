@@ -1,3 +1,4 @@
+import LegalLinks from '@/components/navigation/LegalLinks';
 import { GrowLogo, TopNavBar } from '@/components/navigation/Nav';
 import SupabaseProvider from '@/components/providers/SupabaseProvider';
 import { Box, Flex } from '@chakra-ui/react';
@@ -29,7 +30,10 @@ export default function Layout({ children }: PropsWithChildren) {
                 <QueryClientProvider client={queryClient}>
                     <Flex
                         as="main"
-                        height="100vh"
+                        minH="100vh"
+                        px={4}
+                        pt={20}
+                        pb={8}
                         justifyContent="center"
                         alignItems="center"
                         position="relative"
@@ -46,13 +50,15 @@ export default function Layout({ children }: PropsWithChildren) {
                             bg="blackAlpha.500"
                             p={6}
                             w="100%"
-                            h={{ base: '100%', sm: 'auto' }}
                             maxW={{ sm: '80%', md: 'container.sm' }}
                             borderRadius={4}
                             zIndex={12}
                         >
                             {children}
                         </Box>
+                    </Flex>
+                    <Flex as="footer" justify="center" px={4} py={4}>
+                        <LegalLinks />
                     </Flex>
                 </QueryClientProvider>
             </SupabaseProvider>

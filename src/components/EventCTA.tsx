@@ -2,6 +2,7 @@ import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Box, Button, Heading } from '@chakra-ui/react';
 import { keyframes } from '@emotion/react';
 import { GrowEvent } from 'modules/events/types';
+import { getEventExternalUrl } from 'modules/events/utils';
 import React from 'react';
 
 interface EventCTAProps {
@@ -35,7 +36,7 @@ const EventCTA: React.FC<EventCTAProps> = ({
 
     const glowAnimation = `${glow} 6s ease-in-out infinite`;
     const eventDate = event ? event.date : event_date;
-    const eventHref = event ? event.href : event_href;
+    const eventHref = event ? getEventExternalUrl(event) : event_href;
 
     if (
         (eventDate &&
