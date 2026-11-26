@@ -50,19 +50,20 @@ const Privacy: NextPageWithLayout = () => (
                     </Heading>
                     <Text>
                         We use your email address and password to create and
-                        secure your account. We use profile information such as
-                        your name, country, gender and phone number to set up
-                        your profile and organise participation. Depending on
-                        your role, we may ask about your university, skills or
-                        background. You can add a profile picture later.
+                        secure your account. We use your name and any phone
+                        number you provide to set up your profile and organise
+                        participation. Depending on your role, we may ask about
+                        your university, skills or background. You can add a
+                        profile picture and optional profile information such as
+                        your gender or country of origin later.
                     </Text>
                     <Text>
-                        Registration requires an email address, password, name
-                        and country. Participants must also answer whether they
-                        have a team. Participants who register as students must
-                        provide their university and its country. You cannot
-                        finish the relevant registration steps without the
-                        required information. Your phone number, startup idea,
+                        Registration requires an email address, password and
+                        name. Participants must also answer whether they have a
+                        team. Participants who register as students must provide
+                        their university and its country. You cannot finish the
+                        relevant registration steps without the required
+                        information. Your phone number, startup idea,
                         expectations and how you heard about GROW can be left
                         blank.
                     </Text>
