@@ -29,6 +29,10 @@ const Privacy: NextPageWithLayout = () => (
                         </Link>
                         .
                     </Text>
+                    <Text>
+                        We use Google Workspace to handle email enquiries. The
+                        data region for covered Workspace data is Europe.
+                    </Text>
                 </Stack>
                 <Stack as="section" spacing={2}>
                     <Heading as="h2" size="md">
