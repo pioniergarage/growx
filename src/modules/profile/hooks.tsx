@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
     fetchProfile,
     getProfiles,
-    insertSignupInfo,
+    saveSignupInfo,
     updateProfile
 } from 'modules/profile/api';
 import { FurtherProfileInfo, Profile } from './types';
@@ -72,11 +72,10 @@ export function useProfiles() {
     return { ...query, profiles: query.data };
 }
 
-export function useInsertFurhterProfileInfo() {
+export function useSaveSignupInfo() {
     const supabaseClient = useSupabaseClient();
     const mutation = useMutation(
-        (data: FurtherProfileInfo & { email: string }) =>
-            insertSignupInfo(supabaseClient, data)
+        (data: FurtherProfileInfo) => saveSignupInfo(supabaseClient, data)
     );
-    return { ...mutation, insertFurtherProfileInfo: mutation.mutateAsync };
+    return { ...mutation, saveSignupInfo: mutation.mutateAsync };
 }

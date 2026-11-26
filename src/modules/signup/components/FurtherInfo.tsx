@@ -109,9 +109,13 @@ const FurtherInfo = ({ onNext }: FurtherInfoProps) => {
                     <Input id="source" onChange={formik.handleChange} />
                 </FormControl>
                 <Text fontSize="sm">
-                    We save these answers with your email address when you click Next,
-                    before you finish creating your account.{' '}
-                    <Link href="/privacy#registration" isExternal textDecoration="underline">
+                    We save these answers with your account email once you
+                    finish creating your account.{' '}
+                    <Link
+                        href="/privacy#registration"
+                        isExternal
+                        textDecoration="underline"
+                    >
                         GROW registration privacy notice
                     </Link>
                 </Text>

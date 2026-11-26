@@ -69,8 +69,8 @@ const Privacy: NextPageWithLayout = () => (
                     </Text>
                     <Text>
                         We save the team answer and any optional answers from
-                        that step with your email address, even if you leave
-                        before creating an account. Please avoid including other
+                        that step with your account email after you create an
+                        account and sign in. Please avoid including other
                         people’s personal data in your answers.
                     </Text>
                     <Text>

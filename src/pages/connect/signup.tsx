@@ -1,13 +1,18 @@
-import { Alert, AlertIcon, Spinner, Text, VStack } from '@chakra-ui/react';
+import {
+    Alert,
+    AlertIcon,
+    Button,
+    Spinner,
+    Text,
+    VStack,
+} from '@chakra-ui/react';
+import type { Session } from '@supabase/supabase-js';
 import { withPageAuth } from 'utils/supabase/withPageAuth';
 
 import { useSupabaseClient } from '@/components/providers/SupabaseProvider';
 import LoginLayout from 'layouts/LoginLayout';
-import { useInsertContactInformation } from 'modules/contactInformation/hooks';
-import {
-    useInsertFurhterProfileInfo,
-    useUpdateProfile,
-} from 'modules/profile/hooks';
+import { useSaveSignupInfo, useUpdateProfile } from 'modules/profile/hooks';
+import { FurtherProfileInfo } from 'modules/profile/types';
 import EmailAndPasswordForm, {
     SignUpInfo,
 } from 'modules/signup/components/EmailAndPasswordForm';
@@ -18,8 +23,15 @@ import PersonalInfoForm, {
 import StudentForm from 'modules/signup/components/StudentForm';
 import UniversityForm from 'modules/signup/components/UniversityForm';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { NextPageWithLayout } from 'utils/types';
+
+type PendingAccount = {
+    email: string;
+    userId?: string;
+    university?: string;
+    universityCountry?: string;
+};
 
 const SignUp: NextPageWithLayout = () => {
     const supabaseClient = useSupabaseClient();
@@ -35,47 +47,103 @@ const SignUp: NextPageWithLayout = () => {
         lastName: '',
         phone: '',
     });
+    const [furtherInfo, setFurtherInfo] = useState<FurtherProfileInfo>();
     const [signUpError, setSignUpError] = useState<string>('');
+    const [needsConfirmation, setNeedsConfirmation] = useState(false);
+    const [isFinishing, setIsFinishing] = useState(false);
+    const pendingAccount = useRef<PendingAccount>();
+    const inFlight = useRef(false);
 
     const { updateProfile } = useUpdateProfile();
-    const { insertFurtherProfileInfo } = useInsertFurhterProfileInfo();
-    const { insertContactInformation } = useInsertContactInformation();
+    const { saveSignupInfo } = useSaveSignupInfo();
 
-    async function signUp({ email, password }: SignUpInfo) {
-        const { data, error } = await supabaseClient.auth.signUp({
-            email,
-            password,
-        });
-        if (error) throw error.message;
-        if (!data.user) throw 'Could not create user';
-        return data.user;
-    }
-
-    async function createAccount(
-        emailAndPassword: SignUpInfo,
-        personalInfo: PersonalInfo,
+    async function finishSignup(
         university?: string,
         universityCountry?: string
     ) {
+        if (!furtherInfo || inFlight.current) return;
+        inFlight.current = true;
+        setIsFinishing(true);
+        setSignUpError('');
+        setStep(5);
+
         try {
-            const user = await signUp(emailAndPassword);
-            await insertContactInformation({
-                userId: user.id,
-                info: {
-                    email: emailAndPassword.email,
+            let account = pendingAccount.current;
+            let session: Session | null;
+
+            if (!account) {
+                const { data, error } = await supabaseClient.auth.signUp(
+                    emailAndPassword
+                );
+                if (error) throw error;
+                if (!data.user)
+                    throw new Error('Could not create the account.');
+
+                account = {
+                    email: emailAndPassword.email.trim().toLowerCase(),
+                    userId: data.session?.user.id,
+                    university,
+                    universityCountry,
+                };
+                pendingAccount.current = account;
+                session = data.session;
+                if (!session) {
+                    setNeedsConfirmation(true);
+                    return;
+                }
+            } else {
+                const { data, error } = await supabaseClient.auth.getSession();
+                if (error) throw error;
+                session = data.session;
+                if (!session) {
+                    const result = await supabaseClient.auth.signInWithPassword(
+                        emailAndPassword
+                    );
+                    if (result.error) throw result.error;
+                    session = result.data.session;
+                }
+            }
+
+            const user = session?.user;
+            if (
+                !user?.email ||
+                user.email.toLowerCase() !== account.email ||
+                (account.userId && account.userId !== user.id)
+            ) {
+                throw new Error(
+                    'Sign in with the account used for this signup.'
+                );
+            }
+            pendingAccount.current = { ...account, userId: user.id };
+            setNeedsConfirmation(false);
+
+            await supabaseClient
+                .from('contact_information')
+                .upsert({
+                    user_id: user.id,
+                    email: user.email,
                     phone: personalInfo.phone,
-                },
-            });
+                })
+                .throwOnError();
             await updateProfile({
-                ...personalInfo,
+                firstName: personalInfo.firstName,
+                lastName: personalInfo.lastName,
                 userId: user.id,
-                university,
-                universityCountry
+                university: account.university,
+                universityCountry: account.universityCountry,
             });
-            router.replace('/connect');
+            await saveSignupInfo(furtherInfo);
+            await router.replace('/connect');
         } catch (error) {
-            setStep(0);
-            setSignUpError(error as string);
+            if (!pendingAccount.current) setStep(0);
+            setSignUpError(
+                error instanceof Error
+                    ? error.message
+                    : 'Could not finish your GROW signup. Please try again.'
+            );
+        } finally {
+            inFlight.current = false;
+            setIsFinishing(false);
         }
     }
     return (
@@ -97,11 +165,8 @@ const SignUp: NextPageWithLayout = () => {
             ) : step === 2 ? (
                 <FurtherInfo
                     onNext={(info) => {
+                        setFurtherInfo(info);
                         setStep(step + 1);
-                        insertFurtherProfileInfo({
-                            ...info,
-                            email: emailAndPassword.email,
-                        });
                     }}
                 />
             ) : step === 3 ? (
@@ -110,34 +175,37 @@ const SignUp: NextPageWithLayout = () => {
                         if (isStudent) {
                             setStep(step + 1);
                         } else {
-                            setStep(step + 2);
-                            createAccount(
-                                emailAndPassword,
-                                personalInfo,
-                                undefined,
-                                undefined
-                            );
+                            void finishSignup();
                         }
                     }}
                 />
             ) : step === 4 ? (
                 <UniversityForm
                     onNext={({ university, country }) => {
-                        setStep(step + 1);
-                        createAccount(
-                            emailAndPassword,
-                            personalInfo,
-                            university,
-                            country
-                        );
+                        void finishSignup(university, country);
                     }}
                 />
             ) : (
-                step === 5 &&
-                !signUpError && (
+                step === 5 && (
                     <VStack>
-                        <Text color="gray.400">Creating account</Text>
-                        <Spinner />
+                        {isFinishing ? (
+                            <>
+                                <Text color="gray.400">Finishing signup</Text>
+                                <Spinner />
+                            </>
+                        ) : (
+                            <>
+                                {needsConfirmation && (
+                                    <Text>
+                                        Confirm your email and keep this page
+                                        open. Then finish your signup here.
+                                    </Text>
+                                )}
+                                <Button onClick={() => void finishSignup()}>
+                                    Finish signup
+                                </Button>
+                            </>
+                        )}
                     </VStack>
                 )
             )}
