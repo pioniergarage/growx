@@ -1,3 +1,4 @@
+import MarkdownText from '@/components/MarkdownText';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
     Breadcrumb,
@@ -61,9 +62,12 @@ const GrowEvent = ({ eventData, signedIn }: EventDetailProps) => {
             </Breadcrumb>
             <Heading size="md">{event.title}</Heading>
             <Flex flexDir={{ base: 'column', md: 'row' }} gap={4}>
-                <Text variant="info" fontSize={{ base: 'sm', md: 'md' }}>
+                <MarkdownText
+                    color="#bac5d4"
+                    fontSize={{ base: 'sm', md: 'md' }}
+                >
                     {event.description}
-                </Text>
+                </MarkdownText>
                 <Flex flexDir="column" gap={4} minW={{ md: '25rem' }}>
                     <EventInformationCard event={event} auth={signedIn} />
                     {!isMidterm && event.href && (
