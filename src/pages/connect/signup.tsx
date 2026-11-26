@@ -11,6 +11,7 @@ import { withPageAuth } from 'utils/supabase/withPageAuth';
 
 import { useSupabaseClient } from '@/components/providers/SupabaseProvider';
 import LoginLayout from 'layouts/LoginLayout';
+import { useUpsertContactInformation } from 'modules/contactInformation/hooks';
 import { useSaveSignupInfo, useUpdateProfile } from 'modules/profile/hooks';
 import { FurtherProfileInfo } from 'modules/profile/types';
 import EmailAndPasswordForm, {
@@ -56,6 +57,7 @@ const SignUp: NextPageWithLayout = () => {
 
     const { updateProfile } = useUpdateProfile();
     const { saveSignupInfo } = useSaveSignupInfo();
+    const { upsertContactInformation } = useUpsertContactInformation();
 
     async function finishSignup(
         university?: string,
@@ -117,14 +119,13 @@ const SignUp: NextPageWithLayout = () => {
             pendingAccount.current = { ...account, userId: user.id };
             setNeedsConfirmation(false);
 
-            await supabaseClient
-                .from('contact_information')
-                .upsert({
-                    user_id: user.id,
+            await upsertContactInformation({
+                userId: user.id,
+                info: {
                     email: user.email,
                     phone: personalInfo.phone,
-                })
-                .throwOnError();
+                },
+            });
             await updateProfile({
                 firstName: personalInfo.firstName,
                 lastName: personalInfo.lastName,
