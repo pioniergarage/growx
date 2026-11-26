@@ -49,6 +49,12 @@ const Privacy: NextPageWithLayout = () => (
                         Registration and GROW Connect
                     </Heading>
                     <Text>
+                        We process registration data based on our legitimate
+                        interests under Article 6(1)(f) GDPR. Our interests are
+                        to manage GROW registrations, organise the competition
+                        and document it internally.
+                    </Text>
+                    <Text>
                         We use your email address and password to create and
                         secure your account. We use your name and any phone
                         number you provide to set up your profile and organise
@@ -70,8 +76,10 @@ const Privacy: NextPageWithLayout = () => (
                     <Text>
                         We save the team answer and any optional answers from
                         that step with your account email after you create an
-                        account and sign in. Please avoid including other
-                        people’s personal data in your answers.
+                        account and sign in. All Pioniergarage e.V. members have
+                        access to these answers in Supabase by default. Please
+                        avoid including other people’s personal data in your
+                        answers.
                     </Text>
                     <Text>
                         If someone prepares a mentor or buddy invitation for
@@ -88,6 +96,17 @@ const Privacy: NextPageWithLayout = () => (
                     <Text>
                         We delete GROW Connect accounts after the end of the
                         GROW round.
+                    </Text>
+                </Stack>
+                <Stack as="section" spacing={2}>
+                    <Heading as="h2" size="md">
+                        Right to object to registration processing
+                    </Heading>
+                    <Text>
+                        You can object to the processing of your registration
+                        data based on legitimate interests on grounds relating
+                        to your particular situation. To exercise this right,
+                        contact PionierGarage IT at the email address above.
                     </Text>
                 </Stack>
                 <Stack as="section" spacing={2}>
