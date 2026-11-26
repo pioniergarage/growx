@@ -7,6 +7,8 @@ import {
     FormLabel,
     Heading,
     Input,
+    Link,
+    Text,
     Radio,
     RadioGroup,
     Textarea,
@@ -106,6 +108,13 @@ const FurtherInfo = ({ onNext }: FurtherInfoProps) => {
                     </FormLabel>
                     <Input id="source" onChange={formik.handleChange} />
                 </FormControl>
+                <Text fontSize="sm">
+                    We save these answers with your email address when you click Next,
+                    before you finish creating your account.{' '}
+                    <Link href="/privacy#registration" isExternal textDecoration="underline">
+                        GROW registration privacy notice
+                    </Link>
+                </Text>
                 <Button type="submit" variant="solid" width="100%">
                     Next
                 </Button>
