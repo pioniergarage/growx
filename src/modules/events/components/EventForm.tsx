@@ -258,7 +258,8 @@ export default function EventForm({
                             }
                         />
                         <FormHelperText>
-                            Supports Markdown (**bold**, *italic*, [links](https://…), lists, headings)
+                            Supports Markdown (**bold**, *italic*,
+                            [links](https://…), lists, headings)
                         </FormHelperText>
                         <FormErrorMessage>
                             {formik.errors.description}

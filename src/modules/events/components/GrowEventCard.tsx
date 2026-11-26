@@ -1,6 +1,7 @@
 import Card from '@/components/Card';
 import { Box, Flex, GridItem, Heading, Text } from '@chakra-ui/react';
 import Link from 'next/link';
+import ReactMarkdown, { type Options } from 'react-markdown';
 import { EventCategory, GrowEvent } from '../types';
 import EventTagList from './EventTagList';
 
@@ -9,15 +10,66 @@ export type GrowEventCardProps = {
     registration?: { present: boolean };
 };
 
+type MarkdownNode = {
+    type: string;
+    value?: string;
+    alt?: string;
+    children?: MarkdownNode[];
+};
+
+function previewText(node: MarkdownNode): string {
+    switch (node.type) {
+        case 'text':
+        case 'inlineCode':
+        case 'code':
+            return node.value ?? '';
+        case 'image':
+        case 'imageReference':
+            return node.alt ?? '';
+        case 'break':
+            return '\n';
+        case 'list':
+        case 'listItem':
+        case 'blockquote':
+            return node.children?.map(previewText).join('\n') ?? '';
+        default:
+            return node.children?.map(previewText).join('') ?? '';
+    }
+}
+
+const previewPlugins: NonNullable<Options['remarkPlugins']> = [
+    () => (tree: unknown) => {
+        const firstLine = (tree as MarkdownNode).children
+            ?.map(previewText)
+            .join('\n')
+            .split(/\r?\n/)
+            .map((line) => line.trim())
+            .find(Boolean);
+        return {
+            type: 'root',
+            children: firstLine
+                ? [
+                      {
+                          type: 'paragraph',
+                          children: [
+                              {
+                                  type: 'text',
+                                  value: `${firstLine.replace(/[.…]+$/, '')}...`,
+                              },
+                          ],
+                      },
+                  ]
+                : [],
+        };
+    },
+];
+
 const GrowEventCard: React.FC<GrowEventCardProps> = ({
     event,
     registration
 }) => {
     const over = new Date() > event.date;
     const isMidterm = event.ref === 'midterm';
-    const firstLine = isMidterm
-        ? event.description?.trim().split(/\r?\n/, 1)[0].trimEnd()
-        : undefined;
 
     return (
         <Card
@@ -76,10 +128,19 @@ const GrowEventCard: React.FC<GrowEventCardProps> = ({
                     transparent
                     gap={0}
                 />
-                {firstLine && (
-                    <Text mt={1} fontSize="sm" isTruncated>
-                        {`${firstLine.replace(/[.…]+$/, '')}...`}
-                    </Text>
+                {isMidterm && event.description?.trim() && (
+                    <ReactMarkdown
+                        remarkPlugins={previewPlugins}
+                        components={{
+                            p: ({ children }) => (
+                                <Text mt={1} fontSize="sm" isTruncated>
+                                    {children}
+                                </Text>
+                            ),
+                        }}
+                    >
+                        {event.description}
+                    </ReactMarkdown>
                 )}
             </Box>
         </Card>
