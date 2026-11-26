@@ -2,6 +2,7 @@ import { Box, Heading, HStack, Image, VStack } from '@chakra-ui/react';
 import EventTag from 'modules/events/components/EventTag';
 import EventTagList from 'modules/events/components/EventTagList';
 import { GrowEvent } from 'modules/events/types';
+import { getEventExternalUrl } from 'modules/events/utils';
 import { ReactNode } from 'react';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 
@@ -68,14 +69,17 @@ const EventHero = ({
                         gap={2}
                         isClickable
                     >
-                        <EventTag
-                            icon={FaExternalLinkAlt}
-                            onClick={() => {
-                                if (event.href) window.open(event.href);
-                            }}
-                        >
-                            Visit Final Event
-                        </EventTag>
+                        {event.ref !== 'midterm' || getEventExternalUrl(event) ? (
+                            <EventTag
+                                icon={FaExternalLinkAlt}
+                                onClick={() => {
+                                    const href = getEventExternalUrl(event);
+                                    if (href) window.open(href);
+                                }}
+                            >
+                                {event.ref === 'midterm' ? 'Sign up on Luma' : 'Visit Final Event'}
+                            </EventTag>
+                        ) : undefined}
                     </EventTagList>
                 </VStack>
                 <VStack
