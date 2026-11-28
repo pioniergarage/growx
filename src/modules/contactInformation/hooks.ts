@@ -53,3 +53,25 @@ export const useUpdateContactInformation = () => {
     );
     return { ...mutation, updateContactInformation: mutation.mutateAsync };
 }
+
+export const useUpsertContactInformation = () => {
+    const supabaseClient = useSupabaseClient();
+    const queryClient = useQueryClient();
+    const mutation = useMutation(
+        ({ info, userId }: { info: ContactInformation; userId: string }) =>
+            contactInformationApi.upsertContactInformation(
+                supabaseClient,
+                userId,
+                info
+            ),
+        {
+            onSuccess: (contact, { userId }) => {
+                queryClient.setQueryData(
+                    ['contact_information', userId],
+                    contact
+                );
+            },
+        }
+    );
+    return { ...mutation, upsertContactInformation: mutation.mutateAsync };
+};

@@ -97,7 +97,15 @@ export const getPublicMentors = async (
         );
 };
 
-export const insertSignupInfo = async (
+export const saveSignupInfo = async (
     supabaseClient: SupabaseClient<Database>,
-    info: FurtherProfileInfo & { email: string }
-) => supabaseClient.from('signup_info').insert(info).select().single();
+    info: FurtherProfileInfo
+) =>
+    supabaseClient
+        .rpc('save_signup_info', {
+            p_has_team: info.lookingForTeam,
+            p_idea: info.idea,
+            p_expectations: info.expectations,
+            p_source: info.source,
+        })
+        .throwOnError();

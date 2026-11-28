@@ -570,6 +570,15 @@ export type Database = {
         Args: { event_id: number; present: boolean; user_id: string }
         Returns: undefined
       }
+      save_signup_info: {
+        Args: {
+          p_expectations: string
+          p_has_team: boolean
+          p_idea: string
+          p_source: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       enum_event_type: "Online" | "Offline" | "Hybrid"

@@ -7,6 +7,11 @@ interface ContactInformationApi {
     getContactInformation(supabase: SupabaseClient<Database>, user_id: string): Promise<ContactInformation>
     updateContactInformation(supabase: SupabaseClient<Database>, user_id: string, data: ContactInformation): Promise<ContactInformation>
     insertContactInformation(supabase: SupabaseClient<Database>, user_id: string, data: ContactInformation): Promise<ContactInformation>
+    upsertContactInformation(
+        supabase: SupabaseClient<Database>,
+        userId: string,
+        data: ContactInformation
+    ): Promise<ContactInformation>;
 }
 
 const contactInformationApi: ContactInformationApi = {
@@ -34,7 +39,14 @@ const contactInformationApi: ContactInformationApi = {
             .single()
             .then(handleSingleResponse)
         return info
-    }
+    },
+    upsertContactInformation: async (supabase, userId, data) =>
+        supabase
+            .from('contact_information')
+            .upsert({ ...data, user_id: userId }, { onConflict: 'user_id' })
+            .select('email, phone')
+            .single()
+            .then(handleSingleResponse),
 }
 
 export default contactInformationApi
